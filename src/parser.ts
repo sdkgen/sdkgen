@@ -1,6 +1,6 @@
 import { readFileSync } from "fs";
 import { dirname, resolve } from "path";
-import { ArrayType, AstRoot, Base64PrimitiveType, BoolPrimitiveType, BytesPrimitiveType, CepPrimitiveType, CnpjPrimitiveType, CpfPrimitiveType, DatePrimitiveType, DateTimePrimitiveType, EmailPrimitiveType, EnumType, Field, FloatPrimitiveType, FunctionOperation, GetOperation, HexPrimitiveType, IntPrimitiveType, LatLngPrimitiveType, MoneyPrimitiveType, Operation, OptionalType, Options, PhonePrimitiveType, SafeHtmlPrimitiveType, StringPrimitiveType, StructType, Type, TypeDefinition, TypeReference, UIntPrimitiveType, UrlPrimitiveType, UuidPrimitiveType, VoidPrimitiveType, XmlPrimitiveType, PrimitiveType } from "./ast";
+import { ArrayType, AstRoot, Base64PrimitiveType, BoolPrimitiveType, BytesPrimitiveType, CepPrimitiveType, CnpjPrimitiveType, CpfPrimitiveType, DatePrimitiveType, DateTimePrimitiveType, EmailPrimitiveType, EnumType, Field, FloatPrimitiveType, FunctionOperation, GetOperation, HexPrimitiveType, IntPrimitiveType, LatLngPrimitiveType, MoneyPrimitiveType, Operation, OptionalType, Options, PhonePrimitiveType, SafeHtmlPrimitiveType, StringPrimitiveType, StructType, Type, TypeDefinition, TypeReference, UIntPrimitiveType, UrlPrimitiveType, UuidPrimitiveType, VoidPrimitiveType, XmlPrimitiveType, PrimitiveType, AnyPrimitiveType } from "./ast";
 import { Lexer } from "./lexer";
 import { ArraySymbolToken, ColonSymbolToken, CommaSymbolToken, CurlyCloseSymbolToken, CurlyOpenSymbolToken, EnumKeywordToken, EqualSymbolToken, ErrorKeywordToken, ExclamationMarkSymbolToken, FalseKeywordToken, FunctionKeywordToken, GetKeywordToken, GlobalOptionToken, IdentifierToken, ImportKeywordToken, OptionalSymbolToken, ParensCloseSymbolToken, ParensOpenSymbolToken, PrimitiveTypeToken, SpreadSymbolToken, StringLiteralToken, Token, TrueKeywordToken, TypeKeywordToken } from "./token";
 import { analyse } from "./semantic/analyser";
@@ -49,6 +49,7 @@ primitiveToAstClass.set("hex", HexPrimitiveType);
 primitiveToAstClass.set("base64", Base64PrimitiveType);
 primitiveToAstClass.set("safehtml", SafeHtmlPrimitiveType);
 primitiveToAstClass.set("xml", XmlPrimitiveType);
+primitiveToAstClass.set("any", AnyPrimitiveType);
 primitiveToAstClass.set("void", VoidPrimitiveType);
 
 export class Parser {

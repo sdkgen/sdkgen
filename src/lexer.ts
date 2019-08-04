@@ -6,7 +6,7 @@ export class Lexer {
     public static readonly PRIMITIVES = new Set([
         "bool", "int", "uint", "float", "string", "date", "datetime", "bytes",
         "money", "cpf", "cnpj", "email", "phone", "cep", "latlng", "url",
-        "uuid", "hex", "base64", "safehtml", "xml", "void"
+        "uuid", "hex", "base64", "safehtml", "xml", "void", "any"
     ]);
 
     public static readonly KEYWORDS = new Set([
