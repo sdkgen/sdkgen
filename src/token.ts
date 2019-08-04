@@ -11,7 +11,9 @@ export class TokenLocation {
 export class Token {
     public location = new TokenLocation
 
-    constructor(public value: string = "") { }
+    constructor(public value: string = "") {
+        Object.defineProperty(this, "location", { enumerable: false });
+    }
 
     maybeAsIdentifier(): Token {
         return this;
@@ -20,10 +22,6 @@ export class Token {
     toString() {
         const name = (this.constructor as any).name.replace("Token", "");
         return this.value === "" ? name : `${name}(${JSON.stringify(this.value)})`;
-    }
-
-    isEqual(other: Token) {
-        return this.constructor === other.constructor && this.value === other.value;
     }
 }
 

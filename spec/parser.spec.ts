@@ -13,7 +13,7 @@ describe(Parser, () => {
 
         test(`handles simple get operations for primitive type '${p}'`, () => {
             expectParses(`
-                get foo(): ${p}
+                get ${p === "bool" ? "isFoo" : "foo"}(): ${p}
                 get bar(): ${p}?
                 get baz(): ${p}[]
             `);
@@ -95,10 +95,13 @@ describe(Parser, () => {
 
     test("handles spreads in structs", () => {
         expectParses(`
+            type Bar {
+                aa: string
+            }
+
             type Foo {
                 ...Bar
-                ...Baz
-                aa: string
+                bb: int
             }
         `);
     });

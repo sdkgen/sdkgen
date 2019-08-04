@@ -16,9 +16,7 @@ export abstract class AstNode {
     public location = new TokenLocation;
 
     constructor() {
-        Object.defineProperty(this, "filename", { enumerable: false });
-        Object.defineProperty(this, "line", { enumerable: false });
-        Object.defineProperty(this, "column", { enumerable: false });
+        Object.defineProperty(this, "location", { enumerable: false });
     }
 
     at(token: Token): this {

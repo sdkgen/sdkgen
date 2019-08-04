@@ -3,6 +3,7 @@ import { dirname, resolve } from "path";
 import { ArrayType, AstRoot, Base64PrimitiveType, BoolPrimitiveType, BytesPrimitiveType, CepPrimitiveType, CnpjPrimitiveType, CpfPrimitiveType, DatePrimitiveType, DateTimePrimitiveType, EmailPrimitiveType, EnumType, Field, FloatPrimitiveType, FunctionOperation, GetOperation, HexPrimitiveType, IntPrimitiveType, LatLngPrimitiveType, MoneyPrimitiveType, Operation, OptionalType, Options, PhonePrimitiveType, SafeHtmlPrimitiveType, StringPrimitiveType, StructType, Type, TypeDefinition, TypeReference, UIntPrimitiveType, UrlPrimitiveType, UuidPrimitiveType, VoidPrimitiveType, XmlPrimitiveType, PrimitiveType } from "./ast";
 import { Lexer } from "./lexer";
 import { ArraySymbolToken, ColonSymbolToken, CommaSymbolToken, CurlyCloseSymbolToken, CurlyOpenSymbolToken, EnumKeywordToken, EqualSymbolToken, ErrorKeywordToken, ExclamationMarkSymbolToken, FalseKeywordToken, FunctionKeywordToken, GetKeywordToken, GlobalOptionToken, IdentifierToken, ImportKeywordToken, OptionalSymbolToken, ParensCloseSymbolToken, ParensOpenSymbolToken, PrimitiveTypeToken, SpreadSymbolToken, StringLiteralToken, Token, TrueKeywordToken, TypeKeywordToken } from "./token";
+import { analyse } from "./semantic/analyser";
 
 export class ParserError extends Error {}
 
@@ -149,7 +150,9 @@ export class Parser {
             });
         }
 
-        return new AstRoot(typeDefinition, operations, options, errors);
+        const ast = new AstRoot(typeDefinition, operations, options, errors);
+        analyse(ast);
+        return ast;
     }
 
     private parseTypeDefinition(): TypeDefinition {
