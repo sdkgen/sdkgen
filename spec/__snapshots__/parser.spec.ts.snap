@@ -1,0 +1,5421 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Parser handles 'base64' on the name of a field 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 0,
+              "filename": "?",
+              "line": 0,
+            },
+            "name": "base64",
+            "secret": false,
+            "type": IntPrimitiveType {
+              "location": TokenLocation {
+                "column": 29,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "int",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles 'bool' on the name of a field 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 0,
+              "filename": "?",
+              "line": 0,
+            },
+            "name": "bool",
+            "secret": false,
+            "type": IntPrimitiveType {
+              "location": TokenLocation {
+                "column": 27,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "int",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles 'bytes' on the name of a field 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 0,
+              "filename": "?",
+              "line": 0,
+            },
+            "name": "bytes",
+            "secret": false,
+            "type": IntPrimitiveType {
+              "location": TokenLocation {
+                "column": 28,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "int",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles 'cep' on the name of a field 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 0,
+              "filename": "?",
+              "line": 0,
+            },
+            "name": "cep",
+            "secret": false,
+            "type": IntPrimitiveType {
+              "location": TokenLocation {
+                "column": 26,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "int",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles 'cnpj' on the name of a field 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 0,
+              "filename": "?",
+              "line": 0,
+            },
+            "name": "cnpj",
+            "secret": false,
+            "type": IntPrimitiveType {
+              "location": TokenLocation {
+                "column": 27,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "int",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles 'cpf' on the name of a field 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 0,
+              "filename": "?",
+              "line": 0,
+            },
+            "name": "cpf",
+            "secret": false,
+            "type": IntPrimitiveType {
+              "location": TokenLocation {
+                "column": 26,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "int",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles 'date' on the name of a field 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 0,
+              "filename": "?",
+              "line": 0,
+            },
+            "name": "date",
+            "secret": false,
+            "type": IntPrimitiveType {
+              "location": TokenLocation {
+                "column": 27,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "int",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles 'datetime' on the name of a field 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 0,
+              "filename": "?",
+              "line": 0,
+            },
+            "name": "datetime",
+            "secret": false,
+            "type": IntPrimitiveType {
+              "location": TokenLocation {
+                "column": 31,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "int",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles 'email' on the name of a field 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 0,
+              "filename": "?",
+              "line": 0,
+            },
+            "name": "email",
+            "secret": false,
+            "type": IntPrimitiveType {
+              "location": TokenLocation {
+                "column": 28,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "int",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles 'enum' on the name of a field 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 0,
+              "filename": "?",
+              "line": 0,
+            },
+            "name": "enum",
+            "secret": false,
+            "type": IntPrimitiveType {
+              "location": TokenLocation {
+                "column": 27,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "int",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles 'error' on the name of a field 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 0,
+              "filename": "?",
+              "line": 0,
+            },
+            "name": "error",
+            "secret": false,
+            "type": IntPrimitiveType {
+              "location": TokenLocation {
+                "column": 28,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "int",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles 'false' on the name of a field 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 0,
+              "filename": "?",
+              "line": 0,
+            },
+            "name": "false",
+            "secret": false,
+            "type": IntPrimitiveType {
+              "location": TokenLocation {
+                "column": 28,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "int",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles 'float' on the name of a field 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 0,
+              "filename": "?",
+              "line": 0,
+            },
+            "name": "float",
+            "secret": false,
+            "type": IntPrimitiveType {
+              "location": TokenLocation {
+                "column": 28,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "int",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles 'function' on the name of a field 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 0,
+              "filename": "?",
+              "line": 0,
+            },
+            "name": "function",
+            "secret": false,
+            "type": IntPrimitiveType {
+              "location": TokenLocation {
+                "column": 31,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "int",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles 'get' on the name of a field 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 0,
+              "filename": "?",
+              "line": 0,
+            },
+            "name": "get",
+            "secret": false,
+            "type": IntPrimitiveType {
+              "location": TokenLocation {
+                "column": 26,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "int",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles 'hex' on the name of a field 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 0,
+              "filename": "?",
+              "line": 0,
+            },
+            "name": "hex",
+            "secret": false,
+            "type": IntPrimitiveType {
+              "location": TokenLocation {
+                "column": 26,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "int",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles 'import' on the name of a field 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 0,
+              "filename": "?",
+              "line": 0,
+            },
+            "name": "import",
+            "secret": false,
+            "type": IntPrimitiveType {
+              "location": TokenLocation {
+                "column": 29,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "int",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles 'int' on the name of a field 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 0,
+              "filename": "?",
+              "line": 0,
+            },
+            "name": "int",
+            "secret": false,
+            "type": IntPrimitiveType {
+              "location": TokenLocation {
+                "column": 26,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "int",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles 'latlng' on the name of a field 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 0,
+              "filename": "?",
+              "line": 0,
+            },
+            "name": "latlng",
+            "secret": false,
+            "type": IntPrimitiveType {
+              "location": TokenLocation {
+                "column": 29,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "int",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles 'money' on the name of a field 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 0,
+              "filename": "?",
+              "line": 0,
+            },
+            "name": "money",
+            "secret": false,
+            "type": IntPrimitiveType {
+              "location": TokenLocation {
+                "column": 28,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "int",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles 'phone' on the name of a field 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 0,
+              "filename": "?",
+              "line": 0,
+            },
+            "name": "phone",
+            "secret": false,
+            "type": IntPrimitiveType {
+              "location": TokenLocation {
+                "column": 28,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "int",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles 'safehtml' on the name of a field 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 0,
+              "filename": "?",
+              "line": 0,
+            },
+            "name": "safehtml",
+            "secret": false,
+            "type": IntPrimitiveType {
+              "location": TokenLocation {
+                "column": 31,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "int",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles 'string' on the name of a field 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 0,
+              "filename": "?",
+              "line": 0,
+            },
+            "name": "string",
+            "secret": false,
+            "type": IntPrimitiveType {
+              "location": TokenLocation {
+                "column": 29,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "int",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles 'true' on the name of a field 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 0,
+              "filename": "?",
+              "line": 0,
+            },
+            "name": "true",
+            "secret": false,
+            "type": IntPrimitiveType {
+              "location": TokenLocation {
+                "column": 27,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "int",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles 'type' on the name of a field 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 0,
+              "filename": "?",
+              "line": 0,
+            },
+            "name": "type",
+            "secret": false,
+            "type": IntPrimitiveType {
+              "location": TokenLocation {
+                "column": 27,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "int",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles 'uint' on the name of a field 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 0,
+              "filename": "?",
+              "line": 0,
+            },
+            "name": "uint",
+            "secret": false,
+            "type": IntPrimitiveType {
+              "location": TokenLocation {
+                "column": 27,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "int",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles 'url' on the name of a field 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 0,
+              "filename": "?",
+              "line": 0,
+            },
+            "name": "url",
+            "secret": false,
+            "type": IntPrimitiveType {
+              "location": TokenLocation {
+                "column": 26,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "int",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles 'uuid' on the name of a field 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 0,
+              "filename": "?",
+              "line": 0,
+            },
+            "name": "uuid",
+            "secret": false,
+            "type": IntPrimitiveType {
+              "location": TokenLocation {
+                "column": 27,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "int",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles 'void' on the name of a field 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 0,
+              "filename": "?",
+              "line": 0,
+            },
+            "name": "void",
+            "secret": false,
+            "type": IntPrimitiveType {
+              "location": TokenLocation {
+                "column": 27,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "int",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles 'xml' on the name of a field 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 0,
+              "filename": "?",
+              "line": 0,
+            },
+            "name": "xml",
+            "secret": false,
+            "type": IntPrimitiveType {
+              "location": TokenLocation {
+                "column": 26,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "int",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles arrays and optionals 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 13,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 17,
+              "filename": "-",
+              "line": 3,
+            },
+            "name": "aa",
+            "secret": false,
+            "type": ArrayType {
+              "base": StringPrimitiveType {
+                "location": TokenLocation {
+                  "column": 21,
+                  "filename": "-",
+                  "line": 3,
+                },
+                "name": "string",
+              },
+              "location": TokenLocation {
+                "column": 27,
+                "filename": "-",
+                "line": 3,
+              },
+            },
+          },
+          Field {
+            "location": TokenLocation {
+              "column": 17,
+              "filename": "-",
+              "line": 4,
+            },
+            "name": "bbb",
+            "secret": false,
+            "type": OptionalType {
+              "base": OptionalType {
+                "base": ArrayType {
+                  "base": OptionalType {
+                    "base": IntPrimitiveType {
+                      "location": TokenLocation {
+                        "column": 22,
+                        "filename": "-",
+                        "line": 4,
+                      },
+                      "name": "int",
+                    },
+                    "location": TokenLocation {
+                      "column": 25,
+                      "filename": "-",
+                      "line": 4,
+                    },
+                  },
+                  "location": TokenLocation {
+                    "column": 26,
+                    "filename": "-",
+                    "line": 4,
+                  },
+                },
+                "location": TokenLocation {
+                  "column": 28,
+                  "filename": "-",
+                  "line": 4,
+                },
+              },
+              "location": TokenLocation {
+                "column": 29,
+                "filename": "-",
+                "line": 4,
+              },
+            },
+          },
+          Field {
+            "location": TokenLocation {
+              "column": 17,
+              "filename": "-",
+              "line": 5,
+            },
+            "name": "cccc",
+            "secret": false,
+            "type": ArrayType {
+              "base": ArrayType {
+                "base": ArrayType {
+                  "base": IntPrimitiveType {
+                    "location": TokenLocation {
+                      "column": 23,
+                      "filename": "-",
+                      "line": 5,
+                    },
+                    "name": "int",
+                  },
+                  "location": TokenLocation {
+                    "column": 26,
+                    "filename": "-",
+                    "line": 5,
+                  },
+                },
+                "location": TokenLocation {
+                  "column": 28,
+                  "filename": "-",
+                  "line": 5,
+                },
+              },
+              "location": TokenLocation {
+                "column": 30,
+                "filename": "-",
+                "line": 5,
+              },
+            },
+          },
+          Field {
+            "location": TokenLocation {
+              "column": 17,
+              "filename": "-",
+              "line": 6,
+            },
+            "name": "ddddd",
+            "secret": false,
+            "type": ArrayType {
+              "base": ArrayType {
+                "base": OptionalType {
+                  "base": OptionalType {
+                    "base": OptionalType {
+                      "base": ArrayType {
+                        "base": OptionalType {
+                          "base": OptionalType {
+                            "base": ArrayType {
+                              "base": ArrayType {
+                                "base": ArrayType {
+                                  "base": UIntPrimitiveType {
+                                    "location": TokenLocation {
+                                      "column": 24,
+                                      "filename": "-",
+                                      "line": 6,
+                                    },
+                                    "name": "uint",
+                                  },
+                                  "location": TokenLocation {
+                                    "column": 28,
+                                    "filename": "-",
+                                    "line": 6,
+                                  },
+                                },
+                                "location": TokenLocation {
+                                  "column": 30,
+                                  "filename": "-",
+                                  "line": 6,
+                                },
+                              },
+                              "location": TokenLocation {
+                                "column": 32,
+                                "filename": "-",
+                                "line": 6,
+                              },
+                            },
+                            "location": TokenLocation {
+                              "column": 34,
+                              "filename": "-",
+                              "line": 6,
+                            },
+                          },
+                          "location": TokenLocation {
+                            "column": 35,
+                            "filename": "-",
+                            "line": 6,
+                          },
+                        },
+                        "location": TokenLocation {
+                          "column": 36,
+                          "filename": "-",
+                          "line": 6,
+                        },
+                      },
+                      "location": TokenLocation {
+                        "column": 38,
+                        "filename": "-",
+                        "line": 6,
+                      },
+                    },
+                    "location": TokenLocation {
+                      "column": 39,
+                      "filename": "-",
+                      "line": 6,
+                    },
+                  },
+                  "location": TokenLocation {
+                    "column": 40,
+                    "filename": "-",
+                    "line": 6,
+                  },
+                },
+                "location": TokenLocation {
+                  "column": 41,
+                  "filename": "-",
+                  "line": 6,
+                },
+              },
+              "location": TokenLocation {
+                "column": 43,
+                "filename": "-",
+                "line": 6,
+              },
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 22,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles combinations of all part 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [
+    "Foo",
+    "Bar",
+  ],
+  "operations": Array [
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "baz",
+      "returnType": TypeReference {
+        "location": TokenLocation {
+          "column": 24,
+          "filename": "-",
+          "line": 12,
+        },
+        "name": "Baz",
+      },
+    },
+  ],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "api.cubos.io/sdkgenspec",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 13,
+        "filename": "-",
+        "line": 7,
+      },
+      "name": "Baz",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 17,
+              "filename": "-",
+              "line": 8,
+            },
+            "name": "a",
+            "secret": false,
+            "type": OptionalType {
+              "base": StringPrimitiveType {
+                "location": TokenLocation {
+                  "column": 20,
+                  "filename": "-",
+                  "line": 8,
+                },
+                "name": "string",
+              },
+              "location": TokenLocation {
+                "column": 26,
+                "filename": "-",
+                "line": 8,
+              },
+            },
+          },
+          Field {
+            "location": TokenLocation {
+              "column": 17,
+              "filename": "-",
+              "line": 9,
+            },
+            "name": "b",
+            "secret": false,
+            "type": IntPrimitiveType {
+              "location": TokenLocation {
+                "column": 20,
+                "filename": "-",
+                "line": 9,
+              },
+              "name": "int",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 22,
+          "filename": "-",
+          "line": 7,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles errors 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [
+    "Foo",
+    "Bar",
+    "FooBar",
+  ],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [],
+}
+`;
+
+exports[`Parser handles options on the top 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "api.cubos.io/sdkgenspec",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [],
+}
+`;
+
+exports[`Parser handles primitive type 'base64' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 21,
+              "filename": "-",
+              "line": 3,
+            },
+            "name": "foo",
+            "secret": false,
+            "type": Base64PrimitiveType {
+              "location": TokenLocation {
+                "column": 26,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "base64",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles primitive type 'bool' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 21,
+              "filename": "-",
+              "line": 3,
+            },
+            "name": "foo",
+            "secret": false,
+            "type": BoolPrimitiveType {
+              "location": TokenLocation {
+                "column": 26,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "bool",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles primitive type 'bytes' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 21,
+              "filename": "-",
+              "line": 3,
+            },
+            "name": "foo",
+            "secret": false,
+            "type": BytesPrimitiveType {
+              "location": TokenLocation {
+                "column": 26,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "bytes",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles primitive type 'cep' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 21,
+              "filename": "-",
+              "line": 3,
+            },
+            "name": "foo",
+            "secret": false,
+            "type": CepPrimitiveType {
+              "location": TokenLocation {
+                "column": 26,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "cep",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles primitive type 'cnpj' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 21,
+              "filename": "-",
+              "line": 3,
+            },
+            "name": "foo",
+            "secret": false,
+            "type": CnpjPrimitiveType {
+              "location": TokenLocation {
+                "column": 26,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "cnpj",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles primitive type 'cpf' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 21,
+              "filename": "-",
+              "line": 3,
+            },
+            "name": "foo",
+            "secret": false,
+            "type": CpfPrimitiveType {
+              "location": TokenLocation {
+                "column": 26,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "cpf",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles primitive type 'date' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 21,
+              "filename": "-",
+              "line": 3,
+            },
+            "name": "foo",
+            "secret": false,
+            "type": DatePrimitiveType {
+              "location": TokenLocation {
+                "column": 26,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "date",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles primitive type 'datetime' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 21,
+              "filename": "-",
+              "line": 3,
+            },
+            "name": "foo",
+            "secret": false,
+            "type": DateTimePrimitiveType {
+              "location": TokenLocation {
+                "column": 26,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "datetime",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles primitive type 'email' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 21,
+              "filename": "-",
+              "line": 3,
+            },
+            "name": "foo",
+            "secret": false,
+            "type": EmailPrimitiveType {
+              "location": TokenLocation {
+                "column": 26,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "email",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles primitive type 'float' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 21,
+              "filename": "-",
+              "line": 3,
+            },
+            "name": "foo",
+            "secret": false,
+            "type": FloatPrimitiveType {
+              "location": TokenLocation {
+                "column": 26,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "float",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles primitive type 'hex' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 21,
+              "filename": "-",
+              "line": 3,
+            },
+            "name": "foo",
+            "secret": false,
+            "type": HexPrimitiveType {
+              "location": TokenLocation {
+                "column": 26,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "hex",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles primitive type 'int' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 21,
+              "filename": "-",
+              "line": 3,
+            },
+            "name": "foo",
+            "secret": false,
+            "type": IntPrimitiveType {
+              "location": TokenLocation {
+                "column": 26,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "int",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles primitive type 'latlng' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 21,
+              "filename": "-",
+              "line": 3,
+            },
+            "name": "foo",
+            "secret": false,
+            "type": LatLngPrimitiveType {
+              "location": TokenLocation {
+                "column": 26,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "latlng",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles primitive type 'money' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 21,
+              "filename": "-",
+              "line": 3,
+            },
+            "name": "foo",
+            "secret": false,
+            "type": MoneyPrimitiveType {
+              "location": TokenLocation {
+                "column": 26,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "money",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles primitive type 'phone' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 21,
+              "filename": "-",
+              "line": 3,
+            },
+            "name": "foo",
+            "secret": false,
+            "type": PhonePrimitiveType {
+              "location": TokenLocation {
+                "column": 26,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "phone",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles primitive type 'safehtml' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 21,
+              "filename": "-",
+              "line": 3,
+            },
+            "name": "foo",
+            "secret": false,
+            "type": SafeHtmlPrimitiveType {
+              "location": TokenLocation {
+                "column": 26,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "safehtml",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles primitive type 'string' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 21,
+              "filename": "-",
+              "line": 3,
+            },
+            "name": "foo",
+            "secret": false,
+            "type": StringPrimitiveType {
+              "location": TokenLocation {
+                "column": 26,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "string",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles primitive type 'uint' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 21,
+              "filename": "-",
+              "line": 3,
+            },
+            "name": "foo",
+            "secret": false,
+            "type": UIntPrimitiveType {
+              "location": TokenLocation {
+                "column": 26,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "uint",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles primitive type 'url' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 21,
+              "filename": "-",
+              "line": 3,
+            },
+            "name": "foo",
+            "secret": false,
+            "type": UrlPrimitiveType {
+              "location": TokenLocation {
+                "column": 26,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "url",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles primitive type 'uuid' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 21,
+              "filename": "-",
+              "line": 3,
+            },
+            "name": "foo",
+            "secret": false,
+            "type": UuidPrimitiveType {
+              "location": TokenLocation {
+                "column": 26,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "uuid",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles primitive type 'void' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 21,
+              "filename": "-",
+              "line": 3,
+            },
+            "name": "foo",
+            "secret": false,
+            "type": VoidPrimitiveType {
+              "location": TokenLocation {
+                "column": 26,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "void",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles primitive type 'xml' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 17,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 21,
+              "filename": "-",
+              "line": 3,
+            },
+            "name": "foo",
+            "secret": false,
+            "type": XmlPrimitiveType {
+              "location": TokenLocation {
+                "column": 26,
+                "filename": "-",
+                "line": 3,
+              },
+              "name": "xml",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 26,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles simple get operations for primitive type 'base64' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "foo",
+      "returnType": Base64PrimitiveType {
+        "location": TokenLocation {
+          "column": 28,
+          "filename": "-",
+          "line": 2,
+        },
+        "name": "base64",
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "bar",
+      "returnType": OptionalType {
+        "base": Base64PrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 3,
+          },
+          "name": "base64",
+        },
+        "location": TokenLocation {
+          "column": 34,
+          "filename": "-",
+          "line": 3,
+        },
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "baz",
+      "returnType": ArrayType {
+        "base": Base64PrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 4,
+          },
+          "name": "base64",
+        },
+        "location": TokenLocation {
+          "column": 34,
+          "filename": "-",
+          "line": 4,
+        },
+      },
+    },
+  ],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [],
+}
+`;
+
+exports[`Parser handles simple get operations for primitive type 'bool' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "foo",
+      "returnType": BoolPrimitiveType {
+        "location": TokenLocation {
+          "column": 28,
+          "filename": "-",
+          "line": 2,
+        },
+        "name": "bool",
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "bar",
+      "returnType": OptionalType {
+        "base": BoolPrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 3,
+          },
+          "name": "bool",
+        },
+        "location": TokenLocation {
+          "column": 32,
+          "filename": "-",
+          "line": 3,
+        },
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "baz",
+      "returnType": ArrayType {
+        "base": BoolPrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 4,
+          },
+          "name": "bool",
+        },
+        "location": TokenLocation {
+          "column": 32,
+          "filename": "-",
+          "line": 4,
+        },
+      },
+    },
+  ],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [],
+}
+`;
+
+exports[`Parser handles simple get operations for primitive type 'bytes' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "foo",
+      "returnType": BytesPrimitiveType {
+        "location": TokenLocation {
+          "column": 28,
+          "filename": "-",
+          "line": 2,
+        },
+        "name": "bytes",
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "bar",
+      "returnType": OptionalType {
+        "base": BytesPrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 3,
+          },
+          "name": "bytes",
+        },
+        "location": TokenLocation {
+          "column": 33,
+          "filename": "-",
+          "line": 3,
+        },
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "baz",
+      "returnType": ArrayType {
+        "base": BytesPrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 4,
+          },
+          "name": "bytes",
+        },
+        "location": TokenLocation {
+          "column": 33,
+          "filename": "-",
+          "line": 4,
+        },
+      },
+    },
+  ],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [],
+}
+`;
+
+exports[`Parser handles simple get operations for primitive type 'cep' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "foo",
+      "returnType": CepPrimitiveType {
+        "location": TokenLocation {
+          "column": 28,
+          "filename": "-",
+          "line": 2,
+        },
+        "name": "cep",
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "bar",
+      "returnType": OptionalType {
+        "base": CepPrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 3,
+          },
+          "name": "cep",
+        },
+        "location": TokenLocation {
+          "column": 31,
+          "filename": "-",
+          "line": 3,
+        },
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "baz",
+      "returnType": ArrayType {
+        "base": CepPrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 4,
+          },
+          "name": "cep",
+        },
+        "location": TokenLocation {
+          "column": 31,
+          "filename": "-",
+          "line": 4,
+        },
+      },
+    },
+  ],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [],
+}
+`;
+
+exports[`Parser handles simple get operations for primitive type 'cnpj' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "foo",
+      "returnType": CnpjPrimitiveType {
+        "location": TokenLocation {
+          "column": 28,
+          "filename": "-",
+          "line": 2,
+        },
+        "name": "cnpj",
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "bar",
+      "returnType": OptionalType {
+        "base": CnpjPrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 3,
+          },
+          "name": "cnpj",
+        },
+        "location": TokenLocation {
+          "column": 32,
+          "filename": "-",
+          "line": 3,
+        },
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "baz",
+      "returnType": ArrayType {
+        "base": CnpjPrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 4,
+          },
+          "name": "cnpj",
+        },
+        "location": TokenLocation {
+          "column": 32,
+          "filename": "-",
+          "line": 4,
+        },
+      },
+    },
+  ],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [],
+}
+`;
+
+exports[`Parser handles simple get operations for primitive type 'cpf' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "foo",
+      "returnType": CpfPrimitiveType {
+        "location": TokenLocation {
+          "column": 28,
+          "filename": "-",
+          "line": 2,
+        },
+        "name": "cpf",
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "bar",
+      "returnType": OptionalType {
+        "base": CpfPrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 3,
+          },
+          "name": "cpf",
+        },
+        "location": TokenLocation {
+          "column": 31,
+          "filename": "-",
+          "line": 3,
+        },
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "baz",
+      "returnType": ArrayType {
+        "base": CpfPrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 4,
+          },
+          "name": "cpf",
+        },
+        "location": TokenLocation {
+          "column": 31,
+          "filename": "-",
+          "line": 4,
+        },
+      },
+    },
+  ],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [],
+}
+`;
+
+exports[`Parser handles simple get operations for primitive type 'date' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "foo",
+      "returnType": DatePrimitiveType {
+        "location": TokenLocation {
+          "column": 28,
+          "filename": "-",
+          "line": 2,
+        },
+        "name": "date",
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "bar",
+      "returnType": OptionalType {
+        "base": DatePrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 3,
+          },
+          "name": "date",
+        },
+        "location": TokenLocation {
+          "column": 32,
+          "filename": "-",
+          "line": 3,
+        },
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "baz",
+      "returnType": ArrayType {
+        "base": DatePrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 4,
+          },
+          "name": "date",
+        },
+        "location": TokenLocation {
+          "column": 32,
+          "filename": "-",
+          "line": 4,
+        },
+      },
+    },
+  ],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [],
+}
+`;
+
+exports[`Parser handles simple get operations for primitive type 'datetime' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "foo",
+      "returnType": DateTimePrimitiveType {
+        "location": TokenLocation {
+          "column": 28,
+          "filename": "-",
+          "line": 2,
+        },
+        "name": "datetime",
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "bar",
+      "returnType": OptionalType {
+        "base": DateTimePrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 3,
+          },
+          "name": "datetime",
+        },
+        "location": TokenLocation {
+          "column": 36,
+          "filename": "-",
+          "line": 3,
+        },
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "baz",
+      "returnType": ArrayType {
+        "base": DateTimePrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 4,
+          },
+          "name": "datetime",
+        },
+        "location": TokenLocation {
+          "column": 36,
+          "filename": "-",
+          "line": 4,
+        },
+      },
+    },
+  ],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [],
+}
+`;
+
+exports[`Parser handles simple get operations for primitive type 'email' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "foo",
+      "returnType": EmailPrimitiveType {
+        "location": TokenLocation {
+          "column": 28,
+          "filename": "-",
+          "line": 2,
+        },
+        "name": "email",
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "bar",
+      "returnType": OptionalType {
+        "base": EmailPrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 3,
+          },
+          "name": "email",
+        },
+        "location": TokenLocation {
+          "column": 33,
+          "filename": "-",
+          "line": 3,
+        },
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "baz",
+      "returnType": ArrayType {
+        "base": EmailPrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 4,
+          },
+          "name": "email",
+        },
+        "location": TokenLocation {
+          "column": 33,
+          "filename": "-",
+          "line": 4,
+        },
+      },
+    },
+  ],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [],
+}
+`;
+
+exports[`Parser handles simple get operations for primitive type 'float' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "foo",
+      "returnType": FloatPrimitiveType {
+        "location": TokenLocation {
+          "column": 28,
+          "filename": "-",
+          "line": 2,
+        },
+        "name": "float",
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "bar",
+      "returnType": OptionalType {
+        "base": FloatPrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 3,
+          },
+          "name": "float",
+        },
+        "location": TokenLocation {
+          "column": 33,
+          "filename": "-",
+          "line": 3,
+        },
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "baz",
+      "returnType": ArrayType {
+        "base": FloatPrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 4,
+          },
+          "name": "float",
+        },
+        "location": TokenLocation {
+          "column": 33,
+          "filename": "-",
+          "line": 4,
+        },
+      },
+    },
+  ],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [],
+}
+`;
+
+exports[`Parser handles simple get operations for primitive type 'hex' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "foo",
+      "returnType": HexPrimitiveType {
+        "location": TokenLocation {
+          "column": 28,
+          "filename": "-",
+          "line": 2,
+        },
+        "name": "hex",
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "bar",
+      "returnType": OptionalType {
+        "base": HexPrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 3,
+          },
+          "name": "hex",
+        },
+        "location": TokenLocation {
+          "column": 31,
+          "filename": "-",
+          "line": 3,
+        },
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "baz",
+      "returnType": ArrayType {
+        "base": HexPrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 4,
+          },
+          "name": "hex",
+        },
+        "location": TokenLocation {
+          "column": 31,
+          "filename": "-",
+          "line": 4,
+        },
+      },
+    },
+  ],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [],
+}
+`;
+
+exports[`Parser handles simple get operations for primitive type 'int' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "foo",
+      "returnType": IntPrimitiveType {
+        "location": TokenLocation {
+          "column": 28,
+          "filename": "-",
+          "line": 2,
+        },
+        "name": "int",
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "bar",
+      "returnType": OptionalType {
+        "base": IntPrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 3,
+          },
+          "name": "int",
+        },
+        "location": TokenLocation {
+          "column": 31,
+          "filename": "-",
+          "line": 3,
+        },
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "baz",
+      "returnType": ArrayType {
+        "base": IntPrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 4,
+          },
+          "name": "int",
+        },
+        "location": TokenLocation {
+          "column": 31,
+          "filename": "-",
+          "line": 4,
+        },
+      },
+    },
+  ],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [],
+}
+`;
+
+exports[`Parser handles simple get operations for primitive type 'latlng' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "foo",
+      "returnType": LatLngPrimitiveType {
+        "location": TokenLocation {
+          "column": 28,
+          "filename": "-",
+          "line": 2,
+        },
+        "name": "latlng",
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "bar",
+      "returnType": OptionalType {
+        "base": LatLngPrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 3,
+          },
+          "name": "latlng",
+        },
+        "location": TokenLocation {
+          "column": 34,
+          "filename": "-",
+          "line": 3,
+        },
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "baz",
+      "returnType": ArrayType {
+        "base": LatLngPrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 4,
+          },
+          "name": "latlng",
+        },
+        "location": TokenLocation {
+          "column": 34,
+          "filename": "-",
+          "line": 4,
+        },
+      },
+    },
+  ],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [],
+}
+`;
+
+exports[`Parser handles simple get operations for primitive type 'money' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "foo",
+      "returnType": MoneyPrimitiveType {
+        "location": TokenLocation {
+          "column": 28,
+          "filename": "-",
+          "line": 2,
+        },
+        "name": "money",
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "bar",
+      "returnType": OptionalType {
+        "base": MoneyPrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 3,
+          },
+          "name": "money",
+        },
+        "location": TokenLocation {
+          "column": 33,
+          "filename": "-",
+          "line": 3,
+        },
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "baz",
+      "returnType": ArrayType {
+        "base": MoneyPrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 4,
+          },
+          "name": "money",
+        },
+        "location": TokenLocation {
+          "column": 33,
+          "filename": "-",
+          "line": 4,
+        },
+      },
+    },
+  ],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [],
+}
+`;
+
+exports[`Parser handles simple get operations for primitive type 'phone' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "foo",
+      "returnType": PhonePrimitiveType {
+        "location": TokenLocation {
+          "column": 28,
+          "filename": "-",
+          "line": 2,
+        },
+        "name": "phone",
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "bar",
+      "returnType": OptionalType {
+        "base": PhonePrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 3,
+          },
+          "name": "phone",
+        },
+        "location": TokenLocation {
+          "column": 33,
+          "filename": "-",
+          "line": 3,
+        },
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "baz",
+      "returnType": ArrayType {
+        "base": PhonePrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 4,
+          },
+          "name": "phone",
+        },
+        "location": TokenLocation {
+          "column": 33,
+          "filename": "-",
+          "line": 4,
+        },
+      },
+    },
+  ],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [],
+}
+`;
+
+exports[`Parser handles simple get operations for primitive type 'safehtml' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "foo",
+      "returnType": SafeHtmlPrimitiveType {
+        "location": TokenLocation {
+          "column": 28,
+          "filename": "-",
+          "line": 2,
+        },
+        "name": "safehtml",
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "bar",
+      "returnType": OptionalType {
+        "base": SafeHtmlPrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 3,
+          },
+          "name": "safehtml",
+        },
+        "location": TokenLocation {
+          "column": 36,
+          "filename": "-",
+          "line": 3,
+        },
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "baz",
+      "returnType": ArrayType {
+        "base": SafeHtmlPrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 4,
+          },
+          "name": "safehtml",
+        },
+        "location": TokenLocation {
+          "column": 36,
+          "filename": "-",
+          "line": 4,
+        },
+      },
+    },
+  ],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [],
+}
+`;
+
+exports[`Parser handles simple get operations for primitive type 'string' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "foo",
+      "returnType": StringPrimitiveType {
+        "location": TokenLocation {
+          "column": 28,
+          "filename": "-",
+          "line": 2,
+        },
+        "name": "string",
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "bar",
+      "returnType": OptionalType {
+        "base": StringPrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 3,
+          },
+          "name": "string",
+        },
+        "location": TokenLocation {
+          "column": 34,
+          "filename": "-",
+          "line": 3,
+        },
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "baz",
+      "returnType": ArrayType {
+        "base": StringPrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 4,
+          },
+          "name": "string",
+        },
+        "location": TokenLocation {
+          "column": 34,
+          "filename": "-",
+          "line": 4,
+        },
+      },
+    },
+  ],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [],
+}
+`;
+
+exports[`Parser handles simple get operations for primitive type 'uint' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "foo",
+      "returnType": UIntPrimitiveType {
+        "location": TokenLocation {
+          "column": 28,
+          "filename": "-",
+          "line": 2,
+        },
+        "name": "uint",
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "bar",
+      "returnType": OptionalType {
+        "base": UIntPrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 3,
+          },
+          "name": "uint",
+        },
+        "location": TokenLocation {
+          "column": 32,
+          "filename": "-",
+          "line": 3,
+        },
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "baz",
+      "returnType": ArrayType {
+        "base": UIntPrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 4,
+          },
+          "name": "uint",
+        },
+        "location": TokenLocation {
+          "column": 32,
+          "filename": "-",
+          "line": 4,
+        },
+      },
+    },
+  ],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [],
+}
+`;
+
+exports[`Parser handles simple get operations for primitive type 'url' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "foo",
+      "returnType": UrlPrimitiveType {
+        "location": TokenLocation {
+          "column": 28,
+          "filename": "-",
+          "line": 2,
+        },
+        "name": "url",
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "bar",
+      "returnType": OptionalType {
+        "base": UrlPrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 3,
+          },
+          "name": "url",
+        },
+        "location": TokenLocation {
+          "column": 31,
+          "filename": "-",
+          "line": 3,
+        },
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "baz",
+      "returnType": ArrayType {
+        "base": UrlPrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 4,
+          },
+          "name": "url",
+        },
+        "location": TokenLocation {
+          "column": 31,
+          "filename": "-",
+          "line": 4,
+        },
+      },
+    },
+  ],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [],
+}
+`;
+
+exports[`Parser handles simple get operations for primitive type 'uuid' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "foo",
+      "returnType": UuidPrimitiveType {
+        "location": TokenLocation {
+          "column": 28,
+          "filename": "-",
+          "line": 2,
+        },
+        "name": "uuid",
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "bar",
+      "returnType": OptionalType {
+        "base": UuidPrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 3,
+          },
+          "name": "uuid",
+        },
+        "location": TokenLocation {
+          "column": 32,
+          "filename": "-",
+          "line": 3,
+        },
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "baz",
+      "returnType": ArrayType {
+        "base": UuidPrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 4,
+          },
+          "name": "uuid",
+        },
+        "location": TokenLocation {
+          "column": 32,
+          "filename": "-",
+          "line": 4,
+        },
+      },
+    },
+  ],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [],
+}
+`;
+
+exports[`Parser handles simple get operations for primitive type 'void' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "foo",
+      "returnType": VoidPrimitiveType {
+        "location": TokenLocation {
+          "column": 28,
+          "filename": "-",
+          "line": 2,
+        },
+        "name": "void",
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "bar",
+      "returnType": OptionalType {
+        "base": VoidPrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 3,
+          },
+          "name": "void",
+        },
+        "location": TokenLocation {
+          "column": 32,
+          "filename": "-",
+          "line": 3,
+        },
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "baz",
+      "returnType": ArrayType {
+        "base": VoidPrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 4,
+          },
+          "name": "void",
+        },
+        "location": TokenLocation {
+          "column": 32,
+          "filename": "-",
+          "line": 4,
+        },
+      },
+    },
+  ],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [],
+}
+`;
+
+exports[`Parser handles simple get operations for primitive type 'xml' 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "foo",
+      "returnType": XmlPrimitiveType {
+        "location": TokenLocation {
+          "column": 28,
+          "filename": "-",
+          "line": 2,
+        },
+        "name": "xml",
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "bar",
+      "returnType": OptionalType {
+        "base": XmlPrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 3,
+          },
+          "name": "xml",
+        },
+        "location": TokenLocation {
+          "column": 31,
+          "filename": "-",
+          "line": 3,
+        },
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "location": TokenLocation {
+        "column": 0,
+        "filename": "?",
+        "line": 0,
+      },
+      "name": "baz",
+      "returnType": ArrayType {
+        "base": XmlPrimitiveType {
+          "location": TokenLocation {
+            "column": 28,
+            "filename": "-",
+            "line": 4,
+          },
+          "name": "xml",
+        },
+        "location": TokenLocation {
+          "column": 31,
+          "filename": "-",
+          "line": 4,
+        },
+      },
+    },
+  ],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [],
+}
+`;
+
+exports[`Parser handles spreads in structs 1`] = `
+AstRoot {
+  "enumTypes": Array [],
+  "errors": Array [],
+  "operations": Array [],
+  "options": Options {
+    "location": TokenLocation {
+      "column": 0,
+      "filename": "?",
+      "line": 0,
+    },
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "location": TokenLocation {
+        "column": 13,
+        "filename": "-",
+        "line": 2,
+      },
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "location": TokenLocation {
+              "column": 17,
+              "filename": "-",
+              "line": 5,
+            },
+            "name": "aa",
+            "secret": false,
+            "type": StringPrimitiveType {
+              "location": TokenLocation {
+                "column": 21,
+                "filename": "-",
+                "line": 5,
+              },
+              "name": "string",
+            },
+          },
+        ],
+        "location": TokenLocation {
+          "column": 22,
+          "filename": "-",
+          "line": 2,
+        },
+        "spreads": Array [
+          TypeReference {
+            "location": TokenLocation {
+              "column": 20,
+              "filename": "-",
+              "line": 3,
+            },
+            "name": "Bar",
+          },
+          TypeReference {
+            "location": TokenLocation {
+              "column": 20,
+              "filename": "-",
+              "line": 4,
+            },
+            "name": "Baz",
+          },
+        ],
+      },
+    },
+  ],
+}
+`;
