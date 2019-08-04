@@ -1,5 +1,82 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`Parser handles 'any' on the name of a field 1`] = `
+AstRoot {
+  "enumTypes": Array [
+    EnumType {
+      "name": "ErrorType",
+      "values": Array [
+        "Fatal",
+        "Connection",
+      ],
+    },
+  ],
+  "errors": Array [
+    "Fatal",
+    "Connection",
+  ],
+  "operations": Array [
+    FunctionOperation {
+      "args": Array [],
+      "name": "ping",
+      "returnType": StringPrimitiveType {
+        "name": "string",
+      },
+    },
+  ],
+  "options": Options {
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [
+    StructType {
+      "fields": Array [
+        Field {
+          "name": "any",
+          "secret": false,
+          "type": IntPrimitiveType {
+            "name": "int",
+          },
+        },
+      ],
+      "name": "Foo",
+      "spreads": Array [],
+    },
+  ],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "name": "any",
+            "secret": false,
+            "type": IntPrimitiveType {
+              "name": "int",
+            },
+          },
+        ],
+        "name": "Foo",
+        "spreads": Array [],
+      },
+    },
+    TypeDefinition {
+      "name": "ErrorType",
+      "type": EnumType {
+        "name": "ErrorType",
+        "values": Array [
+          "Fatal",
+          "Connection",
+        ],
+      },
+    },
+  ],
+}
+`;
+
 exports[`Parser handles 'base64' on the name of a field 1`] = `
 AstRoot {
   "enumTypes": Array [
@@ -2738,6 +2815,83 @@ AstRoot {
 }
 `;
 
+exports[`Parser handles primitive type 'any' 1`] = `
+AstRoot {
+  "enumTypes": Array [
+    EnumType {
+      "name": "ErrorType",
+      "values": Array [
+        "Fatal",
+        "Connection",
+      ],
+    },
+  ],
+  "errors": Array [
+    "Fatal",
+    "Connection",
+  ],
+  "operations": Array [
+    FunctionOperation {
+      "args": Array [],
+      "name": "ping",
+      "returnType": StringPrimitiveType {
+        "name": "string",
+      },
+    },
+  ],
+  "options": Options {
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [
+    StructType {
+      "fields": Array [
+        Field {
+          "name": "foo",
+          "secret": false,
+          "type": AnyPrimitiveType {
+            "name": "any",
+          },
+        },
+      ],
+      "name": "Foo",
+      "spreads": Array [],
+    },
+  ],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "name": "foo",
+            "secret": false,
+            "type": AnyPrimitiveType {
+              "name": "any",
+            },
+          },
+        ],
+        "name": "Foo",
+        "spreads": Array [],
+      },
+    },
+    TypeDefinition {
+      "name": "ErrorType",
+      "type": EnumType {
+        "name": "ErrorType",
+        "values": Array [
+          "Fatal",
+          "Connection",
+        ],
+      },
+    },
+  ],
+}
+`;
+
 exports[`Parser handles primitive type 'base64' 1`] = `
 AstRoot {
   "enumTypes": Array [
@@ -4418,6 +4572,78 @@ AstRoot {
         "spreads": Array [],
       },
     },
+    TypeDefinition {
+      "name": "ErrorType",
+      "type": EnumType {
+        "name": "ErrorType",
+        "values": Array [
+          "Fatal",
+          "Connection",
+        ],
+      },
+    },
+  ],
+}
+`;
+
+exports[`Parser handles simple get operations for primitive type 'any' 1`] = `
+AstRoot {
+  "enumTypes": Array [
+    EnumType {
+      "name": "ErrorType",
+      "values": Array [
+        "Fatal",
+        "Connection",
+      ],
+    },
+  ],
+  "errors": Array [
+    "Fatal",
+    "Connection",
+  ],
+  "operations": Array [
+    GetOperation {
+      "args": Array [],
+      "name": "foo",
+      "returnType": AnyPrimitiveType {
+        "name": "any",
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "name": "bar",
+      "returnType": OptionalType {
+        "base": AnyPrimitiveType {
+          "name": "any",
+        },
+      },
+    },
+    GetOperation {
+      "args": Array [],
+      "name": "baz",
+      "returnType": ArrayType {
+        "base": AnyPrimitiveType {
+          "name": "any",
+        },
+      },
+    },
+    FunctionOperation {
+      "args": Array [],
+      "name": "ping",
+      "returnType": StringPrimitiveType {
+        "name": "string",
+      },
+    },
+  ],
+  "options": Options {
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [],
+  "typeDefinitions": Array [
     TypeDefinition {
       "name": "ErrorType",
       "type": EnumType {
