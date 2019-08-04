@@ -1,5 +1,4 @@
 src/
 spec/
-node_modules/
 coverage/
 package-lock.json
