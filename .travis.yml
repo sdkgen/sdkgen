@@ -4,6 +4,7 @@ node_js:
 - '10'
 - '12'
 deploy:
+  skip_cleanup: true
   provider: npm
   email: guilherme@cubos.io
   api_key:
