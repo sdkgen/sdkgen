@@ -236,12 +236,75 @@ export class SdkgenHttpServer extends SdkgenServer {
 
     // Old Sdkgen format
     private parseRequestV1(req: IncomingMessage, body: string): ContextRequest {
-        return null as any;
+        const parsed = decode({
+            Request: {
+                id: "string",
+                args: "any",
+                name: "string",
+                device: {
+                    id: "string?",
+                    type: "string",
+                    platform: "any",
+                    version: "string",
+                    language: "string",
+                    timezone: "string",
+                },
+            }
+        }, "root", "Request", JSON.parse(body));
+
+        return {
+            version: 1,
+            id: parsed.id,
+            args: parsed.args,
+            name: parsed.name,
+            extra: {},
+            deviceInfo: {
+                id: parsed.device.id || parsed.id,
+                language: parsed.device.language,
+                platform: parsed.device.platform,
+                timezone: parsed.device.timezone,
+                type: parsed.device.type,
+                version: parsed.device.version,
+            }
+        };
     }
 
     // Maxima sdkgen format
     private parseRequestV2(req: IncomingMessage, body: string): ContextRequest {
-        return null as any;
+        const parsed = decode({
+            Request: {
+                requestId: "string",
+                deviceId: "string",
+                sessionId: "string?",
+                partnerId: "string?",
+                args: "any",
+                name: "string",
+                info: {
+                    type: "string",
+                    browserUserAgent: "string?",
+                    language: "string",
+                },
+            }
+        }, "root", "Request", JSON.parse(body));
+
+        return {
+            version: 2,
+            id: parsed.requestId,
+            args: parsed.args,
+            name: parsed.name,
+            extra: {
+                sessionId: parsed.sessionId,
+                partnerId: parsed.partnerId,
+            },
+            deviceInfo: {
+                id: parsed.device.requestId || parsed.id,
+                language: parsed.info.language,
+                platform: {},
+                timezone: null,
+                type: parsed.info.type,
+                version: "",
+            }
+        };
     }
 
     private writeReply(res: ServerResponse, ctx: Context | null, reply: ContextReply) {
