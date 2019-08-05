@@ -187,23 +187,26 @@ export class SdkgenHttpServer extends SdkgenServer {
                     message: e.toString()
                 }
             });
+            return;
         }
 
         const functionDescription = this.apiConfig.functions[ctx.request.name];
-        if (!functionDescription) {
+        const functionImplementation = this.apiConfig.fn[ctx.request.name];
+        if (!functionDescription || !functionImplementation) {
             this.writeReply(res, ctx, {
                 error: {
                     type: "Fatal",
                     message: `Function does not exist: ${ctx.request.name}`
                 }
             });
+            return;
         }
 
         const args = decode(this.apiConfig.typeTable, `fn.${ctx.request.name}.args`, functionDescription.args, ctx.request.args);
 
         let reply: ContextReply;
         try {
-            const encodedRet = await this.apiConfig.fn[ctx.request.name](ctx, args);
+            const encodedRet = await functionImplementation(ctx, args);
             const ret = decode(this.apiConfig.typeTable, `fn.${ctx.request.name}.ret`, functionDescription.ret, encodedRet);
             reply = { result: ret };
         } catch (e) {
