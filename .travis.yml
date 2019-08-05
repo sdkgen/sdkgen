@@ -1,0 +1,14 @@
+language: node_js
+node_js:
+- '8'
+- '10'
+- '12'
+deploy:
+  skip_cleanup: true
+  provider: npm
+  email: guilherme@cubos.io
+  api_key:
+    secure: ko5El/BQWwPWjO4Vvv766T37w6bl5TRjUdR112knKAs8mIHi+CkOR2h2zQe8/aqZWQeETMi6TyCpei36AVWFqwU1lYhthHIZOLSdlP9ZFBNsCJxW4sN14d5gYUBH+1C5snJ0fPodfI9iSrvLq7771VH/mS6leAIpxLC7/wzzkBJHapCewf6gEvlpvaTnbdnb+4ntaNAVLcGTFySWp9W9UFWD7w+n3ECBPiaeTUhVwETMxzl8/ULyyFpWtjL43ilYB2Q9cBYBOUHIzGXH2Z43cixACK5xObfJQgTw3OmofSeZE3dPOSjywOJTHRI3uR6hvnRlGftGz2zqIom2FwaRnawVqwOthWZwpgBsQ4mKnc4Lq6QAlqoiWzKNEOaRnssUXxDaF1EOrbc4a/TzzxFceQw29qBRf5bfT265dxArysrToajl4M+is7XrB/cN1Nefb/SwykftFB8PaJinpXx1R3hiD6MYKUwmDoDP06t3mvcCwdBaFpX4cpW6NOsFpDourzonErxXS5DsTMCG098DybGXA+pf4WRpQAVVKQC0PettRmW6Ec8M58TLw7msaObdRraq1ojbssdLsPSPTBO+ZwugXfXdBfW6B0Vbvq6IC8w36NwVqW50yNCyOjSoltbnw5BYELqK4Vs73gk3ISNTUjZtiww8nemncuAr9GFVcis=
+  on:
+    tags: true
+    repo: sdkgen/cli

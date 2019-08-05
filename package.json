@@ -1,0 +1,55 @@
+{
+  "name": "@sdkgen/cli",
+  "version": "1.0.0",
+  "description": "",
+  "bin": {
+    "sdkgen": "dist/src/index.js"
+  },
+  "scripts": {
+    "test": "jest --passWithNoTests",
+    "prepare": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sdkgen/cli.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sdkgen/cli/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://github.com/sdkgen/cli#readme",
+  "devDependencies": {
+    "@types/jest": "^24.0.16",
+    "@types/node": "^12.6.9",
+    "jest": "^24.8.0",
+    "ts-jest": "^24.0.2",
+    "typescript": "^3.5.3"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "spec/.*\\.spec\\.ts$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "collectCoverage": true,
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
+  },
+  "dependencies": {
+    "@sdkgen/parser": "^1.0.4",
+    "@sdkgen/typescript-generator": "^1.0.3",
+    "@types/command-line-args": "^5.0.0",
+    "@types/command-line-usage": "^5.0.1",
+    "command-line-args": "^5.1.1",
+    "command-line-usage": "^6.0.2"
+  }
+}
