@@ -16,7 +16,7 @@ export abstract class BaseApiConfig {
     } = {}
 
     fn: {
-        [name: string]: (ctx: Context, args: any) => any
+        [name: string]: ((ctx: Context, args: any) => any) | undefined
     } = {}
 
     hooks: {
