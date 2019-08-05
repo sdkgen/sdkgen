@@ -1,7 +1,8 @@
-import commandLineArgs from "command-line-args";
-import commandLineUsage from "command-line-usage";
+#! /usr/bin/env node
 import { Parser } from "@sdkgen/parser";
 import { generateNodeServerSource } from "@sdkgen/typescript-generator";
+import commandLineArgs from "command-line-args";
+import commandLineUsage from "command-line-usage";
 import { writeFileSync } from "fs";
 
 const optionDefinitions = [
