@@ -1,10 +1,10 @@
 import { readFileSync } from "fs";
 import { dirname, resolve } from "path";
-import { ArrayType, AstRoot, Base64PrimitiveType, BoolPrimitiveType, BytesPrimitiveType, CepPrimitiveType, CnpjPrimitiveType, CpfPrimitiveType, DatePrimitiveType, DateTimePrimitiveType, EmailPrimitiveType, EnumType, Field, FloatPrimitiveType, FunctionOperation, GetOperation, HexPrimitiveType, IntPrimitiveType, LatLngPrimitiveType, MoneyPrimitiveType, Operation, OptionalType, Options, PhonePrimitiveType, SafeHtmlPrimitiveType, StringPrimitiveType, StructType, Type, TypeDefinition, TypeReference, UIntPrimitiveType, UrlPrimitiveType, UuidPrimitiveType, VoidPrimitiveType, XmlPrimitiveType, PrimitiveType, AnyPrimitiveType } from "./ast";
+import { ArrayType, AstRoot, EnumType, Field, FunctionOperation, GetOperation, Operation, OptionalType, Options, StructType, Type, TypeDefinition, TypeReference, VoidPrimitiveType } from "./ast";
 import { Lexer } from "./lexer";
-import { ArraySymbolToken, ColonSymbolToken, CommaSymbolToken, CurlyCloseSymbolToken, CurlyOpenSymbolToken, EnumKeywordToken, EqualSymbolToken, ErrorKeywordToken, ExclamationMarkSymbolToken, FalseKeywordToken, FunctionKeywordToken, GetKeywordToken, GlobalOptionToken, IdentifierToken, ImportKeywordToken, OptionalSymbolToken, ParensCloseSymbolToken, ParensOpenSymbolToken, PrimitiveTypeToken, SpreadSymbolToken, StringLiteralToken, Token, TrueKeywordToken, TypeKeywordToken } from "./token";
 import { analyse } from "./semantic/analyser";
-import { astToJson } from "./json";
+import { ArraySymbolToken, ColonSymbolToken, CommaSymbolToken, CurlyCloseSymbolToken, CurlyOpenSymbolToken, EnumKeywordToken, EqualSymbolToken, ErrorKeywordToken, ExclamationMarkSymbolToken, FalseKeywordToken, FunctionKeywordToken, GetKeywordToken, GlobalOptionToken, IdentifierToken, ImportKeywordToken, OptionalSymbolToken, ParensCloseSymbolToken, ParensOpenSymbolToken, PrimitiveTypeToken, SpreadSymbolToken, StringLiteralToken, Token, TrueKeywordToken, TypeKeywordToken } from "./token";
+import { primitiveToAstClass } from "./utils";
 
 export class ParserError extends Error {}
 
@@ -26,31 +26,6 @@ interface MultiExpectMatcher {
     TrueKeywordToken?: (token: TrueKeywordToken) => any
     FalseKeywordToken?: (token: FalseKeywordToken) => any
 }
-
-export const primitiveToAstClass = new Map<string, any>();
-primitiveToAstClass.set("string", StringPrimitiveType);
-primitiveToAstClass.set("int", IntPrimitiveType);
-primitiveToAstClass.set("uint", UIntPrimitiveType);
-primitiveToAstClass.set("date", DatePrimitiveType);
-primitiveToAstClass.set("datetime", DateTimePrimitiveType);
-primitiveToAstClass.set("float", FloatPrimitiveType);
-primitiveToAstClass.set("bool", BoolPrimitiveType);
-primitiveToAstClass.set("bytes", BytesPrimitiveType);
-primitiveToAstClass.set("money", MoneyPrimitiveType);
-primitiveToAstClass.set("cpf", CpfPrimitiveType);
-primitiveToAstClass.set("cnpj", CnpjPrimitiveType);
-primitiveToAstClass.set("email", EmailPrimitiveType);
-primitiveToAstClass.set("phone", PhonePrimitiveType);
-primitiveToAstClass.set("cep", CepPrimitiveType);
-primitiveToAstClass.set("latlng", LatLngPrimitiveType);
-primitiveToAstClass.set("url", UrlPrimitiveType);
-primitiveToAstClass.set("uuid", UuidPrimitiveType);
-primitiveToAstClass.set("hex", HexPrimitiveType);
-primitiveToAstClass.set("base64", Base64PrimitiveType);
-primitiveToAstClass.set("safehtml", SafeHtmlPrimitiveType);
-primitiveToAstClass.set("xml", XmlPrimitiveType);
-primitiveToAstClass.set("any", AnyPrimitiveType);
-primitiveToAstClass.set("void", VoidPrimitiveType);
 
 export class Parser {
     private readonly lexers: Lexer[];
@@ -353,8 +328,9 @@ export class Parser {
             },
             PrimitiveTypeToken: token => {
                 this.nextToken();
-                if (primitiveToAstClass.has(token.value))
-                    return (new (primitiveToAstClass.get(token.value)!)).at(token);
+                const primitiveClass = primitiveToAstClass.get(token.value);
+                if (primitiveClass)
+                    return new primitiveClass().at(token);
                 else
                     throw new ParserError(`BUG! Should handle primitive ${token.value}`);
             }

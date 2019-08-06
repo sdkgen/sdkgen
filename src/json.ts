@@ -1,6 +1,6 @@
 import { ArrayType, AstRoot, EnumType, Field, FunctionOperation, Operation, OptionalType, Options, StructType, Type, TypeDefinition, TypeReference } from "./ast";
-import { primitiveToAstClass } from "./parser";
 import { analyse } from "./semantic/analyser";
+import { primitiveToAstClass } from "./utils";
 
 interface TypeTable {
     [name: string]: TypeDescription
