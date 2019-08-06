@@ -63,10 +63,10 @@ export function generateNodeServerSource(ast: AstRoot, options: Options) {
 }
 
 export const api = new ApiConfig();
-const server = new SdkgenHttpServer(api);
+export const server = new SdkgenHttpServer(api);
 
-export function start() {
-    server.listen();
+export function startApi(port?: number) {
+    server.listen(port);
 }
 `;
 
