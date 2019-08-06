@@ -1,8 +1,6 @@
-interface TypeTable {
-    [name: string]: TypeDescription
-}
+import { AstJson, TypeDescription } from "@sdkgen/parser";
 
-export type TypeDescription = string | string[] | { [name: string]: TypeDescription }
+type TypeTable = AstJson["typeTable"]
 
 const simpleStringTypes = ["string", "cep", "cnpj", "cpf", "email", "phone", "safehtml", "url", "xml"];
 const simpleTypes = ["any", "bool", "hex", "uuid", "base64", "int", "uint", "float", "money", "void", "latlng", ...simpleStringTypes];

@@ -22,7 +22,7 @@
   },
   "homepage": "https://github.com/sdkgen/node-runtime#readme",
   "devDependencies": {
-    "@types/jest": "^24.0.16",
+    "@types/jest": "^24.0.17",
     "@types/node": "^12.6.9",
     "jest": "^24.8.0",
     "ts-jest": "^24.0.2",
@@ -44,6 +44,8 @@
     ]
   },
   "dependencies": {
+    "@sdkgen/parser": "^1.0.7",
+    "@sdkgen/typescript-generator": "^1.0.9",
     "@types/request-ip": "0.0.34",
     "request-ip": "^2.1.3"
   }

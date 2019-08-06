@@ -1,3 +1,4 @@
+import { generateNodeServerSource } from "@sdkgen/typescript-generator";
 import { createServer, IncomingMessage, Server, ServerResponse } from "http";
 import { hostname } from "os";
 import { getClientIp } from "request-ip";
@@ -16,6 +17,17 @@ export class SdkgenHttpServer extends SdkgenServer {
         super(apiConfig);
         this.httpServer = createServer(this.handleRequest.bind(this));
         this.enableCors();
+
+        this.addHttpHandler("GET", "/targets/typescript/nodeserver/api.ts", (req, res) => {
+            try {
+                res.setHeader("Content-Type", "application/octet-stream");
+                res.write(generateNodeServerSource(apiConfig.ast, {}));
+            } catch (e) {
+                res.statusCode = 500;
+                res.write(e.toString());
+            }
+            res.end();
+        });
     }
 
     listen(port: number = 8000) {
@@ -178,7 +190,7 @@ export class SdkgenHttpServer extends SdkgenServer {
             hrStart: process.hrtime()
         }
 
-        const functionDescription = this.apiConfig.functionTable[ctx.request.name];
+        const functionDescription = this.apiConfig.astJson.functionTable[ctx.request.name];
         const functionImplementation = this.apiConfig.fn[ctx.request.name];
         if (!functionDescription || !functionImplementation) {
             this.writeReply(res, ctx, {
@@ -194,9 +206,9 @@ export class SdkgenHttpServer extends SdkgenServer {
         try {
             reply = await this.apiConfig.hook.onRequestStart(ctx);
             if (!reply) {
-                const args = decode(this.apiConfig.typeTable, `fn.${ctx.request.name}.args`, functionDescription.args, ctx.request.args);
+                const args = decode(this.apiConfig.astJson.typeTable, `fn.${ctx.request.name}.args`, functionDescription.args, ctx.request.args);
                 const encodedRet = await functionImplementation(ctx, args);
-                const ret = decode(this.apiConfig.typeTable, `fn.${ctx.request.name}.ret`, functionDescription.ret, encodedRet);
+                const ret = decode(this.apiConfig.astJson.typeTable, `fn.${ctx.request.name}.ret`, functionDescription.ret, encodedRet);
                 reply = { result: ret };
             }
         } catch (e) {

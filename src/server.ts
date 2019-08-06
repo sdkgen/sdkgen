@@ -1,19 +1,16 @@
+import { AstRoot, AstJson } from "@sdkgen/parser";
 import { Context, ContextReply } from "./context";
-import { TypeDescription } from "./encode-decode";
 
 export abstract class BaseApiConfig {
-    typeTable: {
-        [name: string]: TypeDescription
-    } = {}
+    astJson: AstJson = null as any
+    private _ast: AstRoot | null = null;
 
-    functionTable: {
-        [name: string]: {
-            args: {
-                [name: string]: TypeDescription
-            },
-            ret: TypeDescription
-        }
-    } = {}
+    get ast() {
+        if (!this._ast)
+            this._ast = AstRoot.fromJson(this.astJson);
+
+        return this._ast;
+    }
 
     fn: {
         [name: string]: ((ctx: Context, args: any) => any) | undefined
