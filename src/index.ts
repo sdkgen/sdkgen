@@ -3,6 +3,7 @@ import { Parser } from "@sdkgen/parser";
 import { generateNodeServerSource } from "@sdkgen/typescript-generator";
 import commandLineArgs from "command-line-args";
 import commandLineUsage from "command-line-usage";
+import { writeFileSync } from "fs";
 
 const optionDefinitions = [
     { name: "source", defaultOption: true, description: "Specifies the source file" },
@@ -56,9 +57,7 @@ async function main() {
 
     switch (options.target) {
         case "typescript_nodeserver": {
-            generateNodeServerSource(ast, {
-                outputFile: options.output
-            });
+            writeFileSync(options.output, generateNodeServerSource(ast, {}));
             break;
         }
         default: {
