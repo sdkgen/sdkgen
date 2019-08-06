@@ -130,7 +130,7 @@ export class SdkgenHttpServer extends SdkgenServer {
         if (req.method === "GET") {
             let ok: boolean;
             try {
-                ok = await this.apiConfig.hooks.onHealthCheck();
+                ok = await this.apiConfig.hook.onHealthCheck();
             } catch (e) {
                 ok = false;
             }
@@ -174,23 +174,7 @@ export class SdkgenHttpServer extends SdkgenServer {
             hrStart: process.hrtime()
         }
 
-        try {
-            const forcedReply = await this.apiConfig.hooks.onRequestStart(ctx);
-            if (forcedReply) {
-                this.writeReply(res, ctx, forcedReply);
-                return;
-            }
-        } catch (e) {
-            this.writeReply(res, ctx, {
-                error: {
-                    type: "Fatal",
-                    message: e.toString()
-                }
-            });
-            return;
-        }
-
-        const functionDescription = this.apiConfig.functions[ctx.request.name];
+        const functionDescription = this.apiConfig.functionTable[ctx.request.name];
         const functionImplementation = this.apiConfig.fn[ctx.request.name];
         if (!functionDescription || !functionImplementation) {
             this.writeReply(res, ctx, {
@@ -202,13 +186,15 @@ export class SdkgenHttpServer extends SdkgenServer {
             return;
         }
 
-        const args = decode(this.apiConfig.typeTable, `fn.${ctx.request.name}.args`, functionDescription.args, ctx.request.args);
-
-        let reply: ContextReply;
+        let reply: ContextReply | null;
         try {
-            const encodedRet = await functionImplementation(ctx, args);
-            const ret = decode(this.apiConfig.typeTable, `fn.${ctx.request.name}.ret`, functionDescription.ret, encodedRet);
-            reply = { result: ret };
+            reply = await this.apiConfig.hook.onRequestStart(ctx);
+            if (!reply) {
+                const args = decode(this.apiConfig.typeTable, `fn.${ctx.request.name}.args`, functionDescription.args, ctx.request.args);
+                const encodedRet = await functionImplementation(ctx, args);
+                const ret = decode(this.apiConfig.typeTable, `fn.${ctx.request.name}.ret`, functionDescription.ret, encodedRet);
+                reply = { result: ret };
+            }
         } catch (e) {
             reply = {
                 error: {
@@ -218,7 +204,7 @@ export class SdkgenHttpServer extends SdkgenServer {
             };
         }
 
-        reply = await this.apiConfig.hooks.onRequestEnd(ctx, reply) || reply;
+        reply = await this.apiConfig.hook.onRequestEnd(ctx, reply) || reply;
         this.writeReply(res, ctx, reply);
     }
 

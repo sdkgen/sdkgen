@@ -6,7 +6,7 @@ export abstract class BaseApiConfig {
         [name: string]: TypeDescription
     } = {}
 
-    functions: {
+    functionTable: {
         [name: string]: {
             args: {
                 [name: string]: TypeDescription
@@ -19,7 +19,7 @@ export abstract class BaseApiConfig {
         [name: string]: ((ctx: Context, args: any) => any) | undefined
     } = {}
 
-    hooks: {
+    hook: {
         onRequestStart: (ctx: Context) => Promise<null | ContextReply>
         onRequestEnd: (ctx: Context, reply: ContextReply) => Promise<null | ContextReply>
         onHealthCheck: () => Promise<boolean>
