@@ -62,12 +62,10 @@ export function generateNodeServerSource(ast: AstRoot, options: Options) {
     functionTable = ${JSON.stringify(functionTable, null, 4).replace(/"(\w+)":/g, '$1:').replace(/\n/g, "\n    ")}
 }
 
-export const api = new ApiConfig();
-export const server = new SdkgenHttpServer(api);
+const api = new ApiConfig();
+export const fn = api.fn;
+export const hook = api.hook;
 
-export function startApi(port?: number) {
-    server.listen(port);
-}
 `;
 
     writeFileSync(options.outputFile, code);
