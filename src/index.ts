@@ -1,4 +1,4 @@
-#! /usr/bin/env node
+#!/usr/bin/env node
 import { Parser } from "@sdkgen/parser";
 import { generateNodeServerSource } from "@sdkgen/typescript-generator";
 import commandLineArgs from "command-line-args";
@@ -21,19 +21,15 @@ async function main() {
     } = commandLineArgs(optionDefinitions);
 
     if (options.help) {
-        console.log(commandLineUsage([
-            {
-                header: "Typical Example",
-                content: "sdkgen src/api.sdkgen -o src/api.ts -t typescript_nodeserver"
-            },
-            {
-                header: "Options",
-                optionList: optionDefinitions
-            },
-            {
-                content: "Project home: {underline https://github.com/sdkgen}"
-            }
-        ]));
+        console.log(commandLineUsage([{
+            header: "Typical Example",
+            content: "sdkgen src/api.sdkgen -o src/api.ts -t typescript_nodeserver"
+        }, {
+            header: "Options",
+            optionList: optionDefinitions
+        }, {
+            content: "Project home: {underline https://github.com/sdkgen}"
+        }]));
         process.exit(0);
         return;
     }
