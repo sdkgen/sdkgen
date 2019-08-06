@@ -1,4 +1,4 @@
-import { AstRoot } from "@sdkgen/parser";
+import { AstRoot, astToJson } from "@sdkgen/parser";
 import { generateTypescriptEnum, generateTypescriptInterface, generateTypescriptTypeName } from "./helpers";
 
 interface Options {
@@ -29,7 +29,7 @@ export function generateNodeServerSource(ast: AstRoot, options: Options) {
         ).join(", ")}}) => Promise<${generateTypescriptTypeName(op.returnType)}>`).join("")}
     } = {}
 
-    astJson = ${JSON.stringify(ast.toJson(), null, 4).replace(/"(\w+)":/g, '$1:').replace(/\n/g, "\n    ")}
+    astJson = ${JSON.stringify(astToJson(ast), null, 4).replace(/"(\w+)":/g, '$1:').replace(/\n/g, "\n    ")}
 }
 
 export const api = new ApiConfig();
