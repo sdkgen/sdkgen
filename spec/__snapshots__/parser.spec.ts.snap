@@ -2768,6 +2768,118 @@ AstRoot {
 }
 `;
 
+exports[`Parser handles functions with arguments 1`] = `
+AstRoot {
+  "enumTypes": Array [
+    EnumType {
+      "name": "ErrorType",
+      "values": Array [
+        "Fatal",
+        "Connection",
+      ],
+    },
+  ],
+  "errors": Array [
+    "Fatal",
+    "Connection",
+  ],
+  "operations": Array [
+    FunctionOperation {
+      "args": Array [
+        Field {
+          "name": "foo",
+          "secret": false,
+          "type": IntPrimitiveType {
+            "name": "int",
+          },
+        },
+        Field {
+          "name": "bar",
+          "secret": false,
+          "type": TypeReference {
+            "name": "Bar",
+            "type": StructType {
+              "fields": Array [
+                Field {
+                  "name": "aa",
+                  "secret": false,
+                  "type": StringPrimitiveType {
+                    "name": "string",
+                  },
+                },
+              ],
+              "name": "Bar",
+              "spreads": Array [],
+            },
+          },
+        },
+      ],
+      "name": "doIt",
+      "returnType": StringPrimitiveType {
+        "name": "string",
+      },
+    },
+    FunctionOperation {
+      "args": Array [],
+      "name": "ping",
+      "returnType": StringPrimitiveType {
+        "name": "string",
+      },
+    },
+  ],
+  "options": Options {
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [
+    StructType {
+      "fields": Array [
+        Field {
+          "name": "aa",
+          "secret": false,
+          "type": StringPrimitiveType {
+            "name": "string",
+          },
+        },
+      ],
+      "name": "Bar",
+      "spreads": Array [],
+    },
+  ],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "name": "Bar",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "name": "aa",
+            "secret": false,
+            "type": StringPrimitiveType {
+              "name": "string",
+            },
+          },
+        ],
+        "name": "Bar",
+        "spreads": Array [],
+      },
+    },
+    TypeDefinition {
+      "name": "ErrorType",
+      "type": EnumType {
+        "name": "ErrorType",
+        "values": Array [
+          "Fatal",
+          "Connection",
+        ],
+      },
+    },
+  ],
+}
+`;
+
 exports[`Parser handles options on the top 1`] = `
 AstRoot {
   "enumTypes": Array [

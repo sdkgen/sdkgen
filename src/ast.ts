@@ -1,4 +1,5 @@
 import { Token, TokenLocation } from "./token";
+import { astToJson, AstJson, jsonToAst } from "./json";
 
 export class AstRoot {
     structTypes: StructType[] = [];
@@ -10,6 +11,14 @@ export class AstRoot {
         public options: Options = new Options,
         public errors: string[] = []
     ) {}
+
+    toJson() {
+        astToJson(this);
+    }
+
+    static fromJson(json: AstJson) {
+        return jsonToAst(json);
+    }
 }
 
 export abstract class AstNode {

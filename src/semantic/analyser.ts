@@ -14,6 +14,7 @@ export class SemanticError extends Error {}
 export function analyse(root: AstRoot) {
     root.errors.push("Fatal");
     root.errors.push("Connection");
+    root.errors = [...new Set(root.errors)];
 
     const errorTypesEnum = new EnumType(root.errors);
     const errorTypesEnumDef = new TypeDefinition("ErrorType", errorTypesEnum);

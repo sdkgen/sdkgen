@@ -4,6 +4,7 @@ import { ArrayType, AstRoot, Base64PrimitiveType, BoolPrimitiveType, BytesPrimit
 import { Lexer } from "./lexer";
 import { ArraySymbolToken, ColonSymbolToken, CommaSymbolToken, CurlyCloseSymbolToken, CurlyOpenSymbolToken, EnumKeywordToken, EqualSymbolToken, ErrorKeywordToken, ExclamationMarkSymbolToken, FalseKeywordToken, FunctionKeywordToken, GetKeywordToken, GlobalOptionToken, IdentifierToken, ImportKeywordToken, OptionalSymbolToken, ParensCloseSymbolToken, ParensOpenSymbolToken, PrimitiveTypeToken, SpreadSymbolToken, StringLiteralToken, Token, TrueKeywordToken, TypeKeywordToken } from "./token";
 import { analyse } from "./semantic/analyser";
+import { astToJson } from "./json";
 
 export class ParserError extends Error {}
 
@@ -27,7 +28,6 @@ interface MultiExpectMatcher {
 }
 
 export const primitiveToAstClass = new Map<string, any>();
-primitiveToAstClass.set("string", StringPrimitiveType);
 primitiveToAstClass.set("string", StringPrimitiveType);
 primitiveToAstClass.set("int", IntPrimitiveType);
 primitiveToAstClass.set("uint", UIntPrimitiveType);

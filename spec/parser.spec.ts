@@ -1,5 +1,6 @@
 import { Lexer } from "../src/lexer";
 import { Parser } from "../src/parser";
+import { astToJson, jsonToAst } from "../src/json";
 
 describe(Parser, () => {
     for (const p of Lexer.PRIMITIVES) {
@@ -105,6 +106,16 @@ describe(Parser, () => {
             }
         `);
     });
+
+    test("handles functions with arguments", () => {
+        expectParses(`
+            type Bar {
+                aa: string
+            }
+
+            function doIt(foo: int, bar: Bar): string
+        `);
+    });
 });
 
 function expectParses(source: string) {
@@ -112,6 +123,7 @@ function expectParses(source: string) {
     const ast = parser.parse();
 
     expect(ast).toMatchSnapshot();
+    expect(astToJson(ast)).toEqual(astToJson(jsonToAst(astToJson(ast))));
 }
 
 function expectDoesntParse(source: string, message: string) {
