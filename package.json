@@ -44,6 +44,6 @@
     ]
   },
   "dependencies": {
-    "@sdkgen/parser": "*"
+    "@sdkgen/parser": "^1.0.7"
   }
 }

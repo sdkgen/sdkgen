@@ -21,32 +21,6 @@ export function generateNodeServerSource(ast: AstRoot, options: Options) {
         code += "\n";
     }
 
-    const typeTable: any = {};
-
-    for (const { name, fields } of ast.structTypes) {
-        const obj: any = typeTable[name] = {};
-        for (const field of fields) {
-            obj[field.name] = field.type.name;
-        }
-    }
-
-    for (const { name, values } of ast.enumTypes) {
-        typeTable[name] = values;
-    }
-
-    const functionTable: any = {};
-
-    for (const op of ast.operations) {
-        const args: any = {};
-        for (const arg of op.args) {
-            args[arg.name] = arg.type.name
-        }
-        functionTable[op.prettyName] = {
-            args,
-            ret: op.returnType.name
-        }
-    }
-
     code += `class ApiConfig extends BaseApiConfig {
     fn: {${
         ast.operations.map(op => `
@@ -55,13 +29,10 @@ export function generateNodeServerSource(ast: AstRoot, options: Options) {
         ).join(", ")}}) => Promise<${generateTypescriptTypeName(op.returnType)}>`).join("")}
     } = {}
 
-    typeTable = ${JSON.stringify(typeTable, null, 4).replace(/"(\w+)":/g, '$1:').replace(/\n/g, "\n    ")}
-
-    functionTable = ${JSON.stringify(functionTable, null, 4).replace(/"(\w+)":/g, '$1:').replace(/\n/g, "\n    ")}
+    astJson = ${JSON.stringify(ast.toJson(), null, 4).replace(/"(\w+)":/g, '$1:').replace(/\n/g, "\n    ")}
 }
 
 export const api = new ApiConfig();
-
 `;
 
     return code;
