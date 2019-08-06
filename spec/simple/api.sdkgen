@@ -1,0 +1,6 @@
+get user(id: string): User
+
+type User {
+    name: string
+    age: uint
+}

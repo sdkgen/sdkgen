@@ -1,4 +1,4 @@
-import { AstRoot, AstJson } from "@sdkgen/parser";
+import { AstJson, AstRoot, jsonToAst } from "@sdkgen/parser";
 import { Context, ContextReply } from "./context";
 
 export abstract class BaseApiConfig {
@@ -7,7 +7,7 @@ export abstract class BaseApiConfig {
 
     get ast() {
         if (!this._ast)
-            this._ast = AstRoot.fromJson(this.astJson);
+            this._ast = jsonToAst(this.astJson);
 
         return this._ast;
     }

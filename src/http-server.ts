@@ -225,14 +225,21 @@ export class SdkgenHttpServer extends SdkgenServer {
     }
 
     private parseRequest(req: IncomingMessage, body: string): ContextRequest | null {
-        try {
-            return this.parseRequestV1(req, body);
-        } catch (e) {
-            try {
+        switch (this.identifyRequestVersion(req, body)) {
+            case 1:
+                return this.parseRequestV1(req, body);
+            case 2:
                 return this.parseRequestV2(req, body);
-            } catch (e) {
-                return null;
-            }
+            default:
+                throw new Error("Failed to understand request");
+        }
+    }
+
+    private identifyRequestVersion(req: IncomingMessage, body: string): number {
+        if ("requestId" in JSON.parse(body)) {
+            return 2;
+        } else {
+            return 1;
         }
     }
 
@@ -246,10 +253,10 @@ export class SdkgenHttpServer extends SdkgenServer {
                 device: {
                     id: "string?",
                     type: "string",
-                    platform: "any",
-                    version: "string",
-                    language: "string",
-                    timezone: "string",
+                    platform: "any?",
+                    version: "string?",
+                    language: "string?",
+                    timezone: "string?",
                 },
             }
         }, "root", "Request", JSON.parse(body));

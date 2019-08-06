@@ -7,7 +7,11 @@ const simpleTypes = ["any", "bool", "hex", "uuid", "base64", "int", "uint", "flo
 
 function simpleEncodeDecode(path: string, type: string, value: any) {
     if (type === "any") {
-        return JSON.parse(JSON.stringify(value));
+        if (value === null || value === undefined) {
+            return null;
+        } else {
+            return JSON.parse(JSON.stringify(value));
+        }
     } else if (type === "bool") {
         if (typeof value !== "boolean") {
             throw new Error(`Invalid Type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
