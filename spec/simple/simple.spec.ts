@@ -21,7 +21,7 @@ api.fn.getUser = async (ctx: Context, { id }: { id: string }) => {
 const server = new SdkgenHttpServer(api);
 server.listen();
 
-execSync(`../../cubos/sdkgen/sdkgen ${__dirname + "/api.sdkgen"} -o ${__dirname + "/legacyNodeClient.ts"} -t typescript_nodeclient`);
+// execSync(`../../cubos/sdkgen/sdkgen ${__dirname + "/api.sdkgen"} -o ${__dirname + "/legacyNodeClient.ts"} -t typescript_nodeclient`);
 const { ApiClient: NodeLegacyApiClient } = require(__dirname + "/legacyNodeClient.ts");
 const nodeLegacyClient = new NodeLegacyApiClient("http://localhost:8000");
 
