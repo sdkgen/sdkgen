@@ -36,13 +36,14 @@ export function generateNodeServerSource(ast: AstRoot, options: Options) {
         typeTable[name] = values;
     }
 
-    const functions: any = {}
+    const functionTable: any = {};
+
     for (const op of ast.operations) {
         const args: any = {};
         for (const arg of op.args) {
             args[arg.name] = arg.type.name
         }
-        functions[op.prettyName] = {
+        functionTable[op.prettyName] = {
             args,
             ret: op.returnType.name
         }
@@ -58,7 +59,7 @@ export function generateNodeServerSource(ast: AstRoot, options: Options) {
 
     typeTable = ${JSON.stringify(typeTable, null, 4).replace(/"(\w+)":/g, '$1:').replace(/\n/g, "\n    ")}
 
-    functions = ${JSON.stringify(functions, null, 4).replace(/"(\w+)":/g, '$1:').replace(/\n/g, "\n    ")}
+    functionTable = ${JSON.stringify(functionTable, null, 4).replace(/"(\w+)":/g, '$1:').replace(/\n/g, "\n    ")}
 }
 
 export const api = new ApiConfig();
