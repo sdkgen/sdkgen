@@ -309,7 +309,7 @@ export class SdkgenHttpServer extends SdkgenServer {
             }
 
             res.statusCode = 500;
-            res.write({ error: reply.error });
+            res.write(JSON.stringify({ error: reply.error }));
             res.end();
             return;
         }
