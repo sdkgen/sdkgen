@@ -1,9 +1,7 @@
 import { AstRoot } from "@sdkgen/parser";
-import { writeFileSync } from "fs";
 import { generateTypescriptEnum, generateTypescriptInterface, generateTypescriptTypeName } from "./helpers";
 
 interface Options {
-    outputFile: string
 }
 
 export function generateNodeServerSource(ast: AstRoot, options: Options) {
@@ -66,5 +64,5 @@ export const api = new ApiConfig();
 
 `;
 
-    writeFileSync(options.outputFile, code);
+    return code;
 }
