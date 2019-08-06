@@ -7,7 +7,7 @@ import { decode } from "./encode-decode";
 import { BaseApiConfig, SdkgenServer } from "./server";
 
 export class SdkgenHttpServer extends SdkgenServer {
-    private httpServer: Server;
+    public httpServer: Server;
     private headers = new Map<string, string>();
     private handlers: { method: string, matcher: string | RegExp, handler: (req: IncomingMessage, res: ServerResponse, body: string) => void }[] = [];
     public dynamicCorsOrigin = true;
@@ -24,6 +24,10 @@ export class SdkgenHttpServer extends SdkgenServer {
             const addrString = addr === null ? "???" : typeof addr === "string" ? addr : `${addr.address}:${addr.port}`;
             console.log(`Listening on ${addrString}`);
         });
+    }
+
+    close() {
+        this.httpServer.close();
     }
 
     private enableCors() {
