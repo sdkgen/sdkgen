@@ -4,6 +4,7 @@ import axios from "axios";
 import { execSync } from "child_process";
 import { writeFileSync, unlinkSync } from "fs";
 import { Context, SdkgenHttpServer } from "../../src";
+import { SdkgenHttpClient } from "../../src/http-client";
 
 writeFileSync(__dirname + "/api.ts", generateNodeServerSource(new Parser(__dirname + "/api.sdkgen").parse(), {}).replace("@sdkgen/node-runtime", "../../src"));
 const { api } = require(__dirname + "/api.ts");
@@ -40,6 +41,14 @@ describe("Simple API", () => {
     test("Can make a call from legacy node client", async () => {
         expect(await nodeLegacyClient.getUser("abc")).toEqual({age: 1, name: "abc"});
         expect(await nodeLegacyClient.getUser("5hdr")).toEqual({age: 1, name: "5hdr"});
+
+        expect(lastCallCtx.request).toMatchObject({name: "getUser", deviceInfo: {type: "node"}});
+    });
+
+    test("Can make a call from newer node client", async () => {
+        const client = new SdkgenHttpClient("http://localhost:8000", api);
+        expect(await client.makeRequest("getUser", {id: "abc"})).toEqual({age: 1, name: "abc"});
+        expect(await client.makeRequest("getUser", {id: "5hdr"})).toEqual({age: 1, name: "5hdr"});
 
         expect(lastCallCtx.request).toMatchObject({name: "getUser", deviceInfo: {type: "node"}});
     });

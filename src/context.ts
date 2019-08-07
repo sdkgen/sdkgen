@@ -14,8 +14,8 @@ export interface ContextRequest {
         id: string
         type: string
         platform: any
-        version: string
-        language: string
+        version: string | null
+        language: string | null
         timezone: string | null
     }
     extra: {

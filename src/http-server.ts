@@ -13,7 +13,7 @@ export class SdkgenHttpServer extends SdkgenServer {
     private handlers: { method: string, matcher: string | RegExp, handler: (req: IncomingMessage, res: ServerResponse, body: string) => void }[] = [];
     public dynamicCorsOrigin = true;
 
-    constructor(apiConfig: BaseApiConfig) {
+    constructor(protected apiConfig: BaseApiConfig) {
         super(apiConfig);
         this.httpServer = createServer(this.handleRequest.bind(this));
         this.enableCors();
@@ -230,13 +230,18 @@ export class SdkgenHttpServer extends SdkgenServer {
                 return this.parseRequestV1(req, body);
             case 2:
                 return this.parseRequestV2(req, body);
+            case 3:
+                return this.parseRequestV3(req, body);
             default:
                 throw new Error("Failed to understand request");
         }
     }
 
     private identifyRequestVersion(req: IncomingMessage, body: string): number {
-        if ("requestId" in JSON.parse(body)) {
+        const parsed = JSON.parse(body)
+        if ("version" in parsed) {
+            return parsed.version;
+        } else if ("requestId" in parsed) {
             return 2;
         } else {
             return 1;
@@ -306,12 +311,50 @@ export class SdkgenHttpServer extends SdkgenServer {
                 partnerId: parsed.partnerId,
             },
             deviceInfo: {
-                id: parsed.device.requestId || parsed.id,
+                id: parsed.deviceId,
                 language: parsed.info.language,
                 platform: {},
                 timezone: null,
                 type: parsed.info.type,
                 version: "",
+            }
+        };
+    }
+
+    // New sdkgen format
+    private parseRequestV3(req: IncomingMessage, body: string): ContextRequest {
+        const parsed = decode({
+            Request: {
+                requestId: "string",
+                name: "string",
+                args: "any",
+                extra: "any",
+                deviceInfo: {
+                    id: "string",
+                    type: "string",
+                    browserUserAgent: "string?",
+                    timezone: "string?",
+                    version: "string?",
+                    language: "string?",
+                },
+            }
+        }, "root", "Request", JSON.parse(body));
+
+        return {
+            version: 3,
+            id: parsed.requestId,
+            args: parsed.args,
+            name: parsed.name,
+            extra: {
+                ...parsed.extra
+            },
+            deviceInfo: {
+                id: parsed.deviceInfo.id,
+                language: parsed.deviceInfo.language,
+                platform: {},
+                timezone: parsed.deviceInfo.timezone,
+                type: parsed.deviceInfo.type,
+                version: parsed.deviceInfo.version,
             }
         };
     }
@@ -336,7 +379,6 @@ export class SdkgenHttpServer extends SdkgenServer {
         const deltaTime = process.hrtime(ctx.hrStart);
         const duration = deltaTime[0] + deltaTime[1] * 1e-9;
 
-
         this.log(`${ctx.request.id} [${duration.toFixed(6)}s] ${ctx.request.name}() -> ${reply.error ? reply.error.type : "OK"}`);
 
         switch (ctx.request.version) {
@@ -345,6 +387,23 @@ export class SdkgenHttpServer extends SdkgenServer {
                     id: ctx.request.id,
                     ok: !reply.error,
                     deviceId: ctx.request.deviceInfo.id,
+                    duration: duration,
+                    host: hostname(),
+                    result: reply.result || null,
+                    error: reply.error || null
+                };
+
+                res.statusCode = response.error ? (response.error.type === "Fatal" ? 500 : 400) : 200;
+                res.write(JSON.stringify(response));
+                res.end();
+                break;
+            }
+            case 2: {
+                res.end();
+                break;
+            }
+            case 3: {
+                const response = {
                     duration: duration,
                     host: hostname(),
                     result: reply.result || null,

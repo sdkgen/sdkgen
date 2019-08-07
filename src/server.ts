@@ -29,5 +29,4 @@ export abstract class BaseApiConfig {
 
 export abstract class SdkgenServer {
     constructor(protected apiConfig: BaseApiConfig) {}
-    get fn() { return this.apiConfig; }
 }
