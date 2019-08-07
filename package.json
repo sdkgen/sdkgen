@@ -1,6 +1,6 @@
 {
   "name": "@sdkgen/browser-runtime",
-  "version": "1.0.18",
+  "version": "1.0.0",
   "description": "",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
@@ -43,6 +43,5 @@
       "/spec/"
     ]
   },
-  "dependencies": {
-  }
+  "dependencies": {}
 }
