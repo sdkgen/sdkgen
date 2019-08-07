@@ -1,4 +1,4 @@
-import { ArrayType, Base64PrimitiveType, BoolPrimitiveType, BytesPrimitiveType, CepPrimitiveType, CnpjPrimitiveType, CpfPrimitiveType, DatePrimitiveType, DateTimePrimitiveType, EmailPrimitiveType, EnumType, FloatPrimitiveType, HexPrimitiveType, IntPrimitiveType, LatLngPrimitiveType, MoneyPrimitiveType, OptionalType, PhonePrimitiveType, SafeHtmlPrimitiveType, StringPrimitiveType, StructType, Type, TypeReference, UIntPrimitiveType, UrlPrimitiveType, UuidPrimitiveType, VoidPrimitiveType, XmlPrimitiveType } from "@sdkgen/parser";
+import { ArrayType, EnumType, OptionalType, StructType, Type, TypeReference } from "@sdkgen/parser";
 
 export function generateTypescriptInterface(type: StructType) {
     return `export interface ${type.name} {
