@@ -1,29 +1,35 @@
+import { AstJson } from "@sdkgen/parser";
 import { randomBytes } from "crypto";
 import { request as httpRequest } from "http";
 import { request as httpsRequest } from "https";
 import { hostname } from "os";
-import { BaseApiConfig } from "./config";
 import { decode, encode } from "./encode-decode";
+import { Context } from "./context";
 
 export class SdkgenHttpClient {
     private baseUrl: URL
+    extra = new Map<string, any>();
 
-    constructor(baseUrl: string, private apiConfig: BaseApiConfig) {
+    constructor(baseUrl: string, private astJson: AstJson) {
         this.baseUrl = new URL(baseUrl);
     }
 
-    async makeRequest(functionName: string, args: any) {
-        const func = this.apiConfig.astJson.functionTable[functionName];
+    async makeRequest(ctx: Context | null, functionName: string, args: any) {
+        const func = this.astJson.functionTable[functionName];
         if (!func) {
             throw new Error(`Unknown function ${functionName}`);
         }
+
         const request = {
             version: 3,
-            requestId: randomBytes(16).toString("hex"),
+            requestId: ctx ? ctx.request.id + randomBytes(6).toString("hex") : randomBytes(16).toString("hex"),
             name: functionName,
-            args: encode(this.apiConfig.astJson.typeTable, `${functionName}.args`, func.args, args),
-            extra: {},
-            deviceInfo: {
+            args: encode(this.astJson.typeTable, `${functionName}.args`, func.args, args),
+            extra: {
+                ...this.extra,
+                ...(ctx ? ctx.request.extra : {})
+            },
+            deviceInfo: ctx ? ctx.request.deviceInfo : {
                 id: hostname(),
                 type: "node"
             },
@@ -63,11 +69,10 @@ export class SdkgenHttpClient {
                 reject({ type: "Fatal", message: e.toString() });
             });
 
-            // write data to request body
             req.write(JSON.stringify(request));
             req.end();
         });
 
-        return decode(this.apiConfig.astJson.typeTable, `${functionName}.ret`, func.ret, encodedRet);
+        return decode(this.astJson.typeTable, `${functionName}.ret`, func.ret, encodedRet);
     }
 }

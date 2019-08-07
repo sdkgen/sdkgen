@@ -1,8 +1,7 @@
 import { Parser } from "@sdkgen/parser";
 import { generateNodeServerSource } from "@sdkgen/typescript-generator";
 import axios from "axios";
-import { execSync } from "child_process";
-import { writeFileSync, unlinkSync } from "fs";
+import { unlinkSync, writeFileSync } from "fs";
 import { Context, SdkgenHttpServer } from "../../src";
 import { SdkgenHttpClient } from "../../src/http-client";
 
@@ -46,9 +45,9 @@ describe("Simple API", () => {
     });
 
     test("Can make a call from newer node client", async () => {
-        const client = new SdkgenHttpClient("http://localhost:8000", api);
-        expect(await client.makeRequest("getUser", {id: "abc"})).toEqual({age: 1, name: "abc"});
-        expect(await client.makeRequest("getUser", {id: "5hdr"})).toEqual({age: 1, name: "5hdr"});
+        const client = new SdkgenHttpClient("http://localhost:8000", api.astJson);
+        expect(await client.makeRequest(null, "getUser", {id: "abc"})).toEqual({age: 1, name: "abc"});
+        expect(await client.makeRequest(null, "getUser", {id: "5hdr"})).toEqual({age: 1, name: "5hdr"});
 
         expect(lastCallCtx.request).toMatchObject({name: "getUser", deviceInfo: {type: "node"}});
     });

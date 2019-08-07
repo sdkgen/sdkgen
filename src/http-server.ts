@@ -3,10 +3,9 @@ import { createServer, IncomingMessage, Server, ServerResponse } from "http";
 import { hostname } from "os";
 import { getClientIp } from "request-ip";
 import { parse as parseUrl } from "url";
-import { BaseApiConfig } from "./config";
 import { Context, ContextReply, ContextRequest } from "./context";
 import { decode } from "./encode-decode";
-import { SdkgenServer } from "./server";
+import { BaseApiConfig, SdkgenServer } from "./server";
 
 export class SdkgenHttpServer extends SdkgenServer {
     public httpServer: Server;
