@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { Parser } from "@sdkgen/parser";
-import { generateNodeServerSource } from "@sdkgen/typescript-generator";
+import { generateNodeServerSource, generateNodeClientSource } from "@sdkgen/typescript-generator";
 import commandLineArgs from "command-line-args";
 import commandLineUsage from "command-line-usage";
 import { writeFileSync } from "fs";
@@ -58,6 +58,10 @@ async function main() {
     switch (options.target) {
         case "typescript_nodeserver": {
             writeFileSync(options.output, generateNodeServerSource(ast, {}));
+            break;
+        }
+        case "typescript_nodeclient": {
+            writeFileSync(options.output, generateNodeClientSource(ast, {}));
             break;
         }
         default: {
