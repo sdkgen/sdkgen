@@ -1,4 +1,4 @@
-import { generateNodeServerSource } from "@sdkgen/typescript-generator";
+import { generateNodeServerSource, generateNodeClientSource } from "@sdkgen/typescript-generator";
 import { createServer, IncomingMessage, Server, ServerResponse } from "http";
 import { hostname } from "os";
 import { getClientIp } from "request-ip";
@@ -18,10 +18,21 @@ export class SdkgenHttpServer extends SdkgenServer {
         this.httpServer = createServer(this.handleRequest.bind(this));
         this.enableCors();
 
-        this.addHttpHandler("GET", "/targets/typescript/nodeserver/api.ts", (req, res) => {
+        this.addHttpHandler("GET", "/targets/typescript/node/api.ts", (req, res) => {
             try {
                 res.setHeader("Content-Type", "application/octet-stream");
                 res.write(generateNodeServerSource(apiConfig.ast, {}));
+            } catch (e) {
+                res.statusCode = 500;
+                res.write(e.toString());
+            }
+            res.end();
+        });
+
+        this.addHttpHandler("GET", "/targets/typescript/node/client.ts", (req, res) => {
+            try {
+                res.setHeader("Content-Type", "application/octet-stream");
+                res.write(generateNodeClientSource(apiConfig.ast, {}));
             } catch (e) {
                 res.statusCode = 500;
                 res.write(e.toString());

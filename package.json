@@ -23,12 +23,12 @@
   "homepage": "https://github.com/sdkgen/node-runtime#readme",
   "devDependencies": {
     "@types/jest": "^24.0.17",
-    "@types/node": "^12.6.9",
+    "@types/node": "^12.7.0",
+    "@types/request-ip": "0.0.34",
+    "axios": "^0.19.0",
     "jest": "^24.8.0",
     "ts-jest": "^24.0.2",
-    "typescript": "^3.5.3",
-    "@types/request-ip": "0.0.34",
-    "axios": "^0.19.0"
+    "typescript": "^3.5.3"
   },
   "jest": {
     "transform": {
@@ -42,12 +42,13 @@
     ],
     "collectCoverage": true,
     "coveragePathIgnorePatterns": [
-      "/node_modules/"
+      "/node_modules/",
+      "/spec/"
     ]
   },
   "dependencies": {
     "@sdkgen/parser": "^1.0.9",
-    "@sdkgen/typescript-generator": "^1.0.11",
+    "@sdkgen/typescript-generator": "^1.0.12",
     "request-ip": "^2.1.3"
   }
 }

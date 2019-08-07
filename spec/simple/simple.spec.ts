@@ -1,9 +1,8 @@
 import { Parser } from "@sdkgen/parser";
-import { generateNodeServerSource } from "@sdkgen/typescript-generator";
+import { generateNodeClientSource, generateNodeServerSource } from "@sdkgen/typescript-generator";
 import axios from "axios";
 import { unlinkSync, writeFileSync } from "fs";
 import { Context, SdkgenHttpServer } from "../../src";
-import { SdkgenHttpClient } from "../../src/http-client";
 
 writeFileSync(__dirname + "/api.ts", generateNodeServerSource(new Parser(__dirname + "/api.sdkgen").parse(), {}).replace("@sdkgen/node-runtime", "../../src"));
 const { api } = require(__dirname + "/api.ts");
@@ -25,6 +24,11 @@ server.listen();
 const { ApiClient: NodeLegacyApiClient } = require(__dirname + "/legacyNodeClient.ts");
 const nodeLegacyClient = new NodeLegacyApiClient("http://localhost:8000");
 
+writeFileSync(__dirname + "/nodeClient.ts", generateNodeClientSource(new Parser(__dirname + "/api.sdkgen").parse(), {}).replace("@sdkgen/node-runtime", "../../src"));
+const { ApiClient: NodeApiClient } = require(__dirname + "/nodeClient.ts");
+unlinkSync(__dirname + "/nodeClient.ts");
+const nodeClient = new NodeApiClient("http://localhost:8000");
+
 describe("Simple API", () => {
     test("Healthcheck on any GET route", async () => {
         expect(await axios.get("http://localhost:8000/")).toMatchObject({data: {ok: true}});
@@ -45,10 +49,9 @@ describe("Simple API", () => {
     });
 
     test("Can make a call from newer node client", async () => {
-        const client = new SdkgenHttpClient("http://localhost:8000", api.astJson);
-        expect(await client.makeRequest(null, "getUser", {id: "abc"})).toEqual({age: 1, name: "abc"});
-        expect(await client.makeRequest(null, "getUser", {id: "5hdr"})).toEqual({age: 1, name: "5hdr"});
+        expect(await nodeClient.getUser(null, {id: "abc"})).toEqual({ age: 1, name: "abc" });
+        expect(await nodeClient.getUser(null, {id: "5hdr"})).toEqual({ age: 1, name: "5hdr" });
 
-        expect(lastCallCtx.request).toMatchObject({name: "getUser", deviceInfo: {type: "node"}});
+        expect(lastCallCtx.request).toMatchObject({ name: "getUser", deviceInfo: { type: "node" } });
     });
 });

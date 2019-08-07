@@ -3,8 +3,8 @@ import { randomBytes } from "crypto";
 import { request as httpRequest } from "http";
 import { request as httpsRequest } from "https";
 import { hostname } from "os";
-import { decode, encode } from "./encode-decode";
 import { Context } from "./context";
+import { decode, encode } from "./encode-decode";
 
 export class SdkgenHttpClient {
     private baseUrl: URL

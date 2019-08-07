@@ -76,6 +76,9 @@ export function encode(typeTable: TypeTable, path: string, type: TypeDescription
         }
         return value;
     } else if (typeof type === "object") {
+        if (typeof value !== "object" || value === "undefined") {
+            throw new Error(`Invalid Type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
+        }
         const obj: any = {};
         for (const key in type) {
             obj[key] = encode(typeTable, `${path}.${key}`, type[key], value[key]);
@@ -125,6 +128,9 @@ export function decode(typeTable: TypeTable, path: string, type: TypeDescription
         }
         return value;
     } else if (typeof type === "object") {
+        if (typeof value !== "object" || value === "undefined") {
+            throw new Error(`Invalid Type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
+        }
         const obj: any = {};
         for (const key in type) {
             obj[key] = decode(typeTable, `${path}.${key}`, type[key], value[key]);
