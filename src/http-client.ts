@@ -2,8 +2,8 @@ import { randomBytes } from "crypto";
 import { request as httpRequest } from "http";
 import { request as httpsRequest } from "https";
 import { hostname } from "os";
+import { BaseApiConfig } from "./config";
 import { decode, encode } from "./encode-decode";
-import { BaseApiConfig } from "./server";
 
 export class SdkgenHttpClient {
     private baseUrl: URL
