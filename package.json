@@ -48,7 +48,7 @@
   },
   "dependencies": {
     "@sdkgen/parser": "^1.0.9",
-    "@sdkgen/typescript-generator": "^1.0.12",
+    "@sdkgen/typescript-generator": "^1.0.13",
     "request-ip": "^2.1.3"
   }
 }

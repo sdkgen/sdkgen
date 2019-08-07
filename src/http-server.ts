@@ -1,4 +1,4 @@
-import { generateNodeServerSource, generateNodeClientSource } from "@sdkgen/typescript-generator";
+import { generateNodeServerSource, generateNodeClientSource, generateBrowserClientSource } from "@sdkgen/typescript-generator";
 import { createServer, IncomingMessage, Server, ServerResponse } from "http";
 import { hostname } from "os";
 import { getClientIp } from "request-ip";
@@ -33,6 +33,17 @@ export class SdkgenHttpServer extends SdkgenServer {
             try {
                 res.setHeader("Content-Type", "application/octet-stream");
                 res.write(generateNodeClientSource(apiConfig.ast, {}));
+            } catch (e) {
+                res.statusCode = 500;
+                res.write(e.toString());
+            }
+            res.end();
+        });
+
+        this.addHttpHandler("GET", "/targets/typescript/web/client.ts", (req, res) => {
+            try {
+                res.setHeader("Content-Type", "application/octet-stream");
+                res.write(generateBrowserClientSource(apiConfig.ast, {}));
             } catch (e) {
                 res.statusCode = 500;
                 res.write(e.toString());
@@ -324,7 +335,9 @@ export class SdkgenHttpServer extends SdkgenServer {
             deviceInfo: {
                 id: parsed.deviceId,
                 language: parsed.info.language,
-                platform: {},
+                platform: {
+                    browserUserAgent: parsed.info.browserUserAgent || null,
+                },
                 timezone: null,
                 type: parsed.info.type,
                 version: "",
@@ -362,7 +375,9 @@ export class SdkgenHttpServer extends SdkgenServer {
             deviceInfo: {
                 id: parsed.deviceInfo.id,
                 language: parsed.deviceInfo.language,
-                platform: {},
+                platform: {
+                    browserUserAgent: parsed.deviceInfo.browserUserAgent || null,
+                },
                 timezone: parsed.deviceInfo.timezone,
                 type: parsed.deviceInfo.type,
                 version: parsed.deviceInfo.version,
