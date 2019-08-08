@@ -11,34 +11,36 @@ export function generateTypescriptEnum(type: EnumType) {
 }
 
 export function clearForLogging(path: string, type: Type): string {
-    if (type instanceof TypeReference) {
-        return clearForLogging(path, type.type);
-    } else if (type instanceof OptionalType) {
-        const code = clearForLogging(path, type.base);
-        if (code)
-            return `if (${path} !== null && ${path} !== undefined) { ${code} }`;
-        else
-            return "";
-    } else if (type instanceof ArrayType) {
-        const code = clearForLogging("el", type.base);
-        if (code)
-            return `for (const el of ${path}) { ${code} }`;
-        else
-            return "";
-    } else if (type instanceof StructType) {
-        const codes: string[] = [];
-        for (const field of type.fields) {
-            if (field.secret) {
-                codes.push(`${path}.${field.name} = "<secret>";`);
-            } else {
-                const code = clearForLogging(`${path}.${field.name}`, field.type);
-                if (code)
-                    codes.push(code);
-            }
+    switch (type.constructor.name) {
+        case "TypeReference":
+            return clearForLogging(path, (type as TypeReference).type);
+
+        case "OptionalType": {
+            const code = clearForLogging(path, (type as OptionalType).base);
+            if (code) return `if (${path} !== null && ${path} !== undefined) { ${code} }`;
+            else return "";
         }
-        return codes.join(" ");
-    } else {
-        return "";
+
+        case "ArrayType": {
+            const code = clearForLogging("el", (type as ArrayType).base);
+            if (code) return `for (const el of ${path}) { ${code} }`;
+            else return "";
+        }
+
+        case "StructType":
+            const codes: string[] = [];
+            for (const field of (type as StructType).fields) {
+                if (field.secret) {
+                    codes.push(`${path}.${field.name} = "<secret>";`);
+                } else {
+                    const code = clearForLogging(`${path}.${field.name}`, field.type);
+                    if (code) codes.push(code);
+                }
+            }
+            return codes.join(" ");
+
+        default:
+            return "";
     }
 }
 
