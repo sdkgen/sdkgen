@@ -1,5 +1,5 @@
 import { AstRoot, astToJson } from "@sdkgen/parser";
-import { generateTypescriptEnum, generateTypescriptInterface, generateTypescriptTypeName } from "./helpers";
+import { generateTypescriptEnum, generateTypescriptErrorClass, generateTypescriptInterface, generateTypescriptTypeName } from "./helpers";
 
 interface Options {
 }
@@ -18,6 +18,11 @@ export function generateBrowserClientSource(ast: AstRoot, options: Options) {
 
     for (const type of ast.structTypes) {
         code += generateTypescriptInterface(type);
+        code += "\n";
+    }
+
+    for (const error of ast.errors) {
+        code += generateTypescriptErrorClass(error);
         code += "\n";
     }
 
