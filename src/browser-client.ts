@@ -28,13 +28,15 @@ export function generateBrowserClientSource(ast: AstRoot, options: Options) {
 
     code += `export class ApiClient extends SdkgenHttpClient {
     constructor(baseUrl: string) {
-        super(baseUrl, astJson);
+        super(baseUrl, astJson, errClasses);
     }
 ${ast.operations.map(op => `
     ${op.prettyName}(args: {${op.args.map(arg =>
         `${arg.name}${arg.type.name.endsWith("?") ? "?" : ""}: ${generateTypescriptTypeName(arg.type)}`
     ).join(", ")}}): Promise<${generateTypescriptTypeName(op.returnType)}> { return this.makeRequest("${op.prettyName}", args); }`).join("")}
 }\n\n`;
+
+    code += `const errClasses = {\n${ast.errors.map(err => `    ${err},\n`)}};\n\n`;
 
     code += `const astJson = ${JSON.stringify(astToJson(ast), null, 4).replace(/"(\w+)":/g, '$1:')}`;
 
