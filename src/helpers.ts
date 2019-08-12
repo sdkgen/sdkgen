@@ -10,6 +10,15 @@ export function generateTypescriptEnum(type: EnumType) {
     return `export type ${type.name} = ${type.values.map(x => `"${x}"`).join(" | ")};\n`;
 }
 
+export function generateTypescriptErrorClass(name: string) {
+    return `export class ${name} extends Error {
+    _type = "${name}";
+    constructor(public _msg: string) {
+        super(_msg ? "${name}: " + _msg : "${name}");
+    }
+}\n`;
+}
+
 export function clearForLogging(path: string, type: Type): string {
     switch (type.constructor.name) {
         case "TypeReference":

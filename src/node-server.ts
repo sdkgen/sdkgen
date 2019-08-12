@@ -1,5 +1,5 @@
 import { AstRoot, astToJson } from "@sdkgen/parser";
-import { generateTypescriptEnum, generateTypescriptInterface, generateTypescriptTypeName } from "./helpers";
+import { generateTypescriptEnum, generateTypescriptErrorClass, generateTypescriptInterface, generateTypescriptTypeName } from "./helpers";
 
 interface Options {
 }
@@ -21,6 +21,11 @@ export function generateNodeServerSource(ast: AstRoot, options: Options) {
         code += "\n";
     }
 
+    for (const error of ast.errors) {
+        code += generateTypescriptErrorClass(error);
+        code += "\n";
+    }
+
     code += `class ApiConfig extends BaseApiConfig {
     fn: {${
         ast.operations.map(op => `
@@ -28,6 +33,10 @@ export function generateNodeServerSource(ast: AstRoot, options: Options) {
             `${arg.name}: ${generateTypescriptTypeName(arg.type)}`
         ).join(", ")}}) => Promise<${generateTypescriptTypeName(op.returnType)}>`).join("")}
     } = {}
+
+    err = {${ast.errors.map(err => `
+        ${err}: (message: string = "") => { throw new ${err}(message); }`).join(",")}
+    }
 
     astJson = ${JSON.stringify(astToJson(ast), null, 4).replace(/"(\w+)":/g, '$1:').replace(/\n/g, "\n    ")}
 }
