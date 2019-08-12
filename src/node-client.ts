@@ -1,5 +1,5 @@
 import { AstRoot, astToJson } from "@sdkgen/parser";
-import { generateTypescriptEnum, generateTypescriptInterface, generateTypescriptTypeName } from "./helpers";
+import { generateTypescriptEnum, generateTypescriptErrorClass, generateTypescriptInterface, generateTypescriptTypeName } from "./helpers";
 
 interface Options {
 }
