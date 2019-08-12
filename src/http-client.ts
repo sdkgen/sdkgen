@@ -6,11 +6,15 @@ import { hostname } from "os";
 import { Context } from "./context";
 import { decode, encode } from "./encode-decode";
 
+interface ErrClasses {
+    [className: string]: typeof Error
+}
+
 export class SdkgenHttpClient {
     private baseUrl: URL
     extra = new Map<string, any>();
 
-    constructor(baseUrl: string, private astJson: AstJson) {
+    constructor(baseUrl: string, private astJson: AstJson, private errClasses: ErrClasses) {
         this.baseUrl = new URL(baseUrl);
     }
 
@@ -71,6 +75,12 @@ export class SdkgenHttpClient {
 
             req.write(JSON.stringify(request));
             req.end();
+        }).catch(err => {
+            const errClass = this.errClasses[err.type];
+            if (errClass)
+                throw new errClass(err.message);
+            else
+                throw err;
         });
 
         return decode(this.astJson.typeTable, `${functionName}.ret`, func.ret, encodedRet);
