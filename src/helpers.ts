@@ -12,9 +12,11 @@ export function generateTypescriptEnum(type: EnumType) {
 
 export function generateTypescriptErrorClass(name: string) {
     return `export class ${name} extends Error {
-    _type = "${name}";
-    constructor(public _msg: string) {
-        super(_msg ? "${name}: " + _msg : "${name}");
+    type = "${name}";
+    message: string;
+    constructor(message?: string) {
+        super("${name}" + (message ? ": " + message : "");
+        this.message = message || "";
     }
 }\n`;
 }

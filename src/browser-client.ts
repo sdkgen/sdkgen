@@ -36,7 +36,7 @@ ${ast.operations.map(op => `
     ).join(", ")}}): Promise<${generateTypescriptTypeName(op.returnType)}> { return this.makeRequest("${op.prettyName}", args); }`).join("")}
 }\n\n`;
 
-    code += `const errClasses = {\n${ast.errors.map(err => `    ${err},\n`)}};\n\n`;
+    code += `const errClasses = {\n${ast.errors.map(err => `    ${err}`).join(",\n")}\n};\n\n`;
 
     code += `const astJson = ${JSON.stringify(astToJson(ast), null, 4).replace(/"(\w+)":/g, '$1:')}`;
 
