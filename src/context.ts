@@ -1,3 +1,4 @@
+import { IncomingHttpHeaders } from "http";
 
 export interface Context {
     ip: string
@@ -10,6 +11,7 @@ export interface ContextRequest {
     id: string
     name: string
     args: any
+    headers: IncomingHttpHeaders
     deviceInfo: {
         id: string
         type: string

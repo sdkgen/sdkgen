@@ -294,6 +294,7 @@ export class SdkgenHttpServer extends SdkgenServer {
             args: parsed.args,
             name: parsed.name,
             extra: {},
+            headers: req.headers,
             deviceInfo: {
                 id: parsed.device.id || parsed.id,
                 language: parsed.device.language,
@@ -332,6 +333,7 @@ export class SdkgenHttpServer extends SdkgenServer {
                 sessionId: parsed.sessionId,
                 partnerId: parsed.partnerId,
             },
+            headers: req.headers,
             deviceInfo: {
                 id: parsed.deviceId,
                 language: parsed.info.language,
@@ -364,6 +366,8 @@ export class SdkgenHttpServer extends SdkgenServer {
             }
         }, "root", "Request", JSON.parse(body));
 
+        req.headers
+
         return {
             version: 3,
             id: parsed.requestId,
@@ -372,6 +376,7 @@ export class SdkgenHttpServer extends SdkgenServer {
             extra: {
                 ...parsed.extra
             },
+            headers: req.headers,
             deviceInfo: {
                 id: parsed.deviceInfo.id,
                 language: parsed.deviceInfo.language,

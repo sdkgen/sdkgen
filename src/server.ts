@@ -21,10 +21,10 @@ export abstract class BaseApiConfig {
         onRequestEnd: (ctx: Context, reply: ContextReply) => Promise<null | ContextReply>
         onHealthCheck: () => Promise<boolean>
     } = {
-            onRequestStart: async () => null,
-            onRequestEnd: async () => null,
-            onHealthCheck: async () => true
-        }
+        onRequestStart: async () => null,
+        onRequestEnd: async () => null,
+        onHealthCheck: async () => true
+    }
 }
 
 export abstract class SdkgenServer {
