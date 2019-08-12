@@ -1,6 +1,10 @@
 import { AstJson } from "./ast";
 import { decode, encode } from "./encode-decode";
 
+interface ErrClasses {
+    [className: string]: typeof Error
+}
+
 function randomBytesHex(len: number) {
     let hex = "";
     for (let i = 0; i < 2 * len; ++i)
@@ -29,7 +33,7 @@ export class SdkgenHttpClient {
     successHook: (result: any, name: string, args: any) => void = () => {};
     errorHook: (result: any, name: string, args: any) => void = () => {};
 
-    constructor(baseUrl: string, private astJson: AstJson) {
+    constructor(baseUrl: string, private astJson: AstJson, private errClasses: ErrClasses) {
         this.baseUrl = baseUrl;
     }
 
@@ -86,6 +90,12 @@ export class SdkgenHttpClient {
                 }
             };
             req.send(JSON.stringify(request));
+        }).catch(err => {
+            const errClass = this.errClasses[err.type];
+            if (errClass)
+                throw new errClass(err.message);
+            else
+                throw err;
         });
 
         const ret = decode(this.astJson.typeTable, `${functionName}.ret`, func.ret, encodedRet);
