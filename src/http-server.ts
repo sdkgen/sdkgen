@@ -124,8 +124,8 @@ export class SdkgenHttpServer extends SdkgenServer {
             res.end();
         });
 
-        if (this.dynamicCorsOrigin && req.headers.host) {
-            res.setHeader("Access-Control-Allow-Origin", req.headers.host);
+        if (this.dynamicCorsOrigin && req.headers.referer) {
+            res.setHeader("Access-Control-Allow-Origin", req.headers.referer);
         }
 
         for (const [header, value] of this.headers) {
