@@ -15,7 +15,7 @@ export function generateTypescriptErrorClass(name: string) {
     type = "${name}";
     message: string;
     constructor(message?: string) {
-        super("${name}" + (message ? ": " + message : "");
+        super("${name}" + (message ? ": " + message : ""));
         this.message = message || "";
     }
 }\n`;
