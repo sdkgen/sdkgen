@@ -1,4 +1,5 @@
-import { generateNodeServerSource, generateNodeClientSource, generateBrowserClientSource } from "@sdkgen/typescript-generator";
+import { generateBrowserClientSource, generateNodeClientSource, generateNodeServerSource } from "@sdkgen/typescript-generator";
+import { randomBytes } from "crypto";
 import { createServer, IncomingMessage, Server, ServerResponse } from "http";
 import { hostname } from "os";
 import { getClientIp } from "request-ip";
@@ -6,7 +7,6 @@ import { parse as parseUrl } from "url";
 import { Context, ContextReply, ContextRequest } from "./context";
 import { decode } from "./encode-decode";
 import { BaseApiConfig, SdkgenServer } from "./server";
-import { randomBytes } from "crypto";
 
 export class SdkgenHttpServer extends SdkgenServer {
     public httpServer: Server;
@@ -237,8 +237,8 @@ export class SdkgenHttpServer extends SdkgenServer {
         } catch (e) {
             reply = {
                 error: {
-                    type: e._type || "Fatal",
-                    message: e._msg || e.toString()
+                    type: e.type || "Fatal",
+                    message: e.message || e.toString()
                 }
             };
         }
