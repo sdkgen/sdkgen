@@ -2,7 +2,7 @@ import { AstJson } from "./ast";
 import { decode, encode } from "./encode-decode";
 
 interface ErrClasses {
-    [className: string]: typeof Error
+    [className: string]: any
 }
 
 function randomBytesHex(len: number) {
