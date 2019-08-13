@@ -18,6 +18,12 @@ export function generateTypescriptErrorClass(name: string) {
         super("${name}" + (message ? ": " + message : ""));
         this.message = message || "";
     }
+    public toJSON() {
+        return {
+            type: this.type,
+            message: this.message
+        };
+    }
 }\n`;
 }
 
