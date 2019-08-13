@@ -17,9 +17,6 @@ api.fn.getUser = async (ctx: Context, { id }: { id: string }) => {
     }
 };
 
-const server = new SdkgenHttpServer(api);
-server.listen();
-
 // execSync(`../../cubos/sdkgen/sdkgen ${__dirname + "/api.sdkgen"} -o ${__dirname + "/legacyNodeClient.ts"} -t typescript_nodeclient`);
 const { ApiClient: NodeLegacyApiClient } = require(__dirname + "/legacyNodeClient.ts");
 const nodeLegacyClient = new NodeLegacyApiClient("http://localhost:8000");
@@ -29,16 +26,22 @@ const { ApiClient: NodeApiClient } = require(__dirname + "/nodeClient.ts");
 unlinkSync(__dirname + "/nodeClient.ts");
 const nodeClient = new NodeApiClient("http://localhost:8000");
 
+const server = new SdkgenHttpServer(api);
+
 describe("Simple API", () => {
+    beforeAll(() => {
+        server.listen();
+    });
+
+    afterAll(() => {
+        server.close();
+    });
+
     test("Healthcheck on any GET route", async () => {
         expect(await axios.get("http://localhost:8000/")).toMatchObject({data: {ok: true}});
         expect(await axios.get("http://localhost:8000/egesg")).toMatchObject({data: {ok: true}});
         expect(await axios.get("http://localhost:8000/erh/eh/erh/erh/er")).toMatchObject({data: {ok: true}});
         expect(await axios.get("http://localhost:8000/oqpfnaewilfewigbwugbhlbiuas")).toMatchObject({data: {ok: true}});
-    });
-
-    afterAll(() => {
-        server.close();
     });
 
     test("Can make a call from legacy node client", async () => {

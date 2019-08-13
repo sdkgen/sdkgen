@@ -7,7 +7,7 @@ import { Context } from "./context";
 import { decode, encode } from "./encode-decode";
 
 interface ErrClasses {
-    [className: string]: typeof Error
+    [className: string]: any
 }
 
 export class SdkgenHttpClient {
