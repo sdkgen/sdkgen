@@ -6,6 +6,7 @@ import { parse as parseUrl } from "url";
 import { Context, ContextReply, ContextRequest } from "./context";
 import { decode } from "./encode-decode";
 import { BaseApiConfig, SdkgenServer } from "./server";
+import { randomBytes } from "crypto";
 
 export class SdkgenHttpServer extends SdkgenServer {
     public httpServer: Server;
@@ -351,41 +352,42 @@ export class SdkgenHttpServer extends SdkgenServer {
     private parseRequestV3(req: IncomingMessage, body: string): ContextRequest {
         const parsed = decode({
             Request: {
-                requestId: "string",
+                requestId: "string?",
                 name: "string",
                 args: "any",
-                extra: "any",
-                deviceInfo: {
-                    id: "string",
-                    type: "string",
-                    browserUserAgent: "string?",
-                    timezone: "string?",
-                    version: "string?",
-                    language: "string?",
-                },
+                extra: "any?",
+                deviceInfo: "DeviceInfo?",
+            },
+            DeviceInfo: {
+                id: "string?",
+                type: "string?",
+                browserUserAgent: "string?",
+                timezone: "string?",
+                version: "string?",
+                language: "string?",
             }
         }, "root", "Request", JSON.parse(body));
 
-        req.headers
+        const deviceInfo = parsed.deviceInfo || {};
 
         return {
             version: 3,
-            id: parsed.requestId,
+            id: parsed.requestId || randomBytes(16).toString("hex"),
             args: parsed.args,
             name: parsed.name,
-            extra: {
+            extra: parsed.extra ? {
                 ...parsed.extra
-            },
+            } : {},
             headers: req.headers,
             deviceInfo: {
-                id: parsed.deviceInfo.id,
-                language: parsed.deviceInfo.language,
+                id: deviceInfo.id || randomBytes(16).toString("hex"),
+                language: deviceInfo.language || null,
                 platform: {
-                    browserUserAgent: parsed.deviceInfo.browserUserAgent || null,
+                    browserUserAgent: deviceInfo.browserUserAgent || null,
                 },
-                timezone: parsed.deviceInfo.timezone,
-                type: parsed.deviceInfo.type,
-                version: parsed.deviceInfo.version,
+                timezone: deviceInfo.timezone || null,
+                type: deviceInfo.type || "api",
+                version: deviceInfo.version || null,
             }
         };
     }
