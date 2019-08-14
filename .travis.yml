@@ -9,9 +9,6 @@ script:
 - dartfmt -n --fix .
 deploy:
   provider: script
-  script:
-  - mkdir -p ~/.pub-cache
-  - echo $PUB_CREDENTIALS > ~/.pub-cache/credentials.json
-  - pub publish -f
+  script: "bash -c 'mkdir -p ~/.pub-cache; echo $PUB_CREDENTIALS > ~/.pub-cache/credentials.json; pub publish -f'"
   on:
     tags: true
