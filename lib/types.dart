@@ -30,9 +30,9 @@ class FunctionDescription {
 }
 
 class LatLng {
-  double lat
-  double lng
-  LatLng(this.lat, this.lng)
+  double lat;
+  double lng;
+  LatLng(this.lat, this.lng);
 }
 
 const simpleStringTypes = [
