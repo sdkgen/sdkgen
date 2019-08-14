@@ -1,0 +1,78 @@
+import { AstRoot } from "@sdkgen/parser";
+import { generateClass, generateEnum, generateErrorClass, generateTypeName } from "./helpers";
+
+interface Options {
+}
+
+export function generateDartClientSource(ast: AstRoot, options: Options) {
+    let code = "";
+
+    code += `import 'package:sdkgen_runtime/types.dart';
+import 'package:sdkgen_runtime/http_client.dart';
+
+`;
+
+    for (const type of ast.enumTypes) {
+        code += generateEnum(type);
+        code += "\n";
+    }
+
+    for (const type of ast.structTypes) {
+        code += generateClass(type);
+        code += "\n";
+    }
+
+    for (const error of ast.errors) {
+        code += generateErrorClass(error);
+        code += "\n";
+    }
+
+    code += `class ApiClient extends SdkgenHttpClient {
+  ApiClient(baseUrl) : super(baseUrl, _typeTable, _fnTable, _errTable);
+${ast.operations.map(op => `
+  ${op.prettyName}(${op.args.length === 0 ? "" : `{${op.args.map(arg => `${generateTypeName(arg.type)} ${arg.name}`).join(", ")}}`}) { return makeRequest("${op.prettyName}", {${op.args.map(arg => `"${arg.name}": ${arg.name}`).join(", ")}}); }`
+).join("")}
+}\n\n`;
+
+    code += `var _typeTable = {\n`
+
+    for (const type of ast.structTypes) {
+        code += `  "${type.name}": StructTypeDescription(${type.name}, {\n`;
+        for (const field of type.fields) {
+            code += `    "${field.name}": "${field.type.name}",\n`;
+        }
+        code += `  }, (Map fields) => ${type.name}()\n`;
+        for (const field of type.fields) {
+            code += `    ..${field.name} = fields["${field.name}"]\n`;
+        }
+        code += `  , (${type.name} obj) => ({\n`;
+        for (const field of type.fields) {
+            code += `    "${field.name}": obj.${field.name},\n`;
+        }
+        code += "  })),\n";
+    }
+
+    for (const type of ast.enumTypes) {
+        code += `  "${type.name}": EnumTypeDescription(${type.name}, ${type.name}.values, [\n    ${type.values.map(x => `"${x}"`).join(",\n    ")}\n  ]),\n`;
+    }
+
+    code += `};\n\n`
+
+    code += `var _fnTable = {\n`
+    for (const op of ast.operations) {
+        code += `  "${op.prettyName}": FunctionDescription("${op.returnType.name}", {\n`;
+        for (const arg of op.args) {
+            code += `    "${arg.name}": "${arg.type.name}",\n`
+        }
+        code += `  }),\n`;
+    }
+    code += `};\n\n`
+
+    code += `var _errTable = {\n`
+    for (const error of ast.errors) {
+        code += `  "${error}": (msg) => ${error}(msg),\n`;
+    }
+    code += `};\n`
+
+    return code;
+}
