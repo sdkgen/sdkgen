@@ -1,3 +1,4 @@
+import { generateDartClientSource } from "@sdkgen/dart-generator";
 import { generateBrowserClientSource, generateNodeClientSource, generateNodeServerSource } from "@sdkgen/typescript-generator";
 import { randomBytes } from "crypto";
 import { createServer, IncomingMessage, Server, ServerResponse } from "http";
@@ -19,7 +20,7 @@ export class SdkgenHttpServer extends SdkgenServer {
         this.httpServer = createServer(this.handleRequest.bind(this));
         this.enableCors();
 
-        this.addHttpHandler("GET", "/targets/typescript/node/api.ts", (req, res) => {
+        this.addHttpHandler("GET", "/targets/node/api.ts", (req, res) => {
             try {
                 res.setHeader("Content-Type", "application/octet-stream");
                 res.write(generateNodeServerSource(apiConfig.ast, {}));
@@ -30,7 +31,7 @@ export class SdkgenHttpServer extends SdkgenServer {
             res.end();
         });
 
-        this.addHttpHandler("GET", "/targets/typescript/node/client.ts", (req, res) => {
+        this.addHttpHandler("GET", "/targets/node/client.ts", (req, res) => {
             try {
                 res.setHeader("Content-Type", "application/octet-stream");
                 res.write(generateNodeClientSource(apiConfig.ast, {}));
@@ -41,10 +42,21 @@ export class SdkgenHttpServer extends SdkgenServer {
             res.end();
         });
 
-        this.addHttpHandler("GET", "/targets/typescript/web/client.ts", (req, res) => {
+        this.addHttpHandler("GET", "/targets/web/client.ts", (req, res) => {
             try {
                 res.setHeader("Content-Type", "application/octet-stream");
                 res.write(generateBrowserClientSource(apiConfig.ast, {}));
+            } catch (e) {
+                res.statusCode = 500;
+                res.write(e.toString());
+            }
+            res.end();
+        });
+
+        this.addHttpHandler("GET", "/targets/flutter/client.dart", (req, res) => {
+            try {
+                res.setHeader("Content-Type", "application/octet-stream");
+                res.write(generateDartClientSource(apiConfig.ast, {}));
             } catch (e) {
                 res.statusCode = 500;
                 res.write(e.toString());

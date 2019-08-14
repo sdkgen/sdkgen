@@ -47,8 +47,9 @@
     ]
   },
   "dependencies": {
-    "@sdkgen/parser": "^1.0.10",
-    "@sdkgen/typescript-generator": "^1.0.17",
+    "@sdkgen/dart-generator": "^1.0.2",
+    "@sdkgen/parser": "^1.0.11",
+    "@sdkgen/typescript-generator": "^1.0.18",
     "request-ip": "^2.1.3"
   }
 }
