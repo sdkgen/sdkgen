@@ -1,4 +1,4 @@
-get user(id: string): User
+fn getUser(id: string): User
 
 type User {
     name: string
