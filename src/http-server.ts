@@ -6,7 +6,7 @@ import { hostname } from "os";
 import { getClientIp } from "request-ip";
 import { parse as parseUrl } from "url";
 import { Context, ContextReply, ContextRequest } from "./context";
-import { decode } from "./encode-decode";
+import { decode, encode } from "./encode-decode";
 import { BaseApiConfig, SdkgenServer } from "./server";
 
 export class SdkgenHttpServer extends SdkgenServer {
@@ -243,7 +243,7 @@ export class SdkgenHttpServer extends SdkgenServer {
             if (!reply) {
                 const args = decode(this.apiConfig.astJson.typeTable, `${ctx.request.name}.args`, functionDescription.args, ctx.request.args);
                 const encodedRet = await functionImplementation(ctx, args);
-                const ret = decode(this.apiConfig.astJson.typeTable, `${ctx.request.name}.ret`, functionDescription.ret, encodedRet);
+                const ret = encode(this.apiConfig.astJson.typeTable, `${ctx.request.name}.ret`, functionDescription.ret, encodedRet);
                 reply = { result: ret };
             }
         } catch (e) {

@@ -88,7 +88,7 @@ export function encode(typeTable: TypeTable, path: string, type: TypeDescription
         if (value === null || value === undefined)
             return null;
         else
-            return encode(typeTable, path, type.slice(0, type.length-1), value);
+            return encode(typeTable, path, type.slice(0, type.length - 1), value);
     } else if (type.endsWith("[]")) {
         if (!Array.isArray(value)) {
             throw new Error(`Invalid Type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);

@@ -3,6 +3,7 @@ import { generateNodeClientSource, generateNodeServerSource } from "@sdkgen/type
 import axios from "axios";
 import { unlinkSync, writeFileSync } from "fs";
 import { Context, SdkgenHttpServer } from "../../src";
+import { randomBytes } from "crypto";
 
 writeFileSync(__dirname + "/api.ts", generateNodeServerSource(new Parser(__dirname + "/api.sdkgen").parse(), {}).replace("@sdkgen/node-runtime", "../../src"));
 const { api } = require(__dirname + "/api.ts");
@@ -14,7 +15,12 @@ api.fn.getUser = async (ctx: Context, { id }: { id: string }) => {
     return {
         age: 1,
         name: id
-    }
+    };
+};
+
+api.fn.identity = async (ctx: Context, { types }: { types: any }) => {
+    lastCallCtx = ctx;
+    return types;
 };
 
 // execSync(`../../cubos/sdkgen/sdkgen ${__dirname + "/api.sdkgen"} -o ${__dirname + "/legacyNodeClient.ts"} -t typescript_nodeclient`);
@@ -56,5 +62,31 @@ describe("Simple API", () => {
         expect(await nodeClient.getUser(null, {id: "5hdr"})).toEqual({ age: 1, name: "5hdr" });
 
         expect(lastCallCtx.request).toMatchObject({ name: "getUser", deviceInfo: { type: "node" } });
+    });
+
+    test("Can process all types as identity", async () => {
+        const types = {
+            int: -25,
+            uint: 243,
+            float: 22235.6,
+            string: "efvregare",
+            uuid: "f84c4d20-eed8-4004-b236-74aaa71fbeca",
+            bool: true,
+            any: [{a: 23, b: "odcbu"}],
+            hex: "f84c4d20",
+            base64: "SGVsbG8K",
+            money: 356,
+            latlng: {lat: 24.26, lng: -123.1346},
+            enum: "aa",
+            struct: {aa: 42},
+            optional1: null,
+            optional2: 2525,
+            array: [1, 2, 3],
+            arrayOfOptionals: [1, null, 3],
+            bytes: randomBytes(23),
+            date: new Date(2019, 12, 3),
+            datetime: new Date()
+        };
+        expect(await nodeClient.identity(null, { types })).toEqual(types);
     });
 });
