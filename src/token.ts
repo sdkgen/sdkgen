@@ -66,7 +66,7 @@ export class GetKeywordToken extends Token {
 
 export class FunctionKeywordToken extends Token {
     maybeAsIdentifier() {
-        return new IdentifierToken("function");
+        return new IdentifierToken(this.value);
     }
 }
 

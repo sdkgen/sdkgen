@@ -11,7 +11,7 @@ export class Lexer {
 
     public static readonly KEYWORDS = new Set([
         ...Lexer.PRIMITIVES,
-        "error", "enum", "type", "import", "get", "function", "true", "false"
+        "error", "enum", "type", "import", "get", "function", "fn", "true", "false"
     ]);
 
     private startPos = 0;
@@ -212,7 +212,10 @@ export class Lexer {
                             token = new GetKeywordToken;
                             break;
                         case "function":
-                            token = new FunctionKeywordToken;
+                            token = new FunctionKeywordToken("function");
+                            break;
+                        case "fn":
+                            token = new FunctionKeywordToken("fn");
                             break;
                         case "true":
                             token = new TrueKeywordToken;

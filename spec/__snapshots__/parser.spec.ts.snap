@@ -1078,6 +1078,83 @@ AstRoot {
 }
 `;
 
+exports[`Parser handles 'fn' on the name of a field 1`] = `
+AstRoot {
+  "enumTypes": Array [
+    EnumType {
+      "name": "ErrorType",
+      "values": Array [
+        "Fatal",
+        "Connection",
+      ],
+    },
+  ],
+  "errors": Array [
+    "Fatal",
+    "Connection",
+  ],
+  "operations": Array [
+    FunctionOperation {
+      "args": Array [],
+      "name": "ping",
+      "returnType": StringPrimitiveType {
+        "name": "string",
+      },
+    },
+  ],
+  "options": Options {
+    "retryRequest": true,
+    "strict": false,
+    "syntheticDefaultImports": true,
+    "url": "",
+    "useRethink": true,
+  },
+  "structTypes": Array [
+    StructType {
+      "fields": Array [
+        Field {
+          "name": "fn",
+          "secret": false,
+          "type": IntPrimitiveType {
+            "name": "int",
+          },
+        },
+      ],
+      "name": "Foo",
+      "spreads": Array [],
+    },
+  ],
+  "typeDefinitions": Array [
+    TypeDefinition {
+      "name": "Foo",
+      "type": StructType {
+        "fields": Array [
+          Field {
+            "name": "fn",
+            "secret": false,
+            "type": IntPrimitiveType {
+              "name": "int",
+            },
+          },
+        ],
+        "name": "Foo",
+        "spreads": Array [],
+      },
+    },
+    TypeDefinition {
+      "name": "ErrorType",
+      "type": EnumType {
+        "name": "ErrorType",
+        "values": Array [
+          "Fatal",
+          "Connection",
+        ],
+      },
+    },
+  ],
+}
+`;
+
 exports[`Parser handles 'function' on the name of a field 1`] = `
 AstRoot {
   "enumTypes": Array [

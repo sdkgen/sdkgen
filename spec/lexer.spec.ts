@@ -60,7 +60,11 @@ describe(Lexer, () => {
     ]);
 
     itLexes("function", [
-        new FunctionKeywordToken,
+        new FunctionKeywordToken("function"),
+    ]);
+
+    itLexes("fn", [
+        new FunctionKeywordToken("fn"),
     ]);
 
     itLexes("enuma", [
@@ -71,7 +75,7 @@ describe(Lexer, () => {
         new IdentifierToken("errorh"),
     ]);
 
-    for (const kw of ["enum", "type", "error", "import", "get", "function", "true", "false"]) {
+    for (const kw of ["enum", "type", "error", "import", "get", "function", "fn", "true", "false"]) {
         itLexes(kw, [
             new IdentifierToken(kw),
         ]);
