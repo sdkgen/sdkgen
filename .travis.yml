@@ -1,0 +1,7 @@
+language: dart
+dart:
+- stable
+- dev
+dart_task:
+- dartanalyzer
+- dartfmt
