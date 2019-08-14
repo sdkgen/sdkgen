@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { generateDartClientSource } from "@sdkgen/dart-generator";
 import { Parser } from "@sdkgen/parser";
 import { generateBrowserClientSource, generateNodeClientSource, generateNodeServerSource } from "@sdkgen/typescript-generator";
 import commandLineArgs from "command-line-args";
@@ -66,6 +67,10 @@ async function main() {
         }
         case "typescript_web": {
             writeFileSync(options.output, generateBrowserClientSource(ast, {}));
+            break;
+        }
+        case "flutter": {
+            writeFileSync(options.output, generateDartClientSource(ast, {}));
             break;
         }
         default: {
