@@ -1,0 +1,184 @@
+{
+	"name": "sdkgen",
+	"patterns": [
+		{
+			"include": "#any"
+		}, {
+			"name": "meta.variable",
+			"begin": "(\\$[a-zA-Z0-9]+) =",
+			"beginCaptures": {
+				"1": {"name": "variable.other"}
+			},
+			"end": "\n",
+			"patterns": [
+				{
+					"include": "#literal"
+				}
+			]
+		}, {
+			"name": "meta.import",
+			"begin": "(import) ",
+			"beginCaptures": {
+				"1": {"name": "keyword.control"}
+			},
+			"end": "\n",
+			"patterns": [
+				{
+					"include": "#literal"
+				}
+			]
+		}, {
+			"name": "meta.error",
+			"match": "(error) ([A-Z][a-zA-Z0-9]*)",
+			"captures": {
+				"1": {"name": "keyword.control"},
+				"2": {"name": "entity.name.type"}
+			}
+		}, {
+			"name": "meta.type",
+			"begin": "(type) ([A-Z][a-zA-Z0-9]*) ",
+			"beginCaptures": {
+				"1": {"name": "keyword.control"},
+				"2": {"name": "entity.name.type"}
+			},
+			"end": "\n",
+			"patterns": [
+				{
+					"include": "#type"
+				}
+			]
+		}, {
+			"name": "meta.operation",
+			"begin": "(get|function) ([a-zA-Z0-9]+)",
+			"beginCaptures": {
+				"1": {"name": "keyword.control"},
+				"2": {"name": "entity.name.function"}
+			},
+			"end": "\n",
+			"patterns": [
+				{
+					"name": "meta.operation.args",
+					"begin": "\\(",
+					"end": "\\)",
+					"patterns": [
+						{
+							"include": "#fields"
+						}
+					]
+				}, {
+					"include": "#type"
+				}
+			]
+		}
+	],
+	"repository": {
+		"any": {
+			"patterns": [
+				{
+					"name": "comment.line",
+					"match": "//(.*?)\n"
+				},
+				{
+					"name": "comment.block",
+					"begin": "/\\*",
+					"end": "\\*/"
+				}
+			]
+		},
+		"fields": {
+			"patterns": [
+				{
+					"include": "#any"
+				}, {
+					"name": "meta.field",
+					"begin": "(\\w+):",
+					"beginCaptures": {
+						"1": {"name": "variable.parameter"}
+					},
+					"end": "(?=\n|,|;|\\)|\\})",
+					"patterns": [
+						{
+							"include": "#type"
+						}
+					]
+				}, {
+					"name": "meta.spread",
+					"match": "(\\.\\.\\.)\\s?([A-Z][a-zA-Z0-9]*)",
+					"captures": {
+						"1": {"name": "markup.bold"},
+						"2": {"name": "entity.name.type"}
+					}
+				}
+			]
+		},
+		"type": {
+			"patterns": [
+				{
+					"include": "#any"
+				}, {
+					"name": "keyword.type",
+					"match": "\\b(bool|int|uint|float|string|datetime|date|bytes|void|money|cpf|cnpj|email|phone|cep|latlng|url|uuid|hex|base64|safehtml|xml)\\b"
+				}, {
+					"name": "markup.bold",
+					"match": "(\\?|\\[\\])"
+				}, {
+					"name": "entity.name.type",
+					"match": "\\b([A-Z][a-zA-Z0-9]*)\\b"
+				}, {
+					"name": "constant.numeric",
+					"match": "(![a-zA-Z0-9]+)\\b"
+				}, {
+					"name": "meta.type",
+					"begin": "\\{",
+					"beginCaptures": {
+						"1": {"name": "keyword.control"},
+						"2": {"name": "entity.name.type"}
+					},
+					"end": "\\}",
+					"patterns": [
+						{
+							"include": "#fields"
+						}
+					]
+				}, {
+					"name": "meta.enum",
+					"begin": "(enum) \\{",
+					"beginCaptures": {
+						"1": {"name": "keyword.control"},
+						"2": {"name": "entity.name.type"}
+					},
+					"end": "\\}",
+					"patterns": [
+						{
+							"include": "#any"
+						}, {
+							"name": "variable.parameter",
+							"match": "(\\w+)"
+						}
+					]
+				}
+			]
+		},
+		"literal": {
+			"patterns": [
+				{
+					"include": "#any"
+				}, {
+					"name": "string.quoted.double.untitled",
+					"begin": "\"",
+					"end": "\"",
+					"patterns": [
+						{
+							"name": "constant.character.escape.untitled",
+							"match": "\\."
+						}
+					]
+				}, {
+					"name": "keyword.literal",
+					"match": "\\b(true|false)\\b"
+				}
+			]
+		}
+	},
+	"scopeName": "source.sdkgen"
+}
