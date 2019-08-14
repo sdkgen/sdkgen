@@ -63,21 +63,13 @@ export function clearForLogging(path: string, type: Type): string {
 
 export function generateTypescriptTypeName(type: Type): string {
     switch (type.constructor.name) {
-        case "StringPrimitiveType":
-            return "string";
-
         case "IntPrimitiveType":
-            return "number";
-
         case "UIntPrimitiveType":
-            return "number";
-
+        case "MoneyPrimitiveType":
         case "FloatPrimitiveType":
             return "number";
 
         case "DatePrimitiveType":
-            return "Date";
-
         case "DateTimePrimitiveType":
             return "Date";
 
@@ -87,44 +79,22 @@ export function generateTypescriptTypeName(type: Type): string {
         case "BytesPrimitiveType":
             return "Buffer";
 
-        case "MoneyPrimitiveType":
-            return "number";
-
+        case "StringPrimitiveType":
         case "CpfPrimitiveType":
-            return "string";
-
         case "CnpjPrimitiveType":
-            return "string";
-
         case "EmailPrimitiveType":
-            return "string";
-
         case "PhonePrimitiveType":
-            return "string";
-
         case "CepPrimitiveType":
+        case "UrlPrimitiveType":
+        case "UuidPrimitiveType":
+        case "HexPrimitiveType":
+        case "Base64PrimitiveType":
+        case "SafeHtmlPrimitiveType":
+        case "XmlPrimitiveType":
             return "string";
 
         case "LatLngPrimitiveType":
             return "{lat: number, lng: number}";
-
-        case "UrlPrimitiveType":
-            return "string";
-
-        case "UuidPrimitiveType":
-            return "string";
-
-        case "HexPrimitiveType":
-            return "string";
-
-        case "Base64PrimitiveType":
-            return "string";
-
-        case "SafeHtmlPrimitiveType":
-            return "string";
-
-        case "XmlPrimitiveType":
-            return "string";
 
         case "VoidPrimitiveType":
             return "void";
@@ -135,12 +105,16 @@ export function generateTypescriptTypeName(type: Type): string {
         case "OptionalType":
             return generateTypescriptTypeName((type as OptionalType).base) + " | null";
 
-        case "ArrayType":
-            return generateTypescriptTypeName((type as ArrayType).base) + "[]";
+        case "ArrayType": {
+            const base = (type as ArrayType).base;
+            const baseGen = generateTypescriptTypeName(base);
+            if (base.constructor.name === "OptionalType")
+                return `(${baseGen})[]`;
+            else
+                return `${baseGen}[]`;
+        }
 
         case "StructType":
-            return type.name;
-
         case "EnumType":
             return type.name;
 
