@@ -29,6 +29,12 @@ class FunctionDescription {
   FunctionDescription(this.ret, this.args);
 }
 
+class LatLng {
+  double lat
+  double lng
+  LatLng(this.lat, this.lng)
+}
+
 const simpleStringTypes = [
   "string",
   "cep",
