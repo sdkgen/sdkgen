@@ -5,3 +5,10 @@ dart:
 dart_task:
 - dartanalyzer
 - dartfmt
+deploy:
+  provider: script
+  script:
+    - echo $PUB_CREDENTIALS > ~/.pub-cache/credentials.json
+    - pub publish -f
+  on:
+    tags: true
