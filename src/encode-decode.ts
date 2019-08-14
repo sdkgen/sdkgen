@@ -154,7 +154,7 @@ export function decode(typeTable: TypeTable, path: string, type: TypeDescription
         }
         return Buffer.from(value, "base64");
     } else if (type === "date") {
-        if (typeof value !== "string" || !value.match(/^[0-9]{4}-[01][0-9]-[0123][0-9]/)) {
+        if (typeof value !== "string" || !value.match(/^[0-9]{4}-[01][0-9]-[0123][0-9]$/)) {
             throw new Error(`Invalid Type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
         }
         return new Date(parseInt(value.split("-")[0], 10), parseInt(value.split("-")[1], 10) - 1, parseInt(value.split("-")[2], 10));
