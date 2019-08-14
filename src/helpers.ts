@@ -129,6 +129,9 @@ export function generateTypescriptTypeName(type: Type): string {
         case "VoidPrimitiveType":
             return "void";
 
+        case "AnyPrimitiveType":
+            return "any";
+
         case "OptionalType":
             return generateTypescriptTypeName((type as OptionalType).base) + " | null";
 
