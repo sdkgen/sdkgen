@@ -2,13 +2,16 @@ language: dart
 dart:
 - stable
 - dev
-dart_task:
-- dartanalyzer
-- dartfmt
+install:
+- pub get
+script:
+- dartanalyzer .
+- dartfmt -n --fix .
 deploy:
   provider: script
   script:
-    - echo $PUB_CREDENTIALS > ~/.pub-cache/credentials.json
-    - pub publish -f
+  - mkdir -p ~/.pub-cache
+  - echo $PUB_CREDENTIALS > ~/.pub-cache/credentials.json
+  - pub publish -f
   on:
     tags: true

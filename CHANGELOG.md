@@ -1,3 +1,7 @@
+## 1.0.2
+
+- Configure Travis deploy
+
 ## 1.0.1
 
 - Fix Dart linter issues
