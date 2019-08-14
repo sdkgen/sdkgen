@@ -229,9 +229,9 @@ export class SdkgenHttpServer extends SdkgenServer {
         try {
             reply = await this.apiConfig.hook.onRequestStart(ctx);
             if (!reply) {
-                const args = decode(this.apiConfig.astJson.typeTable, `fn.${ctx.request.name}.args`, functionDescription.args, ctx.request.args);
+                const args = decode(this.apiConfig.astJson.typeTable, `${ctx.request.name}.args`, functionDescription.args, ctx.request.args);
                 const encodedRet = await functionImplementation(ctx, args);
-                const ret = decode(this.apiConfig.astJson.typeTable, `fn.${ctx.request.name}.ret`, functionDescription.ret, encodedRet);
+                const ret = decode(this.apiConfig.astJson.typeTable, `${ctx.request.name}.ret`, functionDescription.ret, encodedRet);
                 reply = { result: ret };
             }
         } catch (e) {
