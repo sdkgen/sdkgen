@@ -157,7 +157,7 @@ decode(Map<String, Object> typeTable, String path, Object type, Object value) {
     return enumType.enumValues[enumType.stringValues.indexOf(value)];
   } else if (type.runtimeType == StructTypeDescription) {
     var struct = type as StructTypeDescription;
-    if (value.runtimeType != struct.type) {
+    if (value.runtimeType != Map) {
       throw SdkgenTypeException(
           "Invalid Type at '$path', expected ${struct.type}, got ${jsonEncode(value)}");
     }
