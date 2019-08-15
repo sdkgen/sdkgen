@@ -1,5 +1,5 @@
 name: sdkgen_runtime
-version: 1.0.2
+version: 1.0.3
 author: Cubos <tech@cubos.io>
 homepage: https://github.com/sdkgen/dart-runtime
 description: Dart API client for sdkgen server. It must be used with a generated file, see docs.
