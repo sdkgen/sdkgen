@@ -68,62 +68,58 @@ simpleEncodeDecode(
 }
 
 encode(Map<String, Object> typeTable, String path, Object type, Object value) {
-  if (type.runtimeType == EnumTypeDescription) {
-    var enumType = type as EnumTypeDescription;
-    if (!enumType.enumValues.contains(value)) {
+  if (type is EnumTypeDescription) {
+    if (!type.enumValues.contains(value)) {
       throw SdkgenTypeException(
           "Invalid Type at '$path', expected ${jsonEncode(type)}, got ${jsonEncode(value)}");
     }
-    return enumType.stringValues[enumType.enumValues.indexOf(value)];
-  } else if (type.runtimeType == StructTypeDescription) {
-    var struct = type as StructTypeDescription;
-    if (value.runtimeType != struct.type) {
+    return type.stringValues[type.enumValues.indexOf(value)];
+  } else if (type is StructTypeDescription) {
+    if (value.runtimeType != type.type) {
       throw SdkgenTypeException(
-          "Invalid Type at '$path', expected ${struct.type}, got ${jsonEncode(value)}");
+          "Invalid Type at '$path', expected ${type.type}, got ${jsonEncode(value)}");
     }
-    var map =
-        Function.apply(struct.exportAsMap, [value]) as Map<String, Object>;
+    var map = Function.apply(type.exportAsMap, [value]) as Map<String, Object>;
     var resultMap = Map();
     map.forEach((fieldName, fieldValue) {
       resultMap[fieldName] = encode(
-          typeTable, "$path.$fieldName", struct.fields[fieldName], fieldValue);
+          typeTable, "$path.$fieldName", type.fields[fieldName], fieldValue);
     });
     return resultMap;
-  } else if (type.runtimeType == String) {
-    var typeString = type as String;
-    if (typeString.endsWith("?")) {
+  } else if (type is String) {
+    if (type.endsWith("?")) {
       if (value == null) {
         return null;
       } else {
-        return encode(typeTable, path,
-            typeString.substring(0, typeString.length - 1), value);
+        return encode(
+            typeTable, path, type.substring(0, type.length - 1), value);
       }
-    } else if (typeString.endsWith("[]")) {
-      if (value.runtimeType != List) {
+    } else if (type.endsWith("[]")) {
+      if (!(value is List)) {
         throw SdkgenTypeException(
             "Invalid Type at '$path', expected ${jsonEncode(type)}, got ${jsonEncode(value)}");
       }
       return (value as List).asMap().entries.map((entry) => encode(
           typeTable,
           "$path[${entry.key}]",
-          typeString.substring(0, typeString.length - 2),
+          type.substring(0, type.length - 2),
           entry.value));
     } else {
-      switch (typeString) {
+      switch (type) {
         case "bytes":
-          if (value.runtimeType != List) {
+          if (!(value is List)) {
             throw SdkgenTypeException(
                 "Invalid Type at '$path', expected ${jsonEncode(type)}, got ${jsonEncode(value)}");
           }
           return Base64Encoder().convert(value);
         case "date":
-          if (value.runtimeType != DateTime) {
+          if (!(value is DateTime)) {
             throw SdkgenTypeException(
                 "Invalid Type at '$path', expected ${jsonEncode(type)}, got ${jsonEncode(value)}");
           }
           return (value as DateTime).toIso8601String().split("T")[0];
         case "datetime":
-          if (value.runtimeType != DateTime) {
+          if (!(value is DateTime)) {
             throw SdkgenTypeException(
                 "Invalid Type at '$path', expected ${jsonEncode(type)}, got ${jsonEncode(value)}");
           }
@@ -132,10 +128,10 @@ encode(Map<String, Object> typeTable, String path, Object type, Object value) {
               .toIso8601String()
               .replaceAll("Z", "");
         default:
-          if (simpleTypes.contains(typeString)) {
+          if (simpleTypes.contains(type)) {
             return simpleEncodeDecode(typeTable, path, type, value);
-          } else if (typeTable.containsKey(typeString)) {
-            return encode(typeTable, path, typeTable[typeString], value);
+          } else if (typeTable.containsKey(type)) {
+            return encode(typeTable, path, typeTable[type], value);
           } else {
             throw SdkgenTypeException(
                 "Unknown type '${jsonEncode(type)}' at '$path'");
@@ -148,61 +144,58 @@ encode(Map<String, Object> typeTable, String path, Object type, Object value) {
 }
 
 decode(Map<String, Object> typeTable, String path, Object type, Object value) {
-  if (type.runtimeType == EnumTypeDescription) {
-    var enumType = type as EnumTypeDescription;
-    if (!enumType.stringValues.contains(value)) {
+  if (type is EnumTypeDescription) {
+    if (!type.stringValues.contains(value)) {
       throw SdkgenTypeException(
           "Invalid Type at '$path', expected ${jsonEncode(type)}, got ${jsonEncode(value)}");
     }
-    return enumType.enumValues[enumType.stringValues.indexOf(value)];
-  } else if (type.runtimeType == StructTypeDescription) {
-    var struct = type as StructTypeDescription;
-    if (value.runtimeType != Map) {
+    return type.enumValues[type.stringValues.indexOf(value)];
+  } else if (type is StructTypeDescription) {
+    if (!(value is Map)) {
       throw SdkgenTypeException(
-          "Invalid Type at '$path', expected ${struct.type}, got ${jsonEncode(value)}");
+          "Invalid Type at '$path', expected ${type.type}, got ${jsonEncode(value)}");
     }
     var resultMap = Map();
     (value as Map).forEach((fieldName, fieldValue) {
       resultMap[fieldName] = decode(
-          typeTable, "$path.$fieldName", struct.fields[fieldName], fieldValue);
+          typeTable, "$path.$fieldName", type.fields[fieldName], fieldValue);
     });
-    return Function.apply(struct.createFromFields, [resultMap]);
-  } else if (type.runtimeType == String) {
-    var typeString = type as String;
-    if (typeString.endsWith("?")) {
+    return Function.apply(type.createFromFields, [resultMap]);
+  } else if (type is String) {
+    if (type.endsWith("?")) {
       if (value == null) {
         return null;
       } else {
-        return decode(typeTable, path,
-            typeString.substring(0, typeString.length - 1), value);
+        return decode(
+            typeTable, path, type.substring(0, type.length - 1), value);
       }
-    } else if (typeString.endsWith("[]")) {
-      if (value.runtimeType != List) {
+    } else if (type.endsWith("[]")) {
+      if (!(value is List)) {
         throw SdkgenTypeException(
             "Invalid Type at '$path', expected ${jsonEncode(type)}, got ${jsonEncode(value)}");
       }
       return (value as List).asMap().entries.map((entry) => decode(
           typeTable,
           "$path[${entry.key}]",
-          typeString.substring(0, typeString.length - 2),
+          type.substring(0, type.length - 2),
           entry.value));
     } else {
-      switch (typeString) {
+      switch (type) {
         case "bytes":
-          if (value.runtimeType != String) {
+          if (!(value is String)) {
             throw SdkgenTypeException(
                 "Invalid Type at '$path', expected ${jsonEncode(type)}, got ${jsonEncode(value)}");
           }
           return Base64Decoder().convert(value);
         case "date":
-          if (value.runtimeType != String ||
+          if (!(value is String) ||
               !RegExp(r'^[0-9]{4}-[01][0-9]-[0123][0-9]$').hasMatch(value)) {
             throw SdkgenTypeException(
                 "Invalid Type at '$path', expected ${jsonEncode(type)}, got ${jsonEncode(value)}");
           }
           return DateTime.parse("${value}T00:00:00Z");
         case "datetime":
-          if (value.runtimeType != String ||
+          if (!(value is String) ||
               !RegExp(r'^[0-9]{4}-[01][0-9]-[0123][0-9]T[012][0-9]:[0123456][0-9]:[0123456][0-9](\.[0-9]{1,6})?Z?$')
                   .hasMatch(value)) {
             throw SdkgenTypeException(
@@ -210,10 +203,10 @@ decode(Map<String, Object> typeTable, String path, Object type, Object value) {
           }
           return DateTime.parse("${value}Z").toLocal();
         default:
-          if (simpleTypes.contains(typeString)) {
+          if (simpleTypes.contains(type)) {
             return simpleEncodeDecode(typeTable, path, type, value);
-          } else if (typeTable.containsKey(typeString)) {
-            return decode(typeTable, path, typeTable[typeString], value);
+          } else if (typeTable.containsKey(type)) {
+            return decode(typeTable, path, typeTable[type], value);
           } else {
             throw SdkgenTypeException(
                 "Unknown type '${jsonEncode(type)}' at '$path'");

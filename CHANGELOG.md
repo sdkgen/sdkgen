@@ -1,3 +1,11 @@
+## 1.0.4
+
+- Use proper type checking with "is" keyword
+
+## 1.0.3
+
+- Fix incorrect type check
+
 ## 1.0.2
 
 - Configure Travis deploy
