@@ -14,6 +14,7 @@ export class SdkgenHttpServer extends SdkgenServer {
     private headers = new Map<string, string>();
     private handlers: { method: string, matcher: string | RegExp, handler: (req: IncomingMessage, res: ServerResponse, body: string) => void }[] = [];
     public dynamicCorsOrigin = true;
+    private ignoredUrlPrefix = "";
 
     constructor(protected apiConfig: BaseApiConfig) {
         super(apiConfig);
@@ -65,6 +66,10 @@ export class SdkgenHttpServer extends SdkgenServer {
         });
     }
 
+    ignoreUrlPrefix(urlPrefix: string) {
+        this.ignoredUrlPrefix = urlPrefix;
+    }
+
     listen(port: number = 8000) {
         this.httpServer.listen(port, () => {
             const addr = this.httpServer.address();
@@ -97,12 +102,7 @@ export class SdkgenHttpServer extends SdkgenServer {
         this.handlers.push({ method, matcher, handler });
     }
 
-    private findBestHandler(req: IncomingMessage) {
-        const path = parseUrl(req.url || "").pathname;
-
-        if (!path)
-            return null;
-
+    private findBestHandler(path: string, req: IncomingMessage) {
         return this.handlers.filter(({method}) =>
             method === req.method
         ).filter(({matcher}) => {
@@ -165,9 +165,14 @@ export class SdkgenHttpServer extends SdkgenServer {
     }
 
     private async handleRequestWithBody(req: IncomingMessage, res: ServerResponse, body: string) {
-        const externalHandler = this.findBestHandler(req);
+        let path = parseUrl(req.url || "").pathname || "";
+
+        if (path.startsWith(this.ignoredUrlPrefix))
+            path = path.slice(this.ignoredUrlPrefix.length);
+
+        const externalHandler = this.findBestHandler(path, req);
         if (externalHandler) {
-            this.log(`HTTP ${req.method} ${parseUrl(req.url || "").pathname}`);
+            this.log(`HTTP ${req.method} ${path}`);
             externalHandler.handler(req, res, body);
             return;
         }
