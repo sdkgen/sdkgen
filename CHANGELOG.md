@@ -1,3 +1,7 @@
+## 1.0.6
+
+- Support UTF-8 responses
+
 ## 1.0.5
 
 - Fix rethrowing errors from remote api
