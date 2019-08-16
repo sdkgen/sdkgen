@@ -172,6 +172,8 @@ export class SdkgenHttpServer extends SdkgenServer {
             return;
         }
 
+        res.setHeader("Content-Type", "application/json; charset=utf-8");
+
         if (req.method === "HEAD") {
             res.writeHead(200);
             res.end();
