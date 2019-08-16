@@ -1,3 +1,7 @@
+## 1.0.5
+
+- Fix rethrowing errors from remote api
+
 ## 1.0.4
 
 - Use proper type checking with "is" keyword

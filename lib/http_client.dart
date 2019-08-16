@@ -58,7 +58,10 @@ class SdkgenHttpClient {
             typeTable, "$functionName.ret", func.ret, responseBody["result"]);
       }
     } catch (e) {
-      throw _throwError("Fatal", e.toString());
+      if (e is SdkgenError)
+        throw e;
+      else
+        throw _throwError("Fatal", e.toString());
     }
   }
 }
