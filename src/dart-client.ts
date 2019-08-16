@@ -30,7 +30,7 @@ import 'package:sdkgen_runtime/http_client.dart';
     code += `class ApiClient extends SdkgenHttpClient {
   ApiClient(baseUrl) : super(baseUrl, _typeTable, _fnTable, _errTable);
 ${ast.operations.map(op => `
-  ${op.prettyName}(${op.args.length === 0 ? "" : `{${op.args.map(arg => `${generateTypeName(arg.type)} ${arg.name}`).join(", ")}}`}) { return makeRequest("${op.prettyName}", {${op.args.map(arg => `"${arg.name}": ${arg.name}`).join(", ")}}); }`
+  ${generateTypeName(op.returnType)} ${op.prettyName}(${op.args.length === 0 ? "" : `{${op.args.map(arg => `${generateTypeName(arg.type)} ${arg.name}`).join(", ")}}`}) { return makeRequest("${op.prettyName}", {${op.args.map(arg => `"${arg.name}": ${arg.name}`).join(", ")}}); }`
 ).join("")}
 }\n\n`;
 
