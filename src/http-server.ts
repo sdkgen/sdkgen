@@ -83,7 +83,7 @@ export class SdkgenHttpServer extends SdkgenServer {
     }
 
     private enableCors() {
-        this.addHeader("Access-Control-Allow-Methods", "PUT, POST, GET, OPTIONS");
+        this.addHeader("Access-Control-Allow-Methods", "DELETE, HEAD, PUT, POST, PATCH, GET, OPTIONS");
         this.addHeader("Access-Control-Allow-Headers", "Content-Type");
         this.addHeader("Access-Control-Max-Age", "86400");
     }
