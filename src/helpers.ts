@@ -46,6 +46,8 @@ export function generateTypeName(type: Type): string {
             return "String";
         case "VoidPrimitiveType":
             return "void";
+        case "AnyPrimitiveType":
+            return "Object";
         case "OptionalType":
             return generateTypeName((type as OptionalType).base);
         case "ArrayType":
