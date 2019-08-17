@@ -34,7 +34,9 @@ ${ast.operations.map(op => `
     op.returnType.constructor.name === "VoidPrimitiveType" ? "" : `Future<${generateTypeName(op.returnType)}> `
   }${op.prettyName}(${op.args.length === 0 ? "" : `{${
       op.args.map(arg => `${generateTypeName(arg.type)} ${arg.name}`).join(", ")}}`
-    }) { ${op.returnType.constructor.name === "VoidPrimitiveType" ? "" : "return "}makeRequest("${op.prettyName}", {${op.args.map(arg => `"${arg.name}": ${arg.name}`).join(", ")}}); }`
+    }) async { ${op.returnType.constructor.name === "VoidPrimitiveType" ? "" : "return "}await makeRequest("${op.prettyName}", {${op.args.map(arg => `"${arg.name}": ${arg.name}`).join(", ")}})${
+    op.returnType.constructor.name === "VoidPrimitiveType" ? "" : ` as ${generateTypeName(op.returnType)}`
+  }; }`
 ).join("")}
 }\n\n`;
 
