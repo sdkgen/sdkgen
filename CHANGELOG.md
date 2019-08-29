@@ -1,3 +1,7 @@
+## 1.0.7
+
+- Add device Id handling
+
 ## 1.0.6
 
 - Support UTF-8 responses

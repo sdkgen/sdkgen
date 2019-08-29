@@ -1,5 +1,6 @@
 import 'package:http/http.dart' as http;
 import 'package:convert/convert.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
 import 'dart:math';
 
@@ -15,6 +16,7 @@ class SdkgenHttpClient {
   Map<String, Object> typeTable;
   Map<String, FunctionDescription> fnTable;
   Map<String, Function> errTable;
+  String deviceId;
   Random random = Random.secure();
 
   SdkgenHttpClient(this.baseUrl, this.typeTable, this.fnTable, this.errTable);
@@ -26,6 +28,19 @@ class SdkgenHttpClient {
   _throwError(String type, String message) {
     var factory = errTable[type] == null ? errTable["Fatal"] : errTable[type];
     throw Function.apply(factory, [message]);
+  }
+
+  _deviceId() async {
+    if (deviceId == null) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      if (prefs.containsKey("sdkgen_deviceId")) {
+        deviceId = prefs.getString("sdkgen_deviceId");
+      } else {
+        deviceId = _randomBytesHex(16);
+        prefs.setString("sdkgen_deviceId", deviceId);
+      }
+    }
+    return deviceId;
   }
 
   Future<Object> makeRequest(
@@ -44,7 +59,10 @@ class SdkgenHttpClient {
         "name": functionName,
         "args": encodedArgs,
         "extra": {},
-        "deviceInfo": {"type": "dart"}
+        "deviceInfo": {
+          "id": await _deviceId(),
+          "type": "dart"
+        }
       };
 
       var response = await http.post(baseUrl, body: jsonEncode(body));
