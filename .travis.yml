@@ -12,9 +12,8 @@ addons:
 before_script:
   - git clone https://github.com/flutter/flutter.git -b beta
   - ./flutter/bin/flutter doctor
-install:
-- ./flutter/bin/flutter pub get
 script:
+- ./flutter/bin/flutter pub get
 - ./flutter/bin/flutter dartanalyzer .
 - ./flutter/bin/flutter dartfmt -n --fix .
 deploy:
