@@ -3,9 +3,8 @@ os:
 sudo: false
 addons:
   apt:
-    # Flutter depends on /usr/lib/x86_64-linux-gnu/libstdc++.so.6 version GLIBCXX_3.4.18
     sources:
-      - ubuntu-toolchain-r-test # if we don't specify this, the libstdc++6 we get is the wrong version
+      - ubuntu-toolchain-r-test
     packages:
       - libstdc++6
       - fonts-droid-fallback
@@ -14,8 +13,8 @@ before_script:
   - ./flutter/bin/flutter doctor
 script:
 - ./flutter/bin/flutter pub get
-- ./flutter/bin/flutter dartanalyzer .
-- ./flutter/bin/flutter dartfmt -n --fix .
+# - ./flutter/bin/flutter dartanalyzer .
+# - ./flutter/bin/flutter dartfmt -n --fix .
 deploy:
   provider: script
   script: "bash -c 'mkdir -p ~/.pub-cache; echo $PUB_CREDENTIALS | base64 -d > ~/.pub-cache/credentials.json; ./flutter/bin/flutter pub publish -f || true'"
