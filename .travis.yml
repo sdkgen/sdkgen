@@ -18,6 +18,6 @@ script:
 # - ../flutter/bin/flutter dartfmt -n --fix .
 deploy:
   provider: script
-  script: "bash -c 'mkdir -p ~/.pub-cache; echo $PUB_CREDENTIALS | base64 -d > ~/.pub-cache/credentials.json; ../flutter/bin/flutter pub publish || true'"
+  script: "bash -c 'mkdir -p ~/.pub-cache; echo $PUB_CREDENTIALS | base64 -d > ~/.pub-cache/credentials.json; ../flutter/bin/flutter pub pub publish -f || true'"
   on:
     tags: true
