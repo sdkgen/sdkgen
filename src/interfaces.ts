@@ -4,7 +4,7 @@ import { generateTypescriptEnum, generateTypescriptErrorClass, generateTypescrip
 interface Options {
 }
 
-export function generateInterfaces(ast: AstRoot, options: Options) {
+export function generateTypescriptInterfaces(ast: AstRoot, options: Options) {
     let code = "";
 
     for (const type of ast.enumTypes) {
