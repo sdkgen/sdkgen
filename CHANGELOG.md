@@ -1,3 +1,7 @@
+## 1.0.8
+
+- Fix handling of array of objects
+
 ## 1.0.7
 
 - Add device Id handling

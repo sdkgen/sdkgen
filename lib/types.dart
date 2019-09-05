@@ -103,7 +103,7 @@ encode(Map<String, Object> typeTable, String path, Object type, Object value) {
           typeTable,
           "$path[${entry.key}]",
           type.substring(0, type.length - 2),
-          entry.value));
+          entry.value)).toList();
     } else {
       switch (type) {
         case "bytes":
@@ -178,7 +178,7 @@ decode(Map<String, Object> typeTable, String path, Object type, Object value) {
           typeTable,
           "$path[${entry.key}]",
           type.substring(0, type.length - 2),
-          entry.value));
+          entry.value)).toList();
     } else {
       switch (type) {
         case "bytes":
