@@ -14,7 +14,7 @@ export function generateErrorClass(error: string) {
 
 export function cast(value: string, type: Type): string {
     if (type.constructor.name === "ArrayType") {
-        return `(${value}).map((e) => ${cast("e", (type as ArrayType).base)}).toList()`;
+        return `(${value} as List).map((e) => ${cast("e", (type as ArrayType).base)}).toList()`;
     } else if (type.constructor.name === "VoidPrimitiveType") {
         return value;
     } else {
