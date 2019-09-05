@@ -1,5 +1,5 @@
 import { AstRoot } from "@sdkgen/parser";
-import { generateClass, generateEnum, generateErrorClass, generateTypeName } from "./helpers";
+import { generateClass, generateEnum, generateErrorClass, generateTypeName, cast } from "./helpers";
 
 interface Options {
 }
@@ -34,9 +34,7 @@ ${ast.operations.map(op => `
     op.returnType.constructor.name === "VoidPrimitiveType" ? "" : `Future<${generateTypeName(op.returnType)}> `
   }${op.prettyName}(${op.args.length === 0 ? "" : `{${
       op.args.map(arg => `${generateTypeName(arg.type)} ${arg.name}`).join(", ")}}`
-    }) async { ${op.returnType.constructor.name === "VoidPrimitiveType" ? "" : "return "}await makeRequest("${op.prettyName}", {${op.args.map(arg => `"${arg.name}": ${arg.name}`).join(", ")}})${
-    op.returnType.constructor.name === "VoidPrimitiveType" ? "" : ` as ${generateTypeName(op.returnType)}`
-  }; }`
+    }) async { ${op.returnType.constructor.name === "VoidPrimitiveType" ? "" : "return "}${cast(`await makeRequest("${op.prettyName}", {${op.args.map(arg => `"${arg.name}": ${arg.name}`).join(", ")}})`, op.returnType)}`
 ).join("")}
 }\n\n`;
 

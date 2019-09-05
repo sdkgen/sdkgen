@@ -12,6 +12,16 @@ export function generateErrorClass(error: string) {
     return `class ${error} extends SdkgenError {\n  ${error}(msg) : super(msg);\n}\n`;
 }
 
+export function cast(value: string, type: Type): string {
+    if (type.constructor.name === "ArrayType") {
+        return `(${value}).map((e) => ${cast("e", (type as ArrayType).base)}).toList()`;
+    } else if (type.constructor.name === "VoidPrimitiveType") {
+        return value;
+    } else {
+        return `${value} as ${generateTypeName(type)}`
+    }
+}
+
 export function generateTypeName(type: Type): string {
     switch (type.constructor.name) {
         case "StringPrimitiveType":
