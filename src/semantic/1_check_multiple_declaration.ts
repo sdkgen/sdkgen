@@ -1,16 +1,18 @@
-import { AstNode, TypeDefinition } from "../ast";
+import { AstNode, TypeDefinition, Type } from "../ast";
 import { SemanticError } from "./analyser";
 import { Visitor } from "./visitor";
+import equal from "fast-deep-equal";
 
 export class CheckMultipleDeclarationVisitor extends Visitor {
-    names = new Set<string>();
+    nameToType = new Map<string, Type>();
 
     visit(node: AstNode) {
         if (node instanceof TypeDefinition) {
-            if (this.names.has(node.name)) {
+            const previousType = this.nameToType.get(node.name);
+            if (previousType && !equal(previousType, node.type)) {
                 throw new SemanticError(`Type '${node.name}' at ${node.location} is defined multiple times`);
             }
-            this.names.add(node.name);
+            this.nameToType.set(node.name, node.type);
         }
 
         super.visit(node);
