@@ -1,9 +1,19 @@
-import { ArrayType, AstRoot, Base64PrimitiveType, BytesPrimitiveType, CepPrimitiveType, CnpjPrimitiveType, CpfPrimitiveType, DatePrimitiveType, DateTimePrimitiveType, EmailPrimitiveType, EnumType, FloatPrimitiveType, HexPrimitiveType, IntPrimitiveType, MoneyPrimitiveType, OptionalType, PhonePrimitiveType, SafeHtmlPrimitiveType, StringPrimitiveType, StructType, Type, UIntPrimitiveType, UrlPrimitiveType, UuidPrimitiveType, XmlPrimitiveType } from "../ast";
+import { ArrayType, AstRoot, Base64PrimitiveType, BytesPrimitiveType, CepPrimitiveType, CnpjPrimitiveType, CpfPrimitiveType, DatePrimitiveType, DateTimePrimitiveType, EmailPrimitiveType, EnumType, FloatPrimitiveType, HexPrimitiveType, IntPrimitiveType, MoneyPrimitiveType, OptionalType, PhonePrimitiveType, SafeHtmlPrimitiveType, StringPrimitiveType, StructType, Type, TypeReference, UIntPrimitiveType, UrlPrimitiveType, UuidPrimitiveType, XmlPrimitiveType } from "../ast";
 
 // 1 -> Old version
 // 2 -> New version
 
 function checkClientToServer(path: string, issues: string[], t1: Type, t2: Type) {
+    if (t1 instanceof TypeReference) {
+        checkClientToServer(path, issues, t1.type, t2);
+        return;
+    }
+
+    if (t2 instanceof TypeReference) {
+        checkClientToServer(path, issues, t1, t2.type);
+        return;
+    }
+
     if (!(t1 instanceof OptionalType) && t2 instanceof OptionalType) {
         checkClientToServer(path, issues, t1, t2.base);
         return;
@@ -83,6 +93,16 @@ function checkClientToServer(path: string, issues: string[], t1: Type, t2: Type)
 }
 
 function checkServerToClient(path: string, issues: string[], t1: Type, t2: Type) {
+    if (t1 instanceof TypeReference) {
+        checkServerToClient(path, issues, t1.type, t2);
+        return;
+    }
+
+    if (t2 instanceof TypeReference) {
+        checkServerToClient(path, issues, t1, t2.type);
+        return;
+    }
+
     if (t1 instanceof OptionalType && !(t2 instanceof OptionalType)) {
         checkServerToClient(path, issues, t1.base, t2);
         return;
