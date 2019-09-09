@@ -8,8 +8,8 @@ export class CheckMultipleDeclarationVisitor extends Visitor {
     visit(node: AstNode) {
         if (node instanceof TypeDefinition) {
             const previousType = this.nameToType.get(node.name);
-            if (previousType && JSON.stringify(previousType) !== JSON.stringify(node)) {
-                throw new SemanticError(`Type '${node.name}' at ${node.location} is defined multiple times`);
+            if (previousType && JSON.stringify(previousType) !== JSON.stringify(node.type)) {
+                throw new SemanticError(`Type '${node.name}' at ${node.location} is defined multiple times (also at ${previousType.location})`);
             }
             this.nameToType.set(node.name, node.type);
         }
