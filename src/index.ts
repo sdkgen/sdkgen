@@ -11,13 +11,10 @@ const mainOptions = commandLineArgs(mainDefinitions, { stopAtFirstUnknown: true 
 const argv = mainOptions._unknown || []
 
 switch (mainOptions.command) {
-    case undefined:
-        buildCmd(argv);
-        break;
     case "compatibility":
         compatibilityCmd(argv);
         break;
     default:
-        console.error("Error: Unknown command");
-        process.exit(1);
+        buildCmd(process.argv);
+        break;
 }
