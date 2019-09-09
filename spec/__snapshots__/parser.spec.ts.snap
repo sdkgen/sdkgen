@@ -3,8 +3,8 @@
 exports[`Parser handles 'any' on the name of a field 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -18,13 +18,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -32,41 +34,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "any",
           "secret": false,
-          "type": IntPrimitiveType {
-            "name": "int",
+          "type": Object {
+            "kind": "IntPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "any",
             "secret": false,
-            "type": IntPrimitiveType {
-              "name": "int",
+            "type": Object {
+              "kind": "IntPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -80,8 +86,8 @@ AstRoot {
 exports[`Parser handles 'base64' on the name of a field 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -95,13 +101,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -109,41 +117,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "base64",
           "secret": false,
-          "type": IntPrimitiveType {
-            "name": "int",
+          "type": Object {
+            "kind": "IntPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "base64",
             "secret": false,
-            "type": IntPrimitiveType {
-              "name": "int",
+            "type": Object {
+              "kind": "IntPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -157,8 +169,8 @@ AstRoot {
 exports[`Parser handles 'bool' on the name of a field 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -172,13 +184,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -186,41 +200,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "bool",
           "secret": false,
-          "type": IntPrimitiveType {
-            "name": "int",
+          "type": Object {
+            "kind": "IntPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "bool",
             "secret": false,
-            "type": IntPrimitiveType {
-              "name": "int",
+            "type": Object {
+              "kind": "IntPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -234,8 +252,8 @@ AstRoot {
 exports[`Parser handles 'bytes' on the name of a field 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -249,13 +267,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -263,41 +283,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "bytes",
           "secret": false,
-          "type": IntPrimitiveType {
-            "name": "int",
+          "type": Object {
+            "kind": "IntPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "bytes",
             "secret": false,
-            "type": IntPrimitiveType {
-              "name": "int",
+            "type": Object {
+              "kind": "IntPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -311,8 +335,8 @@ AstRoot {
 exports[`Parser handles 'cep' on the name of a field 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -326,13 +350,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -340,41 +366,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "cep",
           "secret": false,
-          "type": IntPrimitiveType {
-            "name": "int",
+          "type": Object {
+            "kind": "IntPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "cep",
             "secret": false,
-            "type": IntPrimitiveType {
-              "name": "int",
+            "type": Object {
+              "kind": "IntPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -388,8 +418,8 @@ AstRoot {
 exports[`Parser handles 'cnpj' on the name of a field 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -403,13 +433,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -417,41 +449,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "cnpj",
           "secret": false,
-          "type": IntPrimitiveType {
-            "name": "int",
+          "type": Object {
+            "kind": "IntPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "cnpj",
             "secret": false,
-            "type": IntPrimitiveType {
-              "name": "int",
+            "type": Object {
+              "kind": "IntPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -465,8 +501,8 @@ AstRoot {
 exports[`Parser handles 'cpf' on the name of a field 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -480,13 +516,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -494,41 +532,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "cpf",
           "secret": false,
-          "type": IntPrimitiveType {
-            "name": "int",
+          "type": Object {
+            "kind": "IntPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "cpf",
             "secret": false,
-            "type": IntPrimitiveType {
-              "name": "int",
+            "type": Object {
+              "kind": "IntPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -542,8 +584,8 @@ AstRoot {
 exports[`Parser handles 'date' on the name of a field 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -557,13 +599,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -571,41 +615,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "date",
           "secret": false,
-          "type": IntPrimitiveType {
-            "name": "int",
+          "type": Object {
+            "kind": "IntPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "date",
             "secret": false,
-            "type": IntPrimitiveType {
-              "name": "int",
+            "type": Object {
+              "kind": "IntPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -619,8 +667,8 @@ AstRoot {
 exports[`Parser handles 'datetime' on the name of a field 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -634,13 +682,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -648,41 +698,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "datetime",
           "secret": false,
-          "type": IntPrimitiveType {
-            "name": "int",
+          "type": Object {
+            "kind": "IntPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "datetime",
             "secret": false,
-            "type": IntPrimitiveType {
-              "name": "int",
+            "type": Object {
+              "kind": "IntPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -696,8 +750,8 @@ AstRoot {
 exports[`Parser handles 'email' on the name of a field 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -711,13 +765,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -725,41 +781,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "email",
           "secret": false,
-          "type": IntPrimitiveType {
-            "name": "int",
+          "type": Object {
+            "kind": "IntPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "email",
             "secret": false,
-            "type": IntPrimitiveType {
-              "name": "int",
+            "type": Object {
+              "kind": "IntPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -773,8 +833,8 @@ AstRoot {
 exports[`Parser handles 'enum' on the name of a field 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -788,13 +848,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -802,41 +864,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "enum",
           "secret": false,
-          "type": IntPrimitiveType {
-            "name": "int",
+          "type": Object {
+            "kind": "IntPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "enum",
             "secret": false,
-            "type": IntPrimitiveType {
-              "name": "int",
+            "type": Object {
+              "kind": "IntPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -850,8 +916,8 @@ AstRoot {
 exports[`Parser handles 'error' on the name of a field 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -865,13 +931,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -879,41 +947,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "error",
           "secret": false,
-          "type": IntPrimitiveType {
-            "name": "int",
+          "type": Object {
+            "kind": "IntPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "error",
             "secret": false,
-            "type": IntPrimitiveType {
-              "name": "int",
+            "type": Object {
+              "kind": "IntPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -927,8 +999,8 @@ AstRoot {
 exports[`Parser handles 'false' on the name of a field 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -942,13 +1014,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -956,41 +1030,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "false",
           "secret": false,
-          "type": IntPrimitiveType {
-            "name": "int",
+          "type": Object {
+            "kind": "IntPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "false",
             "secret": false,
-            "type": IntPrimitiveType {
-              "name": "int",
+            "type": Object {
+              "kind": "IntPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -1004,8 +1082,8 @@ AstRoot {
 exports[`Parser handles 'float' on the name of a field 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -1019,13 +1097,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -1033,41 +1113,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "float",
           "secret": false,
-          "type": IntPrimitiveType {
-            "name": "int",
+          "type": Object {
+            "kind": "IntPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "float",
             "secret": false,
-            "type": IntPrimitiveType {
-              "name": "int",
+            "type": Object {
+              "kind": "IntPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -1081,8 +1165,8 @@ AstRoot {
 exports[`Parser handles 'fn' on the name of a field 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -1096,13 +1180,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -1110,41 +1196,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "fn",
           "secret": false,
-          "type": IntPrimitiveType {
-            "name": "int",
+          "type": Object {
+            "kind": "IntPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "fn",
             "secret": false,
-            "type": IntPrimitiveType {
-              "name": "int",
+            "type": Object {
+              "kind": "IntPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -1158,8 +1248,8 @@ AstRoot {
 exports[`Parser handles 'function' on the name of a field 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -1173,13 +1263,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -1187,41 +1279,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "function",
           "secret": false,
-          "type": IntPrimitiveType {
-            "name": "int",
+          "type": Object {
+            "kind": "IntPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "function",
             "secret": false,
-            "type": IntPrimitiveType {
-              "name": "int",
+            "type": Object {
+              "kind": "IntPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -1235,8 +1331,8 @@ AstRoot {
 exports[`Parser handles 'get' on the name of a field 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -1250,13 +1346,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -1264,41 +1362,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "get",
           "secret": false,
-          "type": IntPrimitiveType {
-            "name": "int",
+          "type": Object {
+            "kind": "IntPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "get",
             "secret": false,
-            "type": IntPrimitiveType {
-              "name": "int",
+            "type": Object {
+              "kind": "IntPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -1312,8 +1414,8 @@ AstRoot {
 exports[`Parser handles 'hex' on the name of a field 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -1327,13 +1429,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -1341,41 +1445,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "hex",
           "secret": false,
-          "type": IntPrimitiveType {
-            "name": "int",
+          "type": Object {
+            "kind": "IntPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "hex",
             "secret": false,
-            "type": IntPrimitiveType {
-              "name": "int",
+            "type": Object {
+              "kind": "IntPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -1389,8 +1497,8 @@ AstRoot {
 exports[`Parser handles 'import' on the name of a field 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -1404,13 +1512,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -1418,41 +1528,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "import",
           "secret": false,
-          "type": IntPrimitiveType {
-            "name": "int",
+          "type": Object {
+            "kind": "IntPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "import",
             "secret": false,
-            "type": IntPrimitiveType {
-              "name": "int",
+            "type": Object {
+              "kind": "IntPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -1466,8 +1580,8 @@ AstRoot {
 exports[`Parser handles 'int' on the name of a field 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -1481,13 +1595,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -1495,41 +1611,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "int",
           "secret": false,
-          "type": IntPrimitiveType {
-            "name": "int",
+          "type": Object {
+            "kind": "IntPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "int",
             "secret": false,
-            "type": IntPrimitiveType {
-              "name": "int",
+            "type": Object {
+              "kind": "IntPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -1543,8 +1663,8 @@ AstRoot {
 exports[`Parser handles 'latlng' on the name of a field 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -1558,13 +1678,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -1572,41 +1694,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "latlng",
           "secret": false,
-          "type": IntPrimitiveType {
-            "name": "int",
+          "type": Object {
+            "kind": "IntPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "latlng",
             "secret": false,
-            "type": IntPrimitiveType {
-              "name": "int",
+            "type": Object {
+              "kind": "IntPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -1620,8 +1746,8 @@ AstRoot {
 exports[`Parser handles 'money' on the name of a field 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -1635,13 +1761,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -1649,41 +1777,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "money",
           "secret": false,
-          "type": IntPrimitiveType {
-            "name": "int",
+          "type": Object {
+            "kind": "IntPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "money",
             "secret": false,
-            "type": IntPrimitiveType {
-              "name": "int",
+            "type": Object {
+              "kind": "IntPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -1697,8 +1829,8 @@ AstRoot {
 exports[`Parser handles 'phone' on the name of a field 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -1712,13 +1844,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -1726,41 +1860,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "phone",
           "secret": false,
-          "type": IntPrimitiveType {
-            "name": "int",
+          "type": Object {
+            "kind": "IntPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "phone",
             "secret": false,
-            "type": IntPrimitiveType {
-              "name": "int",
+            "type": Object {
+              "kind": "IntPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -1774,8 +1912,8 @@ AstRoot {
 exports[`Parser handles 'safehtml' on the name of a field 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -1789,13 +1927,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -1803,41 +1943,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "safehtml",
           "secret": false,
-          "type": IntPrimitiveType {
-            "name": "int",
+          "type": Object {
+            "kind": "IntPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "safehtml",
             "secret": false,
-            "type": IntPrimitiveType {
-              "name": "int",
+            "type": Object {
+              "kind": "IntPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -1851,8 +1995,8 @@ AstRoot {
 exports[`Parser handles 'string' on the name of a field 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -1866,13 +2010,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -1880,41 +2026,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "string",
           "secret": false,
-          "type": IntPrimitiveType {
-            "name": "int",
+          "type": Object {
+            "kind": "IntPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "string",
             "secret": false,
-            "type": IntPrimitiveType {
-              "name": "int",
+            "type": Object {
+              "kind": "IntPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -1928,8 +2078,8 @@ AstRoot {
 exports[`Parser handles 'true' on the name of a field 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -1943,13 +2093,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -1957,41 +2109,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "true",
           "secret": false,
-          "type": IntPrimitiveType {
-            "name": "int",
+          "type": Object {
+            "kind": "IntPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "true",
             "secret": false,
-            "type": IntPrimitiveType {
-              "name": "int",
+            "type": Object {
+              "kind": "IntPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -2005,8 +2161,8 @@ AstRoot {
 exports[`Parser handles 'type' on the name of a field 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -2020,13 +2176,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -2034,41 +2192,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "type",
           "secret": false,
-          "type": IntPrimitiveType {
-            "name": "int",
+          "type": Object {
+            "kind": "IntPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "type",
             "secret": false,
-            "type": IntPrimitiveType {
-              "name": "int",
+            "type": Object {
+              "kind": "IntPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -2082,8 +2244,8 @@ AstRoot {
 exports[`Parser handles 'uint' on the name of a field 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -2097,13 +2259,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -2111,41 +2275,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "uint",
           "secret": false,
-          "type": IntPrimitiveType {
-            "name": "int",
+          "type": Object {
+            "kind": "IntPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "uint",
             "secret": false,
-            "type": IntPrimitiveType {
-              "name": "int",
+            "type": Object {
+              "kind": "IntPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -2159,8 +2327,8 @@ AstRoot {
 exports[`Parser handles 'url' on the name of a field 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -2174,13 +2342,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -2188,41 +2358,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "url",
           "secret": false,
-          "type": IntPrimitiveType {
-            "name": "int",
+          "type": Object {
+            "kind": "IntPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "url",
             "secret": false,
-            "type": IntPrimitiveType {
-              "name": "int",
+            "type": Object {
+              "kind": "IntPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -2236,8 +2410,8 @@ AstRoot {
 exports[`Parser handles 'uuid' on the name of a field 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -2251,13 +2425,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -2265,41 +2441,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "uuid",
           "secret": false,
-          "type": IntPrimitiveType {
-            "name": "int",
+          "type": Object {
+            "kind": "IntPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "uuid",
             "secret": false,
-            "type": IntPrimitiveType {
-              "name": "int",
+            "type": Object {
+              "kind": "IntPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -2313,8 +2493,8 @@ AstRoot {
 exports[`Parser handles 'void' on the name of a field 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -2328,13 +2508,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -2342,41 +2524,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "void",
           "secret": false,
-          "type": IntPrimitiveType {
-            "name": "int",
+          "type": Object {
+            "kind": "IntPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "void",
             "secret": false,
-            "type": IntPrimitiveType {
-              "name": "int",
+            "type": Object {
+              "kind": "IntPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -2390,8 +2576,8 @@ AstRoot {
 exports[`Parser handles 'xml' on the name of a field 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -2405,13 +2591,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -2419,41 +2607,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "xml",
           "secret": false,
-          "type": IntPrimitiveType {
-            "name": "int",
+          "type": Object {
+            "kind": "IntPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "xml",
             "secret": false,
-            "type": IntPrimitiveType {
-              "name": "int",
+            "type": Object {
+              "kind": "IntPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -2467,8 +2659,8 @@ AstRoot {
 exports[`Parser handles arrays and optionals 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -2482,13 +2674,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -2496,159 +2690,207 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "aa",
           "secret": false,
-          "type": ArrayType {
-            "base": StringPrimitiveType {
-              "name": "string",
+          "type": Object {
+            "base": Object {
+              "kind": "StringPrimitiveType",
             },
+            "kind": "ArrayType",
           },
         },
         Field {
+          "kind": "Field",
           "name": "bbb",
           "secret": false,
-          "type": OptionalType {
-            "base": OptionalType {
-              "base": ArrayType {
-                "base": OptionalType {
-                  "base": IntPrimitiveType {
-                    "name": "int",
+          "type": Object {
+            "base": Object {
+              "base": Object {
+                "base": Object {
+                  "base": Object {
+                    "kind": "IntPrimitiveType",
                   },
+                  "kind": "OptionalType",
                 },
+                "kind": "ArrayType",
               },
+              "kind": "OptionalType",
             },
+            "kind": "OptionalType",
           },
         },
         Field {
+          "kind": "Field",
           "name": "cccc",
           "secret": false,
-          "type": ArrayType {
-            "base": ArrayType {
-              "base": ArrayType {
-                "base": IntPrimitiveType {
-                  "name": "int",
+          "type": Object {
+            "base": Object {
+              "base": Object {
+                "base": Object {
+                  "kind": "IntPrimitiveType",
                 },
+                "kind": "ArrayType",
               },
+              "kind": "ArrayType",
             },
+            "kind": "ArrayType",
           },
         },
         Field {
+          "kind": "Field",
           "name": "ddddd",
           "secret": false,
-          "type": ArrayType {
-            "base": ArrayType {
-              "base": OptionalType {
-                "base": OptionalType {
-                  "base": OptionalType {
-                    "base": ArrayType {
-                      "base": OptionalType {
-                        "base": OptionalType {
-                          "base": ArrayType {
-                            "base": ArrayType {
-                              "base": ArrayType {
-                                "base": UIntPrimitiveType {
-                                  "name": "uint",
+          "type": Object {
+            "base": Object {
+              "base": Object {
+                "base": Object {
+                  "base": Object {
+                    "base": Object {
+                      "base": Object {
+                        "base": Object {
+                          "base": Object {
+                            "base": Object {
+                              "base": Object {
+                                "base": Object {
+                                  "kind": "UIntPrimitiveType",
                                 },
+                                "kind": "ArrayType",
                               },
+                              "kind": "ArrayType",
                             },
+                            "kind": "ArrayType",
                           },
+                          "kind": "OptionalType",
                         },
+                        "kind": "OptionalType",
                       },
+                      "kind": "ArrayType",
                     },
+                    "kind": "OptionalType",
                   },
+                  "kind": "OptionalType",
                 },
+                "kind": "OptionalType",
               },
+              "kind": "ArrayType",
             },
+            "kind": "ArrayType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "aa",
             "secret": false,
-            "type": ArrayType {
-              "base": StringPrimitiveType {
-                "name": "string",
+            "type": Object {
+              "base": Object {
+                "kind": "StringPrimitiveType",
               },
+              "kind": "ArrayType",
             },
           },
           Field {
+            "kind": "Field",
             "name": "bbb",
             "secret": false,
-            "type": OptionalType {
-              "base": OptionalType {
-                "base": ArrayType {
-                  "base": OptionalType {
-                    "base": IntPrimitiveType {
-                      "name": "int",
+            "type": Object {
+              "base": Object {
+                "base": Object {
+                  "base": Object {
+                    "base": Object {
+                      "kind": "IntPrimitiveType",
                     },
+                    "kind": "OptionalType",
                   },
+                  "kind": "ArrayType",
                 },
+                "kind": "OptionalType",
               },
+              "kind": "OptionalType",
             },
           },
           Field {
+            "kind": "Field",
             "name": "cccc",
             "secret": false,
-            "type": ArrayType {
-              "base": ArrayType {
-                "base": ArrayType {
-                  "base": IntPrimitiveType {
-                    "name": "int",
+            "type": Object {
+              "base": Object {
+                "base": Object {
+                  "base": Object {
+                    "kind": "IntPrimitiveType",
                   },
+                  "kind": "ArrayType",
                 },
+                "kind": "ArrayType",
               },
+              "kind": "ArrayType",
             },
           },
           Field {
+            "kind": "Field",
             "name": "ddddd",
             "secret": false,
-            "type": ArrayType {
-              "base": ArrayType {
-                "base": OptionalType {
-                  "base": OptionalType {
-                    "base": OptionalType {
-                      "base": ArrayType {
-                        "base": OptionalType {
-                          "base": OptionalType {
-                            "base": ArrayType {
-                              "base": ArrayType {
-                                "base": ArrayType {
-                                  "base": UIntPrimitiveType {
-                                    "name": "uint",
+            "type": Object {
+              "base": Object {
+                "base": Object {
+                  "base": Object {
+                    "base": Object {
+                      "base": Object {
+                        "base": Object {
+                          "base": Object {
+                            "base": Object {
+                              "base": Object {
+                                "base": Object {
+                                  "base": Object {
+                                    "kind": "UIntPrimitiveType",
                                   },
+                                  "kind": "ArrayType",
                                 },
+                                "kind": "ArrayType",
                               },
+                              "kind": "ArrayType",
                             },
+                            "kind": "OptionalType",
                           },
+                          "kind": "OptionalType",
                         },
+                        "kind": "ArrayType",
                       },
+                      "kind": "OptionalType",
                     },
+                    "kind": "OptionalType",
                   },
+                  "kind": "OptionalType",
                 },
+                "kind": "ArrayType",
               },
+              "kind": "ArrayType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -2662,8 +2904,8 @@ AstRoot {
 exports[`Parser handles combinations of all part 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Foo",
         "Bar",
@@ -2681,42 +2923,48 @@ AstRoot {
   "operations": Array [
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "baz",
-      "returnType": TypeReference {
-        "name": "Baz",
-        "type": StructType {
+      "returnType": Object {
+        "kind": "TypeReference",
+        "type": Object {
           "fields": Array [
             Field {
+              "kind": "Field",
               "name": "a",
               "secret": false,
-              "type": OptionalType {
-                "base": StringPrimitiveType {
-                  "name": "string",
+              "type": Object {
+                "base": Object {
+                  "kind": "StringPrimitiveType",
                 },
+                "kind": "OptionalType",
               },
             },
             Field {
+              "kind": "Field",
               "name": "b",
               "secret": false,
-              "type": IntPrimitiveType {
-                "name": "int",
+              "type": Object {
+                "kind": "IntPrimitiveType",
               },
             },
           ],
-          "name": "Baz",
+          "kind": "StructType",
           "spreads": Array [],
         },
       },
     },
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -2724,59 +2972,67 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "a",
           "secret": false,
-          "type": OptionalType {
-            "base": StringPrimitiveType {
-              "name": "string",
+          "type": Object {
+            "base": Object {
+              "kind": "StringPrimitiveType",
             },
+            "kind": "OptionalType",
           },
         },
         Field {
+          "kind": "Field",
           "name": "b",
           "secret": false,
-          "type": IntPrimitiveType {
-            "name": "int",
+          "type": Object {
+            "kind": "IntPrimitiveType",
           },
         },
       ],
-      "name": "Baz",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Baz",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "a",
             "secret": false,
-            "type": OptionalType {
-              "base": StringPrimitiveType {
-                "name": "string",
+            "type": Object {
+              "base": Object {
+                "kind": "StringPrimitiveType",
               },
+              "kind": "OptionalType",
             },
           },
           Field {
+            "kind": "Field",
             "name": "b",
             "secret": false,
-            "type": IntPrimitiveType {
-              "name": "int",
+            "type": Object {
+              "kind": "IntPrimitiveType",
             },
           },
         ],
-        "name": "Baz",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Foo",
           "Bar",
@@ -2792,8 +3048,8 @@ AstRoot {
 exports[`Parser handles errors 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Foo",
         "Bar",
@@ -2813,13 +3069,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -2829,9 +3087,10 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Foo",
           "Bar",
@@ -2848,8 +3107,8 @@ AstRoot {
 exports[`Parser handles functions with arguments 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -2864,47 +3123,53 @@ AstRoot {
     FunctionOperation {
       "args": Array [
         Field {
+          "kind": "Field",
           "name": "foo",
           "secret": false,
-          "type": IntPrimitiveType {
-            "name": "int",
+          "type": Object {
+            "kind": "IntPrimitiveType",
           },
         },
         Field {
+          "kind": "Field",
           "name": "bar",
           "secret": false,
-          "type": TypeReference {
-            "name": "Bar",
-            "type": StructType {
+          "type": Object {
+            "kind": "TypeReference",
+            "type": Object {
               "fields": Array [
                 Field {
+                  "kind": "Field",
                   "name": "aa",
                   "secret": false,
-                  "type": StringPrimitiveType {
-                    "name": "string",
+                  "type": Object {
+                    "kind": "StringPrimitiveType",
                   },
                 },
               ],
-              "name": "Bar",
+              "kind": "StructType",
               "spreads": Array [],
             },
           },
         },
       ],
+      "kind": "FunctionOperation",
       "name": "doIt",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -2912,41 +3177,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "aa",
           "secret": false,
-          "type": StringPrimitiveType {
-            "name": "string",
+          "type": Object {
+            "kind": "StringPrimitiveType",
           },
         },
       ],
-      "name": "Bar",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Bar",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "aa",
             "secret": false,
-            "type": StringPrimitiveType {
-              "name": "string",
+            "type": Object {
+              "kind": "StringPrimitiveType",
             },
           },
         ],
-        "name": "Bar",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -2960,8 +3229,8 @@ AstRoot {
 exports[`Parser handles options on the top 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -2975,13 +3244,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -2991,9 +3262,10 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -3007,8 +3279,8 @@ AstRoot {
 exports[`Parser handles primitive type 'any' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -3022,13 +3294,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -3036,41 +3310,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "foo",
           "secret": false,
-          "type": AnyPrimitiveType {
-            "name": "any",
+          "type": Object {
+            "kind": "AnyPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "foo",
             "secret": false,
-            "type": AnyPrimitiveType {
-              "name": "any",
+            "type": Object {
+              "kind": "AnyPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -3084,8 +3362,8 @@ AstRoot {
 exports[`Parser handles primitive type 'base64' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -3099,13 +3377,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -3113,41 +3393,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "foo",
           "secret": false,
-          "type": Base64PrimitiveType {
-            "name": "base64",
+          "type": Object {
+            "kind": "Base64PrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "foo",
             "secret": false,
-            "type": Base64PrimitiveType {
-              "name": "base64",
+            "type": Object {
+              "kind": "Base64PrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -3161,8 +3445,8 @@ AstRoot {
 exports[`Parser handles primitive type 'bool' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -3176,13 +3460,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -3190,41 +3476,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "foo",
           "secret": false,
-          "type": BoolPrimitiveType {
-            "name": "bool",
+          "type": Object {
+            "kind": "BoolPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "foo",
             "secret": false,
-            "type": BoolPrimitiveType {
-              "name": "bool",
+            "type": Object {
+              "kind": "BoolPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -3238,8 +3528,8 @@ AstRoot {
 exports[`Parser handles primitive type 'bytes' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -3253,13 +3543,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -3267,41 +3559,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "foo",
           "secret": false,
-          "type": BytesPrimitiveType {
-            "name": "bytes",
+          "type": Object {
+            "kind": "BytesPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "foo",
             "secret": false,
-            "type": BytesPrimitiveType {
-              "name": "bytes",
+            "type": Object {
+              "kind": "BytesPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -3315,8 +3611,8 @@ AstRoot {
 exports[`Parser handles primitive type 'cep' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -3330,13 +3626,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -3344,41 +3642,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "foo",
           "secret": false,
-          "type": CepPrimitiveType {
-            "name": "cep",
+          "type": Object {
+            "kind": "CepPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "foo",
             "secret": false,
-            "type": CepPrimitiveType {
-              "name": "cep",
+            "type": Object {
+              "kind": "CepPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -3392,8 +3694,8 @@ AstRoot {
 exports[`Parser handles primitive type 'cnpj' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -3407,13 +3709,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -3421,41 +3725,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "foo",
           "secret": false,
-          "type": CnpjPrimitiveType {
-            "name": "cnpj",
+          "type": Object {
+            "kind": "CnpjPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "foo",
             "secret": false,
-            "type": CnpjPrimitiveType {
-              "name": "cnpj",
+            "type": Object {
+              "kind": "CnpjPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -3469,8 +3777,8 @@ AstRoot {
 exports[`Parser handles primitive type 'cpf' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -3484,13 +3792,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -3498,41 +3808,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "foo",
           "secret": false,
-          "type": CpfPrimitiveType {
-            "name": "cpf",
+          "type": Object {
+            "kind": "CpfPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "foo",
             "secret": false,
-            "type": CpfPrimitiveType {
-              "name": "cpf",
+            "type": Object {
+              "kind": "CpfPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -3546,8 +3860,8 @@ AstRoot {
 exports[`Parser handles primitive type 'date' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -3561,13 +3875,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -3575,41 +3891,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "foo",
           "secret": false,
-          "type": DatePrimitiveType {
-            "name": "date",
+          "type": Object {
+            "kind": "DatePrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "foo",
             "secret": false,
-            "type": DatePrimitiveType {
-              "name": "date",
+            "type": Object {
+              "kind": "DatePrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -3623,8 +3943,8 @@ AstRoot {
 exports[`Parser handles primitive type 'datetime' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -3638,13 +3958,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -3652,41 +3974,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "foo",
           "secret": false,
-          "type": DateTimePrimitiveType {
-            "name": "datetime",
+          "type": Object {
+            "kind": "DateTimePrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "foo",
             "secret": false,
-            "type": DateTimePrimitiveType {
-              "name": "datetime",
+            "type": Object {
+              "kind": "DateTimePrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -3700,8 +4026,8 @@ AstRoot {
 exports[`Parser handles primitive type 'email' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -3715,13 +4041,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -3729,41 +4057,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "foo",
           "secret": false,
-          "type": EmailPrimitiveType {
-            "name": "email",
+          "type": Object {
+            "kind": "EmailPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "foo",
             "secret": false,
-            "type": EmailPrimitiveType {
-              "name": "email",
+            "type": Object {
+              "kind": "EmailPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -3777,8 +4109,8 @@ AstRoot {
 exports[`Parser handles primitive type 'float' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -3792,13 +4124,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -3806,41 +4140,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "foo",
           "secret": false,
-          "type": FloatPrimitiveType {
-            "name": "float",
+          "type": Object {
+            "kind": "FloatPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "foo",
             "secret": false,
-            "type": FloatPrimitiveType {
-              "name": "float",
+            "type": Object {
+              "kind": "FloatPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -3854,8 +4192,8 @@ AstRoot {
 exports[`Parser handles primitive type 'hex' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -3869,13 +4207,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -3883,41 +4223,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "foo",
           "secret": false,
-          "type": HexPrimitiveType {
-            "name": "hex",
+          "type": Object {
+            "kind": "HexPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "foo",
             "secret": false,
-            "type": HexPrimitiveType {
-              "name": "hex",
+            "type": Object {
+              "kind": "HexPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -3931,8 +4275,8 @@ AstRoot {
 exports[`Parser handles primitive type 'int' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -3946,13 +4290,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -3960,41 +4306,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "foo",
           "secret": false,
-          "type": IntPrimitiveType {
-            "name": "int",
+          "type": Object {
+            "kind": "IntPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "foo",
             "secret": false,
-            "type": IntPrimitiveType {
-              "name": "int",
+            "type": Object {
+              "kind": "IntPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -4008,8 +4358,8 @@ AstRoot {
 exports[`Parser handles primitive type 'latlng' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -4023,13 +4373,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -4037,41 +4389,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "foo",
           "secret": false,
-          "type": LatLngPrimitiveType {
-            "name": "latlng",
+          "type": Object {
+            "kind": "LatLngPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "foo",
             "secret": false,
-            "type": LatLngPrimitiveType {
-              "name": "latlng",
+            "type": Object {
+              "kind": "LatLngPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -4085,8 +4441,8 @@ AstRoot {
 exports[`Parser handles primitive type 'money' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -4100,13 +4456,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -4114,41 +4472,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "foo",
           "secret": false,
-          "type": MoneyPrimitiveType {
-            "name": "money",
+          "type": Object {
+            "kind": "MoneyPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "foo",
             "secret": false,
-            "type": MoneyPrimitiveType {
-              "name": "money",
+            "type": Object {
+              "kind": "MoneyPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -4162,8 +4524,8 @@ AstRoot {
 exports[`Parser handles primitive type 'phone' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -4177,13 +4539,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -4191,41 +4555,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "foo",
           "secret": false,
-          "type": PhonePrimitiveType {
-            "name": "phone",
+          "type": Object {
+            "kind": "PhonePrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "foo",
             "secret": false,
-            "type": PhonePrimitiveType {
-              "name": "phone",
+            "type": Object {
+              "kind": "PhonePrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -4239,8 +4607,8 @@ AstRoot {
 exports[`Parser handles primitive type 'safehtml' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -4254,13 +4622,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -4268,41 +4638,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "foo",
           "secret": false,
-          "type": SafeHtmlPrimitiveType {
-            "name": "safehtml",
+          "type": Object {
+            "kind": "SafeHtmlPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "foo",
             "secret": false,
-            "type": SafeHtmlPrimitiveType {
-              "name": "safehtml",
+            "type": Object {
+              "kind": "SafeHtmlPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -4316,8 +4690,8 @@ AstRoot {
 exports[`Parser handles primitive type 'string' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -4331,13 +4705,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -4345,41 +4721,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "foo",
           "secret": false,
-          "type": StringPrimitiveType {
-            "name": "string",
+          "type": Object {
+            "kind": "StringPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "foo",
             "secret": false,
-            "type": StringPrimitiveType {
-              "name": "string",
+            "type": Object {
+              "kind": "StringPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -4393,8 +4773,8 @@ AstRoot {
 exports[`Parser handles primitive type 'uint' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -4408,13 +4788,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -4422,41 +4804,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "foo",
           "secret": false,
-          "type": UIntPrimitiveType {
-            "name": "uint",
+          "type": Object {
+            "kind": "UIntPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "foo",
             "secret": false,
-            "type": UIntPrimitiveType {
-              "name": "uint",
+            "type": Object {
+              "kind": "UIntPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -4470,8 +4856,8 @@ AstRoot {
 exports[`Parser handles primitive type 'url' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -4485,13 +4871,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -4499,41 +4887,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "foo",
           "secret": false,
-          "type": UrlPrimitiveType {
-            "name": "url",
+          "type": Object {
+            "kind": "UrlPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "foo",
             "secret": false,
-            "type": UrlPrimitiveType {
-              "name": "url",
+            "type": Object {
+              "kind": "UrlPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -4547,8 +4939,8 @@ AstRoot {
 exports[`Parser handles primitive type 'uuid' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -4562,13 +4954,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -4576,41 +4970,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "foo",
           "secret": false,
-          "type": UuidPrimitiveType {
-            "name": "uuid",
+          "type": Object {
+            "kind": "UuidPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "foo",
             "secret": false,
-            "type": UuidPrimitiveType {
-              "name": "uuid",
+            "type": Object {
+              "kind": "UuidPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -4624,8 +5022,8 @@ AstRoot {
 exports[`Parser handles primitive type 'void' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -4639,13 +5037,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -4653,41 +5053,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "foo",
           "secret": false,
-          "type": VoidPrimitiveType {
-            "name": "void",
+          "type": Object {
+            "kind": "VoidPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "foo",
             "secret": false,
-            "type": VoidPrimitiveType {
-              "name": "void",
+            "type": Object {
+              "kind": "VoidPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -4701,8 +5105,8 @@ AstRoot {
 exports[`Parser handles primitive type 'xml' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -4716,13 +5120,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -4730,41 +5136,45 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "foo",
           "secret": false,
-          "type": XmlPrimitiveType {
-            "name": "xml",
+          "type": Object {
+            "kind": "XmlPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [],
     },
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "foo",
             "secret": false,
-            "type": XmlPrimitiveType {
-              "name": "xml",
+            "type": Object {
+              "kind": "XmlPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -4778,8 +5188,8 @@ AstRoot {
 exports[`Parser handles simple get operations for primitive type 'any' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -4793,38 +5203,45 @@ AstRoot {
   "operations": Array [
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "foo",
-      "returnType": AnyPrimitiveType {
-        "name": "any",
+      "returnType": Object {
+        "kind": "AnyPrimitiveType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "bar",
-      "returnType": OptionalType {
-        "base": AnyPrimitiveType {
-          "name": "any",
+      "returnType": Object {
+        "base": Object {
+          "kind": "AnyPrimitiveType",
         },
+        "kind": "OptionalType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "baz",
-      "returnType": ArrayType {
-        "base": AnyPrimitiveType {
-          "name": "any",
+      "returnType": Object {
+        "base": Object {
+          "kind": "AnyPrimitiveType",
         },
+        "kind": "ArrayType",
       },
     },
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -4834,9 +5251,10 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -4850,8 +5268,8 @@ AstRoot {
 exports[`Parser handles simple get operations for primitive type 'base64' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -4865,38 +5283,45 @@ AstRoot {
   "operations": Array [
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "foo",
-      "returnType": Base64PrimitiveType {
-        "name": "base64",
+      "returnType": Object {
+        "kind": "Base64PrimitiveType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "bar",
-      "returnType": OptionalType {
-        "base": Base64PrimitiveType {
-          "name": "base64",
+      "returnType": Object {
+        "base": Object {
+          "kind": "Base64PrimitiveType",
         },
+        "kind": "OptionalType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "baz",
-      "returnType": ArrayType {
-        "base": Base64PrimitiveType {
-          "name": "base64",
+      "returnType": Object {
+        "base": Object {
+          "kind": "Base64PrimitiveType",
         },
+        "kind": "ArrayType",
       },
     },
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -4906,9 +5331,10 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -4922,8 +5348,8 @@ AstRoot {
 exports[`Parser handles simple get operations for primitive type 'bool' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -4937,38 +5363,45 @@ AstRoot {
   "operations": Array [
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "isFoo",
-      "returnType": BoolPrimitiveType {
-        "name": "bool",
+      "returnType": Object {
+        "kind": "BoolPrimitiveType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "bar",
-      "returnType": OptionalType {
-        "base": BoolPrimitiveType {
-          "name": "bool",
+      "returnType": Object {
+        "base": Object {
+          "kind": "BoolPrimitiveType",
         },
+        "kind": "OptionalType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "baz",
-      "returnType": ArrayType {
-        "base": BoolPrimitiveType {
-          "name": "bool",
+      "returnType": Object {
+        "base": Object {
+          "kind": "BoolPrimitiveType",
         },
+        "kind": "ArrayType",
       },
     },
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -4978,9 +5411,10 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -4994,8 +5428,8 @@ AstRoot {
 exports[`Parser handles simple get operations for primitive type 'bytes' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -5009,38 +5443,45 @@ AstRoot {
   "operations": Array [
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "foo",
-      "returnType": BytesPrimitiveType {
-        "name": "bytes",
+      "returnType": Object {
+        "kind": "BytesPrimitiveType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "bar",
-      "returnType": OptionalType {
-        "base": BytesPrimitiveType {
-          "name": "bytes",
+      "returnType": Object {
+        "base": Object {
+          "kind": "BytesPrimitiveType",
         },
+        "kind": "OptionalType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "baz",
-      "returnType": ArrayType {
-        "base": BytesPrimitiveType {
-          "name": "bytes",
+      "returnType": Object {
+        "base": Object {
+          "kind": "BytesPrimitiveType",
         },
+        "kind": "ArrayType",
       },
     },
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -5050,9 +5491,10 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -5066,8 +5508,8 @@ AstRoot {
 exports[`Parser handles simple get operations for primitive type 'cep' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -5081,38 +5523,45 @@ AstRoot {
   "operations": Array [
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "foo",
-      "returnType": CepPrimitiveType {
-        "name": "cep",
+      "returnType": Object {
+        "kind": "CepPrimitiveType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "bar",
-      "returnType": OptionalType {
-        "base": CepPrimitiveType {
-          "name": "cep",
+      "returnType": Object {
+        "base": Object {
+          "kind": "CepPrimitiveType",
         },
+        "kind": "OptionalType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "baz",
-      "returnType": ArrayType {
-        "base": CepPrimitiveType {
-          "name": "cep",
+      "returnType": Object {
+        "base": Object {
+          "kind": "CepPrimitiveType",
         },
+        "kind": "ArrayType",
       },
     },
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -5122,9 +5571,10 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -5138,8 +5588,8 @@ AstRoot {
 exports[`Parser handles simple get operations for primitive type 'cnpj' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -5153,38 +5603,45 @@ AstRoot {
   "operations": Array [
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "foo",
-      "returnType": CnpjPrimitiveType {
-        "name": "cnpj",
+      "returnType": Object {
+        "kind": "CnpjPrimitiveType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "bar",
-      "returnType": OptionalType {
-        "base": CnpjPrimitiveType {
-          "name": "cnpj",
+      "returnType": Object {
+        "base": Object {
+          "kind": "CnpjPrimitiveType",
         },
+        "kind": "OptionalType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "baz",
-      "returnType": ArrayType {
-        "base": CnpjPrimitiveType {
-          "name": "cnpj",
+      "returnType": Object {
+        "base": Object {
+          "kind": "CnpjPrimitiveType",
         },
+        "kind": "ArrayType",
       },
     },
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -5194,9 +5651,10 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -5210,8 +5668,8 @@ AstRoot {
 exports[`Parser handles simple get operations for primitive type 'cpf' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -5225,38 +5683,45 @@ AstRoot {
   "operations": Array [
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "foo",
-      "returnType": CpfPrimitiveType {
-        "name": "cpf",
+      "returnType": Object {
+        "kind": "CpfPrimitiveType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "bar",
-      "returnType": OptionalType {
-        "base": CpfPrimitiveType {
-          "name": "cpf",
+      "returnType": Object {
+        "base": Object {
+          "kind": "CpfPrimitiveType",
         },
+        "kind": "OptionalType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "baz",
-      "returnType": ArrayType {
-        "base": CpfPrimitiveType {
-          "name": "cpf",
+      "returnType": Object {
+        "base": Object {
+          "kind": "CpfPrimitiveType",
         },
+        "kind": "ArrayType",
       },
     },
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -5266,9 +5731,10 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -5282,8 +5748,8 @@ AstRoot {
 exports[`Parser handles simple get operations for primitive type 'date' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -5297,38 +5763,45 @@ AstRoot {
   "operations": Array [
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "foo",
-      "returnType": DatePrimitiveType {
-        "name": "date",
+      "returnType": Object {
+        "kind": "DatePrimitiveType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "bar",
-      "returnType": OptionalType {
-        "base": DatePrimitiveType {
-          "name": "date",
+      "returnType": Object {
+        "base": Object {
+          "kind": "DatePrimitiveType",
         },
+        "kind": "OptionalType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "baz",
-      "returnType": ArrayType {
-        "base": DatePrimitiveType {
-          "name": "date",
+      "returnType": Object {
+        "base": Object {
+          "kind": "DatePrimitiveType",
         },
+        "kind": "ArrayType",
       },
     },
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -5338,9 +5811,10 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -5354,8 +5828,8 @@ AstRoot {
 exports[`Parser handles simple get operations for primitive type 'datetime' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -5369,38 +5843,45 @@ AstRoot {
   "operations": Array [
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "foo",
-      "returnType": DateTimePrimitiveType {
-        "name": "datetime",
+      "returnType": Object {
+        "kind": "DateTimePrimitiveType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "bar",
-      "returnType": OptionalType {
-        "base": DateTimePrimitiveType {
-          "name": "datetime",
+      "returnType": Object {
+        "base": Object {
+          "kind": "DateTimePrimitiveType",
         },
+        "kind": "OptionalType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "baz",
-      "returnType": ArrayType {
-        "base": DateTimePrimitiveType {
-          "name": "datetime",
+      "returnType": Object {
+        "base": Object {
+          "kind": "DateTimePrimitiveType",
         },
+        "kind": "ArrayType",
       },
     },
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -5410,9 +5891,10 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -5426,8 +5908,8 @@ AstRoot {
 exports[`Parser handles simple get operations for primitive type 'email' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -5441,38 +5923,45 @@ AstRoot {
   "operations": Array [
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "foo",
-      "returnType": EmailPrimitiveType {
-        "name": "email",
+      "returnType": Object {
+        "kind": "EmailPrimitiveType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "bar",
-      "returnType": OptionalType {
-        "base": EmailPrimitiveType {
-          "name": "email",
+      "returnType": Object {
+        "base": Object {
+          "kind": "EmailPrimitiveType",
         },
+        "kind": "OptionalType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "baz",
-      "returnType": ArrayType {
-        "base": EmailPrimitiveType {
-          "name": "email",
+      "returnType": Object {
+        "base": Object {
+          "kind": "EmailPrimitiveType",
         },
+        "kind": "ArrayType",
       },
     },
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -5482,9 +5971,10 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -5498,8 +5988,8 @@ AstRoot {
 exports[`Parser handles simple get operations for primitive type 'float' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -5513,38 +6003,45 @@ AstRoot {
   "operations": Array [
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "foo",
-      "returnType": FloatPrimitiveType {
-        "name": "float",
+      "returnType": Object {
+        "kind": "FloatPrimitiveType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "bar",
-      "returnType": OptionalType {
-        "base": FloatPrimitiveType {
-          "name": "float",
+      "returnType": Object {
+        "base": Object {
+          "kind": "FloatPrimitiveType",
         },
+        "kind": "OptionalType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "baz",
-      "returnType": ArrayType {
-        "base": FloatPrimitiveType {
-          "name": "float",
+      "returnType": Object {
+        "base": Object {
+          "kind": "FloatPrimitiveType",
         },
+        "kind": "ArrayType",
       },
     },
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -5554,9 +6051,10 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -5570,8 +6068,8 @@ AstRoot {
 exports[`Parser handles simple get operations for primitive type 'hex' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -5585,38 +6083,45 @@ AstRoot {
   "operations": Array [
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "foo",
-      "returnType": HexPrimitiveType {
-        "name": "hex",
+      "returnType": Object {
+        "kind": "HexPrimitiveType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "bar",
-      "returnType": OptionalType {
-        "base": HexPrimitiveType {
-          "name": "hex",
+      "returnType": Object {
+        "base": Object {
+          "kind": "HexPrimitiveType",
         },
+        "kind": "OptionalType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "baz",
-      "returnType": ArrayType {
-        "base": HexPrimitiveType {
-          "name": "hex",
+      "returnType": Object {
+        "base": Object {
+          "kind": "HexPrimitiveType",
         },
+        "kind": "ArrayType",
       },
     },
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -5626,9 +6131,10 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -5642,8 +6148,8 @@ AstRoot {
 exports[`Parser handles simple get operations for primitive type 'int' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -5657,38 +6163,45 @@ AstRoot {
   "operations": Array [
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "foo",
-      "returnType": IntPrimitiveType {
-        "name": "int",
+      "returnType": Object {
+        "kind": "IntPrimitiveType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "bar",
-      "returnType": OptionalType {
-        "base": IntPrimitiveType {
-          "name": "int",
+      "returnType": Object {
+        "base": Object {
+          "kind": "IntPrimitiveType",
         },
+        "kind": "OptionalType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "baz",
-      "returnType": ArrayType {
-        "base": IntPrimitiveType {
-          "name": "int",
+      "returnType": Object {
+        "base": Object {
+          "kind": "IntPrimitiveType",
         },
+        "kind": "ArrayType",
       },
     },
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -5698,9 +6211,10 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -5714,8 +6228,8 @@ AstRoot {
 exports[`Parser handles simple get operations for primitive type 'latlng' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -5729,38 +6243,45 @@ AstRoot {
   "operations": Array [
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "foo",
-      "returnType": LatLngPrimitiveType {
-        "name": "latlng",
+      "returnType": Object {
+        "kind": "LatLngPrimitiveType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "bar",
-      "returnType": OptionalType {
-        "base": LatLngPrimitiveType {
-          "name": "latlng",
+      "returnType": Object {
+        "base": Object {
+          "kind": "LatLngPrimitiveType",
         },
+        "kind": "OptionalType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "baz",
-      "returnType": ArrayType {
-        "base": LatLngPrimitiveType {
-          "name": "latlng",
+      "returnType": Object {
+        "base": Object {
+          "kind": "LatLngPrimitiveType",
         },
+        "kind": "ArrayType",
       },
     },
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -5770,9 +6291,10 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -5786,8 +6308,8 @@ AstRoot {
 exports[`Parser handles simple get operations for primitive type 'money' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -5801,38 +6323,45 @@ AstRoot {
   "operations": Array [
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "foo",
-      "returnType": MoneyPrimitiveType {
-        "name": "money",
+      "returnType": Object {
+        "kind": "MoneyPrimitiveType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "bar",
-      "returnType": OptionalType {
-        "base": MoneyPrimitiveType {
-          "name": "money",
+      "returnType": Object {
+        "base": Object {
+          "kind": "MoneyPrimitiveType",
         },
+        "kind": "OptionalType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "baz",
-      "returnType": ArrayType {
-        "base": MoneyPrimitiveType {
-          "name": "money",
+      "returnType": Object {
+        "base": Object {
+          "kind": "MoneyPrimitiveType",
         },
+        "kind": "ArrayType",
       },
     },
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -5842,9 +6371,10 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -5858,8 +6388,8 @@ AstRoot {
 exports[`Parser handles simple get operations for primitive type 'phone' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -5873,38 +6403,45 @@ AstRoot {
   "operations": Array [
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "foo",
-      "returnType": PhonePrimitiveType {
-        "name": "phone",
+      "returnType": Object {
+        "kind": "PhonePrimitiveType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "bar",
-      "returnType": OptionalType {
-        "base": PhonePrimitiveType {
-          "name": "phone",
+      "returnType": Object {
+        "base": Object {
+          "kind": "PhonePrimitiveType",
         },
+        "kind": "OptionalType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "baz",
-      "returnType": ArrayType {
-        "base": PhonePrimitiveType {
-          "name": "phone",
+      "returnType": Object {
+        "base": Object {
+          "kind": "PhonePrimitiveType",
         },
+        "kind": "ArrayType",
       },
     },
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -5914,9 +6451,10 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -5930,8 +6468,8 @@ AstRoot {
 exports[`Parser handles simple get operations for primitive type 'safehtml' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -5945,38 +6483,45 @@ AstRoot {
   "operations": Array [
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "foo",
-      "returnType": SafeHtmlPrimitiveType {
-        "name": "safehtml",
+      "returnType": Object {
+        "kind": "SafeHtmlPrimitiveType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "bar",
-      "returnType": OptionalType {
-        "base": SafeHtmlPrimitiveType {
-          "name": "safehtml",
+      "returnType": Object {
+        "base": Object {
+          "kind": "SafeHtmlPrimitiveType",
         },
+        "kind": "OptionalType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "baz",
-      "returnType": ArrayType {
-        "base": SafeHtmlPrimitiveType {
-          "name": "safehtml",
+      "returnType": Object {
+        "base": Object {
+          "kind": "SafeHtmlPrimitiveType",
         },
+        "kind": "ArrayType",
       },
     },
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -5986,9 +6531,10 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -6002,8 +6548,8 @@ AstRoot {
 exports[`Parser handles simple get operations for primitive type 'string' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -6017,38 +6563,45 @@ AstRoot {
   "operations": Array [
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "foo",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "bar",
-      "returnType": OptionalType {
-        "base": StringPrimitiveType {
-          "name": "string",
+      "returnType": Object {
+        "base": Object {
+          "kind": "StringPrimitiveType",
         },
+        "kind": "OptionalType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "baz",
-      "returnType": ArrayType {
-        "base": StringPrimitiveType {
-          "name": "string",
+      "returnType": Object {
+        "base": Object {
+          "kind": "StringPrimitiveType",
         },
+        "kind": "ArrayType",
       },
     },
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -6058,9 +6611,10 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -6074,8 +6628,8 @@ AstRoot {
 exports[`Parser handles simple get operations for primitive type 'uint' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -6089,38 +6643,45 @@ AstRoot {
   "operations": Array [
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "foo",
-      "returnType": UIntPrimitiveType {
-        "name": "uint",
+      "returnType": Object {
+        "kind": "UIntPrimitiveType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "bar",
-      "returnType": OptionalType {
-        "base": UIntPrimitiveType {
-          "name": "uint",
+      "returnType": Object {
+        "base": Object {
+          "kind": "UIntPrimitiveType",
         },
+        "kind": "OptionalType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "baz",
-      "returnType": ArrayType {
-        "base": UIntPrimitiveType {
-          "name": "uint",
+      "returnType": Object {
+        "base": Object {
+          "kind": "UIntPrimitiveType",
         },
+        "kind": "ArrayType",
       },
     },
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -6130,9 +6691,10 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -6146,8 +6708,8 @@ AstRoot {
 exports[`Parser handles simple get operations for primitive type 'url' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -6161,38 +6723,45 @@ AstRoot {
   "operations": Array [
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "foo",
-      "returnType": UrlPrimitiveType {
-        "name": "url",
+      "returnType": Object {
+        "kind": "UrlPrimitiveType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "bar",
-      "returnType": OptionalType {
-        "base": UrlPrimitiveType {
-          "name": "url",
+      "returnType": Object {
+        "base": Object {
+          "kind": "UrlPrimitiveType",
         },
+        "kind": "OptionalType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "baz",
-      "returnType": ArrayType {
-        "base": UrlPrimitiveType {
-          "name": "url",
+      "returnType": Object {
+        "base": Object {
+          "kind": "UrlPrimitiveType",
         },
+        "kind": "ArrayType",
       },
     },
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -6202,9 +6771,10 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -6218,8 +6788,8 @@ AstRoot {
 exports[`Parser handles simple get operations for primitive type 'uuid' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -6233,38 +6803,45 @@ AstRoot {
   "operations": Array [
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "foo",
-      "returnType": UuidPrimitiveType {
-        "name": "uuid",
+      "returnType": Object {
+        "kind": "UuidPrimitiveType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "bar",
-      "returnType": OptionalType {
-        "base": UuidPrimitiveType {
-          "name": "uuid",
+      "returnType": Object {
+        "base": Object {
+          "kind": "UuidPrimitiveType",
         },
+        "kind": "OptionalType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "baz",
-      "returnType": ArrayType {
-        "base": UuidPrimitiveType {
-          "name": "uuid",
+      "returnType": Object {
+        "base": Object {
+          "kind": "UuidPrimitiveType",
         },
+        "kind": "ArrayType",
       },
     },
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -6274,9 +6851,10 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -6290,8 +6868,8 @@ AstRoot {
 exports[`Parser handles simple get operations for primitive type 'void' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -6305,38 +6883,45 @@ AstRoot {
   "operations": Array [
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "foo",
-      "returnType": VoidPrimitiveType {
-        "name": "void",
+      "returnType": Object {
+        "kind": "VoidPrimitiveType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "bar",
-      "returnType": OptionalType {
-        "base": VoidPrimitiveType {
-          "name": "void",
+      "returnType": Object {
+        "base": Object {
+          "kind": "VoidPrimitiveType",
         },
+        "kind": "OptionalType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "baz",
-      "returnType": ArrayType {
-        "base": VoidPrimitiveType {
-          "name": "void",
+      "returnType": Object {
+        "base": Object {
+          "kind": "VoidPrimitiveType",
         },
+        "kind": "ArrayType",
       },
     },
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -6346,9 +6931,10 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -6362,8 +6948,8 @@ AstRoot {
 exports[`Parser handles simple get operations for primitive type 'xml' 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -6377,38 +6963,45 @@ AstRoot {
   "operations": Array [
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "foo",
-      "returnType": XmlPrimitiveType {
-        "name": "xml",
+      "returnType": Object {
+        "kind": "XmlPrimitiveType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "bar",
-      "returnType": OptionalType {
-        "base": XmlPrimitiveType {
-          "name": "xml",
+      "returnType": Object {
+        "base": Object {
+          "kind": "XmlPrimitiveType",
         },
+        "kind": "OptionalType",
       },
     },
     GetOperation {
       "args": Array [],
+      "kind": "GetOperation",
       "name": "baz",
-      "returnType": ArrayType {
-        "base": XmlPrimitiveType {
-          "name": "xml",
+      "returnType": Object {
+        "base": Object {
+          "kind": "XmlPrimitiveType",
         },
+        "kind": "ArrayType",
       },
     },
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -6418,9 +7011,10 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
@@ -6434,8 +7028,8 @@ AstRoot {
 exports[`Parser handles spreads in structs 1`] = `
 AstRoot {
   "enumTypes": Array [
-    EnumType {
-      "name": "ErrorType",
+    Object {
+      "kind": "EnumType",
       "values": Array [
         "Fatal",
         "Connection",
@@ -6449,13 +7043,15 @@ AstRoot {
   "operations": Array [
     FunctionOperation {
       "args": Array [],
+      "kind": "FunctionOperation",
       "name": "ping",
-      "returnType": StringPrimitiveType {
-        "name": "string",
+      "returnType": Object {
+        "kind": "StringPrimitiveType",
       },
     },
   ],
   "options": Options {
+    "kind": "Options",
     "retryRequest": true,
     "strict": false,
     "syntheticDefaultImports": true,
@@ -6463,51 +7059,55 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "aa",
           "secret": false,
-          "type": StringPrimitiveType {
-            "name": "string",
+          "type": Object {
+            "kind": "StringPrimitiveType",
           },
         },
       ],
-      "name": "Bar",
+      "kind": "StructType",
       "spreads": Array [],
     },
-    StructType {
+    Object {
       "fields": Array [
         Field {
+          "kind": "Field",
           "name": "bb",
           "secret": false,
-          "type": IntPrimitiveType {
-            "name": "int",
+          "type": Object {
+            "kind": "IntPrimitiveType",
           },
         },
         Field {
+          "kind": "Field",
           "name": "aa",
           "secret": false,
-          "type": StringPrimitiveType {
-            "name": "string",
+          "type": Object {
+            "kind": "StringPrimitiveType",
           },
         },
       ],
-      "name": "Foo",
+      "kind": "StructType",
       "spreads": Array [
-        TypeReference {
-          "name": "Bar",
-          "type": StructType {
+        Object {
+          "kind": "TypeReference",
+          "type": Object {
             "fields": Array [
               Field {
+                "kind": "Field",
                 "name": "aa",
                 "secret": false,
-                "type": StringPrimitiveType {
-                  "name": "string",
+                "type": Object {
+                  "kind": "StringPrimitiveType",
                 },
               },
             ],
-            "name": "Bar",
+            "kind": "StructType",
             "spreads": Array [],
           },
         },
@@ -6516,55 +7116,61 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Bar",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "aa",
             "secret": false,
-            "type": StringPrimitiveType {
-              "name": "string",
+            "type": Object {
+              "kind": "StringPrimitiveType",
             },
           },
         ],
-        "name": "Bar",
+        "kind": "StructType",
         "spreads": Array [],
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "Foo",
-      "type": StructType {
+      "type": Object {
         "fields": Array [
           Field {
+            "kind": "Field",
             "name": "bb",
             "secret": false,
-            "type": IntPrimitiveType {
-              "name": "int",
+            "type": Object {
+              "kind": "IntPrimitiveType",
             },
           },
           Field {
+            "kind": "Field",
             "name": "aa",
             "secret": false,
-            "type": StringPrimitiveType {
-              "name": "string",
+            "type": Object {
+              "kind": "StringPrimitiveType",
             },
           },
         ],
-        "name": "Foo",
+        "kind": "StructType",
         "spreads": Array [
-          TypeReference {
-            "name": "Bar",
-            "type": StructType {
+          Object {
+            "kind": "TypeReference",
+            "type": Object {
               "fields": Array [
                 Field {
+                  "kind": "Field",
                   "name": "aa",
                   "secret": false,
-                  "type": StringPrimitiveType {
-                    "name": "string",
+                  "type": Object {
+                    "kind": "StringPrimitiveType",
                   },
                 },
               ],
-              "name": "Bar",
+              "kind": "StructType",
               "spreads": Array [],
             },
           },
@@ -6572,9 +7178,10 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "kind": "TypeDefinition",
       "name": "ErrorType",
-      "type": EnumType {
-        "name": "ErrorType",
+      "type": Object {
+        "kind": "EnumType",
         "values": Array [
           "Fatal",
           "Connection",
