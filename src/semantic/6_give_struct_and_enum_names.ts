@@ -1,10 +1,12 @@
-import { AstNode, EnumType, Field, Operation, StructType, TypeDefinition } from "../ast";
+import { AstNode, EnumType, Field, Operation, StructType, TypeDefinition, Type } from "../ast";
 import { SemanticError } from "./analyser";
 import { Visitor } from "./visitor";
+import equal from "fast-deep-equal";
+
 
 export class GiveStructAndEnumNamesVisitor extends Visitor {
     path: string[] = [];
-    names = new Map<string, string[]>();
+    names = new Map<string, {type: Type, path: string[]}>();
 
     visit(node: AstNode) {
         if (node instanceof TypeDefinition) {
@@ -19,10 +21,11 @@ export class GiveStructAndEnumNamesVisitor extends Visitor {
             this.path.pop();
         } else if (node instanceof StructType || node instanceof EnumType) {
             node.name = this.path.map(s => s[0].toUpperCase() + s.slice(1)).join("");
-            if (this.names.has(node.name)) {
-                throw new SemanticError(`The name of the type '${this.path.join(".")}' at ${node.location} will conflict with '${this.names.get(node.name)!.join(".")}'`);
+            const previous = this.names.get(node.name);
+            if (previous && !equal(previous.type, node)) {
+                throw new SemanticError(`The name of the type '${this.path.join(".")}' at ${node.location} will conflict with '${previous.path.join(".")}'`);
             }
-            this.names.set(node.name, [...this.path]);
+            this.names.set(node.name, {type: node, path: [...this.path]});
             super.visit(node);
         } else {
             super.visit(node);
