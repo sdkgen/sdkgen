@@ -1,6 +1,6 @@
 import { compatibilityIssues, Parser } from "@sdkgen/parser";
 
-export async function compatibilityCmd(argv: string[]) {
+export function compatibilityCmd(argv: string[]) {
     const [source1, source2] = argv;
 
     if (!source1 || !source2) {

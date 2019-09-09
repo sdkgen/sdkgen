@@ -12,7 +12,7 @@ const optionDefinitions = [
     { name: "help", alias: "h", type: Boolean, description: "Display this usage guide." }
 ];
 
-export async function buildCmd(argv: string[]) {
+export function buildCmd(argv: string[]) {
     const options: {
         source?: string
         output?: string

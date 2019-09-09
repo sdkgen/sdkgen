@@ -12,10 +12,10 @@ const argv = mainOptions._unknown || []
 
 switch (mainOptions.command) {
     case undefined:
-        buildCmd(argv).catch(console.error);
+        buildCmd(argv);
         break;
     case "compatibility":
-        compatibilityCmd(argv).catch(console.error);
+        compatibilityCmd(argv);
         break;
     default:
         console.error("Error: Unknown command");
