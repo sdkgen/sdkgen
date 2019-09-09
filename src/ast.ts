@@ -14,9 +14,12 @@ export class AstRoot {
 
 export abstract class AstNode {
     public location = new TokenLocation;
+    private kind: string;
 
     constructor() {
+        this.kind = this.constructor.name;
         Object.defineProperty(this, "location", { enumerable: false });
+        Object.defineProperty(this, "name", { enumerable: false, writable: true });
     }
 
     at(token: Token): this {
