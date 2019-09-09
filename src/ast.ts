@@ -19,7 +19,6 @@ export abstract class AstNode {
     constructor() {
         this.kind = this.constructor.name;
         Object.defineProperty(this, "location", { enumerable: false });
-        Object.defineProperty(this, "name", { enumerable: false, writable: true });
     }
 
     at(token: Token): this {
@@ -30,7 +29,14 @@ export abstract class AstNode {
 
 export abstract class Type extends AstNode {
     abstract get name(): string;
+
+    toJSON() {
+        const json: any = { ...this };
+        delete json.name;
+        return json;
+    }
 }
+
 export abstract class PrimitiveType extends Type {}
 export class StringPrimitiveType extends PrimitiveType { name = "string"; }
 export class IntPrimitiveType extends PrimitiveType { name = "int"; }
