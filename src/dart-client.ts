@@ -47,7 +47,7 @@ ${ast.operations.map(op => `
         }
         code += `  }, (Map fields) => ${type.name}()\n`;
         for (const field of type.fields) {
-            code += `    ..${field.name} = fields["${field.name}"]\n`;
+            code += `    ..${field.name} = ${cast(`fields["${field.name}"]`, field.type)}\n`;
         }
         code += `  , (${type.name} obj) => ({\n`;
         for (const field of type.fields) {
