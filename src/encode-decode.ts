@@ -107,12 +107,12 @@ export function encode(typeTable: TypeTable, path: string, type: TypeDescription
         if (typeof value !== "string" || !CPF.isValid(value)) {
             throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
         }
-        return CPF.strip(value);
+        return CPF.format(value);
     } else if (type === "cnpj") {
         if (typeof value !== "string" || !CNPJ.isValid(value)) {
             throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
         }
-        return CNPJ.strip(value);
+        return CNPJ.format(value);
     } else if (type === "date") {
         if (!(value instanceof Date)) {
             throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
