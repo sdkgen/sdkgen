@@ -47,6 +47,8 @@
     ]
   },
   "dependencies": {
+    "@fnando/cnpj": "^0.1.1",
+    "@fnando/cpf": "^0.1.1",
     "@sdkgen/dart-generator": "^1.0.5",
     "@sdkgen/parser": "^1.0.11",
     "@sdkgen/typescript-generator": "^1.0.20",

@@ -1,0 +1,33 @@
+import { decode, encode } from "../../src";
+
+describe("Encode/Decode", () => {
+    test("Process CPF", async () => {
+        expect(
+            encode({}, "", "cpf", "067.183.145-36")
+        ).toBe("06718314536");
+        expect(
+            decode({}, "", "cpf", "06718314536")
+        ).toBe("067.183.145-36");
+        expect(() => {
+            encode({}, "", "cpf", "067.183.145-35")
+        }).toThrow();
+        expect(() => {
+            decode({}, "", "cpf", "06718314535")
+        }).toThrow();
+    });
+
+    test("Process CNPJ", async () => {
+        expect(
+            encode({}, "", "cnpj", "18.571.767/0001-36")
+        ).toBe("18571767000136");
+        expect(
+            decode({}, "", "cnpj", "18571767000136")
+        ).toBe("18.571.767/0001-36");
+        expect(() => {
+            encode({}, "", "cnpj", "18.571.767/0001-35")
+        }).toThrow();
+        expect(() => {
+            decode({}, "", "cnpj", "18571767000135")
+        }).toThrow();
+    });
+});

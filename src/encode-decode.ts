@@ -1,8 +1,10 @@
 import { AstJson, TypeDescription } from "@sdkgen/parser";
+const CPF = require("@fnando/cpf/dist/node");
+const CNPJ = require("@fnando/cnpj/dist/node");
 
 type TypeTable = AstJson["typeTable"]
 
-const simpleStringTypes = ["string", "cep", "cnpj", "cpf", "email", "phone", "safehtml", "url", "xml"];
+const simpleStringTypes = ["string", "cep", "email", "phone", "safehtml", "url", "xml"];
 const simpleTypes = ["any", "bool", "hex", "uuid", "base64", "int", "uint", "float", "money", "void", "latlng", ...simpleStringTypes];
 
 function simpleEncodeDecode(path: string, type: string, value: any) {
@@ -101,6 +103,16 @@ export function encode(typeTable: TypeTable, path: string, type: TypeDescription
             throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
         }
         return value.toString("base64");
+    } else if (type === "cpf") {
+        if (typeof value !== "string" || !CPF.isValid(value)) {
+            throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
+        }
+        return CPF.strip(value);
+    } else if (type === "cnpj") {
+        if (typeof value !== "string" || !CNPJ.isValid(value)) {
+            throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
+        }
+        return CNPJ.strip(value);
     } else if (type === "date") {
         if (!(value instanceof Date)) {
             throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
@@ -156,7 +168,17 @@ export function decode(typeTable: TypeTable, path: string, type: TypeDescription
         if (buffer.toString("base64") !== value) {
             throw new Error(`Invalid type at '${path}', expected ${type} (base64), got ${JSON.stringify(value)}`);
         }
-        return buffer
+        return buffer;
+    } else if (type === "cpf") {
+        if (typeof value !== "string" || !CPF.isValid(value)) {
+            throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
+        }
+        return CPF.format(value);
+    } else if (type === "cnpj") {
+        if (typeof value !== "string" || !CNPJ.isValid(value)) {
+            throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
+        }
+        return CNPJ.format(value);
     } else if (type === "date") {
         if (typeof value !== "string" || !value.match(/^[0-9]{4}-[01][0-9]-[0123][0-9]$/)) {
             throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
