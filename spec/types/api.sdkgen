@@ -1,5 +1,0 @@
-
-type CpfCnpj {
-    cpf: cpf
-    cnpj: cnpj
-}

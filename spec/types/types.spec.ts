@@ -30,4 +30,25 @@ describe("Encode/Decode", () => {
             decode({}, "", "cnpj", "18571767000135")
         }).toThrow();
     });
+
+    test("Process URL", async () => {
+        expect(
+            encode({}, "", "url", "https://cubos.io/")
+        ).toBe("https://cubos.io/");
+        expect(
+            decode({}, "", "url", "https://cubos.io/")
+        ).toBe("https://cubos.io/");
+        expect(
+            encode({}, "", "url", " https:cubos.io/  ")
+        ).toBe("https://cubos.io/");
+        expect(
+            encode({}, "", "url", " https:cubos.io  ")
+        ).toBe("https://cubos.io/");
+        expect(() => {
+            encode({}, "", "url", "dfbdfb")
+        }).toThrow();
+        expect(() => {
+            decode({}, "", "url", "hhh.com")
+        }).toThrow();
+    });
 });

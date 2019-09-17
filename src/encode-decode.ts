@@ -4,8 +4,8 @@ const CNPJ = require("@fnando/cnpj/dist/node");
 
 type TypeTable = AstJson["typeTable"]
 
-const simpleStringTypes = ["string", "cep", "email", "phone", "safehtml", "url", "xml"];
-const simpleTypes = ["any", "bool", "hex", "uuid", "base64", "int", "uint", "float", "money", "void", "latlng", ...simpleStringTypes];
+const simpleStringTypes = ["string", "cep", "email", "phone", "safehtml", "xml"];
+const simpleTypes = ["any", "bool", "hex", "uuid", "base64", "url", "int", "uint", "float", "money", "void", "latlng", ...simpleStringTypes];
 
 function simpleEncodeDecode(path: string, type: string, value: any) {
     if (type === "any") {
@@ -59,6 +59,20 @@ function simpleEncodeDecode(path: string, type: string, value: any) {
             throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
         }
         return value;
+    } else if (type === "url") {
+        let isValid = typeof value === "string";
+        let url: URL;
+        if (isValid) {
+            try {
+                url = new URL(value)
+            } catch (e) {
+                isValid = false;
+            }
+        }
+        if (!isValid) {
+            throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
+        }
+        return url!.toString();
     } else if (type === "void") {
         return null;
     } else if (type === "latlng") {
