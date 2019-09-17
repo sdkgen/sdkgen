@@ -35,7 +35,7 @@ function simpleEncodeDecode(path: string, type: string, value: any) {
         }
         return value.toLowerCase();
     } else if (type === "base64") {
-        if (typeof value !== "string"/* || !value.match(/^(?:[A-Za-z0-9+/]{4})*(?:[A-Za-z0-9+/]{2}==|[A-Za-z0-9+/]{3}=)?$/)*/) {
+        if (typeof value !== "string" || Buffer.from(value, "base64").toString("base64") !== value) {
             throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
         }
         return value;

@@ -51,4 +51,31 @@ describe("Encode/Decode", () => {
             decode({}, "", "url", "hhh.com")
         }).toThrow();
     });
+
+    test("Process Base64", async () => {
+        expect(
+            encode({}, "", "base64", "c3VyZS4=")
+        ).toBe("c3VyZS4=");
+        expect(
+            encode({}, "", "base64", "")
+        ).toBe("");
+        expect(() => {
+            encode({}, "", "base64", "c3VyZS4")
+        }).toThrow();
+        expect(() => {
+            encode({}, "", "base64", " c3VyZS4=")
+        }).toThrow();
+        expect(
+            decode({}, "", "base64", "c3VyZS4=")
+        ).toBe("c3VyZS4=");
+        expect(
+            decode({}, "", "base64", "")
+        ).toBe("");
+        expect(() => {
+            decode({}, "", "base64", "c3VyZS4")
+        }).toThrow();
+        expect(() => {
+            decode({}, "", "base64", " c3VyZS4=")
+        }).toThrow();
+    });
 });
