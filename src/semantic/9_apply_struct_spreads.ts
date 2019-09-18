@@ -25,11 +25,12 @@ export class ApplyStructSpreadsVisitor extends Visitor {
                 this.visit(other); // recursion!
 
                 for (const otherField of other.fields) {
-                    if (node.fields.find(f => f.name === otherField.name)) {
-                        throw new SemanticError(`The field '${otherField.name}' happens on both '${node.name}' at ${node.location} and '${other.name}' at ${other.location}.`);
+                    const existingIdx = node.fields.findIndex(f => f.name === otherField.name);
+                    if (existingIdx >= 0) {
+                        node.fields[existingIdx] = otherField;
+                    } else {
+                        node.fields.push(otherField);
                     }
-
-                    node.fields.push(otherField);
                 }
             }
         }
