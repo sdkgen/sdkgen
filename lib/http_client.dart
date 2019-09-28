@@ -59,10 +59,7 @@ class SdkgenHttpClient {
         "name": functionName,
         "args": encodedArgs,
         "extra": {},
-        "deviceInfo": {
-          "id": await _deviceId(),
-          "type": "dart"
-        }
+        "deviceInfo": {"id": await _deviceId(), "type": "dart"}
       };
 
       var response = await http.post(baseUrl, body: jsonEncode(body));

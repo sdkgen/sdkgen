@@ -99,11 +99,12 @@ encode(Map<String, Object> typeTable, String path, Object type, Object value) {
         throw SdkgenTypeException(
             "Invalid Type at '$path', expected ${jsonEncode(type)}, got ${jsonEncode(value)}");
       }
-      return (value as List).asMap().entries.map((entry) => encode(
-          typeTable,
-          "$path[${entry.key}]",
-          type.substring(0, type.length - 2),
-          entry.value)).toList();
+      return (value as List)
+          .asMap()
+          .entries
+          .map((entry) => encode(typeTable, "$path[${entry.key}]",
+              type.substring(0, type.length - 2), entry.value))
+          .toList();
     } else {
       switch (type) {
         case "bytes":
@@ -174,11 +175,12 @@ decode(Map<String, Object> typeTable, String path, Object type, Object value) {
         throw SdkgenTypeException(
             "Invalid Type at '$path', expected ${jsonEncode(type)}, got ${jsonEncode(value)}");
       }
-      return (value as List).asMap().entries.map((entry) => decode(
-          typeTable,
-          "$path[${entry.key}]",
-          type.substring(0, type.length - 2),
-          entry.value)).toList();
+      return (value as List)
+          .asMap()
+          .entries
+          .map((entry) => decode(typeTable, "$path[${entry.key}]",
+              type.substring(0, type.length - 2), entry.value))
+          .toList();
     } else {
       switch (type) {
         case "bytes":
