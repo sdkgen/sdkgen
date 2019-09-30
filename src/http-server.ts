@@ -299,7 +299,7 @@ export class SdkgenHttpServer extends SdkgenServer {
                 name: "string",
                 device: {
                     id: "string?",
-                    type: "string",
+                    type: "string?",
                     platform: "any?",
                     version: "string?",
                     language: "string?",
@@ -320,7 +320,7 @@ export class SdkgenHttpServer extends SdkgenServer {
                 language: parsed.device.language,
                 platform: parsed.device.platform,
                 timezone: parsed.device.timezone,
-                type: parsed.device.type,
+                type: parsed.device.type || parsed.device.platform || "",
                 version: parsed.device.version,
             }
         };
