@@ -61,7 +61,7 @@ export class SdkgenHttpClient {
             },
         };
 
-        const encodedRet = new Promise<any>((resolve, reject) => {
+        const encodedRet = await new Promise<any>((resolve, reject) => {
             const req = new XMLHttpRequest();
             req.open("POST", this.baseUrl + "/" + name);
 
@@ -70,11 +70,11 @@ export class SdkgenHttpClient {
                 try {
                     const response = JSON.parse(req.responseText);
                     try {
-                        if (response.ok) {
-                            resolve(response.result);
-                        } else {
+                        if (response.error) {
                             reject(response.error);
                             this.errorHook(response.error, name, args);
+                        } else {
+                            resolve(response.result);
                         }
                     } catch (e) {
                         console.error(e);
