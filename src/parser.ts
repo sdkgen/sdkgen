@@ -1,10 +1,11 @@
 import { readFileSync } from "fs";
 import { dirname, resolve } from "path";
-import { ArrayType, AstRoot, EnumType, Field, FunctionOperation, GetOperation, Operation, OptionalType, Options, StructType, Type, TypeDefinition, TypeReference, VoidPrimitiveType } from "./ast";
+import { ArrayType, AstRoot, EnumType, Field, FunctionOperation, GetOperation, Operation, OptionalType, Options, StructType, Type, TypeDefinition, TypeReference, VoidPrimitiveType, Annotation, DescriptionAnnotation, ArgDescriptionAnnotation, EnumValue } from "./ast";
 import { Lexer } from "./lexer";
 import { analyse } from "./semantic/analyser";
-import { ArraySymbolToken, ColonSymbolToken, CommaSymbolToken, CurlyCloseSymbolToken, CurlyOpenSymbolToken, EnumKeywordToken, EqualSymbolToken, ErrorKeywordToken, ExclamationMarkSymbolToken, FalseKeywordToken, FunctionKeywordToken, GetKeywordToken, GlobalOptionToken, IdentifierToken, ImportKeywordToken, OptionalSymbolToken, ParensCloseSymbolToken, ParensOpenSymbolToken, PrimitiveTypeToken, SpreadSymbolToken, StringLiteralToken, Token, TrueKeywordToken, TypeKeywordToken } from "./token";
+import { ArraySymbolToken, ColonSymbolToken, CommaSymbolToken, CurlyCloseSymbolToken, CurlyOpenSymbolToken, EnumKeywordToken, EqualSymbolToken, ErrorKeywordToken, ExclamationMarkSymbolToken, FalseKeywordToken, FunctionKeywordToken, GetKeywordToken, GlobalOptionToken, IdentifierToken, ImportKeywordToken, OptionalSymbolToken, ParensCloseSymbolToken, ParensOpenSymbolToken, PrimitiveTypeToken, SpreadSymbolToken, StringLiteralToken, Token, TrueKeywordToken, TypeKeywordToken, AnnotationToken } from "./token";
 import { primitiveToAstClass } from "./utils";
+import { tsImportEqualsDeclaration } from "@babel/types";
 
 export class ParserError extends Error {}
 
@@ -30,6 +31,7 @@ interface MultiExpectMatcher {
 export class Parser {
     private readonly lexers: Lexer[];
     private token: Token | null = null;
+    private annotations: Annotation[] = [];
 
     constructor(source: Lexer | string) {
         if (!(source instanceof Lexer)) {
@@ -98,27 +100,31 @@ export class Parser {
         const options = new Options;
 
         while (this.token) {
+            this.acceptAnnotations();
             this.multiExpect({
-                ImportKeywordToken: token => {
+                ImportKeywordToken: () => {
+                    this.checkCannotHaveAnnotationsHere();
                     this.nextToken();
                     const path = this.expect(StringLiteralToken).value;
                     const resolvedPath = resolve(dirname(this.currentFileName!), path + ".sdkgen");
                     this.lexers.push(new Lexer(readFileSync(resolvedPath).toString(), resolvedPath));
                     this.nextToken();
                 },
-                TypeKeywordToken: token => {
+                TypeKeywordToken: () => {
                     typeDefinition.push(this.parseTypeDefinition());
                 },
-                GetKeywordToken: token => {
+                GetKeywordToken: () => {
                     operations.push(this.parseOperation());
                 },
-                FunctionKeywordToken: token => {
+                FunctionKeywordToken: () => {
                     operations.push(this.parseOperation());
                 },
-                GlobalOptionToken: token => {
+                GlobalOptionToken: () => {
+                    this.checkCannotHaveAnnotationsHere();
                     this.parseOption(options);
                 },
-                ErrorKeywordToken: token => {
+                ErrorKeywordToken: () => {
+                    this.checkCannotHaveAnnotationsHere();
                     this.nextToken();
                     errors.push(this.expect(IdentifierToken).value);
                     this.nextToken();
@@ -131,6 +137,29 @@ export class Parser {
         return ast;
     }
 
+    private acceptAnnotations() {
+        while (this.token instanceof AnnotationToken) {
+            const words = this.token.value.split(" ");
+            switch (words[0]) {
+                case "description":
+                    this.annotations.push(new DescriptionAnnotation(this.token.value.slice(words[0].length).trim()).at(this.token));
+                    break;
+                case "arg":
+                    this.annotations.push(new ArgDescriptionAnnotation(words[1], this.token.value.slice(words[0].length + 1 + words[1].length).trim()).at(this.token));
+                    break;
+                default:
+                    throw new ParserError(`Unknown annotation '${words[0]}' at ${this.token.location}`);
+            }
+            this.nextToken();
+        }
+    }
+
+    private checkCannotHaveAnnotationsHere() {
+        if (this.annotations.length > 0) {
+            throw new ParserError(`Cannot have annotations at ${this.annotations[0].location}`);
+        }
+    }
+
     private parseTypeDefinition(): TypeDefinition {
         const typeToken = this.expect(TypeKeywordToken);
         this.nextToken();
@@ -141,12 +170,20 @@ export class Parser {
         }
         this.nextToken();
 
-        const type = this.parseType();
+        const annotations = this.annotations;
+        this.annotations = [];
 
-        return new TypeDefinition(name, type).at(typeToken);
+        const type = this.parseType();
+        const definitions = new TypeDefinition(name, type).at(typeToken);
+        definitions.annotations = annotations;
+
+        return definitions;
     }
 
     private parseOperation(): Operation {
+        const annotations = this.annotations;
+        this.annotations = [];
+
         const openingToken: GetKeywordToken | FunctionKeywordToken = this.multiExpect({
             GetKeywordToken: token => token,
             FunctionKeywordToken: token => token
@@ -186,14 +223,17 @@ export class Parser {
             returnType = this.parseType();
         }
 
-        if (openingToken instanceof GetKeywordToken) {
-            return new GetOperation(name, args, returnType);
-        } else {
-            return new FunctionOperation(name, args, returnType);
-        }
+        const op = openingToken instanceof GetKeywordToken ?
+            new GetOperation(name, args, returnType) :
+            new FunctionOperation(name, args, returnType);
+
+        op.annotations = annotations;
+
+        return op;
     }
 
     private parseOption(options: Options) {
+        this.checkCannotHaveAnnotationsHere();
         const varToken = this.expect(GlobalOptionToken);
         this.nextToken();
 
@@ -227,6 +267,7 @@ export class Parser {
     }
 
     private parseEnum(): EnumType {
+        this.checkCannotHaveAnnotationsHere();
         const enumToken = this.expect(EnumKeywordToken);
         this.nextToken();
 
@@ -237,12 +278,17 @@ export class Parser {
 
         let finished = false;
         while (!finished) {
+            this.acceptAnnotations();
             this.multiExpect({
                 IdentifierToken: token => {
-                    enumType.values.push(token.value);
+                    const enumValue = new EnumValue(token.value).at(token);
+                    enumValue.annotations = this.annotations;
+                    this.annotations = [];
+                    enumType.values.push(enumValue);
                     this.nextToken();
                 },
                 CurlyCloseSymbolToken: () => {
+                    this.checkCannotHaveAnnotationsHere();
                     this.nextToken();
                     finished = true;
                 }
@@ -259,8 +305,12 @@ export class Parser {
         this.expect(ColonSymbolToken);
         this.nextToken();
 
+        const annotations = this.annotations;
+        this.annotations = [];
+
         const type = this.parseType();
         const field = new Field(nameToken.value, type).at(nameToken);
+        field.annotations = annotations;
 
         while (this.token instanceof ExclamationMarkSymbolToken) {
             this.nextToken();
@@ -287,6 +337,7 @@ export class Parser {
 
         let finished = false;
         while (!finished) {
+            this.acceptAnnotations();
             this.multiExpect({
                 IdentifierToken: () => {
                     const field = this.parseField();
@@ -297,6 +348,7 @@ export class Parser {
                     fields.push(field);
                 },
                 SpreadSymbolToken: () => {
+                    this.checkCannotHaveAnnotationsHere();
                     this.nextToken();
                     const identToken = this.expect(IdentifierToken);
                     this.nextToken();
@@ -306,6 +358,7 @@ export class Parser {
                     spreads.push(new TypeReference(identToken.value).at(identToken));
                 },
                 CurlyCloseSymbolToken: () => {
+                    this.checkCannotHaveAnnotationsHere();
                     this.nextToken();
                     finished = true;
                 }
@@ -316,6 +369,7 @@ export class Parser {
     }
 
     private parseType(): Type {
+        this.checkCannotHaveAnnotationsHere();
         let result = this.multiExpect({
             CurlyOpenSymbolToken: () => this.parseStruct(),
             EnumKeywordToken: () => this.parseEnum(),

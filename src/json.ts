@@ -1,4 +1,4 @@
-import { ArrayType, AstRoot, EnumType, Field, FunctionOperation, Operation, OptionalType, Options, StructType, Type, TypeDefinition, TypeReference } from "./ast";
+import { ArrayType, AstRoot, EnumType, Field, FunctionOperation, Operation, OptionalType, Options, StructType, Type, TypeDefinition, TypeReference, EnumValue } from "./ast";
 import { analyse } from "./semantic/analyser";
 import { primitiveToAstClass } from "./utils";
 
@@ -33,7 +33,7 @@ export function astToJson(ast: AstRoot) {
     }
 
     for (const { name, values } of ast.enumTypes) {
-        typeTable[name] = values;
+        typeTable[name] = values.map(v => v.value);
     }
 
     const functionTable: FunctionTable = {};
@@ -74,7 +74,7 @@ export function jsonToAst(json: AstJson) {
                 return new TypeReference(description);
             }
         } else if (Array.isArray(description)) {
-            return new EnumType(description);
+            return new EnumType(description.map(v => new EnumValue(v)));
         } else {
             const fields = Object.keys(description).map(fieldName =>
                 new Field(fieldName, processType(description[fieldName]))
@@ -86,7 +86,7 @@ export function jsonToAst(json: AstJson) {
     for (const typeName in json.typeTable) {
         const type = processType(json.typeTable[typeName]);
         if (typeName === "ErrorType" && type instanceof EnumType) {
-            errors.push(...type.values);
+            errors.push(...type.values.map(v => v.value));
             continue;
         }
         typeDefinition.push(new TypeDefinition(typeName, type));

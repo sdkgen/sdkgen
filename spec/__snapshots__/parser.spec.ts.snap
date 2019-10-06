@@ -6,8 +6,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -17,6 +25,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -37,6 +46,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "any",
           "secret": false,
@@ -51,11 +61,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "any",
             "secret": false,
@@ -69,13 +81,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -89,8 +110,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -100,6 +129,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -120,6 +150,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "base64",
           "secret": false,
@@ -134,11 +165,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "base64",
             "secret": false,
@@ -152,13 +185,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -172,8 +214,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -183,6 +233,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -203,6 +254,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "bool",
           "secret": false,
@@ -217,11 +269,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "bool",
             "secret": false,
@@ -235,13 +289,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -255,8 +318,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -266,6 +337,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -286,6 +358,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "bytes",
           "secret": false,
@@ -300,11 +373,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "bytes",
             "secret": false,
@@ -318,13 +393,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -338,8 +422,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -349,6 +441,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -369,6 +462,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "cep",
           "secret": false,
@@ -383,11 +477,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "cep",
             "secret": false,
@@ -401,13 +497,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -421,8 +526,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -432,6 +545,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -452,6 +566,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "cnpj",
           "secret": false,
@@ -466,11 +581,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "cnpj",
             "secret": false,
@@ -484,13 +601,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -504,8 +630,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -515,6 +649,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -535,6 +670,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "cpf",
           "secret": false,
@@ -549,11 +685,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "cpf",
             "secret": false,
@@ -567,13 +705,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -587,8 +734,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -598,6 +753,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -618,6 +774,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "date",
           "secret": false,
@@ -632,11 +789,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "date",
             "secret": false,
@@ -650,13 +809,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -670,8 +838,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -681,6 +857,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -701,6 +878,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "datetime",
           "secret": false,
@@ -715,11 +893,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "datetime",
             "secret": false,
@@ -733,13 +913,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -753,8 +942,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -764,6 +961,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -784,6 +982,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "email",
           "secret": false,
@@ -798,11 +997,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "email",
             "secret": false,
@@ -816,13 +1017,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -836,8 +1046,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -847,6 +1065,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -867,6 +1086,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "enum",
           "secret": false,
@@ -881,11 +1101,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "enum",
             "secret": false,
@@ -899,13 +1121,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -919,8 +1150,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -930,6 +1169,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -950,6 +1190,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "error",
           "secret": false,
@@ -964,11 +1205,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "error",
             "secret": false,
@@ -982,13 +1225,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -1002,8 +1254,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -1013,6 +1273,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -1033,6 +1294,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "false",
           "secret": false,
@@ -1047,11 +1309,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "false",
             "secret": false,
@@ -1065,13 +1329,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -1085,8 +1358,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -1096,6 +1377,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -1116,6 +1398,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "float",
           "secret": false,
@@ -1130,11 +1413,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "float",
             "secret": false,
@@ -1148,13 +1433,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -1168,8 +1462,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -1179,6 +1481,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -1199,6 +1502,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "fn",
           "secret": false,
@@ -1213,11 +1517,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "fn",
             "secret": false,
@@ -1231,13 +1537,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -1251,8 +1566,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -1262,6 +1585,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -1282,6 +1606,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "function",
           "secret": false,
@@ -1296,11 +1621,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "function",
             "secret": false,
@@ -1314,13 +1641,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -1334,8 +1670,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -1345,6 +1689,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -1365,6 +1710,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "get",
           "secret": false,
@@ -1379,11 +1725,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "get",
             "secret": false,
@@ -1397,13 +1745,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -1417,8 +1774,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -1428,6 +1793,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -1448,6 +1814,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "hex",
           "secret": false,
@@ -1462,11 +1829,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "hex",
             "secret": false,
@@ -1480,13 +1849,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -1500,8 +1878,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -1511,6 +1897,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -1531,6 +1918,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "import",
           "secret": false,
@@ -1545,11 +1933,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "import",
             "secret": false,
@@ -1563,13 +1953,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -1583,8 +1982,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -1594,6 +2001,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -1614,6 +2022,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "int",
           "secret": false,
@@ -1628,11 +2037,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "int",
             "secret": false,
@@ -1646,13 +2057,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -1666,8 +2086,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -1677,6 +2105,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -1697,6 +2126,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "latlng",
           "secret": false,
@@ -1711,11 +2141,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "latlng",
             "secret": false,
@@ -1729,13 +2161,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -1749,8 +2190,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -1760,6 +2209,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -1780,6 +2230,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "money",
           "secret": false,
@@ -1794,11 +2245,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "money",
             "secret": false,
@@ -1812,13 +2265,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -1832,8 +2294,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -1843,6 +2313,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -1863,6 +2334,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "phone",
           "secret": false,
@@ -1877,11 +2349,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "phone",
             "secret": false,
@@ -1895,13 +2369,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -1915,8 +2398,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -1926,6 +2417,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -1946,6 +2438,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "safehtml",
           "secret": false,
@@ -1960,11 +2453,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "safehtml",
             "secret": false,
@@ -1978,13 +2473,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -1998,8 +2502,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -2009,6 +2521,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -2029,6 +2542,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "string",
           "secret": false,
@@ -2043,11 +2557,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "string",
             "secret": false,
@@ -2061,13 +2577,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -2081,8 +2606,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -2092,6 +2625,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -2112,6 +2646,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "true",
           "secret": false,
@@ -2126,11 +2661,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "true",
             "secret": false,
@@ -2144,13 +2681,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -2164,8 +2710,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -2175,6 +2729,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -2195,6 +2750,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "type",
           "secret": false,
@@ -2209,11 +2765,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "type",
             "secret": false,
@@ -2227,13 +2785,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -2247,8 +2814,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -2258,6 +2833,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -2278,6 +2854,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "uint",
           "secret": false,
@@ -2292,11 +2869,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "uint",
             "secret": false,
@@ -2310,13 +2889,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -2330,8 +2918,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -2341,6 +2937,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -2361,6 +2958,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "url",
           "secret": false,
@@ -2375,11 +2973,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "url",
             "secret": false,
@@ -2393,13 +2993,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -2413,8 +3022,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -2424,6 +3041,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -2444,6 +3062,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "uuid",
           "secret": false,
@@ -2458,11 +3077,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "uuid",
             "secret": false,
@@ -2476,13 +3097,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -2496,8 +3126,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -2507,6 +3145,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -2527,6 +3166,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "void",
           "secret": false,
@@ -2541,11 +3181,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "void",
             "secret": false,
@@ -2559,13 +3201,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -2579,8 +3230,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -2590,6 +3249,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -2610,6 +3270,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "xml",
           "secret": false,
@@ -2624,11 +3285,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "xml",
             "secret": false,
@@ -2642,13 +3305,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -2662,8 +3334,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -2673,6 +3353,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -2693,6 +3374,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "aa",
           "secret": false,
@@ -2704,6 +3386,7 @@ AstRoot {
           },
         },
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "bbb",
           "secret": false,
@@ -2724,6 +3407,7 @@ AstRoot {
           },
         },
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "cccc",
           "secret": false,
@@ -2741,6 +3425,7 @@ AstRoot {
           },
         },
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "ddddd",
           "secret": false,
@@ -2788,11 +3473,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "aa",
             "secret": false,
@@ -2804,6 +3491,7 @@ AstRoot {
             },
           },
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "bbb",
             "secret": false,
@@ -2824,6 +3512,7 @@ AstRoot {
             },
           },
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "cccc",
             "secret": false,
@@ -2841,6 +3530,7 @@ AstRoot {
             },
           },
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "ddddd",
             "secret": false,
@@ -2887,13 +3577,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -2907,10 +3606,26 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Foo",
-        "Bar",
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Foo",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Bar",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -2922,6 +3637,7 @@ AstRoot {
   ],
   "operations": Array [
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "baz",
@@ -2930,6 +3646,7 @@ AstRoot {
         "type": Object {
           "fields": Array [
             Field {
+              "annotations": Array [],
               "kind": "Field",
               "name": "a",
               "secret": false,
@@ -2941,6 +3658,7 @@ AstRoot {
               },
             },
             Field {
+              "annotations": Array [],
               "kind": "Field",
               "name": "b",
               "secret": false,
@@ -2955,6 +3673,7 @@ AstRoot {
       },
     },
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -2975,6 +3694,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "a",
           "secret": false,
@@ -2986,6 +3706,7 @@ AstRoot {
           },
         },
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "b",
           "secret": false,
@@ -3000,11 +3721,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Baz",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "a",
             "secret": false,
@@ -3016,6 +3739,7 @@ AstRoot {
             },
           },
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "b",
             "secret": false,
@@ -3029,15 +3753,32 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Foo",
-          "Bar",
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Foo",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Bar",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -3051,11 +3792,31 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Foo",
-        "Bar",
-        "FooBar",
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Foo",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Bar",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "FooBar",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -3068,6 +3829,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -3087,16 +3849,37 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Foo",
-          "Bar",
-          "FooBar",
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Foo",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Bar",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "FooBar",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -3110,8 +3893,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -3121,8 +3912,10 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "foo",
           "secret": false,
@@ -3131,6 +3924,7 @@ AstRoot {
           },
         },
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "bar",
           "secret": false,
@@ -3139,6 +3933,7 @@ AstRoot {
             "type": Object {
               "fields": Array [
                 Field {
+                  "annotations": Array [],
                   "kind": "Field",
                   "name": "aa",
                   "secret": false,
@@ -3160,6 +3955,7 @@ AstRoot {
       },
     },
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -3180,6 +3976,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "aa",
           "secret": false,
@@ -3194,11 +3991,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Bar",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "aa",
             "secret": false,
@@ -3212,13 +4011,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -3232,8 +4040,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -3243,6 +4059,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -3262,13 +4079,22 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -3282,8 +4108,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -3293,6 +4127,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -3313,6 +4148,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "foo",
           "secret": false,
@@ -3327,11 +4163,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "foo",
             "secret": false,
@@ -3345,13 +4183,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -3365,8 +4212,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -3376,6 +4231,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -3396,6 +4252,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "foo",
           "secret": false,
@@ -3410,11 +4267,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "foo",
             "secret": false,
@@ -3428,13 +4287,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -3448,8 +4316,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -3459,6 +4335,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -3479,6 +4356,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "foo",
           "secret": false,
@@ -3493,11 +4371,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "foo",
             "secret": false,
@@ -3511,13 +4391,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -3531,8 +4420,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -3542,6 +4439,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -3562,6 +4460,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "foo",
           "secret": false,
@@ -3576,11 +4475,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "foo",
             "secret": false,
@@ -3594,13 +4495,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -3614,8 +4524,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -3625,6 +4543,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -3645,6 +4564,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "foo",
           "secret": false,
@@ -3659,11 +4579,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "foo",
             "secret": false,
@@ -3677,13 +4599,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -3697,8 +4628,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -3708,6 +4647,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -3728,6 +4668,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "foo",
           "secret": false,
@@ -3742,11 +4683,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "foo",
             "secret": false,
@@ -3760,13 +4703,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -3780,8 +4732,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -3791,6 +4751,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -3811,6 +4772,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "foo",
           "secret": false,
@@ -3825,11 +4787,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "foo",
             "secret": false,
@@ -3843,13 +4807,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -3863,8 +4836,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -3874,6 +4855,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -3894,6 +4876,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "foo",
           "secret": false,
@@ -3908,11 +4891,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "foo",
             "secret": false,
@@ -3926,13 +4911,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -3946,8 +4940,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -3957,6 +4959,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -3977,6 +4980,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "foo",
           "secret": false,
@@ -3991,11 +4995,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "foo",
             "secret": false,
@@ -4009,13 +5015,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -4029,8 +5044,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -4040,6 +5063,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -4060,6 +5084,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "foo",
           "secret": false,
@@ -4074,11 +5099,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "foo",
             "secret": false,
@@ -4092,13 +5119,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -4112,8 +5148,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -4123,6 +5167,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -4143,6 +5188,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "foo",
           "secret": false,
@@ -4157,11 +5203,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "foo",
             "secret": false,
@@ -4175,13 +5223,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -4195,8 +5252,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -4206,6 +5271,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -4226,6 +5292,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "foo",
           "secret": false,
@@ -4240,11 +5307,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "foo",
             "secret": false,
@@ -4258,13 +5327,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -4278,8 +5356,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -4289,6 +5375,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -4309,6 +5396,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "foo",
           "secret": false,
@@ -4323,11 +5411,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "foo",
             "secret": false,
@@ -4341,13 +5431,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -4361,8 +5460,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -4372,6 +5479,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -4392,6 +5500,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "foo",
           "secret": false,
@@ -4406,11 +5515,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "foo",
             "secret": false,
@@ -4424,13 +5535,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -4444,8 +5564,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -4455,6 +5583,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -4475,6 +5604,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "foo",
           "secret": false,
@@ -4489,11 +5619,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "foo",
             "secret": false,
@@ -4507,13 +5639,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -4527,8 +5668,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -4538,6 +5687,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -4558,6 +5708,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "foo",
           "secret": false,
@@ -4572,11 +5723,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "foo",
             "secret": false,
@@ -4590,13 +5743,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -4610,8 +5772,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -4621,6 +5791,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -4641,6 +5812,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "foo",
           "secret": false,
@@ -4655,11 +5827,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "foo",
             "secret": false,
@@ -4673,13 +5847,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -4693,8 +5876,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -4704,6 +5895,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -4724,6 +5916,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "foo",
           "secret": false,
@@ -4738,11 +5931,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "foo",
             "secret": false,
@@ -4756,13 +5951,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -4776,8 +5980,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -4787,6 +5999,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -4807,6 +6020,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "foo",
           "secret": false,
@@ -4821,11 +6035,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "foo",
             "secret": false,
@@ -4839,13 +6055,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -4859,8 +6084,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -4870,6 +6103,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -4890,6 +6124,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "foo",
           "secret": false,
@@ -4904,11 +6139,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "foo",
             "secret": false,
@@ -4922,13 +6159,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -4942,8 +6188,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -4953,6 +6207,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -4973,6 +6228,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "foo",
           "secret": false,
@@ -4987,11 +6243,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "foo",
             "secret": false,
@@ -5005,13 +6263,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -5025,8 +6292,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -5036,6 +6311,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -5056,6 +6332,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "foo",
           "secret": false,
@@ -5070,11 +6347,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "foo",
             "secret": false,
@@ -5088,13 +6367,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -5108,8 +6396,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -5119,6 +6415,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -5139,6 +6436,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "foo",
           "secret": false,
@@ -5153,11 +6451,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "foo",
             "secret": false,
@@ -5171,13 +6471,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -5191,8 +6500,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -5202,6 +6519,7 @@ AstRoot {
   ],
   "operations": Array [
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "foo",
@@ -5210,6 +6528,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "bar",
@@ -5221,6 +6540,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "baz",
@@ -5232,6 +6552,7 @@ AstRoot {
       },
     },
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -5251,13 +6572,22 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -5271,8 +6601,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -5282,6 +6620,7 @@ AstRoot {
   ],
   "operations": Array [
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "foo",
@@ -5290,6 +6629,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "bar",
@@ -5301,6 +6641,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "baz",
@@ -5312,6 +6653,7 @@ AstRoot {
       },
     },
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -5331,13 +6673,22 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -5351,8 +6702,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -5362,6 +6721,7 @@ AstRoot {
   ],
   "operations": Array [
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "isFoo",
@@ -5370,6 +6730,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "bar",
@@ -5381,6 +6742,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "baz",
@@ -5392,6 +6754,7 @@ AstRoot {
       },
     },
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -5411,13 +6774,22 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -5431,8 +6803,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -5442,6 +6822,7 @@ AstRoot {
   ],
   "operations": Array [
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "foo",
@@ -5450,6 +6831,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "bar",
@@ -5461,6 +6843,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "baz",
@@ -5472,6 +6855,7 @@ AstRoot {
       },
     },
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -5491,13 +6875,22 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -5511,8 +6904,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -5522,6 +6923,7 @@ AstRoot {
   ],
   "operations": Array [
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "foo",
@@ -5530,6 +6932,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "bar",
@@ -5541,6 +6944,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "baz",
@@ -5552,6 +6956,7 @@ AstRoot {
       },
     },
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -5571,13 +6976,22 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -5591,8 +7005,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -5602,6 +7024,7 @@ AstRoot {
   ],
   "operations": Array [
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "foo",
@@ -5610,6 +7033,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "bar",
@@ -5621,6 +7045,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "baz",
@@ -5632,6 +7057,7 @@ AstRoot {
       },
     },
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -5651,13 +7077,22 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -5671,8 +7106,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -5682,6 +7125,7 @@ AstRoot {
   ],
   "operations": Array [
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "foo",
@@ -5690,6 +7134,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "bar",
@@ -5701,6 +7146,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "baz",
@@ -5712,6 +7158,7 @@ AstRoot {
       },
     },
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -5731,13 +7178,22 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -5751,8 +7207,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -5762,6 +7226,7 @@ AstRoot {
   ],
   "operations": Array [
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "foo",
@@ -5770,6 +7235,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "bar",
@@ -5781,6 +7247,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "baz",
@@ -5792,6 +7259,7 @@ AstRoot {
       },
     },
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -5811,13 +7279,22 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -5831,8 +7308,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -5842,6 +7327,7 @@ AstRoot {
   ],
   "operations": Array [
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "foo",
@@ -5850,6 +7336,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "bar",
@@ -5861,6 +7348,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "baz",
@@ -5872,6 +7360,7 @@ AstRoot {
       },
     },
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -5891,13 +7380,22 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -5911,8 +7409,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -5922,6 +7428,7 @@ AstRoot {
   ],
   "operations": Array [
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "foo",
@@ -5930,6 +7437,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "bar",
@@ -5941,6 +7449,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "baz",
@@ -5952,6 +7461,7 @@ AstRoot {
       },
     },
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -5971,13 +7481,22 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -5991,8 +7510,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -6002,6 +7529,7 @@ AstRoot {
   ],
   "operations": Array [
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "foo",
@@ -6010,6 +7538,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "bar",
@@ -6021,6 +7550,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "baz",
@@ -6032,6 +7562,7 @@ AstRoot {
       },
     },
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -6051,13 +7582,22 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -6071,8 +7611,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -6082,6 +7630,7 @@ AstRoot {
   ],
   "operations": Array [
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "foo",
@@ -6090,6 +7639,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "bar",
@@ -6101,6 +7651,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "baz",
@@ -6112,6 +7663,7 @@ AstRoot {
       },
     },
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -6131,13 +7683,22 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -6151,8 +7712,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -6162,6 +7731,7 @@ AstRoot {
   ],
   "operations": Array [
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "foo",
@@ -6170,6 +7740,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "bar",
@@ -6181,6 +7752,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "baz",
@@ -6192,6 +7764,7 @@ AstRoot {
       },
     },
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -6211,13 +7784,22 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -6231,8 +7813,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -6242,6 +7832,7 @@ AstRoot {
   ],
   "operations": Array [
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "foo",
@@ -6250,6 +7841,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "bar",
@@ -6261,6 +7853,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "baz",
@@ -6272,6 +7865,7 @@ AstRoot {
       },
     },
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -6291,13 +7885,22 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -6311,8 +7914,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -6322,6 +7933,7 @@ AstRoot {
   ],
   "operations": Array [
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "foo",
@@ -6330,6 +7942,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "bar",
@@ -6341,6 +7954,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "baz",
@@ -6352,6 +7966,7 @@ AstRoot {
       },
     },
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -6371,13 +7986,22 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -6391,8 +8015,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -6402,6 +8034,7 @@ AstRoot {
   ],
   "operations": Array [
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "foo",
@@ -6410,6 +8043,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "bar",
@@ -6421,6 +8055,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "baz",
@@ -6432,6 +8067,7 @@ AstRoot {
       },
     },
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -6451,13 +8087,22 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -6471,8 +8116,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -6482,6 +8135,7 @@ AstRoot {
   ],
   "operations": Array [
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "foo",
@@ -6490,6 +8144,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "bar",
@@ -6501,6 +8156,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "baz",
@@ -6512,6 +8168,7 @@ AstRoot {
       },
     },
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -6531,13 +8188,22 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -6551,8 +8217,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -6562,6 +8236,7 @@ AstRoot {
   ],
   "operations": Array [
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "foo",
@@ -6570,6 +8245,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "bar",
@@ -6581,6 +8257,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "baz",
@@ -6592,6 +8269,7 @@ AstRoot {
       },
     },
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -6611,13 +8289,22 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -6631,8 +8318,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -6642,6 +8337,7 @@ AstRoot {
   ],
   "operations": Array [
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "foo",
@@ -6650,6 +8346,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "bar",
@@ -6661,6 +8358,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "baz",
@@ -6672,6 +8370,7 @@ AstRoot {
       },
     },
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -6691,13 +8390,22 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -6711,8 +8419,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -6722,6 +8438,7 @@ AstRoot {
   ],
   "operations": Array [
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "foo",
@@ -6730,6 +8447,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "bar",
@@ -6741,6 +8459,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "baz",
@@ -6752,6 +8471,7 @@ AstRoot {
       },
     },
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -6771,13 +8491,22 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -6791,8 +8520,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -6802,6 +8539,7 @@ AstRoot {
   ],
   "operations": Array [
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "foo",
@@ -6810,6 +8548,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "bar",
@@ -6821,6 +8560,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "baz",
@@ -6832,6 +8572,7 @@ AstRoot {
       },
     },
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -6851,13 +8592,22 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -6871,8 +8621,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -6882,6 +8640,7 @@ AstRoot {
   ],
   "operations": Array [
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "foo",
@@ -6890,6 +8649,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "bar",
@@ -6901,6 +8661,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "baz",
@@ -6912,6 +8673,7 @@ AstRoot {
       },
     },
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -6931,13 +8693,22 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -6951,8 +8722,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -6962,6 +8741,7 @@ AstRoot {
   ],
   "operations": Array [
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "foo",
@@ -6970,6 +8750,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "bar",
@@ -6981,6 +8762,7 @@ AstRoot {
       },
     },
     GetOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "GetOperation",
       "name": "baz",
@@ -6992,6 +8774,7 @@ AstRoot {
       },
     },
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -7011,13 +8794,22 @@ AstRoot {
   "structTypes": Array [],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },
@@ -7031,8 +8823,16 @@ AstRoot {
     Object {
       "kind": "EnumType",
       "values": Array [
-        "Fatal",
-        "Connection",
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Fatal",
+        },
+        EnumValue {
+          "annotations": Array [],
+          "kind": "EnumValue",
+          "value": "Connection",
+        },
       ],
     },
   ],
@@ -7042,6 +8842,7 @@ AstRoot {
   ],
   "operations": Array [
     FunctionOperation {
+      "annotations": Array [],
       "args": Array [],
       "kind": "FunctionOperation",
       "name": "ping",
@@ -7062,6 +8863,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "aa",
           "secret": false,
@@ -7076,6 +8878,7 @@ AstRoot {
     Object {
       "fields": Array [
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "bb",
           "secret": false,
@@ -7084,6 +8887,7 @@ AstRoot {
           },
         },
         Field {
+          "annotations": Array [],
           "kind": "Field",
           "name": "aa",
           "secret": false,
@@ -7099,6 +8903,7 @@ AstRoot {
           "type": Object {
             "fields": Array [
               Field {
+                "annotations": Array [],
                 "kind": "Field",
                 "name": "aa",
                 "secret": false,
@@ -7116,11 +8921,13 @@ AstRoot {
   ],
   "typeDefinitions": Array [
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Bar",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "aa",
             "secret": false,
@@ -7134,11 +8941,13 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "Foo",
       "type": Object {
         "fields": Array [
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "bb",
             "secret": false,
@@ -7147,6 +8956,7 @@ AstRoot {
             },
           },
           Field {
+            "annotations": Array [],
             "kind": "Field",
             "name": "aa",
             "secret": false,
@@ -7162,6 +8972,7 @@ AstRoot {
             "type": Object {
               "fields": Array [
                 Field {
+                  "annotations": Array [],
                   "kind": "Field",
                   "name": "aa",
                   "secret": false,
@@ -7178,13 +8989,22 @@ AstRoot {
       },
     },
     TypeDefinition {
+      "annotations": Array [],
       "kind": "TypeDefinition",
       "name": "ErrorType",
       "type": Object {
         "kind": "EnumType",
         "values": Array [
-          "Fatal",
-          "Connection",
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Fatal",
+          },
+          EnumValue {
+            "annotations": Array [],
+            "kind": "EnumValue",
+            "value": "Connection",
+          },
         ],
       },
     },

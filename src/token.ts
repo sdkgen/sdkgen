@@ -39,6 +39,7 @@ export class OptionalSymbolToken extends Token { }
 export class ArraySymbolToken extends Token { }
 export class CommaSymbolToken extends Token { }
 export class SpreadSymbolToken extends Token { }
+export class AnnotationToken extends Token { }
 
 export class ImportKeywordToken extends Token {
     maybeAsIdentifier() {

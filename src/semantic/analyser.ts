@@ -1,4 +1,4 @@
-import { AstRoot, EnumType, Field, FunctionOperation, StringPrimitiveType, TypeDefinition, VoidPrimitiveType } from "../ast";
+import { AstRoot, EnumType, Field, FunctionOperation, StringPrimitiveType, TypeDefinition, VoidPrimitiveType, EnumValue } from "../ast";
 import { CheckMultipleDeclarationVisitor } from "./1_check_multiple_declaration";
 import { MatchTypeDefinitionsVisitor } from "./2_match_type_definitions";
 import { CheckNoRecursiveTypesVisitor } from "./3_check_no_recursive_types";
@@ -16,7 +16,7 @@ export function analyse(root: AstRoot) {
     root.errors.push("Connection");
     root.errors = [...new Set(root.errors)];
 
-    const errorTypesEnum = new EnumType(root.errors);
+    const errorTypesEnum = new EnumType(root.errors.map(err => new EnumValue(err)));
     const errorTypesEnumDef = new TypeDefinition("ErrorType", errorTypesEnum);
     root.typeDefinitions.push(errorTypesEnumDef);
 

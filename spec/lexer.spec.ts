@@ -1,5 +1,5 @@
 import { Lexer } from "../src/lexer";
-import { ArraySymbolToken, ColonSymbolToken, CommaSymbolToken, CurlyCloseSymbolToken, CurlyOpenSymbolToken, EnumKeywordToken, EqualSymbolToken, ErrorKeywordToken, ExclamationMarkSymbolToken, FunctionKeywordToken, GetKeywordToken, GlobalOptionToken, IdentifierToken, ImportKeywordToken, OptionalSymbolToken, ParensCloseSymbolToken, ParensOpenSymbolToken, PrimitiveTypeToken, SpreadSymbolToken, StringLiteralToken, Token, TypeKeywordToken } from "../src/token";
+import { AnnotationToken, ArraySymbolToken, ColonSymbolToken, CommaSymbolToken, CurlyCloseSymbolToken, CurlyOpenSymbolToken, EnumKeywordToken, EqualSymbolToken, ErrorKeywordToken, ExclamationMarkSymbolToken, FunctionKeywordToken, GetKeywordToken, GlobalOptionToken, IdentifierToken, ImportKeywordToken, OptionalSymbolToken, ParensCloseSymbolToken, ParensOpenSymbolToken, PrimitiveTypeToken, SpreadSymbolToken, StringLiteralToken, Token, TypeKeywordToken } from "../src/token";
 
 describe(Lexer, () => {
 
@@ -306,6 +306,34 @@ describe(Lexer, () => {
         new IdentifierToken("a"),
     ]);
 
+    itLexes("@aa bb cc", [
+        new AnnotationToken("aa bb cc"),
+    ]);
+
+    itLexes("  @   ", [
+        new AnnotationToken(""),
+    ]);
+
+    itLexes("@", [
+        new AnnotationToken(""),
+    ]);
+
+    itLexes("  @  aa bb cc   ", [
+        new AnnotationToken("aa bb cc"),
+    ]);
+
+    itLexes("  @  aa bb \n cc   ", [
+        new AnnotationToken("aa bb"),
+        new IdentifierToken("cc")
+    ]);
+
+    itLexes("  @  aa bb \\   \n  cc   ", [
+        new AnnotationToken("aa bb cc"),
+    ]);
+
+    itLexes("@\\\n  cc   ", [
+        new AnnotationToken("cc"),
+    ]);
 });
 
 function itLexes(source: string, expectedTokens: Token[]) {

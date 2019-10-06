@@ -1,4 +1,4 @@
-import { ArraySymbolToken, ColonSymbolToken, CommaSymbolToken, CurlyCloseSymbolToken, CurlyOpenSymbolToken, EnumKeywordToken, EqualSymbolToken, ErrorKeywordToken, ExclamationMarkSymbolToken, FalseKeywordToken, FunctionKeywordToken, GetKeywordToken, GlobalOptionToken, IdentifierToken, ImportKeywordToken, OptionalSymbolToken, ParensCloseSymbolToken, ParensOpenSymbolToken, PrimitiveTypeToken, SpreadSymbolToken, StringLiteralToken, Token, TrueKeywordToken, TypeKeywordToken } from "./token";
+import { AnnotationToken, ArraySymbolToken, ColonSymbolToken, CommaSymbolToken, CurlyCloseSymbolToken, CurlyOpenSymbolToken, EnumKeywordToken, EqualSymbolToken, ErrorKeywordToken, ExclamationMarkSymbolToken, FalseKeywordToken, FunctionKeywordToken, GetKeywordToken, GlobalOptionToken, IdentifierToken, ImportKeywordToken, OptionalSymbolToken, ParensCloseSymbolToken, ParensOpenSymbolToken, PrimitiveTypeToken, SpreadSymbolToken, StringLiteralToken, Token, TrueKeywordToken, TypeKeywordToken } from "./token";
 
 export class LexerError extends Error {}
 
@@ -158,6 +158,17 @@ export class Lexer {
                     while (this.nextChar().match(/[a-zA-Z0-9]/)) {}
                     token = new GlobalOptionToken(this.source.substring(this.startPos + 1, this.pos));
                 }
+                break;
+            case "@":
+                let body = "\\";
+                let pos = this.startPos + 1;
+                while (body[body.length - 1] === "\\") {
+                    body = body.slice(0, body.length - 1).trim();
+                    while (!["\0", "\n"].includes(this.nextChar())) { }
+                    body = (body + " " + this.source.substring(pos, this.pos).trim()).trim();
+                    pos = this.pos + 1;
+                }
+                token = new AnnotationToken(body.trim());
                 break;
             case "\"": {
                 const chars = [];

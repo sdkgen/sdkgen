@@ -76,9 +76,14 @@ export class ArrayType extends Type {
     }
 }
 
+export class EnumValue extends AstNode {
+    annotations: Annotation[] = [];
+    constructor(public value: string) { super(); }
+}
+
 export class EnumType extends Type {
     name!: string;
-    constructor(public values: string[]) { super(); }
+    constructor(public values: EnumValue[]) { super(); }
 }
 
 export class StructType extends Type {
@@ -87,6 +92,7 @@ export class StructType extends Type {
 }
 
 export class TypeDefinition extends AstNode {
+    annotations: Annotation[] = [];
     constructor(public name: string, public type: Type) { super(); }
 }
 
@@ -106,6 +112,7 @@ export class Options extends AstNode {
 }
 
 export class Field extends AstNode {
+    annotations: Annotation[] = [];
     constructor(
         public name: string,
         public type: Type,
@@ -114,6 +121,7 @@ export class Field extends AstNode {
 }
 
 export abstract class Operation extends AstNode {
+    annotations: Annotation[] = [];
     constructor(
         public name: string,
         public args: Field[],
@@ -128,3 +136,13 @@ export class GetOperation extends Operation {
 }
 
 export class FunctionOperation extends Operation {}
+
+export abstract class Annotation extends AstNode {}
+
+export class DescriptionAnnotation extends Annotation {
+    constructor(public description: string) { super(); }
+}
+
+export class ArgDescriptionAnnotation extends Annotation {
+    constructor(public argName: string, public description: string) { super(); }
+}
