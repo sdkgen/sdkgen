@@ -9,15 +9,15 @@ import { Context, ContextReply, ContextRequest } from "./context";
 import { decode, encode } from "./encode-decode";
 import { BaseApiConfig, SdkgenServer } from "./server";
 
-export class SdkgenHttpServer extends SdkgenServer {
+export class SdkgenHttpServer<ExtraContextT = {}> extends SdkgenServer<ExtraContextT> {
     public httpServer: Server;
     private headers = new Map<string, string>();
     private handlers: { method: string, matcher: string | RegExp, handler: (req: IncomingMessage, res: ServerResponse, body: string) => void }[] = [];
     public dynamicCorsOrigin = true;
     private ignoredUrlPrefix = "";
 
-    constructor(protected apiConfig: BaseApiConfig) {
-        super(apiConfig);
+    constructor(apiConfig: BaseApiConfig<ExtraContextT>, extraContext: ExtraContextT) {
+        super(apiConfig, extraContext);
         this.httpServer = createServer(this.handleRequest.bind(this));
         this.enableCors();
 
@@ -227,11 +227,12 @@ export class SdkgenHttpServer extends SdkgenServer {
             return;
         }
 
-        const ctx: Context = {
+        const ctx: Context & ExtraContextT = {
+            ...this.extraContext,
             ip: clientIp,
             request,
-            hrStart: process.hrtime()
-        }
+            hrStart: process.hrtime(),
+        };
 
         const functionDescription = this.apiConfig.astJson.functionTable[ctx.request.name];
         const functionImplementation = this.apiConfig.fn[ctx.request.name];

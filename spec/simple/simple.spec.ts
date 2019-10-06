@@ -1,7 +1,7 @@
 import { Parser } from "@sdkgen/parser";
 import { generateNodeClientSource, generateNodeServerSource } from "@sdkgen/typescript-generator";
 import axios from "axios";
-import { unlinkSync, writeFileSync } from "fs";
+import { unlinkSync, writeFileSync, lstatSync } from "fs";
 import { Context, SdkgenHttpServer } from "../../src";
 import { randomBytes } from "crypto";
 
@@ -9,8 +9,8 @@ writeFileSync(__dirname + "/api.ts", generateNodeServerSource(new Parser(__dirna
 const { api } = require(__dirname + "/api.ts");
 unlinkSync(__dirname + "/api.ts");
 
-let lastCallCtx: Context = null as any;
-api.fn.getUser = async (ctx: Context, { id }: { id: string }) => {
+let lastCallCtx: Context & {aaa: boolean} = null as any;
+api.fn.getUser = async (ctx: Context & { aaa: boolean }, { id }: { id: string }) => {
     lastCallCtx = ctx;
     return {
         age: 1,
@@ -18,7 +18,7 @@ api.fn.getUser = async (ctx: Context, { id }: { id: string }) => {
     };
 };
 
-api.fn.identity = async (ctx: Context, { types }: { types: any }) => {
+api.fn.identity = async (ctx: Context & { aaa: boolean }, { types }: { types: any }) => {
     lastCallCtx = ctx;
     return types;
 };
@@ -32,7 +32,7 @@ const { ApiClient: NodeApiClient } = require(__dirname + "/nodeClient.ts");
 unlinkSync(__dirname + "/nodeClient.ts");
 const nodeClient = new NodeApiClient("http://localhost:8000");
 
-const server = new SdkgenHttpServer(api);
+const server = new SdkgenHttpServer(api, {aaa: true});
 
 describe("Simple API", () => {
     beforeAll(() => {
@@ -55,6 +55,7 @@ describe("Simple API", () => {
         expect(await nodeLegacyClient.getUser("5hdr")).toEqual({age: 1, name: "5hdr"});
 
         expect(lastCallCtx.request).toMatchObject({name: "getUser", deviceInfo: {type: "node"}});
+        expect(lastCallCtx.aaa).toBe(true);
     });
 
     test("Can make a call from newer node client", async () => {
