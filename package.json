@@ -4,8 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+		"dev": "webpack-dev-server --progress --host 0.0.0.0 --config webpack.config.js",
+		"test": "jest",
+		"test:w": "jest --watchAll",
+		"test:u": "jest -u",
+		"precommit": "lint-staged",
+		"check": "tsc -p tsconfig.json --noEmit",
+		"prepush": "npm run check",
+		"lint": "tslint --config tslint.json --project tsconfig.json"
+	},
   "repository": {
     "type": "git",
     "url": "git+ssh://git@gitlab.com/kevin_oliveira/sdkgenplayground.git"
@@ -15,5 +22,11 @@
   "bugs": {
     "url": "https://gitlab.com/kevin_oliveira/sdkgenplayground/issues"
   },
-  "homepage": "https://gitlab.com/kevin_oliveira/sdkgenplayground#readme"
+  "homepage": "https://gitlab.com/kevin_oliveira/sdkgenplayground#readme",
+  "dependencies": {
+	
+	},
+	"devDependencies": {
+	
+	}
 }
