@@ -1,7 +1,7 @@
 import { ArrayType, EnumType, OptionalType, StructType, Type, TypeReference } from "@sdkgen/parser";
 
 export function generateEnum(type: EnumType) {
-    return `enum ${type.name} {\n  ${type.values.join(",\n  ")}\n}\n`;
+    return `enum ${type.name} {\n  ${type.values.map(x => x.value).join(",\n  ")}\n}\n`;
 }
 
 export function generateClass(type: StructType) {
