@@ -22,8 +22,8 @@ const cssLoader = (modules = false) => ({
 	options: {
 		modules: modules
 			? {
-				localIdentName: "[path].[name].[local]",
-			}
+					localIdentName: "[path].[name].[local]",
+			  }
 			: false,
 		importLoaders: 1,
 		// minimize: shouldBuildForProduction,
@@ -40,7 +40,7 @@ const postCssLoader = {
 const sassLoader = rootDir => ({
 	loader: "sass-loader",
 	options: {
-		includePaths: [resolver("src/styles")],
+		includePaths: [resolver("src/resources/styles")],
 	},
 });
 
@@ -206,7 +206,7 @@ module.exports = {
 			fileName: "manifest.json",
 			seed: resolver("src/public/manifest.json"),
 			generate: (seed, files) => {
-				const manifestFiles = files.reduce(function (manifest, file) {
+				const manifestFiles = files.reduce(function(manifest, file) {
 					manifest[file.name] = file.path;
 					return manifest;
 				}, seed);
@@ -217,33 +217,33 @@ module.exports = {
 		}),
 		...(shouldBuildForProduction
 			? [
-				new webpack.HashedModuleIdsPlugin(),
+					new webpack.HashedModuleIdsPlugin(),
 
-				new webpack.optimize.OccurrenceOrderPlugin(),
-				new ImageMinPlugin({
-					gifsicle: {
-						interlaced: true,
-					},
-					optipng: {
-						enable: true,
-						optimizationLevel: 7,
-					},
-					pngquant: {
-						quality: "65-90",
-						speed: 4,
-					},
-					mozjpeg: {
-						progressive: true,
-						quality: 65,
-					},
-				}),
-				new OfflinePlugin({
-					ServiceWorker: {
-						events: true,
-						minify: false,
-					},
-				}),
-			]
+					new webpack.optimize.OccurrenceOrderPlugin(),
+					new ImageMinPlugin({
+						gifsicle: {
+							interlaced: true,
+						},
+						optipng: {
+							enable: true,
+							optimizationLevel: 7,
+						},
+						pngquant: {
+							quality: "65-90",
+							speed: 4,
+						},
+						mozjpeg: {
+							progressive: true,
+							quality: 65,
+						},
+					}),
+					new OfflinePlugin({
+						ServiceWorker: {
+							events: true,
+							minify: false,
+						},
+					}),
+			  ]
 			: []),
 	],
 
