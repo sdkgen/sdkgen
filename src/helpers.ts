@@ -7,7 +7,7 @@ ${type.fields.map(field => `    ${field.name}: ${generateTypescriptTypeName(fiel
 }
 
 export function generateTypescriptEnum(type: EnumType) {
-    return `export type ${type.name} = ${type.values.map(x => `"${x}"`).join(" | ")};\n`;
+    return `export type ${type.name} = ${type.values.map(x => `"${x.value}"`).join(" | ")};\n`;
 }
 
 export function generateTypescriptErrorClass(name: string) {
