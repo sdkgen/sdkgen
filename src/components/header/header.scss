@@ -1,0 +1,39 @@
+$logo-img: url(../../resources/assets/logo.png);
+
+.header {
+	// background-color: red;
+	// border: 1px solid black;
+	// margin-bottom: 30px;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin: 0px 0px 30px 0px;
+
+	.title {
+		display: flex;
+		align-items: center;
+
+		.logo {
+			background-repeat: no-repeat;
+			background-size: contain;
+			background-image: $logo-img;
+			background-position: center;
+			width: 45px;
+			height: 45px;
+			margin-right: 10px;
+		}
+	}
+	.actions {
+		display: flex;
+		align-items: center;
+		text-transform: uppercase;
+		a {
+			color: unset;
+			text-decoration: none;
+			margin-left: 5px;
+			&:hover {
+				font-weight: bold;
+			}
+		}
+	}
+}

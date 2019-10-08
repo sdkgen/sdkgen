@@ -24,6 +24,9 @@
 		},
 		"homepage": "https://gitlab.com/kevin_oliveira/sdkgenplayground#readme",
 		"dependencies": {
+				"@fortawesome/fontawesome-svg-core": "^1.2.25",
+				"@fortawesome/free-solid-svg-icons": "^5.11.2",
+				"@fortawesome/react-fontawesome": "^0.1.5",
 				"@loadable/component": "^5.10.1",
 				"@types/date-fns": "^2.6.0",
 				"@types/loadable__component": "^5.9.0",

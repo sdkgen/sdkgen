@@ -1,6 +1,6 @@
 import * as React from "react";
 // import RootStore from "stores";
-
+import { Header } from "components/header";
 const s = require("./mainWrapper.scss");
 
 interface Props {}
@@ -11,7 +11,10 @@ function MainWrapper(props: React.PropsWithChildren<Props>) {
 
 	return (
 		<div className={s.mainWrapper}>
-			<div className={s.content}>{props.children}</div>
+			<div className={s.content}>
+				<Header />
+				{props.children}
+			</div>
 		</div>
 	);
 }
