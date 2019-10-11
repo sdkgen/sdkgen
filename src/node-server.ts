@@ -26,7 +26,7 @@ export function generateNodeServerSource(ast: AstRoot, options: Options) {
         code += "\n";
     }
 
-    code += `class ApiConfig<ExtraContextT> extends BaseApiConfig<ExtraContextT> {
+    code += `export class ApiConfig<ExtraContextT> extends BaseApiConfig<ExtraContextT> {
     fn: {${
         ast.operations.map(op => `
         ${op.prettyName}?: (ctx: Context & ExtraContextT, args: {${op.args.map(arg =>
