@@ -1,7 +1,7 @@
 import { AstJson, AstRoot, jsonToAst } from "@sdkgen/parser";
 import { Context, ContextReply } from "./context";
 
-export abstract class BaseApiConfig<extraContextT = {}> {
+export abstract class BaseApiConfig<ExtraContextT = {}> {
     astJson: AstJson = null as any
     private _ast: AstRoot | null = null;
 
@@ -13,12 +13,12 @@ export abstract class BaseApiConfig<extraContextT = {}> {
     }
 
     fn: {
-        [name: string]: ((ctx: Context & extraContextT, args: any) => any) | undefined
+        [name: string]: ((ctx: Context & ExtraContextT, args: any) => any) | undefined
     } = {}
 
     hook: {
-        onRequestStart: (ctx: Context & extraContextT) => Promise<null | ContextReply>
-        onRequestEnd: (ctx: Context & extraContextT, reply: ContextReply) => Promise<null | ContextReply>
+        onRequestStart: (ctx: Context & ExtraContextT) => Promise<null | ContextReply>
+        onRequestEnd: (ctx: Context & ExtraContextT, reply: ContextReply) => Promise<null | ContextReply>
         onHealthCheck: () => Promise<boolean>
     } = {
         onRequestStart: async () => null,
@@ -27,6 +27,6 @@ export abstract class BaseApiConfig<extraContextT = {}> {
     }
 }
 
-export abstract class SdkgenServer<extraContextT = {}> {
-    constructor(protected apiConfig: BaseApiConfig<extraContextT>, protected extraContext: extraContextT) {}
+export abstract class SdkgenServer<ExtraContextT = {}> {
+    constructor(protected apiConfig: BaseApiConfig<ExtraContextT>, protected extraContext: ExtraContextT) {}
 }
