@@ -7,7 +7,7 @@ interface Options {
 export function generateNodeServerSource(ast: AstRoot, options: Options) {
     let code = "";
 
-    code += `import { Context, SdkgenHttpServer, BaseApiConfig } from "@sdkgen/node-runtime";
+    code += `import { Context, BaseApiConfig } from "@sdkgen/node-runtime";
 
 `;
 
@@ -26,10 +26,10 @@ export function generateNodeServerSource(ast: AstRoot, options: Options) {
         code += "\n";
     }
 
-    code += `class ApiConfig extends BaseApiConfig {
+    code += `class ApiConfig<ExtraContextT> extends BaseApiConfig<ExtraContextT> {
     fn: {${
         ast.operations.map(op => `
-        ${op.prettyName}?: (ctx: Context, args: {${op.args.map(arg =>
+        ${op.prettyName}?: (ctx: Context & ExtraContextT, args: {${op.args.map(arg =>
             `${arg.name}: ${generateTypescriptTypeName(arg.type)}`
         ).join(", ")}}) => Promise<${generateTypescriptTypeName(op.returnType)}>`).join("")}
     } = {}
@@ -41,7 +41,7 @@ export function generateNodeServerSource(ast: AstRoot, options: Options) {
     astJson = ${JSON.stringify(astToJson(ast), null, 4).replace(/"(\w+)":/g, '$1:').replace(/\n/g, "\n    ")}
 }
 
-export const api = new ApiConfig();
+export const api = new ApiConfig<{}>();
 `;
 
     return code;
