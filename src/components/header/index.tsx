@@ -3,17 +3,21 @@ import { Link } from "react-router-dom";
 import classnames from "classnames";
 import RootStore from "stores";
 import { observer } from "mobx-react-lite";
-const s = require("./header.scss");
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faClone, faStar, faCog } from "@fortawesome/free-solid-svg-icons";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import s from "./header.scss";
 
 interface LinkInfo {
 	to: string;
 	label: string;
+	icon: IconProp;
 }
 
 const links: LinkInfo[] = [
-	{ to: "/", label: "Home" },
-	{ to: "/favorites", label: "Favorites" },
-	{ to: "/config", label: "Config" },
+	{ to: "/", label: "Endpoints", icon: faClone },
+	{ to: "/favorites", label: "Favorites", icon: faStar },
+	{ to: "/config", label: "Config", icon: faCog },
 ];
 
 export const MainHeader = observer(Header);
@@ -24,9 +28,14 @@ function Header() {
 	const activePath = routerStore.location.pathname;
 	const Links = links.map(l => (
 		<Link key={l.to} to={l.to}>
-			<div className={classnames(s.link, l.to === activePath && s.active)}>{l.label}</div>
+			<div className={classnames(s.link, l.to === activePath && s.active)}>
+				<FontAwesomeIcon size="xs" icon={l.icon} />
+				&nbsp;
+				{l.label}
+			</div>
 		</Link>
 	));
+	const Divider = <div className={s.divider} />;
 
 	return (
 		<div className={s.header}>
@@ -37,7 +46,10 @@ function Header() {
 					<div className={s.name}>the fly of the mockingbird</div>
 				</div>
 			</div>
-			<div className={s.actions}>{Links}</div>
+			<div className={s.actions}>
+				{Links}
+				{Divider}
+			</div>
 		</div>
 	);
 }
