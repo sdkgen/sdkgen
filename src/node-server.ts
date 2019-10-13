@@ -27,12 +27,20 @@ export function generateNodeServerSource(ast: AstRoot, options: Options) {
     }
 
     code += `export class ApiConfig<ExtraContextT> extends BaseApiConfig<ExtraContextT> {
+    constructor() {
+        super();
+        this.fn = {} as any;
+        for (const name of Object.keys(this.astJson.functionTable)) {
+            (this.fn as any)[name] = async () => { throw this.err.Fatal(\`Function '\${name}' is not implemented\`); };
+        }
+    }
+
     fn: {${
         ast.operations.map(op => `
-        ${op.prettyName}?: (ctx: Context & ExtraContextT, args: {${op.args.map(arg =>
+        ${op.prettyName}: (ctx: Context & ExtraContextT, args: {${op.args.map(arg =>
             `${arg.name}: ${generateTypescriptTypeName(arg.type)}`
         ).join(", ")}}) => Promise<${generateTypescriptTypeName(op.returnType)}>`).join("")}
-    } = {}
+    }
 
     err = {${ast.errors.map(err => `
         ${err}: (message: string = "") => { throw new ${err}(message); }`).join(",")}
