@@ -17,7 +17,7 @@ interface LinkInfo {
 const links: LinkInfo[] = [
 	{ to: "/", label: "Endpoints", icon: faClone },
 	{ to: "/favorites", label: "Favorites", icon: faStar },
-	{ to: "/config", label: "Config", icon: faCog },
+	{ to: "/config", label: "Configuration", icon: faCog },
 ];
 
 export const MainHeader = observer(Header);
@@ -29,8 +29,7 @@ function Header() {
 	const Links = links.map(l => (
 		<Link key={l.to} to={l.to}>
 			<div className={classnames(s.link, l.to === activePath && s.active)}>
-				<FontAwesomeIcon size="xs" icon={l.icon} />
-				&nbsp;
+				<FontAwesomeIcon size="xs" icon={l.icon} className={s.icon} />
 				{l.label}
 			</div>
 		</Link>

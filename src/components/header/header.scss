@@ -34,7 +34,7 @@ $img-size: 40px;
 		.divider {
 			width: 1px;
 			background-color: #c0c7fa;
-			min-height: 20px;
+			min-height: 26px;
 			margin: 0px 10px;
 		}
 
@@ -44,10 +44,17 @@ $img-size: 40px;
 				cursor: pointer;
 				color: #011032;
 				font-weight: bold;
-				padding: 5px 10px;
+				padding: 10px 15px;
 				border-radius: 4px 4px 0px 0px;
 				text-decoration: none;
-				margin-left: 5px;
+				margin-right: 5px;
+
+				display: flex;
+				align-items: center;
+
+				.icon {
+					margin-right: 6px;
+				}
 
 				&.active {
 					background-color: white;
