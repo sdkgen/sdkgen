@@ -1,12 +1,21 @@
 import * as React from "react";
 import { observer } from "mobx-react-lite";
-import { SearchInput } from "components/searchInput";
+import s from "./home.scss";
 
 function Home() {
 	return (
-		<div>
-			<h2>Home</h2>
-			<SearchInput />
+		<div className={s.demo}>
+			<h1>Hello.</h1>
+			<h1>Hello.</h1>
+			<h1>Hello.</h1>
+			<h1>Hello.</h1>
+			<h1>Hello.</h1>
+			<h1>Hello.</h1>
+			<h1>Hello.</h1>
+			<h1>Hello.</h1>
+			<h1>Hello.</h1>
+			<h1>Hello.</h1>
+			<h1>Hello.</h1>
 		</div>
 	);
 }

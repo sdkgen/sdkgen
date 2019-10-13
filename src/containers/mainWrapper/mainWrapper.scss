@@ -1,18 +1,35 @@
 @import "enterprise";
-$width: 1000px;
+$width: 800px;
 .mainWrapper {
-	display: flex;
 	height: 100%;
 	width: 100%;
-	background-color: $icebg;
-
-	justify-content: center;
+	background-color: white;
 
 	@include lato;
 
+	.top {
+		display: flex;
+		justify-content: center;
+		background-color: #f2f3fa;
+
+		width: 100%;
+		border-bottom: 1px solid #d1d3da;
+
+		.constraint {
+			width: $width;
+			max-width: $width;
+		}
+	}
+
 	.content {
-		width: $width;
-		max-width: $width;
+		display: flex;
+		justify-content: center;
+		background-color: white;
+
 		padding: 15px;
+		.constraint {
+			width: $width;
+			max-width: $width;
+		}
 	}
 }

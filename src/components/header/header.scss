@@ -1,38 +1,59 @@
 $logo-img: url(../../resources/assets/logo.png);
-
+$img-size: 40px;
 .header {
-	// background-color: red;
-	// border: 1px solid black;
-	// margin-bottom: 30px;
-	display: flex;
-	align-items: center;
 	justify-content: space-between;
-	margin: 0px 0px 30px 0px;
 
-	.title {
+	.top {
 		display: flex;
 		align-items: center;
+		padding: 15px 10px;
 
 		.logo {
 			background-repeat: no-repeat;
 			background-size: contain;
 			background-image: $logo-img;
 			background-position: center;
-			width: 45px;
-			height: 45px;
-			margin-right: 10px;
+			width: $img-size;
+			height: $img-size;
+			margin-right: 15px;
+		}
+		.title {
+			color: #011032;
+			font-weight: bold;
+		}
+		.name {
+			color: #011032;
+			text-transform: capitalize;
 		}
 	}
 	.actions {
 		display: flex;
 		align-items: center;
-		text-transform: uppercase;
+		transform: translateY(1px);
+
 		a {
-			color: unset;
-			text-decoration: none;
-			margin-left: 5px;
-			&:hover {
+			all: unset;
+			.link {
+				cursor: pointer;
+				color: #011032;
 				font-weight: bold;
+				padding: 5px 10px;
+				border-radius: 4px 4px 0px 0px;
+				text-decoration: none;
+				margin-left: 5px;
+
+				&.active {
+					background-color: white;
+					border-color: #d1d3da;
+					border-width: 1px 1px 0px 1px;
+
+					border-style: solid;
+					color: #1760dd;
+				}
+
+				&:hover {
+					font-weight: bold;
+				}
 			}
 		}
 	}
