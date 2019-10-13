@@ -9,7 +9,7 @@ export function SearchInput() {
 		<div className={s.search}>
 			<input type="text" className={s.searchTerm} placeholder="What are you looking for?" />
 			<button type="submit" className={s.searchButton}>
-				<FontAwesomeIcon icon={faSearch} />
+				<FontAwesomeIcon icon={faSearch} size="xs" />
 			</button>
 		</div>
 	);
