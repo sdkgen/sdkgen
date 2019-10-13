@@ -2,38 +2,11 @@
 
 exports[`Parser handles 'any' on the name of a field 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -80,64 +53,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles 'base64' on the name of a field 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -184,64 +110,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles 'bool' on the name of a field 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -288,64 +167,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles 'bytes' on the name of a field 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -392,64 +224,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles 'cep' on the name of a field 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -496,64 +281,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles 'cnpj' on the name of a field 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -600,64 +338,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles 'cpf' on the name of a field 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -704,64 +395,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles 'date' on the name of a field 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -808,64 +452,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles 'datetime' on the name of a field 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -912,64 +509,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles 'email' on the name of a field 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -1016,64 +566,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles 'enum' on the name of a field 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -1120,64 +623,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles 'error' on the name of a field 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -1224,64 +680,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles 'false' on the name of a field 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -1328,64 +737,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles 'float' on the name of a field 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -1432,64 +794,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles 'fn' on the name of a field 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -1536,64 +851,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles 'function' on the name of a field 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -1640,64 +908,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles 'get' on the name of a field 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -1744,64 +965,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles 'hex' on the name of a field 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -1848,64 +1022,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles 'import' on the name of a field 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -1952,64 +1079,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles 'int' on the name of a field 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -2056,64 +1136,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles 'latlng' on the name of a field 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -2160,64 +1193,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles 'money' on the name of a field 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -2264,64 +1250,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles 'phone' on the name of a field 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -2368,64 +1307,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles 'safehtml' on the name of a field 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -2472,64 +1364,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles 'string' on the name of a field 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -2576,64 +1421,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles 'true' on the name of a field 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -2680,64 +1478,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles 'type' on the name of a field 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -2784,64 +1535,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles 'uint' on the name of a field 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -2888,64 +1592,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles 'url' on the name of a field 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -2992,64 +1649,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles 'uuid' on the name of a field 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -3096,64 +1706,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles 'void' on the name of a field 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -3200,64 +1763,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles 'xml' on the name of a field 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -3304,64 +1820,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles arrays and optionals 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -3576,64 +2045,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles combinations of all part 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Foo",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Bar",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Foo",
     "Bar",
     "Fatal",
-    "Connection",
   ],
   "operations": Array [
     GetOperation {
@@ -3670,15 +2092,6 @@ AstRoot {
           "kind": "StructType",
           "spreads": Array [],
         },
-      },
-    },
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
       },
     },
   ],
@@ -3752,92 +2165,20 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Foo",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Bar",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles errors 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Foo",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Bar",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "FooBar",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Foo",
     "Bar",
     "FooBar",
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -3847,68 +2188,15 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [],
-  "typeDefinitions": Array [
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Foo",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Bar",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "FooBar",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
-  ],
+  "typeDefinitions": Array [],
 }
 `;
 
 exports[`Parser handles functions with arguments 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
   "operations": Array [
     FunctionOperation {
@@ -3950,15 +2238,6 @@ AstRoot {
       ],
       "kind": "FunctionOperation",
       "name": "doIt",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
       "returnType": Object {
         "kind": "StringPrimitiveType",
       },
@@ -4010,64 +2289,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles options on the top 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -4077,65 +2309,17 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [],
-  "typeDefinitions": Array [
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
-  ],
+  "typeDefinitions": Array [],
 }
 `;
 
 exports[`Parser handles primitive type 'any' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -4182,64 +2366,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles primitive type 'base64' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -4286,64 +2423,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles primitive type 'bool' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -4390,64 +2480,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles primitive type 'bytes' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -4494,64 +2537,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles primitive type 'cep' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -4598,64 +2594,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles primitive type 'cnpj' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -4702,64 +2651,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles primitive type 'cpf' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -4806,64 +2708,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles primitive type 'date' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -4910,64 +2765,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles primitive type 'datetime' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -5014,64 +2822,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles primitive type 'email' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -5118,64 +2879,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles primitive type 'float' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -5222,64 +2936,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles primitive type 'hex' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -5326,64 +2993,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles primitive type 'int' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -5430,64 +3050,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles primitive type 'latlng' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -5534,64 +3107,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles primitive type 'money' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -5638,64 +3164,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles primitive type 'phone' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -5742,64 +3221,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles primitive type 'safehtml' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -5846,64 +3278,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles primitive type 'string' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -5950,64 +3335,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles primitive type 'uint' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -6054,64 +3392,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles primitive type 'url' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -6158,64 +3449,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles primitive type 'uuid' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -6262,64 +3506,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles primitive type 'void' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -6366,64 +3563,17 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles primitive type 'xml' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -6470,52 +3620,15 @@ AstRoot {
         "spreads": Array [],
       },
     },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
   ],
 }
 `;
 
 exports[`Parser handles simple get operations for primitive type 'any' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
   "operations": Array [
     GetOperation {
@@ -6551,15 +3664,6 @@ AstRoot {
         "kind": "ArrayType",
       },
     },
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
   ],
   "options": Options {
     "kind": "Options",
@@ -6570,53 +3674,15 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [],
-  "typeDefinitions": Array [
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
-  ],
+  "typeDefinitions": Array [],
 }
 `;
 
 exports[`Parser handles simple get operations for primitive type 'base64' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
   "operations": Array [
     GetOperation {
@@ -6652,15 +3718,6 @@ AstRoot {
         "kind": "ArrayType",
       },
     },
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
   ],
   "options": Options {
     "kind": "Options",
@@ -6671,53 +3728,15 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [],
-  "typeDefinitions": Array [
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
-  ],
+  "typeDefinitions": Array [],
 }
 `;
 
 exports[`Parser handles simple get operations for primitive type 'bool' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
   "operations": Array [
     GetOperation {
@@ -6753,15 +3772,6 @@ AstRoot {
         "kind": "ArrayType",
       },
     },
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
   ],
   "options": Options {
     "kind": "Options",
@@ -6772,53 +3782,15 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [],
-  "typeDefinitions": Array [
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
-  ],
+  "typeDefinitions": Array [],
 }
 `;
 
 exports[`Parser handles simple get operations for primitive type 'bytes' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
   "operations": Array [
     GetOperation {
@@ -6854,15 +3826,6 @@ AstRoot {
         "kind": "ArrayType",
       },
     },
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
   ],
   "options": Options {
     "kind": "Options",
@@ -6873,53 +3836,15 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [],
-  "typeDefinitions": Array [
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
-  ],
+  "typeDefinitions": Array [],
 }
 `;
 
 exports[`Parser handles simple get operations for primitive type 'cep' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
   "operations": Array [
     GetOperation {
@@ -6955,15 +3880,6 @@ AstRoot {
         "kind": "ArrayType",
       },
     },
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
   ],
   "options": Options {
     "kind": "Options",
@@ -6974,53 +3890,15 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [],
-  "typeDefinitions": Array [
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
-  ],
+  "typeDefinitions": Array [],
 }
 `;
 
 exports[`Parser handles simple get operations for primitive type 'cnpj' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
   "operations": Array [
     GetOperation {
@@ -7056,15 +3934,6 @@ AstRoot {
         "kind": "ArrayType",
       },
     },
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
   ],
   "options": Options {
     "kind": "Options",
@@ -7075,53 +3944,15 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [],
-  "typeDefinitions": Array [
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
-  ],
+  "typeDefinitions": Array [],
 }
 `;
 
 exports[`Parser handles simple get operations for primitive type 'cpf' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
   "operations": Array [
     GetOperation {
@@ -7157,15 +3988,6 @@ AstRoot {
         "kind": "ArrayType",
       },
     },
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
   ],
   "options": Options {
     "kind": "Options",
@@ -7176,53 +3998,15 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [],
-  "typeDefinitions": Array [
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
-  ],
+  "typeDefinitions": Array [],
 }
 `;
 
 exports[`Parser handles simple get operations for primitive type 'date' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
   "operations": Array [
     GetOperation {
@@ -7258,15 +4042,6 @@ AstRoot {
         "kind": "ArrayType",
       },
     },
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
   ],
   "options": Options {
     "kind": "Options",
@@ -7277,53 +4052,15 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [],
-  "typeDefinitions": Array [
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
-  ],
+  "typeDefinitions": Array [],
 }
 `;
 
 exports[`Parser handles simple get operations for primitive type 'datetime' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
   "operations": Array [
     GetOperation {
@@ -7359,15 +4096,6 @@ AstRoot {
         "kind": "ArrayType",
       },
     },
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
   ],
   "options": Options {
     "kind": "Options",
@@ -7378,53 +4106,15 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [],
-  "typeDefinitions": Array [
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
-  ],
+  "typeDefinitions": Array [],
 }
 `;
 
 exports[`Parser handles simple get operations for primitive type 'email' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
   "operations": Array [
     GetOperation {
@@ -7460,15 +4150,6 @@ AstRoot {
         "kind": "ArrayType",
       },
     },
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
   ],
   "options": Options {
     "kind": "Options",
@@ -7479,53 +4160,15 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [],
-  "typeDefinitions": Array [
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
-  ],
+  "typeDefinitions": Array [],
 }
 `;
 
 exports[`Parser handles simple get operations for primitive type 'float' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
   "operations": Array [
     GetOperation {
@@ -7561,15 +4204,6 @@ AstRoot {
         "kind": "ArrayType",
       },
     },
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
   ],
   "options": Options {
     "kind": "Options",
@@ -7580,53 +4214,15 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [],
-  "typeDefinitions": Array [
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
-  ],
+  "typeDefinitions": Array [],
 }
 `;
 
 exports[`Parser handles simple get operations for primitive type 'hex' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
   "operations": Array [
     GetOperation {
@@ -7662,15 +4258,6 @@ AstRoot {
         "kind": "ArrayType",
       },
     },
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
   ],
   "options": Options {
     "kind": "Options",
@@ -7681,53 +4268,15 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [],
-  "typeDefinitions": Array [
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
-  ],
+  "typeDefinitions": Array [],
 }
 `;
 
 exports[`Parser handles simple get operations for primitive type 'int' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
   "operations": Array [
     GetOperation {
@@ -7763,15 +4312,6 @@ AstRoot {
         "kind": "ArrayType",
       },
     },
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
   ],
   "options": Options {
     "kind": "Options",
@@ -7782,53 +4322,15 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [],
-  "typeDefinitions": Array [
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
-  ],
+  "typeDefinitions": Array [],
 }
 `;
 
 exports[`Parser handles simple get operations for primitive type 'latlng' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
   "operations": Array [
     GetOperation {
@@ -7864,15 +4366,6 @@ AstRoot {
         "kind": "ArrayType",
       },
     },
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
   ],
   "options": Options {
     "kind": "Options",
@@ -7883,53 +4376,15 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [],
-  "typeDefinitions": Array [
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
-  ],
+  "typeDefinitions": Array [],
 }
 `;
 
 exports[`Parser handles simple get operations for primitive type 'money' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
   "operations": Array [
     GetOperation {
@@ -7965,15 +4420,6 @@ AstRoot {
         "kind": "ArrayType",
       },
     },
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
   ],
   "options": Options {
     "kind": "Options",
@@ -7984,53 +4430,15 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [],
-  "typeDefinitions": Array [
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
-  ],
+  "typeDefinitions": Array [],
 }
 `;
 
 exports[`Parser handles simple get operations for primitive type 'phone' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
   "operations": Array [
     GetOperation {
@@ -8066,15 +4474,6 @@ AstRoot {
         "kind": "ArrayType",
       },
     },
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
   ],
   "options": Options {
     "kind": "Options",
@@ -8085,53 +4484,15 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [],
-  "typeDefinitions": Array [
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
-  ],
+  "typeDefinitions": Array [],
 }
 `;
 
 exports[`Parser handles simple get operations for primitive type 'safehtml' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
   "operations": Array [
     GetOperation {
@@ -8167,15 +4528,6 @@ AstRoot {
         "kind": "ArrayType",
       },
     },
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
   ],
   "options": Options {
     "kind": "Options",
@@ -8186,53 +4538,15 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [],
-  "typeDefinitions": Array [
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
-  ],
+  "typeDefinitions": Array [],
 }
 `;
 
 exports[`Parser handles simple get operations for primitive type 'string' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
   "operations": Array [
     GetOperation {
@@ -8268,15 +4582,6 @@ AstRoot {
         "kind": "ArrayType",
       },
     },
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
   ],
   "options": Options {
     "kind": "Options",
@@ -8287,53 +4592,15 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [],
-  "typeDefinitions": Array [
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
-  ],
+  "typeDefinitions": Array [],
 }
 `;
 
 exports[`Parser handles simple get operations for primitive type 'uint' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
   "operations": Array [
     GetOperation {
@@ -8369,15 +4636,6 @@ AstRoot {
         "kind": "ArrayType",
       },
     },
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
   ],
   "options": Options {
     "kind": "Options",
@@ -8388,53 +4646,15 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [],
-  "typeDefinitions": Array [
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
-  ],
+  "typeDefinitions": Array [],
 }
 `;
 
 exports[`Parser handles simple get operations for primitive type 'url' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
   "operations": Array [
     GetOperation {
@@ -8470,15 +4690,6 @@ AstRoot {
         "kind": "ArrayType",
       },
     },
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
   ],
   "options": Options {
     "kind": "Options",
@@ -8489,53 +4700,15 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [],
-  "typeDefinitions": Array [
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
-  ],
+  "typeDefinitions": Array [],
 }
 `;
 
 exports[`Parser handles simple get operations for primitive type 'uuid' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
   "operations": Array [
     GetOperation {
@@ -8571,15 +4744,6 @@ AstRoot {
         "kind": "ArrayType",
       },
     },
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
   ],
   "options": Options {
     "kind": "Options",
@@ -8590,53 +4754,15 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [],
-  "typeDefinitions": Array [
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
-  ],
+  "typeDefinitions": Array [],
 }
 `;
 
 exports[`Parser handles simple get operations for primitive type 'void' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
   "operations": Array [
     GetOperation {
@@ -8672,15 +4798,6 @@ AstRoot {
         "kind": "ArrayType",
       },
     },
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
   ],
   "options": Options {
     "kind": "Options",
@@ -8691,53 +4808,15 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [],
-  "typeDefinitions": Array [
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
-  ],
+  "typeDefinitions": Array [],
 }
 `;
 
 exports[`Parser handles simple get operations for primitive type 'xml' 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
   "operations": Array [
     GetOperation {
@@ -8773,15 +4852,6 @@ AstRoot {
         "kind": "ArrayType",
       },
     },
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
   ],
   "options": Options {
     "kind": "Options",
@@ -8792,65 +4862,17 @@ AstRoot {
     "useRethink": true,
   },
   "structTypes": Array [],
-  "typeDefinitions": Array [
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
-          },
-        ],
-      },
-    },
-  ],
+  "typeDefinitions": Array [],
 }
 `;
 
 exports[`Parser handles spreads in structs 1`] = `
 AstRoot {
-  "enumTypes": Array [
-    Object {
-      "kind": "EnumType",
-      "values": Array [
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Fatal",
-        },
-        EnumValue {
-          "annotations": Array [],
-          "kind": "EnumValue",
-          "value": "Connection",
-        },
-      ],
-    },
-  ],
+  "enumTypes": Array [],
   "errors": Array [
     "Fatal",
-    "Connection",
   ],
-  "operations": Array [
-    FunctionOperation {
-      "annotations": Array [],
-      "args": Array [],
-      "kind": "FunctionOperation",
-      "name": "ping",
-      "returnType": Object {
-        "kind": "StringPrimitiveType",
-      },
-    },
-  ],
+  "operations": Array [],
   "options": Options {
     "kind": "Options",
     "retryRequest": true,
@@ -8984,26 +5006,6 @@ AstRoot {
               "kind": "StructType",
               "spreads": Array [],
             },
-          },
-        ],
-      },
-    },
-    TypeDefinition {
-      "annotations": Array [],
-      "kind": "TypeDefinition",
-      "name": "ErrorType",
-      "type": Object {
-        "kind": "EnumType",
-        "values": Array [
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Fatal",
-          },
-          EnumValue {
-            "annotations": Array [],
-            "kind": "EnumValue",
-            "value": "Connection",
           },
         ],
       },
