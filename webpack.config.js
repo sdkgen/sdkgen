@@ -6,6 +6,7 @@ const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
 const ImageMinPlugin = require("imagemin-webpack-plugin").default;
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
 const ManifestPlugin = require("webpack-manifest-plugin");
+const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
 
 const shouldBuildForProduction = process.env.NODE_ENV === "production";
 const hash = shouldBuildForProduction ? "[chunkhash]" : "[name]";
@@ -214,6 +215,10 @@ module.exports = {
 					files: manifestFiles,
 				};
 			},
+		}),
+		new MonacoWebpackPlugin({
+			// available options are documented at https://github.com/Microsoft/monaco-editor-webpack-plugin#options
+			languages: ["json"],
 		}),
 		...(shouldBuildForProduction
 			? [

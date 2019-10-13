@@ -4,7 +4,7 @@ import classnames from "classnames";
 import RootStore from "stores";
 import { observer } from "mobx-react-lite";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClone, faStar, faCog } from "@fortawesome/free-solid-svg-icons";
+import { faClone, faCog } from "@fortawesome/free-solid-svg-icons";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import s from "./header.scss";
 
