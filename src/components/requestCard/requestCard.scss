@@ -1,0 +1,74 @@
+$grey: #d5d8de;
+
+.openCard {
+	max-width: 100%;
+	height: 100%;
+	border: 1px solid $grey;
+	margin-bottom: 20px;
+	border-radius: 5px;
+
+	.header {
+		// background-color: $grey;
+		border-radius: 2px 2px 0px 0px;
+		border-bottom: 1px solid $grey;
+		// color: aliceblue;
+		padding: 10px 15px;
+
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		padding: 10px 15px;
+		cursor: pointer;
+
+		.callName {
+			display: flex;
+			align-items: center;
+
+			.hrefIcon {
+				margin-left: 10px;
+				color: #c3c3c3;
+				margin: 5px;
+				&:hover {
+					color: #8c8c8c;
+				}
+			}
+		}
+	}
+	.content {
+		padding: 20px;
+	}
+	.bottom {
+		background-color: green;
+		border-radius: 0px 0px 2px 2px;
+		padding: 5px;
+		color: aliceblue;
+	}
+}
+.closedCard {
+	max-width: 100%;
+	height: 100%;
+	border: 1px solid #d5d8de;
+	margin-bottom: 20px;
+	border-radius: 5px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px 15px;
+	cursor: pointer;
+	.callName {
+		display: flex;
+		align-items: center;
+
+		.hrefIcon {
+			margin-left: 10px;
+			color: #c3c3c3;
+			margin: 5px;
+			&:hover {
+				color: #8c8c8c;
+			}
+		}
+	}
+
+	.openIcon {
+	}
+}

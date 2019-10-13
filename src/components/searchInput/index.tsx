@@ -2,7 +2,7 @@ import * as React from "react";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-const s = require("./searchInput.scss");
+import s from "./searchInput.scss";
 
 export function SearchInput() {
 	return (
