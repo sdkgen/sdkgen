@@ -13,15 +13,11 @@ export class SemanticError extends Error {}
 
 export function analyse(root: AstRoot) {
     root.errors.push("Fatal");
-    root.errors.push("Connection");
     root.errors = [...new Set(root.errors)];
 
     const errorTypesEnum = new EnumType(root.errors.map(err => new EnumValue(err)));
     const errorTypesEnumDef = new TypeDefinition("ErrorType", errorTypesEnum);
     root.typeDefinitions.push(errorTypesEnumDef);
-
-    const pingOp = new FunctionOperation("ping", [], new StringPrimitiveType);
-    root.operations.push(pingOp);
 
     new CheckMultipleDeclarationVisitor(root).process();
     new MatchTypeDefinitionsVisitor(root).process();
