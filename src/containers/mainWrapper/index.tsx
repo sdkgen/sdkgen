@@ -17,7 +17,9 @@ function MainWrapper(props: React.PropsWithChildren<Props>) {
 				</div>
 			</div>
 			<div className={s.content}>
-				<div className={s.constraint}>{props.children}</div>
+				<div className={s.constraint}>
+					<div className={s.wrapper}>{props.children}</div>
+				</div>
 			</div>
 		</div>
 	);

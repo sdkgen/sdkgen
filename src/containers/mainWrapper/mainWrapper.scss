@@ -26,10 +26,14 @@ $width: 800px;
 		justify-content: center;
 		background-color: white;
 
-		padding: 15px;
 		.constraint {
 			width: $width;
 			max-width: $width;
+
+			.wrapper {
+				margin: 5px;
+				// background-color: red;
+			}
 		}
 	}
 }
