@@ -20,6 +20,7 @@ export type TypeDescription = string | string[] | { [name: string]: TypeDescript
 export interface AstJson {
     typeTable: TypeTable
     functionTable: FunctionTable
+    errors: string[]
 }
 
 export function astToJson(ast: AstRoot) {
@@ -49,16 +50,19 @@ export function astToJson(ast: AstRoot) {
         }
     }
 
+    const errors = ast.errors;
+
     return {
         typeTable,
-        functionTable
+        functionTable,
+        errors
     };
 }
 
 export function jsonToAst(json: AstJson) {
     const operations: Operation[] = [];
     const typeDefinition: TypeDefinition[] = [];
-    const errors: string[] = [];
+    const errors: string[] = json.errors || [];
     const options = new Options;
 
     function processType(description: TypeDescription): Type {
@@ -93,8 +97,6 @@ export function jsonToAst(json: AstJson) {
     }
 
     for (const functionName in json.functionTable) {
-        if (functionName === "ping")
-            continue;
         const func = json.functionTable[functionName];
         const args = Object.keys(func.args).map(argName =>
             new Field(argName, processType(func.args[argName]))
@@ -103,7 +105,7 @@ export function jsonToAst(json: AstJson) {
         operations.push(new FunctionOperation(functionName, args, processType(func.ret)));
     }
 
-    const ast = new AstRoot(typeDefinition, operations, options, errors);
+    const ast = new AstRoot(typeDefinition, operations, options, [...new Set(errors)]);
     analyse(ast);
     return ast;
 }

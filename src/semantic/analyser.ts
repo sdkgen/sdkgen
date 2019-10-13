@@ -15,10 +15,6 @@ export function analyse(root: AstRoot) {
     root.errors.push("Fatal");
     root.errors = [...new Set(root.errors)];
 
-    const errorTypesEnum = new EnumType(root.errors.map(err => new EnumValue(err)));
-    const errorTypesEnumDef = new TypeDefinition("ErrorType", errorTypesEnum);
-    root.typeDefinitions.push(errorTypesEnumDef);
-
     new CheckMultipleDeclarationVisitor(root).process();
     new MatchTypeDefinitionsVisitor(root).process();
     new CheckNoRecursiveTypesVisitor(root).process();
