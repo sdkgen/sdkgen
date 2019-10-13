@@ -16,7 +16,7 @@ interface LinkInfo {
 
 const links: LinkInfo[] = [
 	{ to: "/", label: "Endpoints", icon: faClone },
-	{ to: "/favorites", label: "Favorites", icon: faStar },
+	// { to: "/favorites", label: "Favorites", icon: faStar },
 	{ to: "/config", label: "Configuration", icon: faCog },
 ];
 

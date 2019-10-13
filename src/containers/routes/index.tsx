@@ -10,10 +10,10 @@ const history = syncHistoryWithStore(createBrowserHistory(), rootStore.routerSto
 import { MainWrapper } from "containers/mainWrapper";
 import { observer } from "mobx-react-lite";
 // import Rootstore from "stores";
-import { Loading } from "components/loading";
+import { PageLoading } from "components/loading";
 
 const asyncOptions: Options<any> = {
-	fallback: <Loading />,
+	fallback: <PageLoading />,
 };
 
 const NotFound = loadable(() => import("pages/notfound"), asyncOptions);
