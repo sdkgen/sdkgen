@@ -8,6 +8,7 @@ import {
 	faPlay,
 	faPause,
 	faRedo,
+	faCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import MonacoEditor from "react-monaco-editor";
 import classNames from "classnames";
@@ -21,6 +22,15 @@ function Card() {
 	const [open, setOpen] = React.useState<boolean>(false);
 	const [requestStatus, setRequestStatus] = React.useState<RequestStatus>("notFetched");
 
+	const colors: Record<RequestStatus, string> = {
+		notFetched: s.blue,
+		fetching: s.orange,
+		error: s.red,
+		sucess: s.green,
+		timeout: s.purple,
+	};
+	const accentColorClass = colors[requestStatus];
+
 	if (!open)
 		return (
 			<div className={s.closedCard} onClick={() => setOpen(true)}>
@@ -28,7 +38,16 @@ function Card() {
 					<div>getEmployeesByName</div>
 					<FontAwesomeIcon size="xs" icon={faLink} className={s.hrefIcon} />
 				</div>
-				<FontAwesomeIcon size="xs" icon={faChevronDown} className={s.icon} />
+				<div>
+					{requestStatus !== "notFetched" ? (
+						<FontAwesomeIcon
+							size="xs"
+							icon={faCircle}
+							className={classNames(s.statusCircle, accentColorClass)}
+						/>
+					) : null}
+					<FontAwesomeIcon size="xs" icon={faChevronDown} className={s.icon} />
+				</div>
 			</div>
 		);
 

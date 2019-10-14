@@ -123,4 +123,29 @@
 
 	.openIcon {
 	}
+
+	.statusCircle {
+		margin-right: 10px;
+		transition: all 0.2s ease-out;
+
+		&.blue {
+			color: $blue;
+		}
+
+		&.green {
+			color: $green;
+		}
+
+		&.orange {
+			color: $orange;
+		}
+
+		&.purple {
+			color: $purple;
+		}
+
+		&.red {
+			color: $red;
+		}
+	}
 }
