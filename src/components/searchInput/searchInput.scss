@@ -1,13 +1,10 @@
 $gray: #a2a9b5;
-$blue: #011032;
+$blue: #1760dd;
+
 .search {
 	width: 100%;
 	position: relative;
 	display: flex;
-
-	&:focus {
-		background-color: red;
-	}
 }
 
 .searchTerm {
