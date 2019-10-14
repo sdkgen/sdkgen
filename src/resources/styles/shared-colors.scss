@@ -1,15 +1,26 @@
-$accentblue: #4dbfd8;
-$accentblue-light: rgba(77, 191, 216, 0.7);
-$shadeblue: #132f36;
-$placebg: #071215;
-$gray-light: rgba(19, 20, 21, 0.2);
-$shadegreen: #14372a;
-$accentgreen: #51dcab;
-$eventbg: #071510;
-$icebg: #f0f2f2;
-$accentpurple: #9451dc;
-$trueblack: #000000;
-$truewhite: #ffffff;
-$systemgreen: #1ad317;
-$systemred: #ff0000;
-$shadesystemred: #dc4242;
+$c8: #8c8c8c;
+$c3: #c3c3c3;
+$lightgray: #d1d3da;
+$topGray: #f2f3fa;
+$grey: #d5d8de;
+$anotherGray: #c0c7fa;
+$white: white;
+$black: black;
+
+$midgnightBlue: #011032;
+
+// ACCENT COLORS
+$blue: #1760dd;
+$blue-dark-1: darken($blue, 5%);
+
+$red: #ec2c81;
+$red-dark-1: darken($red, 5%);
+
+$orange: #ff9800;
+$orange-dark-1: darken($orange, 5%);
+
+$green: #009688;
+$green-dark-1: darken($green, 5%);
+
+$purple: #5f0bfa;
+$purple-dark-1: darken($purple, 5%);

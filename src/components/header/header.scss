@@ -1,3 +1,4 @@
+@import "shared-colors";
 $logo-img: url(../../resources/assets/logo.png);
 $img-size: 40px;
 .header {
@@ -18,11 +19,11 @@ $img-size: 40px;
 			margin-right: 15px;
 		}
 		.title {
-			color: #011032;
+			color: $midgnightBlue;
 			font-weight: bold;
 		}
 		.name {
-			color: #011032;
+			color: $midgnightBlue;
 			text-transform: capitalize;
 		}
 	}
@@ -33,7 +34,7 @@ $img-size: 40px;
 
 		.divider {
 			width: 1px;
-			background-color: #c0c7fa;
+			background-color: $anotherGray;
 			min-height: 26px;
 			margin: 0px 10px;
 		}
@@ -42,7 +43,7 @@ $img-size: 40px;
 			all: unset;
 			.link {
 				cursor: pointer;
-				color: #011032;
+				color: $midgnightBlue;
 				font-weight: bold;
 				padding: 10px 15px;
 				border-radius: 4px 4px 0px 0px;
@@ -57,12 +58,12 @@ $img-size: 40px;
 				}
 
 				&.active {
-					background-color: white;
-					border-color: #d1d3da;
+					background-color: $white;
+					border-color: $lightgray;
 					border-width: 1px 1px 0px 1px;
 
 					border-style: solid;
-					color: #1760dd;
+					color: $blue;
 				}
 
 				&:hover {

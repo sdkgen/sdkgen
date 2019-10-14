@@ -1,19 +1,19 @@
-@import "enterprise";
+@import "main";
 $width: 800px;
 .mainWrapper {
 	height: 100%;
 	width: 100%;
-	background-color: white;
+	background-color: $white;
 
 	@include lato;
 
 	.top {
 		display: flex;
 		justify-content: center;
-		background-color: #f2f3fa;
+		background-color: $topGray;
 
 		width: 100%;
-		border-bottom: 1px solid #d1d3da;
+		border-bottom: 1px solid $lightgray;
 
 		.constraint {
 			width: $width;
@@ -24,7 +24,7 @@ $width: 800px;
 	.content {
 		display: flex;
 		justify-content: center;
-		background-color: white;
+		background-color: $white;
 
 		.constraint {
 			width: $width;

@@ -1,4 +1,4 @@
-@import "enterprise";
+@import "main";
 
 .appError {
 	width: 100%;
@@ -11,7 +11,7 @@
 		.title {
 			text-align: center;
 			font-size: 70px;
-			color: $shadesystemred;
+			color: $red;
 		}
 		.subtitle {
 			margin-top: 20px;
@@ -48,7 +48,7 @@
 		}
 		.errorStack {
 			overflow: auto;
-			color: $shadesystemred;
+			color: $red;
 		}
 	}
 }
