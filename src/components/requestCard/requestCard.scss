@@ -1,17 +1,24 @@
+$c8: #8c8c8c;
+$c3: #c3c3c3;
+$lightgray: #d1d3da;
 $grey: #d5d8de;
+$blue: #1760dd;
+$red: #ec2c81;
+$orange: #ff9800;
+$green: #009688;
+$purple: #5f0bfa;
 
+$darkblue: #011032;
 .openCard {
 	max-width: 100%;
 	height: 100%;
-	border: 1px solid $grey;
+	// border: 1px solid $grey;
 	margin-bottom: 20px;
-	border-radius: 5px;
+	// border-radius: 5px;
 
 	.header {
-		// background-color: $grey;
-		border-radius: 2px 2px 0px 0px;
-		border-bottom: 1px solid $grey;
-		// color: aliceblue;
+		border-radius: 5px 5px 0px 0px;
+		border: 1px solid $grey;
 		padding: 10px 15px;
 
 		display: flex;
@@ -26,28 +33,83 @@ $grey: #d5d8de;
 
 			.hrefIcon {
 				margin-left: 10px;
-				color: #c3c3c3;
+				color: $c3;
 				margin: 5px;
 				&:hover {
-					color: #8c8c8c;
+					color: $c8;
 				}
+			}
+		}
+	}
+
+	.subHeader {
+		display: flex;
+		border: 1px solid $lightgray;
+		border-top: none;
+		.tab {
+			cursor: pointer;
+			padding: 10px 15px;
+			font-weight: bold;
+			font-size: 12px;
+			transform: translateY(1px);
+			color: $darkblue;
+			&.active {
+				border-bottom: 2px solid $blue;
+				color: $blue;
 			}
 		}
 	}
 	.content {
 		padding: 4px;
+		border-style: solid;
+		border-color: $lightgray;
+		border-width: 0px 1px;
 	}
 	.bottom {
-		background-color: green;
-		border-radius: 0px 0px 2px 2px;
-		padding: 5px;
+		background-color: black;
+		border-radius: 0px 0px 5px 5px;
+		border: 1px solid black;
+		border-top: none;
+		padding: 10px 15px;
 		color: aliceblue;
+		user-select: none;
+
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		font-weight: bold;
+		cursor: pointer;
+
+		&.blue {
+			background-color: $blue;
+			border: 1px solid darken($blue, 5%);
+		}
+
+		&.green {
+			background-color: $green;
+			border: 1px solid darken($green, 5%);
+		}
+
+		&.orange {
+			background-color: $orange;
+			border: 1px solid darken($orange, 5%);
+		}
+
+		&.purple {
+			background-color: $purple;
+			border: 1px solid darken($purple, 5%);
+		}
+
+		&.red {
+			background-color: $red;
+			border: 1px solid darken($red, 5%);
+		}
 	}
 }
 .closedCard {
 	max-width: 100%;
 	height: 100%;
-	border: 1px solid #d5d8de;
+	border: 1px solid $grey;
 	margin-bottom: 20px;
 	border-radius: 5px;
 	display: flex;
@@ -61,10 +123,10 @@ $grey: #d5d8de;
 
 		.hrefIcon {
 			margin-left: 10px;
-			color: #c3c3c3;
+			color: $c3;
 			margin: 5px;
 			&:hover {
-				color: #8c8c8c;
+				color: $c8;
 			}
 		}
 	}
