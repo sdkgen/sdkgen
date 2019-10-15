@@ -22,13 +22,13 @@
   },
   "homepage": "https://github.com/sdkgen/node-runtime#readme",
   "devDependencies": {
-    "@types/jest": "^24.0.17",
-    "@types/node": "^12.7.2",
+    "@types/jest": "^24.0.19",
+    "@types/node": "^12.7.12",
     "@types/request-ip": "0.0.34",
     "axios": "^0.19.0",
     "jest": "^24.9.0",
-    "ts-jest": "^24.0.2",
-    "typescript": "^3.5.3"
+    "ts-jest": "^24.1.0",
+    "typescript": "^3.6.4"
   },
   "jest": {
     "transform": {
@@ -49,9 +49,9 @@
   "dependencies": {
     "@fnando/cnpj": "^0.1.1",
     "@fnando/cpf": "^0.1.1",
-    "@sdkgen/dart-generator": "^1.0.5",
-    "@sdkgen/parser": "^1.0.11",
-    "@sdkgen/typescript-generator": "^1.0.20",
+    "@sdkgen/dart-generator": "^1.0.14",
+    "@sdkgen/parser": "^1.0.23",
+    "@sdkgen/typescript-generator": "^1.0.26",
     "request-ip": "^2.1.3"
   }
 }
