@@ -64,6 +64,12 @@ export class SdkgenHttpServer<ExtraContextT = {}> extends SdkgenServer<ExtraCont
             }
             res.end();
         });
+
+        this.addHttpHandler("GET", "/ast.json", (req, res) => {
+            res.setHeader("Content-Type", "application/json");
+            res.write(JSON.stringify(apiConfig.astJson));
+            res.end();
+        });
     }
 
     ignoreUrlPrefix(urlPrefix: string) {
