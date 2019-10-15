@@ -16,6 +16,10 @@ export abstract class BaseApiConfig<ExtraContextT = {}> {
         [name: string]: ((ctx: Context & ExtraContextT, args: any) => any) | undefined
     } = {}
 
+    err: {
+        [name: string]: (message?: string) => never
+    } = {}
+
     hook: {
         onRequestStart: (ctx: Context & ExtraContextT) => Promise<null | ContextReply>
         onRequestEnd: (ctx: Context & ExtraContextT, reply: ContextReply) => Promise<null | ContextReply>
