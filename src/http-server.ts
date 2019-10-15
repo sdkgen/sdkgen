@@ -157,8 +157,16 @@ export class SdkgenHttpServer<ExtraContextT = {}> extends SdkgenServer<ExtraCont
         let body = "";
         req.on("data", chunk => body += chunk.toString());
         req.on("end", () => this.handleRequestWithBody(req, res, body).catch(e =>
-            this.writeReply(res, null, { error: { type: "Fatal", message: e.toString() } })
+            this.writeReply(res, null, { error: e })
         ));
+    }
+
+    private fatalError(message: string) {
+        try {
+            this.apiConfig.err.Fatal(message);
+        } catch (fatal) {
+            return fatal;
+        }
     }
 
     private log(message: string) {
@@ -208,10 +216,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> extends SdkgenServer<ExtraCont
         const clientIp = getClientIp(req);
         if (!clientIp) {
             this.writeReply(res, null, {
-                error: {
-                    type: "Fatal",
-                    message: "Couldn't determine client IP"
-                }
+                error: this.fatalError("Couldn't determine client IP")
             });
             return;
         }
@@ -219,10 +224,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> extends SdkgenServer<ExtraCont
         const request = this.parseRequest(req, body);
         if (!request) {
             this.writeReply(res, null, {
-                error: {
-                    type: "Fatal",
-                    message: "Couldn't parse request"
-                }
+                error: this.fatalError("Couldn't parse request")
             });
             return;
         }
@@ -238,10 +240,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> extends SdkgenServer<ExtraCont
         const functionImplementation = this.apiConfig.fn[ctx.request.name];
         if (!functionDescription || !functionImplementation) {
             this.writeReply(res, ctx, {
-                error: {
-                    type: "Fatal",
-                    message: `Function does not exist: ${ctx.request.name}`
-                }
+                error: this.fatalError(`Function does not exist: ${ctx.request.name}`)
             });
             return;
         }
@@ -257,10 +256,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> extends SdkgenServer<ExtraCont
             }
         } catch (e) {
             reply = {
-                error: {
-                    type: e.type || "Fatal",
-                    message: e.message || e.toString()
-                }
+                error: e
             };
         }
 
@@ -413,19 +409,23 @@ export class SdkgenHttpServer<ExtraContextT = {}> extends SdkgenServer<ExtraCont
         };
     }
 
+    private makeResponseError(err: any) {
+        return {
+            type: err.type || "Fatal",
+            message: err.message || err.toString()
+        };
+    }
+
     private writeReply(res: ServerResponse, ctx: Context | null, reply: ContextReply) {
         if (!ctx) {
             if (!reply.error) {
                 reply = {
-                    error: {
-                        type: "Fatal",
-                        message: "Response without context"
-                    }
+                    error: this.fatalError("Response without context")
                 }
             }
 
             res.statusCode = 500;
-            res.write(JSON.stringify({ error: reply.error }));
+            res.write(JSON.stringify({ error: this.makeResponseError(reply.error) }));
             res.end();
             return;
         }
@@ -433,7 +433,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> extends SdkgenServer<ExtraCont
         const deltaTime = process.hrtime(ctx.hrStart);
         const duration = deltaTime[0] + deltaTime[1] * 1e-9;
 
-        this.log(`${ctx.request.id} [${duration.toFixed(6)}s] ${ctx.request.name}() -> ${reply.error ? reply.error.type : "OK"}`);
+        this.log(`${ctx.request.id} [${duration.toFixed(6)}s] ${ctx.request.name}() -> ${reply.error ? this.makeResponseError(reply.error).type : "OK"}`);
 
         switch (ctx.request.version) {
             case 1: {
@@ -444,10 +444,10 @@ export class SdkgenHttpServer<ExtraContextT = {}> extends SdkgenServer<ExtraCont
                     duration: duration,
                     host: hostname(),
                     result: reply.result || null,
-                    error: reply.error || null
+                    error: reply.error ? this.makeResponseError(reply.error) : null
                 };
 
-                res.statusCode = response.error ? (response.error.type === "Fatal" ? 500 : 400) : 200;
+                res.statusCode = response.error ? (this.makeResponseError(response.error).type === "Fatal" ? 500 : 400) : 200;
                 res.write(JSON.stringify(response));
                 res.end();
                 break;
@@ -461,10 +461,10 @@ export class SdkgenHttpServer<ExtraContextT = {}> extends SdkgenServer<ExtraCont
                     duration: duration,
                     host: hostname(),
                     result: reply.result || null,
-                    error: reply.error || null
+                    error: reply.error ? this.makeResponseError(reply.error) : null
                 };
 
-                res.statusCode = response.error ? (response.error.type === "Fatal" ? 500 : 400) : 200;
+                res.statusCode = response.error ? (this.makeResponseError(response.error).type === "Fatal" ? 500 : 400) : 200;
                 res.write(JSON.stringify(response));
                 res.end();
                 break;

@@ -27,21 +27,5 @@ export interface ContextRequest {
 
 export interface ContextReply {
     result?: any,
-    error?: {
-        type: string,
-        message: string
-    }
+    error?: any
 }
-
-        // id: string
-        // name: string
-        // args: any
-        // executionId: string
-        // running: boolean
-        // device: DBDevice
-        // date: Date
-        // duration: number
-        // host: string
-        // ok: boolean
-        // result: any
-        // error: { type: string, message: string } | null

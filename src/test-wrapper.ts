@@ -39,17 +39,14 @@ export function apiTestWrapper<ExtraContextT>(api: BaseApiConfig<ExtraContextT>)
                     };
                 } catch (err) {
                     reply = {
-                        error: {
-                            type: err.type || "Fatal",
-                            message: err.message || err.toString()
-                        }
+                        error: err
                     };
                 }
             }
             reply = await api.hook.onRequestEnd(ctx, reply) || reply;
 
             if (reply.error) {
-                throw (api.err[reply.error.type] || api.err.Fatal)(reply.error.message === reply.error.type ? undefined : reply.error.message);
+                throw (api.err[reply.error.type] || api.err.Fatal)(reply.error.message === reply.error.type ? undefined : reply.error.message || reply.error.toString());
             } else {
                 const decodedRet = decode(api.astJson.typeTable, `fn.${functionName}.ret`, (api.astJson.functionTable as any)[functionName].ret, reply.result);
                 return decodedRet;
