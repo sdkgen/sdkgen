@@ -14,25 +14,6 @@ export class RequestsStore {
 	constructor(rootStore: RootStore) {
 		this.rootStore = rootStore;
 		this.fetchAST();
-
-		// this.makeCall("hello",
-		// {
-		// 	args1: "string",
-		// 	until: new Date().toISOString().split("T")[0],
-		// }
-		// );
-
-		// const test = new requestModel({
-		// 	name: "hello",
-		// 	baseUrl: `http://${rootStore.configStore.endpointUrl}/`,
-		// 	deviceId: rootStore.configStore.deviceId!,
-		// });
-
-		// test.call({
-		// 	args1: "string",
-		// 	until: new Date().toISOString().split("T")[0],
-		// });
-		// window.model = test;
 	}
 
 	public fetchAST = async () => {
@@ -53,8 +34,8 @@ export class RequestsStore {
 		const baseUrl = `http://${endpointUrl}`;
 
 		const FNs = Object.entries(AST.functionTable);
-		console.log("FNs", FNs);
-		this.api = FNs.reduce((acc, [fName, fStruct]) => {
+		// console.log("FNs", FNs);
+		this.api = FNs.reduce((acc, [fName, _fStruct]) => {
 			return {
 				...acc,
 				[fName]: new requestModel({
@@ -64,38 +45,5 @@ export class RequestsStore {
 				}),
 			};
 		}, {});
-
-		console.log("nice-args", {
-			args1: "string",
-			until: new Date().toISOString().split("T")[0],
-		});
-		window.api = this.api;
 	};
-
-	// public makeCall = async (functionName: string, args: any) => {
-	// 	const url = `http://${this.rootStore.configStore.endpointUrl}/`;
-	// 	const body = {
-	// 		id: "sdkgen-playground",
-	// 		device: {
-	// 			type: "web",
-	// 			id: this.rootStore.configStore.deviceId,
-	// 		},
-	// 		name: functionName,
-	// 		args: args,
-	// 	};
-
-	// 	http: try {
-	// 		const response = await fetch(url, {
-	// 			method: "POST",
-	// 			cache: "no-cache",
-	// 			headers: {
-	// 				"Content-Type": "application/json",
-	// 			},
-	// 			body: JSON.stringify(body),
-	// 		});
-	// 		console.log("RETURN", await response.json());
-	// 	} catch (err) {
-	// 		console.log(err);
-	// 	}
-	// };
 }
