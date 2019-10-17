@@ -7,15 +7,18 @@ import RootStore from "stores";
 
 function Home() {
 	const { requestsStore } = React.useContext(RootStore);
+	const [searchString, setSearchString] = React.useState<string>("");
 	const { api } = requestsStore;
-	const Cards = Object.entries(api).map(([fnName, FnModel]) => {
-		return <RequestCard key={fnName} model={FnModel} />;
-	});
+	const Cards = Object.entries(api)
+		.filter(([fnName, _]) => fnName.includes(searchString))
+		.map(([fnName, FnModel]) => {
+			return <RequestCard key={fnName} model={FnModel} />;
+		});
 
 	return (
 		<div className={s.content}>
 			<div className={s.inputWrapper}>
-				<SearchInput />
+				<SearchInput onChange={setSearchString} />
 			</div>
 			{Cards}
 		</div>
