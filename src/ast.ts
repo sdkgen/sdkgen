@@ -7,7 +7,6 @@ export class AstRoot {
     constructor(
         public typeDefinitions: TypeDefinition[] = [],
         public operations: Operation[] = [],
-        public options: Options = new Options,
         public errors: string[] = []
     ) {}
 }
@@ -101,16 +100,6 @@ export class TypeReference extends Type {
     constructor(public name: string) { super(); }
 }
 
-export class Options extends AstNode {
-    constructor(
-        public url = "",
-        public useRethink = true,
-        public strict = false,
-        public syntheticDefaultImports = true,
-        public retryRequest = true
-    ) { super(); }
-}
-
 export class Field extends AstNode {
     annotations: Annotation[] = [];
     constructor(
@@ -132,7 +121,11 @@ export abstract class Operation extends AstNode {
 }
 
 export class GetOperation extends Operation {
-    get prettyName() { return "get" + this.name[0].toUpperCase() + this.name.slice(1); }
+    get prettyName() {
+        return this.returnType instanceof BoolPrimitiveType ?
+            this.name :
+            "get" + this.name[0].toUpperCase() + this.name.slice(1);
+    }
 }
 
 export class FunctionOperation extends Operation {}

@@ -1,4 +1,4 @@
-import { ArrayType, AstRoot, EnumType, Field, FunctionOperation, Operation, OptionalType, Options, StructType, Type, TypeDefinition, TypeReference, EnumValue } from "./ast";
+import { ArrayType, AstRoot, EnumType, EnumValue, Field, FunctionOperation, Operation, OptionalType, StructType, Type, TypeDefinition, TypeReference } from "./ast";
 import { analyse } from "./semantic/analyser";
 import { primitiveToAstClass } from "./utils";
 
@@ -63,7 +63,6 @@ export function jsonToAst(json: AstJson) {
     const operations: Operation[] = [];
     const typeDefinition: TypeDefinition[] = [];
     const errors: string[] = json.errors || [];
-    const options = new Options;
 
     function processType(description: TypeDescription): Type {
         if (typeof description === "string") {
@@ -105,7 +104,7 @@ export function jsonToAst(json: AstJson) {
         operations.push(new FunctionOperation(functionName, args, processType(func.ret)));
     }
 
-    const ast = new AstRoot(typeDefinition, operations, options, [...new Set(errors)]);
+    const ast = new AstRoot(typeDefinition, operations, [...new Set(errors)]);
     analyse(ast);
     return ast;
 }

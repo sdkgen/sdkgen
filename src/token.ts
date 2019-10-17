@@ -26,7 +26,6 @@ export class Token {
 }
 
 export class IdentifierToken extends Token { }
-export class GlobalOptionToken extends Token { }
 export class StringLiteralToken extends Token { }
 export class EqualSymbolToken extends Token { }
 export class ExclamationMarkSymbolToken extends Token { }

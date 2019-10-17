@@ -1,11 +1,10 @@
 import { readFileSync } from "fs";
 import { dirname, resolve } from "path";
-import { ArrayType, AstRoot, EnumType, Field, FunctionOperation, GetOperation, Operation, OptionalType, Options, StructType, Type, TypeDefinition, TypeReference, VoidPrimitiveType, Annotation, DescriptionAnnotation, ArgDescriptionAnnotation, EnumValue } from "./ast";
+import { Annotation, ArgDescriptionAnnotation, ArrayType, AstRoot, DescriptionAnnotation, EnumType, EnumValue, Field, FunctionOperation, GetOperation, Operation, OptionalType, StructType, Type, TypeDefinition, TypeReference, VoidPrimitiveType } from "./ast";
 import { Lexer } from "./lexer";
 import { analyse } from "./semantic/analyser";
-import { ArraySymbolToken, ColonSymbolToken, CommaSymbolToken, CurlyCloseSymbolToken, CurlyOpenSymbolToken, EnumKeywordToken, EqualSymbolToken, ErrorKeywordToken, ExclamationMarkSymbolToken, FalseKeywordToken, FunctionKeywordToken, GetKeywordToken, GlobalOptionToken, IdentifierToken, ImportKeywordToken, OptionalSymbolToken, ParensCloseSymbolToken, ParensOpenSymbolToken, PrimitiveTypeToken, SpreadSymbolToken, StringLiteralToken, Token, TrueKeywordToken, TypeKeywordToken, AnnotationToken } from "./token";
+import { AnnotationToken, ArraySymbolToken, ColonSymbolToken, CommaSymbolToken, CurlyCloseSymbolToken, CurlyOpenSymbolToken, EnumKeywordToken, ErrorKeywordToken, ExclamationMarkSymbolToken, FalseKeywordToken, FunctionKeywordToken, GetKeywordToken, IdentifierToken, ImportKeywordToken, OptionalSymbolToken, ParensCloseSymbolToken, ParensOpenSymbolToken, PrimitiveTypeToken, SpreadSymbolToken, StringLiteralToken, Token, TrueKeywordToken, TypeKeywordToken } from "./token";
 import { primitiveToAstClass } from "./utils";
-import { tsImportEqualsDeclaration } from "@babel/types";
 
 export class ParserError extends Error {}
 
@@ -14,7 +13,6 @@ interface MultiExpectMatcher {
     TypeKeywordToken?: (token: TypeKeywordToken) => any
     GetKeywordToken?: (token: GetKeywordToken) => any
     FunctionKeywordToken?: (token: FunctionKeywordToken) => any
-    GlobalOptionToken?: (token: GlobalOptionToken) => any
     ErrorKeywordToken?: (token: ErrorKeywordToken) => any
     IdentifierToken?: (token: IdentifierToken) => any
     CurlyOpenSymbolToken?: (token: CurlyOpenSymbolToken) => any
@@ -97,7 +95,6 @@ export class Parser {
         const operations: Operation[] = [];
         const typeDefinition: TypeDefinition[] = [];
         const errors: string[] = [];
-        const options = new Options;
 
         while (this.token) {
             this.acceptAnnotations();
@@ -119,10 +116,6 @@ export class Parser {
                 FunctionKeywordToken: () => {
                     operations.push(this.parseOperation());
                 },
-                GlobalOptionToken: () => {
-                    this.checkCannotHaveAnnotationsHere();
-                    this.parseOption(options);
-                },
                 ErrorKeywordToken: () => {
                     this.checkCannotHaveAnnotationsHere();
                     this.nextToken();
@@ -132,7 +125,7 @@ export class Parser {
             });
         }
 
-        const ast = new AstRoot(typeDefinition, operations, options, errors);
+        const ast = new AstRoot(typeDefinition, operations, errors);
         analyse(ast);
         return ast;
     }
@@ -230,40 +223,6 @@ export class Parser {
         op.annotations = annotations;
 
         return op;
-    }
-
-    private parseOption(options: Options) {
-        this.checkCannotHaveAnnotationsHere();
-        const varToken = this.expect(GlobalOptionToken);
-        this.nextToken();
-
-        this.expect(EqualSymbolToken);
-        this.nextToken();
-
-        switch (varToken.value) {
-            case "url":
-                options.url = this.expect(StringLiteralToken).value;
-                this.nextToken();
-                break;
-            case "useRethink":
-                options.useRethink = this.multiExpect({TrueKeywordToken: () => true, FalseKeywordToken: () => false});
-                this.nextToken();
-                break;
-            case "strict":
-                options.strict = this.multiExpect({TrueKeywordToken: () => true, FalseKeywordToken: () => false});
-                this.nextToken();
-                break;
-            case "syntheticDefaultImports":
-                options.syntheticDefaultImports = this.multiExpect({TrueKeywordToken: () => true, FalseKeywordToken: () => false});
-                this.nextToken();
-                break;
-            case "retryRequest":
-                options.retryRequest = this.multiExpect({TrueKeywordToken: () => true, FalseKeywordToken: () => false});
-                this.nextToken();
-                break;
-            default:
-                throw new ParserError(`Unknown option $${varToken.value} at ${varToken.location}`);
-        }
     }
 
     private parseEnum(): EnumType {

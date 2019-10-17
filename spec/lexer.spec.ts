@@ -1,5 +1,5 @@
 import { Lexer } from "../src/lexer";
-import { AnnotationToken, ArraySymbolToken, ColonSymbolToken, CommaSymbolToken, CurlyCloseSymbolToken, CurlyOpenSymbolToken, EnumKeywordToken, EqualSymbolToken, ErrorKeywordToken, ExclamationMarkSymbolToken, FunctionKeywordToken, GetKeywordToken, GlobalOptionToken, IdentifierToken, ImportKeywordToken, OptionalSymbolToken, ParensCloseSymbolToken, ParensOpenSymbolToken, PrimitiveTypeToken, SpreadSymbolToken, StringLiteralToken, Token, TypeKeywordToken } from "../src/token";
+import { AnnotationToken, ArraySymbolToken, ColonSymbolToken, CommaSymbolToken, CurlyCloseSymbolToken, CurlyOpenSymbolToken, EnumKeywordToken, EqualSymbolToken, ErrorKeywordToken, ExclamationMarkSymbolToken, FunctionKeywordToken, GetKeywordToken, IdentifierToken, ImportKeywordToken, OptionalSymbolToken, ParensCloseSymbolToken, ParensOpenSymbolToken, PrimitiveTypeToken, SpreadSymbolToken, StringLiteralToken, Token, TypeKeywordToken } from "../src/token";
 
 describe(Lexer, () => {
 
@@ -152,30 +152,6 @@ describe(Lexer, () => {
         new IdentifierToken("Str"),
         new PrimitiveTypeToken("string"),
     ]);
-
-    itLexes("$url", [
-        new GlobalOptionToken("url"),
-    ]);
-
-    itLexes("$F", [
-        new GlobalOptionToken("F"),
-    ]);
-
-    itLexes("$x123", [
-        new GlobalOptionToken("x123"),
-    ]);
-
-    itLexes("$ah[]?", [
-        new GlobalOptionToken("ah"),
-        new ArraySymbolToken,
-        new OptionalSymbolToken,
-    ]);
-
-    itDoesntLex("$", "Unexpected end of file");
-
-    itDoesntLex("$_a", "Unexpected character \"_\"");
-
-    itDoesntLex("$ a", "Unexpected character \" \"");
 
     itLexes("\"ab\"", [
         new StringLiteralToken("ab"),
