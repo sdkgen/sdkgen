@@ -53,6 +53,10 @@
 		border-style: solid;
 		border-color: $lightgray;
 		border-width: 0px 1px;
+
+		.responseWrapper {
+			margin: 10px;
+		}
 	}
 	.bottom {
 		background-color: $black;
