@@ -20,6 +20,7 @@ export const RequestCard = Card;
 
 function Card() {
 	const [open, setOpen] = React.useState<boolean>(false);
+	const [activeTab, setActiveTab] = React.useState<TabKeys>("arguments");
 	const [requestStatus, setRequestStatus] = React.useState<RequestStatus>("notFetched");
 
 	const colors: Record<RequestStatus, string> = {
@@ -60,11 +61,7 @@ function Card() {
 				</div>
 				<FontAwesomeIcon size="xs" icon={faChevronUp} className={s.icon} />
 			</div>
-			<div className={s.subHeader}>
-				<div className={s.tab}>Arguments</div>
-				<div className={classNames(s.tab, s.active)}>Response</div>
-				<div className={s.tab}>Extra Information</div>
-			</div>
+			<Tabs activeTab={activeTab} onChangeTab={setActiveTab} />
 			<div className={s.content}>
 				<MonacoEditor
 					// width="800"
@@ -98,6 +95,36 @@ function Card() {
 			/>
 		</div>
 	);
+}
+
+type TabKeys = "arguments" | "response" | "extra";
+interface TabsProps {
+	activeTab: TabKeys;
+	onChangeTab: (tab: TabKeys) => void;
+}
+interface TabInfo {
+	label: string;
+	key: TabKeys;
+}
+function Tabs(props: TabsProps) {
+	const tabs: TabInfo[] = [
+		{ key: "arguments", label: "Arguments" },
+		{ key: "response", label: "Response" },
+		{ key: "extra", label: "Extra Information" },
+	];
+
+	const tabCells = tabs.map(t => (
+		<div
+			key={t.key}
+			className={classNames(s.tab, t.key === props.activeTab && s.active)}
+			onClick={() => props.onChangeTab(t.key)}
+			role="button"
+		>
+			{t.label}
+		</div>
+	));
+
+	return <div className={s.subHeader}>{tabCells}</div>;
 }
 
 interface BottomProps {
