@@ -17,7 +17,7 @@ interface LinkInfo {
 const links: LinkInfo[] = [
 	{ to: "/", label: "Endpoints", icon: faClone },
 	// { to: "/favorites", label: "Favorites", icon: faStar },
-	{ to: "/config", label: "Configuration", icon: faCog },
+	{ to: "/configuration", label: "Configuration", icon: faCog },
 ];
 
 export const MainHeader = observer(Header);

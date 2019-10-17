@@ -18,6 +18,7 @@ const asyncOptions: Options<any> = {
 
 const NotFound = loadable(() => import("pages/notfound"), asyncOptions);
 const Home = loadable(() => import("pages/home"), asyncOptions);
+const Configuration = loadable(() => import("pages/condiguration"), asyncOptions);
 
 export const Routes = observer(() => {
 	return (
@@ -25,6 +26,7 @@ export const Routes = observer(() => {
 			<MainWrapper>
 				<Switch>
 					<Route path="/" exact component={Home} />
+					<Route path="/configuration" component={Configuration} />
 					<Route component={NotFound} />
 				</Switch>
 			</MainWrapper>
