@@ -15,83 +15,38 @@ import classNames from "classnames";
 import { componentSwitch } from "helpers/componentSwitch";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import ReactJson from "react-json-view";
-type RequestStatus = "notFetched" | "fetching" | "error" | "sucess" | "timeout";
+import { requestModel, RequestStatus } from "helpers/requestModel";
+import { observer } from "mobx-react-lite";
 
-export const RequestCard = Card;
+interface CardProps {
+	model: requestModel;
+}
 
-const mock = [
-	{
-		id: "e1f787da-2d66-4f92-904f-4c452e1484f7",
-		name: "Boteco Tchê",
-		image: null,
-		postPaidLimit: 100000,
-		maleCouvert: {
-			value: 0,
-			name: "Couvert Masculino",
-			category: "Couvert",
-		},
-		femaleCouvert: {
-			value: 0,
-			name: "Couvert Feminino",
-			category: "Couvert",
-		},
-		bars: [
-			{
-				id: "78055659-e582-4185-8994-f71a9c2e2eff",
-				name: "Bar Principal",
-				image: null,
-				storageId: "7027b1c1-90d1-47e0-bb80-5b135e748013",
-				storageName: null,
-				internalIp: null,
-			},
-			{
-				id: "82dd2a37-2d27-43ec-8e48-04aa883d028d",
-				name: "Bar Cozinha",
-				image: null,
-				storageId: "7027b1c1-90d1-47e0-bb80-5b135e748013",
-				storageName: null,
-				internalIp: null,
-			},
-			{
-				id: "14363965-9a2e-416a-9dc5-6ee53f22a32e",
-				name: "Copos ",
-				image: null,
-				storageId: "7027b1c1-90d1-47e0-bb80-5b135e748013",
-				storageName: null,
-				internalIp: null,
-			},
-		],
-		tip: 0.1,
-		zigTagProduct: null,
-		sellVisualizationFormat: "Grid",
-		fiscalPrinters: [],
-		localServerIp: null,
-	},
-];
-
-function Card() {
+export const RequestCard = observer(Card);
+function Card(props: CardProps) {
 	const [open, setOpen] = React.useState<boolean>(false);
 	const [activeTab, setActiveTab] = React.useState<TabKeys>("arguments");
-	const [requestStatus, setRequestStatus] = React.useState<RequestStatus>("notFetched");
 
 	const colors: Record<RequestStatus, string> = {
 		notFetched: s.blue,
 		fetching: s.orange,
 		error: s.red,
 		sucess: s.green,
-		timeout: s.purple,
+		// timeout: s.purple,
 	};
-	const accentColorClass = colors[requestStatus];
+	const { name, response, args, status } = props.model;
+	console.log("CARD RENDER", name);
+	const accentColorClass = colors[status];
 
 	if (!open)
 		return (
 			<div className={s.closedCard} onClick={() => setOpen(true)}>
 				<div className={s.callName}>
-					<div>getEmployeesByName</div>
+					<div>{name}</div>
 					<FontAwesomeIcon size="xs" icon={faLink} className={s.hrefIcon} />
 				</div>
 				<div>
-					{requestStatus !== "notFetched" ? (
+					{status !== "notFetched" ? (
 						<FontAwesomeIcon
 							size="xs"
 							icon={faCircle}
@@ -106,11 +61,10 @@ function Card() {
 	const Content = componentSwitch<TabKeys>(activeTab, {
 		arguments: (
 			<MonacoEditor
-				// width="800"
 				height="250"
 				language="json"
 				theme="vs-light"
-				value={JSON.stringify({ to: "/", label: "Endpoints" }, null, 2)}
+				value={JSON.stringify(args || {}, null, 2)}
 				options={{
 					minimap: {
 						enabled: false,
@@ -124,7 +78,7 @@ function Card() {
 		),
 		response: (
 			<div className={s.responseWrapper}>
-				<ReactJson src={mock} name={false} />
+				<ReactJson src={response !== undefined ? response : {}} name={false} />
 			</div>
 		),
 		extra: <h1>extra time</h1>,
@@ -135,7 +89,7 @@ function Card() {
 		<div className={s.openCard}>
 			<div className={s.header} onClick={() => setOpen(false)}>
 				<div className={s.callName}>
-					<div>getEmployeesByName</div>
+					<div>{name}</div>
 					<FontAwesomeIcon size="xs" icon={faLink} className={s.hrefIcon} />
 				</div>
 				<FontAwesomeIcon size="xs" icon={faChevronUp} className={s.icon} />
@@ -143,16 +97,18 @@ function Card() {
 			<Tabs activeTab={activeTab} onChangeTab={setActiveTab} />
 			<div className={s.content}>{Content}</div>
 			<Bottom
-				status={requestStatus}
-				onClick={() => {
-					const a: Record<RequestStatus, RequestStatus> = {
-						notFetched: "fetching",
-						fetching: "error",
-						error: "sucess",
-						sucess: "timeout",
-						timeout: "notFetched",
-					};
-					setRequestStatus(a[requestStatus]);
+				status={status}
+				onClick={status => {
+					props.model.call(args);
+
+					// const a: Record<RequestStatus, RequestStatus> = {
+					// 	notFetched: "fetching",
+					// 	fetching: "error",
+					// 	error: "sucess",
+					// 	sucess: "timeout",
+					// 	timeout: "notFetched",
+					// };
+					// setRequestStatus(a[requestStatus]);
 				}}
 			/>
 		</div>
@@ -190,7 +146,7 @@ function Tabs(props: TabsProps) {
 }
 
 interface BottomProps {
-	onClick: () => void;
+	onClick: (status: RequestStatus) => void;
 	status: RequestStatus;
 }
 function Bottom(props: BottomProps) {
@@ -199,28 +155,32 @@ function Bottom(props: BottomProps) {
 		fetching: faPause,
 		error: faRedo,
 		sucess: faRedo,
-		timeout: faRedo,
+		// timeout: faRedo,
 	};
 	const labels: Record<RequestStatus, string> = {
 		notFetched: "Make Request",
 		fetching: "Fetching",
 		error: "Error, Retry?",
 		sucess: "Sucess, Retry?",
-		timeout: "Time out, Retry?",
+		// timeout: "Time out, Retry?",
 	};
 	const colors: Record<RequestStatus, string> = {
 		notFetched: s.blue,
 		fetching: s.orange,
 		error: s.red,
 		sucess: s.green,
-		timeout: s.purple,
+		// timeout: s.purple,
 	};
 	const selectedIcon = icons[props.status];
 	const selectedLabel = labels[props.status];
 	const classModifier = colors[props.status];
 
 	return (
-		<div className={classNames(s.bottom, classModifier)} onClick={props.onClick}>
+		<div
+			className={classNames(s.bottom, classModifier)}
+			onClick={() => props.onClick(props.status)}
+			role="button"
+		>
 			<div className={s.label}>{selectedLabel}</div>
 			<FontAwesomeIcon size="xs" icon={selectedIcon} className={s.icon} />
 		</div>

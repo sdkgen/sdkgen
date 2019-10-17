@@ -24,7 +24,6 @@ export const MainHeader = observer(Header);
 function Header() {
 	const { routerStore } = React.useContext(RootStore);
 
-	console.log("location", routerStore.location);
 	const activePath = routerStore.location.pathname;
 	const Links = links.map(l => (
 		<Link key={l.to} to={l.to}>

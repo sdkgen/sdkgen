@@ -1,7 +1,7 @@
 import { RootStore } from ".";
 import { observable } from "mobx";
 
-const endpointUrlFallback = `${location.host}/ast.json`;
+const endpointUrlFallback = location.host;
 const deviceIdFallBack = "sdkgen-playground-device-id";
 
 export class ConfigStore {
