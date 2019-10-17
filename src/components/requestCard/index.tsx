@@ -26,6 +26,7 @@ export const RequestCard = observer(Card);
 function Card(props: CardProps) {
 	const [open, setOpen] = React.useState<boolean>(false);
 	const [activeTab, setActiveTab] = React.useState<TabKeys>("arguments");
+	const { name, response, args, status } = props.model;
 
 	const colors: Record<RequestStatus, string> = {
 		notFetched: s.blue,
@@ -34,7 +35,6 @@ function Card(props: CardProps) {
 		sucess: s.green,
 		// timeout: s.purple,
 	};
-	const { name, response, args, status } = props.model;
 	console.log("CARD RENDER", name);
 	const accentColorClass = colors[status];
 
@@ -98,17 +98,8 @@ function Card(props: CardProps) {
 			<div className={s.content}>{Content}</div>
 			<Bottom
 				status={status}
-				onClick={status => {
-					props.model.call(args);
-
-					// const a: Record<RequestStatus, RequestStatus> = {
-					// 	notFetched: "fetching",
-					// 	fetching: "error",
-					// 	error: "sucess",
-					// 	sucess: "timeout",
-					// 	timeout: "notFetched",
-					// };
-					// setRequestStatus(a[requestStatus]);
+				onClick={_status => {
+					props.model.call(args, () => setActiveTab("response"));
 				}}
 			/>
 		</div>

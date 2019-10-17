@@ -25,7 +25,7 @@ export class requestModel {
 	@observable
 	public status: RequestStatus;
 
-	public async call(args: any) {
+	public async call(args: any, callBack?: () => void) {
 		this.args = args;
 		this.loading = true;
 		this.status = "fetching";
@@ -55,6 +55,7 @@ export class requestModel {
 			if (res.ok) {
 				this.response = res.result;
 				this.status = "sucess";
+				if (callBack) callBack();
 			} else {
 				this.status = "error";
 				this.error = `${res.error.type}: ${res.error.message}`;
