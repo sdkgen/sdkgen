@@ -81,8 +81,22 @@ function Card(props: CardProps) {
 				<ReactJson src={response !== undefined ? response : {}} name={false} />
 			</div>
 		),
-		extra: <h1>extra time</h1>,
-		default: <h1>default time</h1>,
+		extra: (
+			<div className={s.responseWrapper}>
+				<p>
+					Did you know this is a <b>work in progress?</b>
+				</p>
+				<p>... well, now you know.</p>
+			</div>
+		),
+		default: (
+			<div className={s.responseWrapper}>
+				<p>
+					Did you know this is a <b>work in progress?</b>
+				</p>
+				<p>... well, now you know.</p>
+			</div>
+		),
 	});
 
 	return (
