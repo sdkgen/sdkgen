@@ -174,7 +174,7 @@ export class Parser {
     }
 
     private parseOperation(): Operation {
-        const annotations = this.annotations;
+        let annotations = this.annotations;
         this.annotations = [];
 
         const openingToken: GetKeywordToken | FunctionKeywordToken = this.multiExpect({
@@ -206,6 +206,17 @@ export class Parser {
                 break;
             }
         }
+
+        for (const annotation of annotations) {
+            if (annotation instanceof ArgDescriptionAnnotation) {
+                const arg = args.find(arg => arg.name === annotation.argName);
+                if (!arg) {
+                    throw new ParserError(`Argument '${annotation.argName}' not found, at ${annotation.location}`);
+                }
+                arg.annotations.push(new DescriptionAnnotation(annotation.description).atLocation(annotation.location));
+            }
+        }
+        annotations = annotations.filter(ann => !(ann instanceof ArgDescriptionAnnotation));
 
         const parensCloseToken = this.expect(ParensCloseSymbolToken);
         this.nextToken();

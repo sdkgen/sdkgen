@@ -24,6 +24,11 @@ export abstract class AstNode {
         this.location = token.location;
         return this;
     }
+
+    atLocation(location: TokenLocation): this {
+        this.location = location;
+        return this;
+    }
 }
 
 export abstract class Type extends AstNode {

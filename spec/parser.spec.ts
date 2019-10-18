@@ -16,7 +16,8 @@ describe(Parser, () => {
                     Foo: {
                         foo: p
                     }
-                }
+                },
+                annotations: {}
             });
         });
 
@@ -41,7 +42,8 @@ describe(Parser, () => {
                         ret: `${p}[]`
                     }
                 },
-                typeTable: {}
+                typeTable: {},
+                annotations: {}
             });
         });
     }
@@ -59,7 +61,8 @@ describe(Parser, () => {
                     Foo: {
                         [kw]: "int"
                     }
-                }
+                },
+                annotations: {}
             });
         });
     }
@@ -82,7 +85,8 @@ describe(Parser, () => {
                     cccc: "int[][][]",
                     ddddd: "uint[][][]??[]???[][]"
                 }
-            }
+            },
+            annotations: {}
         });
     });
 
@@ -106,7 +110,8 @@ describe(Parser, () => {
                 },
                 FooStatus: ["c", "a", "zzz"],
                 Other: ["aa", "bb"]
-            }
+            },
+            annotations: {}
         });
     });
 
@@ -118,7 +123,8 @@ describe(Parser, () => {
         `, {
             errors: ["Foo", "Bar", "FooBar", "Fatal"],
             functionTable: {},
-            typeTable: {}
+            typeTable: {},
+            annotations: {}
         });
     });
 
@@ -146,7 +152,8 @@ describe(Parser, () => {
                     a: "string?",
                     b: "int"
                 }
-            }
+            },
+            annotations: {}
         });
     });
 
@@ -205,7 +212,8 @@ describe(Parser, () => {
                     aa: "string",
                     bb: "int"
                 }
-            }
+            },
+            annotations: {}
         });
     });
 
@@ -231,6 +239,38 @@ describe(Parser, () => {
                 Bar: {
                     aa: "string"
                 }
+            },
+            annotations: {}
+        });
+    });
+
+    test("handles functions with annotations", () => {
+        expectParses(`
+            @description does it
+            @description and does another \\
+                         thing too
+            @arg bar Represents the number of things
+            fn doIt(foo: int, bar: float): string
+        `, {
+            errors: ["Fatal"],
+            functionTable: {
+                doIt: {
+                    args: {
+                        foo: "int",
+                        bar: "float"
+                    },
+                    ret: "string"
+                }
+            },
+            typeTable: {},
+            annotations: {
+                "fn.doIt": [
+                    ["description", "does it"],
+                    ["description", "and does another thing too"]
+                ],
+                "fn.doIt.bar": [
+                    ["description", "Represents the number of things"]
+                ]
             }
         });
     });
