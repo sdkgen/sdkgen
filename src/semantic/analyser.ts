@@ -1,13 +1,13 @@
 import { AstRoot, EnumType, Field, FunctionOperation, StringPrimitiveType, TypeDefinition, VoidPrimitiveType, EnumValue } from "../ast";
-import { CheckMultipleDeclarationVisitor } from "./1_check_multiple_declaration";
-import { MatchTypeDefinitionsVisitor } from "./2_match_type_definitions";
-import { CheckNoRecursiveTypesVisitor } from "./3_check_no_recursive_types";
-import { CheckDontReturnSecretVisitor } from "./4_check_dont_return_secret";
-import { CheckNamingForGettersReturningBoolVisitor } from "./5_check_naming_for_getters_returning_bool";
-import { GiveStructAndEnumNamesVisitor } from "./6_give_struct_and_enum_names";
-import { CheckEmptyStructOrEnumVisitor } from "./7_check_empty_struct_or_enum";
-import { CollectStructAndEnumTypesVisitor } from "./8_collect_struct_and_enum_types";
-import { ApplyStructSpreadsVisitor } from "./9_apply_struct_spreads";
+import { CheckMultipleDeclarationVisitor } from "./01_check_multiple_declaration";
+import { MatchTypeDefinitionsVisitor } from "./02_match_type_definitions";
+import { CheckNoRecursiveTypesVisitor } from "./03_check_no_recursive_types";
+import { CheckDontReturnSecretVisitor } from "./04_check_dont_return_secret";
+import { CheckNamingForGettersReturningBoolVisitor } from "./05_check_naming_for_getters_returning_bool";
+import { GiveStructAndEnumNamesVisitor } from "./06_give_struct_and_enum_names";
+import { CheckEmptyStructOrEnumVisitor } from "./07_check_empty_struct_or_enum";
+import { CollectStructAndEnumTypesVisitor } from "./08_collect_struct_and_enum_types";
+import { ApplyStructSpreadsVisitor } from "./09_apply_struct_spreads";
 
 export class SemanticError extends Error {}
 
