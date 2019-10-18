@@ -96,6 +96,11 @@ function Card(props: CardProps) {
 				<p>... well, now you know.</p>
 			</div>
 		),
+		error: (
+			<div className={s.responseWrapper}>
+				{props.model.error ? <pre>{props.model.error}</pre> : <b>There is no errors</b>}
+			</div>
+		),
 		default: (
 			<div className={s.responseWrapper}>
 				<p>
@@ -120,14 +125,16 @@ function Card(props: CardProps) {
 			<Bottom
 				status={status}
 				onClick={_status => {
-					props.model.call(jsonArgs, () => setActiveTab("response"));
+					props.model.call(jsonArgs, newStatus =>
+						newStatus === "sucess" ? setActiveTab("response") : setActiveTab("error"),
+					);
 				}}
 			/>
 		</div>
 	);
 }
 
-type TabKeys = "arguments" | "response" | "extra";
+type TabKeys = "arguments" | "response" | "error" | "extra";
 interface TabsProps {
 	activeTab: TabKeys;
 	onChangeTab: (tab: TabKeys) => void;
@@ -140,6 +147,7 @@ function Tabs(props: TabsProps) {
 	const tabs: TabInfo[] = [
 		{ key: "arguments", label: "Arguments" },
 		{ key: "response", label: "Response" },
+		{ key: "error", label: "Error" },
 		{ key: "extra", label: "Extra Information" },
 	];
 
