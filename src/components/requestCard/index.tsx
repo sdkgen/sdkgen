@@ -26,6 +26,7 @@ export const RequestCard = observer(Card);
 function Card(props: CardProps) {
 	const [open, setOpen] = React.useState<boolean>(false);
 	const [activeTab, setActiveTab] = React.useState<TabKeys>("arguments");
+	const [jsonArgs, setJsonArgs] = React.useState<any>(props.model.args);
 	const { name, response, args, status } = props.model;
 
 	const colors: Record<RequestStatus, string> = {
@@ -64,7 +65,7 @@ function Card(props: CardProps) {
 				height="250"
 				language="json"
 				theme="vs-light"
-				value={JSON.stringify(args || {}, null, 2)}
+				defaultValue={JSON.stringify(args, null, 2)}
 				options={{
 					minimap: {
 						enabled: false,
@@ -72,7 +73,13 @@ function Card(props: CardProps) {
 						renderCharacters: false,
 					},
 				}}
-				// onChange={::this.onChange}
+				onChange={v => {
+					try {
+						setJsonArgs(JSON.parse(v));
+					} catch (err) {
+						console.log("JS-1", err);
+					}
+				}}
 				// editorDidMount={::this.editorDidMount}
 			/>
 		),
@@ -113,7 +120,7 @@ function Card(props: CardProps) {
 			<Bottom
 				status={status}
 				onClick={_status => {
-					props.model.call(args, () => setActiveTab("response"));
+					props.model.call(jsonArgs, () => setActiveTab("response"));
 				}}
 			/>
 		</div>
