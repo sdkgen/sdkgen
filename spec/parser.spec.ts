@@ -273,6 +273,35 @@ describe(Parser, () => {
                 ]
             }
         });
+
+        expectParses(`
+            error NotFound
+            error InvalidArgument
+
+            @throws NotFound
+            @throws InvalidArgument
+            fn doIt(): string
+            fn doIt2(): int
+        `, {
+            errors: ["NotFound", "InvalidArgument", "Fatal"],
+            functionTable: {
+                doIt: {
+                    args: {},
+                    ret: "string"
+                },
+                doIt2: {
+                    args: {},
+                    ret: "int"
+                }
+            },
+            typeTable: {},
+            annotations: {
+                "fn.doIt": [
+                    ["throws", "NotFound"],
+                    ["throws", "InvalidArgument"]
+                ]
+            }
+        });
     });
 });
 

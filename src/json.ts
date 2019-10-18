@@ -1,4 +1,4 @@
-import { ArrayType, AstRoot, DescriptionAnnotation, EnumType, EnumValue, Field, FunctionOperation, Operation, OptionalType, StructType, Type, TypeDefinition, TypeReference } from "./ast";
+import { ArrayType, AstRoot, DescriptionAnnotation, EnumType, EnumValue, Field, FunctionOperation, Operation, OptionalType, StructType, Type, TypeDefinition, TypeReference, ThrowsAnnotation } from "./ast";
 import { analyse } from "./semantic/analyser";
 import { primitiveToAstClass } from "./utils";
 
@@ -17,7 +17,7 @@ interface FunctionTable {
 
 export type TypeDescription = string | string[] | { [name: string]: TypeDescription }
 
-type AnnotationJson = ["description", string]
+type AnnotationJson = ["description", string] | ["throws", string]
 
 export interface AstJson {
     typeTable: TypeTable
@@ -60,10 +60,13 @@ export function astToJson(ast: AstRoot): AstJson {
             ret: op.returnType.name
         }
         for (const ann of op.annotations) {
+            const target = `fn.${op.prettyName}`;
+            const list = annotations[target] = (annotations[target] || []);
             if (ann instanceof DescriptionAnnotation) {
-                const target = `fn.${op.prettyName}`;
-                const list = annotations[target] = (annotations[target] || []);
                 list.push(["description", ann.description]);
+            }
+            if (ann instanceof ThrowsAnnotation) {
+                list.push(["throws", ann.error]);
             }
         }
     }
@@ -132,6 +135,8 @@ export function jsonToAst(json: AstJson) {
         for (const annotationJson of json.annotations[target] || []) {
             if (annotationJson[0] === "description") {
                 op.annotations.push(new DescriptionAnnotation(annotationJson[1]));
+            } else if (annotationJson[0] === "throws") {
+                op.annotations.push(new ThrowsAnnotation(annotationJson[1]));
             }
         }
 

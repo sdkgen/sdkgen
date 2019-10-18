@@ -141,6 +141,10 @@ export class DescriptionAnnotation extends Annotation {
     constructor(public description: string) { super(); }
 }
 
+export class ThrowsAnnotation extends Annotation {
+    constructor(public error: string) { super(); }
+}
+
 export class ArgDescriptionAnnotation extends Annotation {
     constructor(public argName: string, public description: string) { super(); }
 }

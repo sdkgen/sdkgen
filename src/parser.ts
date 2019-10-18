@@ -1,6 +1,6 @@
 import { readFileSync } from "fs";
 import { dirname, resolve } from "path";
-import { Annotation, ArgDescriptionAnnotation, ArrayType, AstRoot, DescriptionAnnotation, EnumType, EnumValue, Field, FunctionOperation, GetOperation, Operation, OptionalType, StructType, Type, TypeDefinition, TypeReference, VoidPrimitiveType } from "./ast";
+import { Annotation, ArgDescriptionAnnotation, ArrayType, AstRoot, DescriptionAnnotation, EnumType, EnumValue, Field, FunctionOperation, GetOperation, Operation, OptionalType, StructType, ThrowsAnnotation, Type, TypeDefinition, TypeReference, VoidPrimitiveType } from "./ast";
 import { Lexer } from "./lexer";
 import { analyse } from "./semantic/analyser";
 import { AnnotationToken, ArraySymbolToken, ColonSymbolToken, CommaSymbolToken, CurlyCloseSymbolToken, CurlyOpenSymbolToken, EnumKeywordToken, ErrorKeywordToken, ExclamationMarkSymbolToken, FalseKeywordToken, FunctionKeywordToken, GetKeywordToken, IdentifierToken, ImportKeywordToken, OptionalSymbolToken, ParensCloseSymbolToken, ParensOpenSymbolToken, PrimitiveTypeToken, SpreadSymbolToken, StringLiteralToken, Token, TrueKeywordToken, TypeKeywordToken } from "./token";
@@ -139,6 +139,9 @@ export class Parser {
                     break;
                 case "arg":
                     this.annotations.push(new ArgDescriptionAnnotation(words[1], this.token.value.slice(words[0].length + 1 + words[1].length).trim()).at(this.token));
+                    break;
+                case "throws":
+                    this.annotations.push(new ThrowsAnnotation(this.token.value.slice(words[0].length).trim()).at(this.token));
                     break;
                 default:
                     throw new ParserError(`Unknown annotation '${words[0]}' at ${this.token.location}`);
