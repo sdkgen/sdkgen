@@ -10,7 +10,9 @@ function Home() {
 	const [searchString, setSearchString] = React.useState<string>("");
 	const { api } = requestsStore;
 	const Cards = Object.entries(api)
-		.filter(([fnName, _]) => fnName.includes(searchString))
+		.filter(([fnName, _]) =>
+			fnName.toLocaleLowerCase().includes(searchString.toLocaleLowerCase()),
+		)
 		.map(([fnName, FnModel]) => {
 			return <RequestCard key={fnName} model={FnModel} />;
 		});
