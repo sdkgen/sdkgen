@@ -459,6 +459,17 @@ export class SdkgenHttpServer<ExtraContextT = {}> extends SdkgenServer<ExtraCont
                 break;
             }
             case 2: {
+                const response = {
+                    ok: !reply.error,
+                    deviceId: ctx.request.deviceInfo.id,
+                    sessionId: ctx.request.extra.sessionId,
+                    requestId: ctx.request.id,
+                    result: reply.result || null,
+                    error: reply.error ? this.makeResponseError(reply.error) : null
+                };
+
+                res.statusCode = response.error ? (this.makeResponseError(response.error).type === "Fatal" ? 500 : 400) : 200;
+                res.write(JSON.stringify(response));
                 res.end();
                 break;
             }
