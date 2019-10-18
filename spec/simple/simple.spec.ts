@@ -1,18 +1,13 @@
-// execSync(`../../cubos/sdkgen/sdkgen ${__dirname + "/api.sdkgen"} -o ${__dirname + "/legacyNodeClient.ts"} -t typescript_nodeclient`);
-writeFileSync(__dirname + "/api.ts", generateNodeServerSource(new Parser(__dirname + "/api.sdkgen").parse(), {}).replace("@sdkgen/node-runtime", "../../src"));
-writeFileSync(__dirname + "/nodeClient.ts", generateNodeClientSource(new Parser(__dirname + "/api.sdkgen").parse(), {}).replace("@sdkgen/node-runtime", "../../src"));
-
 import { Parser } from "@sdkgen/parser";
 import { generateNodeClientSource, generateNodeServerSource } from "@sdkgen/typescript-generator";
 import axios from "axios";
-import { randomBytes } from "crypto";
-import { writeFileSync } from "fs";
+import { unlinkSync, writeFileSync, lstatSync } from "fs";
 import { Context, SdkgenHttpServer } from "../../src";
-import { AllTypes, ApiConfig } from "./api";
-import { ApiClient as NodeLegacyApiClient } from "./legacyNodeClient";
-import { ApiClient as NodeApiClient } from "./nodeClient";
+import { randomBytes } from "crypto";
 
-const api = new ApiConfig<{aaa: boolean}>();
+writeFileSync(__dirname + "/api.ts", generateNodeServerSource(new Parser(__dirname + "/api.sdkgen").parse(), {}).replace("@sdkgen/node-runtime", "../../src"));
+const { api } = require(__dirname + "/api.ts");
+unlinkSync(__dirname + "/api.ts");
 
 let lastCallCtx: Context & {aaa: boolean} = null as any;
 api.fn.getUser = async (ctx: Context & { aaa: boolean }, { id }: { id: string }) => {
@@ -28,7 +23,13 @@ api.fn.identity = async (ctx: Context & { aaa: boolean }, { types }: { types: an
     return types;
 };
 
+// execSync(`../../cubos/sdkgen/sdkgen ${__dirname + "/api.sdkgen"} -o ${__dirname + "/legacyNodeClient.ts"} -t typescript_nodeclient`);
+const { ApiClient: NodeLegacyApiClient } = require(__dirname + "/legacyNodeClient.ts");
 const nodeLegacyClient = new NodeLegacyApiClient("http://localhost:8000");
+
+writeFileSync(__dirname + "/nodeClient.ts", generateNodeClientSource(new Parser(__dirname + "/api.sdkgen").parse(), {}).replace("@sdkgen/node-runtime", "../../src"));
+const { ApiClient: NodeApiClient } = require(__dirname + "/nodeClient.ts");
+unlinkSync(__dirname + "/nodeClient.ts");
 const nodeClient = new NodeApiClient("http://localhost:8000");
 
 const server = new SdkgenHttpServer(api, {aaa: true});
@@ -65,7 +66,7 @@ describe("Simple API", () => {
     });
 
     test("Can process all types as identity", async () => {
-        const types: AllTypes = {
+        const types = {
             int: -25,
             uint: 243,
             float: 22235.6,
