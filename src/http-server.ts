@@ -8,6 +8,7 @@ import { parse as parseUrl } from "url";
 import { Context, ContextReply, ContextRequest } from "./context";
 import { decode, encode } from "./encode-decode";
 import { BaseApiConfig, SdkgenServer } from "./server";
+import { ThrowsAnnotation } from "@sdkgen/parser";
 
 export class SdkgenHttpServer<ExtraContextT = {}> extends SdkgenServer<ExtraContextT> {
     public httpServer: Server;
@@ -267,6 +268,20 @@ export class SdkgenHttpServer<ExtraContextT = {}> extends SdkgenServer<ExtraCont
         }
 
         reply = await this.apiConfig.hook.onRequestEnd(ctx, reply) || reply;
+
+        // If errors, check if the error type is one of the @throws annotation. If it isn't, change to Fatal
+        if (reply.error) {
+            const functionAst = this.apiConfig.ast.operations.find(op => op.name === ctx.request.name);
+            if (functionAst) {
+                const allowedErrors = functionAst.annotations.filter(ann => ann instanceof ThrowsAnnotation).map(ann => (ann as ThrowsAnnotation).error);
+                if (allowedErrors.length > 0) {
+                    if (!allowedErrors.includes(reply.error.type)) {
+                        reply.error.type = "Fatal";
+                    }
+                }
+            }
+        }
+
         this.writeReply(res, ctx, reply);
     }
 
