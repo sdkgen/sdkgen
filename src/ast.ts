@@ -64,7 +64,7 @@ export class HexPrimitiveType extends PrimitiveType { name = "hex"; }
 export class Base64PrimitiveType extends PrimitiveType { name = "base64"; }
 export class SafeHtmlPrimitiveType extends PrimitiveType { name = "safehtml"; }
 export class XmlPrimitiveType extends PrimitiveType { name = "xml"; }
-export class AnyPrimitiveType extends PrimitiveType { name = "any"; }
+export class JsonPrimitiveType extends PrimitiveType { name = "json"; }
 
 export class OptionalType extends Type {
     constructor(public base: Type) { super(); }
