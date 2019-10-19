@@ -3,6 +3,7 @@ import { observable } from "mobx";
 export type RequestStatus = "notFetched" | "sucess" | "fetching" | "error";
 interface ConstructorArgument {
 	name: string;
+	defaultArgsMock: any;
 	baseUrl: string;
 	deviceId: string;
 }
@@ -79,11 +80,7 @@ export class requestModel {
 
 	constructor(config: ConstructorArgument) {
 		//MOCK
-		this.args = {
-			args1: "string",
-			until: new Date().toISOString().split("T")[0],
-		};
-
+		this.args = config.defaultArgsMock;
 		this.name = config.name;
 		this.deviceId = config.deviceId;
 		this.baseUrl = config.baseUrl;

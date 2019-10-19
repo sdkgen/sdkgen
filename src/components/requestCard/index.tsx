@@ -36,7 +36,7 @@ function Card(props: CardProps) {
 		sucess: s.green,
 		// timeout: s.purple,
 	};
-	console.log("CARD RENDER", name);
+	console.log("CARD RENDER", name, args);
 	const accentColorClass = colors[status];
 
 	if (!open)

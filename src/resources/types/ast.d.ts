@@ -2,11 +2,13 @@ export interface TypeTable {
 	[name: string]: TypeDescription;
 }
 
+export type ArgsType = {
+	[arg: string]: TypeDescription;
+};
+
 export interface FunctionTable {
 	[name: string]: {
-		args: {
-			[arg: string]: TypeDescription;
-		};
+		args: ArgsType;
 		ret: TypeDescription;
 	};
 }
