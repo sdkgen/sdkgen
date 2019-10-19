@@ -95,7 +95,7 @@ export class RequestsStore {
 			if (resolved) {
 				return this.encodeTransform(typeTable, resolved);
 			} else {
-				throw new Error(`Unknown type '${type}' at '${path}'`);
+				throw new Error(`Unknown type '${type}'`);
 			}
 			return "complex type";
 		}
