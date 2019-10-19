@@ -117,7 +117,7 @@
 					"include": "#any"
 				}, {
 					"name": "keyword.type",
-					"match": "\\b(bool|int|uint|float|string|datetime|date|bytes|void|money|cpf|cnpj|email|phone|cep|latlng|url|uuid|hex|base64|safehtml|xml|any)\\b"
+					"match": "\\b(bool|int|uint|float|string|datetime|date|bytes|void|money|cpf|cnpj|email|phone|cep|latlng|url|uuid|hex|base64|safehtml|xml|json)\\b"
 				}, {
 					"name": "markup.bold",
 					"match": "(\\?|\\[\\])"
