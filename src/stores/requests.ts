@@ -62,6 +62,35 @@ export class RequestsStore {
 		);
 	};
 
+	private simpleTypeMock = (type: string) => {
+		const types: Record<string, any> = {
+			any: null,
+			bool: true,
+			hex: null,
+			uuid: null,
+			base64: null,
+			int: 200,
+			uint: 3294967295,
+			float: 5.3,
+			money: null,
+			void: null,
+			latlng: null,
+			string: "string",
+			cep: null,
+			cnpj: null,
+			cpf: null,
+			email: null,
+			phone: null,
+			safehtml: null,
+			url: null,
+			xml: null,
+		};
+		if (!types[type]) {
+			throw new Error(`Unknown simple type '${type}'`);
+		}
+		return types[type];
+	};
+
 	private encodeTransform = (typeTable: TypeTable, type: TypeDescription): any => {
 		if (Array.isArray(type)) {
 			// things like "car" | "motorcycle"
@@ -82,7 +111,7 @@ export class RequestsStore {
 		} else if (simpleTypes.indexOf(type) >= 0) {
 			// simple types
 			const index = simpleTypes.indexOf(type);
-			return simpleTypes[index];
+			return this.simpleTypeMock(simpleTypes[index]);
 		} else if (type === "bytes") {
 			return "bytes";
 		} else if (type === "date") {
