@@ -132,7 +132,7 @@ export class RequestsStore {
 
 	public createModels = (AST: AstJson) => {
 		const { endpointUrl, deviceId } = this.rootStore.configStore;
-		const baseUrl = `http://${endpointUrl}`;
+		const baseUrl = `https://${endpointUrl}`;
 
 		const FNs = Object.entries(AST.functionTable);
 		this.api = FNs.reduce((acc, [fName, fStruct]) => {
