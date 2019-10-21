@@ -45,7 +45,7 @@ export class RequestsStore {
 	public fetchAST = async () => {
 		try {
 			const response = await fetch(
-				`http://${this.rootStore.configStore.endpointUrl}/ast.json`,
+				`https://${this.rootStore.configStore.endpointUrl}/ast.json`,
 			);
 			const ast = await response.json();
 			this.AST = ast;
