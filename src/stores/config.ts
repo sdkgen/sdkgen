@@ -20,6 +20,7 @@ export class ConfigStore {
 	public setNewEndpoint = (newEndpoint: string) => {
 		this.endpointUrl = newEndpoint;
 		this.syncWithLocalStorage(true);
+		this.rootStore.requestsStore.fetchAST();
 	};
 
 	public setNewDeviceId = (newDeviceId: string) => {
