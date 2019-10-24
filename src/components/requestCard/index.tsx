@@ -36,7 +36,7 @@ function Card(props: CardProps) {
 		sucess: s.green,
 		// timeout: s.purple,
 	};
-	console.log("CARD RENDER", name, args);
+	console.log("CARD RENDER", props.model);
 	const accentColorClass = colors[status];
 
 	if (!open)
@@ -125,6 +125,7 @@ function Card(props: CardProps) {
 			<Bottom
 				status={status}
 				onClick={_status => {
+					props.model.reset();
 					props.model.call(jsonArgs, newStatus =>
 						newStatus === "sucess" ? setActiveTab("response") : setActiveTab("error"),
 					);
