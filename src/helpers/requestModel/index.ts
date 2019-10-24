@@ -21,7 +21,7 @@ export class requestModel {
 	public loading: boolean;
 
 	@observable
-	public error: any | undefined;
+	public error: string | undefined;
 
 	@observable
 	public status: RequestStatus;
@@ -64,7 +64,7 @@ export class requestModel {
 			}
 		} catch (err) {
 			this.status = "error";
-			this.error = err;
+			this.error = err.message;
 			if (callBack) callBack("error");
 		} finally {
 			this.loading = false;
