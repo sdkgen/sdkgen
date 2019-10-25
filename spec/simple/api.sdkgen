@@ -14,7 +14,7 @@ type AllTypes {
     string: string
     uuid: uuid
     bool: bool
-    any: any
+    json: json
     hex: hex
     base64: base64
     money: money

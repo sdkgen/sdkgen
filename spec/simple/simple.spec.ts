@@ -73,7 +73,7 @@ describe("Simple API", () => {
             string: "efvregare",
             uuid: "f84c4d20-eed8-4004-b236-74aaa71fbeca",
             bool: true,
-            any: [{a: 23, b: "odcbu"}],
+            json: [{a: 23, b: "odcbu"}],
             hex: "f84c4d20",
             base64: "SGVsbG8K",
             money: 356,
