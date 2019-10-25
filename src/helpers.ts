@@ -100,7 +100,7 @@ export function generateTypescriptTypeName(type: Type): string {
             return "void";
 
         case "JsonPrimitiveType":
-            return "any";
+            return "json";
 
         case "OptionalType":
             return generateTypescriptTypeName((type as OptionalType).base) + " | null";
