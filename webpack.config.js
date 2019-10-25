@@ -90,6 +90,7 @@ module.exports = {
 			configuration: resolver("src/configuration"),
 			containers: resolver("src/containers"),
 			helpers: resolver("src/helpers"),
+			resources: resolver("src/resources"),
 			pages: resolver("src/pages"),
 			public: resolver("src/public"),
 			stores: resolver("src/stores"),

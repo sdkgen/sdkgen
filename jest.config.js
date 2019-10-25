@@ -16,6 +16,7 @@ module.exports = {
 		"^configuration(.*)$": "<rootDir>/src/configuration$1",
 		"^containers(.*)$": "<rootDir>/src/containers$1",
 		"^helpers(.*)$": "<rootDir>/src/helpers$1",
+		"^resources(.*)$": "<rootDir>/src/resources$1",
 		"^pages(.*)$": "<rootDir>/src/pages$1",
 		"^public(.*)$": "<rootDir>/src/public$1",
 		"^stores(.*)$": "<rootDir>/src/stores$1",

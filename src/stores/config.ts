@@ -1,8 +1,15 @@
 import { RootStore } from ".";
 import { observable } from "mobx";
+import { sample } from "helpers/arrayHelpers";
+import { animals } from "resources/lists/animals";
+import { qualities } from "resources/lists/qualities";
 
 const endpointUrlFallback = location.host;
-const deviceIdFallBack = "sdkgen-playground-device-id";
+const deviceIdFallBack = getRandomDeviceId();
+
+function getRandomDeviceId() {
+	return `${sample(qualities)} ${sample(animals)}`.replace(/\s/g, "-").toLowerCase();
+}
 
 export class ConfigStore {
 	public rootStore: RootStore;
