@@ -1,4 +1,5 @@
 import { generateDartClientSource } from "@sdkgen/dart-generator";
+import { ThrowsAnnotation } from "@sdkgen/parser";
 import { generateBrowserClientSource, generateNodeClientSource, generateNodeServerSource } from "@sdkgen/typescript-generator";
 import { randomBytes } from "crypto";
 import { createServer, IncomingMessage, Server, ServerResponse } from "http";
@@ -8,7 +9,6 @@ import { parse as parseUrl } from "url";
 import { Context, ContextReply, ContextRequest } from "./context";
 import { decode, encode } from "./encode-decode";
 import { BaseApiConfig, SdkgenServer } from "./server";
-import { ThrowsAnnotation } from "@sdkgen/parser";
 
 export class SdkgenHttpServer<ExtraContextT = {}> extends SdkgenServer<ExtraContextT> {
     public httpServer: Server;
@@ -314,12 +314,12 @@ export class SdkgenHttpServer<ExtraContextT = {}> extends SdkgenServer<ExtraCont
         const parsed = decode({
             Request: {
                 id: "string",
-                args: "any",
+                args: "json",
                 name: "string",
                 device: {
                     id: "string?",
                     type: "string?",
-                    platform: "any?",
+                    platform: "json?",
                     version: "string?",
                     language: "string?",
                     timezone: "string?",
@@ -353,7 +353,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> extends SdkgenServer<ExtraCont
                 deviceId: "string",
                 sessionId: "string?",
                 partnerId: "string?",
-                args: "any",
+                args: "json",
                 name: "string",
                 info: {
                     type: "string",
@@ -392,8 +392,8 @@ export class SdkgenHttpServer<ExtraContextT = {}> extends SdkgenServer<ExtraCont
             Request: {
                 requestId: "string?",
                 name: "string",
-                args: "any",
-                extra: "any?",
+                args: "json",
+                extra: "json?",
                 deviceInfo: "DeviceInfo?",
             },
             DeviceInfo: {
