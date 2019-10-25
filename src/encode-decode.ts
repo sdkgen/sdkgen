@@ -5,10 +5,10 @@ const CNPJ = require("@fnando/cnpj/dist/node");
 type TypeTable = AstJson["typeTable"]
 
 const simpleStringTypes = ["string", "cep", "email", "phone", "safehtml", "xml"];
-const simpleTypes = ["any", "bool", "hex", "uuid", "base64", "url", "int", "uint", "float", "money", "void", "latlng", ...simpleStringTypes];
+const simpleTypes = ["json", "bool", "hex", "uuid", "base64", "url", "int", "uint", "float", "money", "void", "latlng", ...simpleStringTypes];
 
 function simpleEncodeDecode(path: string, type: string, value: any) {
-    if (type === "any") {
+    if (type === "json") {
         if (value === null || value === undefined) {
             return null;
         } else {
