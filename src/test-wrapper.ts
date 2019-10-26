@@ -3,10 +3,10 @@ import { Context } from "./context";
 import { encode, decode } from "./encode-decode";
 import { randomBytes } from "crypto";
 
-export function apiTestWrapper<ExtraContextT>(api: BaseApiConfig<ExtraContextT>): BaseApiConfig<ExtraContextT> {
+export function apiTestWrapper<T extends BaseApiConfig<any>>(api: T): T {
     const wrappedApi = new (api.constructor as any)();
     for (const functionName of Object.keys(api.astJson.functionTable)) {
-        (wrappedApi.fn as any)[functionName] = async (ctx: Context & ExtraContextT, args: any) => {
+        (wrappedApi.fn as any)[functionName] = async (ctx: Context, args: any) => {
             const encodedArgs = encode(api.astJson.typeTable, `fn.${functionName}.args`, (api.astJson.functionTable as any)[functionName].args, args);
             const decodedArgs = decode(api.astJson.typeTable, `fn.${functionName}.args`, (api.astJson.functionTable as any)[functionName].args, encodedArgs);
             if (!ctx.ip) {
