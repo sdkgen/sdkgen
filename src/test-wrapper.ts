@@ -46,7 +46,12 @@ export function apiTestWrapper<ExtraContextT>(api: BaseApiConfig<ExtraContextT>)
             reply = await api.hook.onRequestEnd(ctx, reply) || reply;
 
             if (reply.error) {
-                throw (api.err[reply.error.type] || api.err.Fatal)(reply.error.message === reply.error.type ? undefined : reply.error.message || reply.error.toString());
+                try {
+                    (api.err[reply.error.type] || api.err.Fatal)(reply.error.message === reply.error.type ? undefined : reply.error.message || reply.error.toString());
+                } catch (err) {
+                    if (reply.error.stack) err.stack = reply.error.stack;
+                    throw err;
+                }
             } else {
                 const decodedRet = decode(api.astJson.typeTable, `fn.${functionName}.ret`, (api.astJson.functionTable as any)[functionName].ret, reply.result);
                 return decodedRet;
