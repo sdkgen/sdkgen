@@ -10,7 +10,7 @@
 		"allowJs": true,
 		"pretty": true,
 		"esModuleInterop": true,
-		"types": ["node", "jest", "chrome"],
+		"types": ["node", "chrome"],
 		"skipLibCheck": true,
 		"importHelpers": true,
 		"lib": ["dom", "es2018", "esnext"],
