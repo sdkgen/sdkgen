@@ -2,8 +2,7 @@ import { IncomingHttpHeaders } from "http";
 
 export interface Context {
     ip: string
-    request: ContextRequest,
-    hrStart: [number, number]
+    request: ContextRequest
 }
 
 export interface ContextRequest {

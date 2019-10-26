@@ -134,6 +134,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> extends SdkgenServer<ExtraCont
     }
 
     private handleRequest(req: IncomingMessage, res: ServerResponse) {
+        const hrStart = process.hrtime();
         req.on("error", (err) => {
             console.error(err);
             res.end();
@@ -163,8 +164,8 @@ export class SdkgenHttpServer<ExtraContextT = {}> extends SdkgenServer<ExtraCont
 
         let body = "";
         req.on("data", chunk => body += chunk.toString());
-        req.on("end", () => this.handleRequestWithBody(req, res, body).catch(e =>
-            this.writeReply(res, null, { error: e })
+        req.on("end", () => this.handleRequestWithBody(req, res, body, hrStart).catch(e =>
+            this.writeReply(res, null, { error: e }, hrStart)
         ));
     }
 
@@ -180,7 +181,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> extends SdkgenServer<ExtraCont
         console.log(`${new Date().toISOString()} ${message}`);
     }
 
-    private async handleRequestWithBody(req: IncomingMessage, res: ServerResponse, body: string) {
+    private async handleRequestWithBody(req: IncomingMessage, res: ServerResponse, body: string, hrStart: [number, number]) {
         let path = parseUrl(req.url || "").pathname || "";
 
         if (path.startsWith(this.ignoredUrlPrefix))
@@ -224,7 +225,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> extends SdkgenServer<ExtraCont
         if (!clientIp) {
             this.writeReply(res, null, {
                 error: this.fatalError("Couldn't determine client IP")
-            });
+            }, hrStart);
             return;
         }
 
@@ -232,7 +233,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> extends SdkgenServer<ExtraCont
         if (!request) {
             this.writeReply(res, null, {
                 error: this.fatalError("Couldn't parse request")
-            });
+            }, hrStart);
             return;
         }
 
@@ -240,7 +241,6 @@ export class SdkgenHttpServer<ExtraContextT = {}> extends SdkgenServer<ExtraCont
             ...this.extraContext,
             ip: clientIp,
             request,
-            hrStart: process.hrtime(),
         };
 
         const functionDescription = this.apiConfig.astJson.functionTable[ctx.request.name];
@@ -248,7 +248,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> extends SdkgenServer<ExtraCont
         if (!functionDescription || !functionImplementation) {
             this.writeReply(res, ctx, {
                 error: this.fatalError(`Function does not exist: ${ctx.request.name}`)
-            });
+            }, hrStart);
             return;
         }
 
@@ -282,7 +282,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> extends SdkgenServer<ExtraCont
             }
         }
 
-        this.writeReply(res, ctx, reply);
+        this.writeReply(res, ctx, reply, hrStart);
     }
 
     private parseRequest(req: IncomingMessage, body: string): ContextRequest | null {
@@ -437,7 +437,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> extends SdkgenServer<ExtraCont
         };
     }
 
-    private writeReply(res: ServerResponse, ctx: Context | null, reply: ContextReply) {
+    private writeReply(res: ServerResponse, ctx: Context | null, reply: ContextReply, hrStart: [number, number]) {
         if (!ctx) {
             if (!reply.error) {
                 reply = {
@@ -451,7 +451,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> extends SdkgenServer<ExtraCont
             return;
         }
 
-        const deltaTime = process.hrtime(ctx.hrStart);
+        const deltaTime = process.hrtime(hrStart);
         const duration = deltaTime[0] + deltaTime[1] * 1e-9;
 
         this.log(`${ctx.request.id} [${duration.toFixed(6)}s] ${ctx.request.name}() -> ${reply.error ? this.makeResponseError(reply.error).type : "OK"}`);

@@ -28,7 +28,6 @@ export function apiTestWrapper<ExtraContextT>(api: BaseApiConfig<ExtraContextT>)
                 name: functionName,
                 version: 0
             };
-            ctx.hrStart = process.hrtime();
             let reply = await api.hook.onRequestStart(ctx);
             if (!reply) {
                 try {
