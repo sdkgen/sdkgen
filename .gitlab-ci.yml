@@ -1,16 +1,36 @@
+image: node
 stages:
+  - setup
+  - typecheck
+  - test
   - build
   - deploy
 
+setup:
+  stage: setup
+  script:
+    - yarn
+  artifacts:
+    paths:
+      - node_modules/
+    expire_in: '2h'
+
+typecheck: 
+  stage: typecheck
+  script:
+    - yarn run check
+
+test: 
+  stage: test
+  script:
+    - yarn test
+
 build:
   stage: build
-  image: node
   only:
     - master
   script:
-    - yarn
     - NODE_ENV=production npx webpack --config webpack.config.js
-    # - npx webpack --config webpack.config.js
   artifacts:
     paths:
       - dist/
@@ -18,7 +38,6 @@ build:
 
 deploy:
   stage: deploy
-  image: node
   only:
     - master
   script:
