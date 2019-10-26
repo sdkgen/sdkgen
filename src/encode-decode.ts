@@ -8,6 +8,9 @@ const simpleStringTypes = ["string", "cep", "email", "phone", "safehtml", "xml"]
 const simpleTypes = ["json", "bool", "hex", "uuid", "base64", "url", "int", "uint", "float", "money", "void", "latlng", ...simpleStringTypes];
 
 function simpleEncodeDecode(path: string, type: string, value: any) {
+    if (typeof value === "bigint") {
+        value = Number(value);
+    }
     if (type === "json") {
         if (value === null || value === undefined) {
             return null;
