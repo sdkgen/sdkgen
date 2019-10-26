@@ -10,6 +10,7 @@
 		"allowJs": true,
 		"pretty": true,
 		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
 		"types": ["node", "jest", "chrome"],
 		"skipLibCheck": true,
 		"importHelpers": true,
