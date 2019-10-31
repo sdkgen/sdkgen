@@ -497,6 +497,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> extends SdkgenServer<ExtraCont
                 };
 
                 res.statusCode = response.error ? (this.makeResponseError(response.error).type === "Fatal" ? 500 : 400) : 200;
+                res.setHeader("x-request-id", ctx.request.id);
                 res.write(JSON.stringify(response));
                 res.end();
                 break;
