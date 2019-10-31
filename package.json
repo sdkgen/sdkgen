@@ -22,8 +22,8 @@
   },
   "homepage": "https://github.com/sdkgen/node-runtime#readme",
   "devDependencies": {
-    "@types/jest": "^24.0.20",
-    "@types/node": "^12.11.7",
+    "@types/jest": "^24.0.21",
+    "@types/node": "^12.12.3",
     "@types/request-ip": "0.0.34",
     "axios": "^0.19.0",
     "jest": "^24.9.0",
