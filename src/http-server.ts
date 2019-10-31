@@ -464,7 +464,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> extends SdkgenServer<ExtraCont
                     deviceId: ctx.request.deviceInfo.id,
                     duration: duration,
                     host: hostname(),
-                    result: reply.result || null,
+                    result: reply.error ? null : reply.result,
                     error: reply.error ? this.makeResponseError(reply.error) : null
                 };
 
@@ -479,7 +479,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> extends SdkgenServer<ExtraCont
                     deviceId: ctx.request.deviceInfo.id,
                     sessionId: ctx.request.extra.sessionId,
                     requestId: ctx.request.id,
-                    result: reply.result || null,
+                    result: reply.error ? null : reply.result,
                     error: reply.error ? this.makeResponseError(reply.error) : null
                 };
 
@@ -492,7 +492,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> extends SdkgenServer<ExtraCont
                 const response = {
                     duration: duration,
                     host: hostname(),
-                    result: reply.result || null,
+                    result: reply.error ? null : reply.result,
                     error: reply.error ? this.makeResponseError(reply.error) : null
                 };
 
