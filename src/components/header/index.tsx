@@ -41,7 +41,6 @@ function Header() {
 				<div className={s.logo} />
 				<div>
 					<div className={s.title}>SDKGEN Playground</div>
-					<div className={s.name}>the fly of the mockingbird</div>
 				</div>
 			</div>
 			<div className={s.actions}>

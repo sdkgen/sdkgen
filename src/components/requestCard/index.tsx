@@ -182,7 +182,7 @@ function Bottom(props: BottomProps) {
 		notFetched: "Make Request",
 		fetching: "Fetching",
 		error: "Error, Retry?",
-		sucess: "Sucess, Retry?",
+		sucess: "Success, Retry?",
 		// timeout: "Time out, Retry?",
 	};
 	const colors: Record<RequestStatus, string> = {
