@@ -1,14 +1,12 @@
-import { RootStore } from ".";
 import { observable } from "mobx";
-import { sample } from "helpers/arrayHelpers";
-import { animals } from "resources/lists/animals";
-import { qualities } from "resources/lists/qualities";
+import { RootStore } from ".";
 
 const endpointUrlFallback = location.host;
-const deviceIdFallBack = getRandomDeviceId();
 
-function getRandomDeviceId() {
-	return `${sample(qualities)} ${sample(animals)}`.replace(/\s/g, "-").toLowerCase();
+function randomBytesHex(len: number) {
+	let hex = "";
+	for (let i = 0; i < 2 * len; ++i) hex += "0123456789abcdef"[Math.floor(Math.random() * 16)];
+	return hex;
 }
 
 export class ConfigStore {
@@ -37,7 +35,7 @@ export class ConfigStore {
 
 	private syncWithLocalStorage = (override: boolean) => {
 		if (!override) {
-			this.deviceId = localStorage.getItem("deviceId") || deviceIdFallBack;
+			this.deviceId = localStorage.getItem("deviceId") || randomBytesHex(16);
 			this.endpointUrl = localStorage.getItem("endpointUrl") || endpointUrlFallback;
 		} else {
 			if (this.deviceId) localStorage.setItem("deviceId", this.deviceId);
