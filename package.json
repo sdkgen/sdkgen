@@ -3,6 +3,7 @@
     "version": "0.1.6",
     "description": "",
     "main": "index.js",
+    "types": "index.d.ts",
     "scripts": {
         "dev": "webpack-dev-server --progress --host 0.0.0.0 --config webpack.config.js",
         "build": "webpack",
