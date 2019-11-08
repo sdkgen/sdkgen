@@ -1,8 +1,8 @@
 import { requestModel } from "helpers/requestModel";
 import { observable } from "mobx";
 import { ArgsType, AstJson, TypeDescription, TypeTable } from "resources/types/ast";
-import { RootStore } from ".";
 import { v4 as uuidV4 } from "uuid";
+import { RootStore } from ".";
 
 export const simpleStringTypes = [
 	"string",
@@ -85,7 +85,8 @@ export class RequestsStore {
 			xml: "<aa></aa>",
 		};
 		if (types[type] === undefined) {
-			throw new Error(`Unknown simple type '${type}'`);
+			console.log(`Unknown simple type '${type}'`);
+			return null;
 		}
 		return types[type];
 	};
