@@ -16,6 +16,8 @@ export class ConfigStore {
 	public deviceId: null | string = null;
 	@observable
 	public endpointUrl: null | string = null;
+	@observable
+	public canChangeEndpoint = false;
 
 	constructor(rootStore: RootStore) {
 		this.rootStore = rootStore;
