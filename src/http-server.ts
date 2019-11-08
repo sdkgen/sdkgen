@@ -1,10 +1,12 @@
 import { generateDartClientSource } from "@sdkgen/dart-generator";
 import { ThrowsAnnotation } from "@sdkgen/parser";
+import { PLAYGROUND_PUBLIC_PATH } from "@sdkgen/playground";
 import { generateBrowserClientSource, generateNodeClientSource, generateNodeServerSource } from "@sdkgen/typescript-generator";
 import { randomBytes } from "crypto";
 import { createServer, IncomingMessage, Server, ServerResponse } from "http";
 import { hostname } from "os";
 import { getClientIp } from "request-ip";
+import handler from "serve-handler";
 import { parse as parseUrl } from "url";
 import { Context, ContextReply, ContextRequest } from "./context";
 import { decode, encode } from "./encode-decode";
@@ -27,6 +29,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> extends SdkgenServer<ExtraCont
                 res.setHeader("Content-Type", "application/octet-stream");
                 res.write(generateNodeServerSource(apiConfig.ast, {}));
             } catch (e) {
+                console.error(e);
                 res.statusCode = 500;
                 res.write(e.toString());
             }
@@ -38,6 +41,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> extends SdkgenServer<ExtraCont
                 res.setHeader("Content-Type", "application/octet-stream");
                 res.write(generateNodeClientSource(apiConfig.ast, {}));
             } catch (e) {
+                console.error(e);
                 res.statusCode = 500;
                 res.write(e.toString());
             }
@@ -49,6 +53,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> extends SdkgenServer<ExtraCont
                 res.setHeader("Content-Type", "application/octet-stream");
                 res.write(generateBrowserClientSource(apiConfig.ast, {}));
             } catch (e) {
+                console.error(e);
                 res.statusCode = 500;
                 res.write(e.toString());
             }
@@ -60,10 +65,28 @@ export class SdkgenHttpServer<ExtraContextT = {}> extends SdkgenServer<ExtraCont
                 res.setHeader("Content-Type", "application/octet-stream");
                 res.write(generateDartClientSource(apiConfig.ast, {}));
             } catch (e) {
+                console.error(e);
                 res.statusCode = 500;
                 res.write(e.toString());
             }
             res.end();
+        });
+
+        this.addHttpHandler("GET", /^\/playground/, (req, res) => {
+            if (req.url) {
+                req.url = req.url.endsWith("/playground") ? req.url.replace(/\/playground/, "/index.html") : req.url.replace(/\/playground/, "");
+            }
+            handler(req, res, {
+                cleanUrls: false,
+                directoryListing: false,
+                public: PLAYGROUND_PUBLIC_PATH,
+                etag: true
+            }).catch(e => {
+                console.error(e);
+                res.statusCode = 500;
+                res.write(e.toString());
+                res.end();
+            });
         });
 
         this.addHttpHandler("GET", "/ast.json", (req, res) => {
