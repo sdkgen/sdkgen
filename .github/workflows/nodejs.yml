@@ -13,8 +13,8 @@ jobs:
         node-version: 12.x
     - name: build
       run: |
-        npm ci
-        npm run build --if-present
+        yarn
+        yarn build --if-present
     - name: Publish to npm
       uses: pascalgn/npm-publish-action@1.1.0
       with: 
