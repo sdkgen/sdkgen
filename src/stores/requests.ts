@@ -2,6 +2,7 @@ import { requestModel } from "helpers/requestModel";
 import { observable } from "mobx";
 import { ArgsType, AstJson, TypeDescription, TypeTable } from "resources/types/ast";
 import { RootStore } from ".";
+import { v4 as uuidV4 } from "uuid";
 
 export const simpleStringTypes = [
 	"string",
@@ -62,28 +63,28 @@ export class RequestsStore {
 
 	private simpleTypeMock = (type: string) => {
 		const types: Record<string, any> = {
-			any: null,
+			any: {anything: [1, 2, 3]},
 			bool: true,
-			hex: null,
-			uuid: null,
-			base64: null,
-			int: 200,
-			uint: 3294967295,
-			float: 5.3,
-			money: null,
-			void: null,
-			latlng: null,
+			hex: "deadbeef",
+			uuid: uuidV4(),
+			base64: "c2RrZ2Vu",
+			int: 123,
+			uint: 123,
+			float: 12.3,
+			money: 123,
+			void: undefined,
+			latlng: undefined,
 			string: "string",
-			cep: null,
-			cnpj: null,
-			cpf: null,
-			email: null,
-			phone: null,
-			safehtml: null,
-			url: null,
-			xml: null,
+			cep: undefined,
+			cnpj: undefined,
+			cpf: undefined,
+			email: "hello@example.com",
+			phone: undefined,
+			safehtml: "<body>Hello</body>",
+			url: location.origin,
+			xml: "<aa></aa>",
 		};
-		if (!types[type]) {
+		if (types[type] === undefined) {
 			throw new Error(`Unknown simple type '${type}'`);
 		}
 		return types[type];
@@ -105,13 +106,12 @@ export class RequestsStore {
 			return this.encodeTransform(typeTable, type.replace("?", ""));
 		} else if (type.endsWith("[]")) {
 			// arrayOf
-			return [1, 2].map(() => this.encodeTransform(typeTable, type.replace("[]", "")));
-		} else if (simpleTypes.indexOf(type) >= 0) {
+			return [1, 2, 3].map(() => this.encodeTransform(typeTable, type.replace("[]", "")));
+		} else if (simpleTypes.includes(type)) {
 			// simple types
-			const index = simpleTypes.indexOf(type);
-			return this.simpleTypeMock(simpleTypes[index]);
+			return this.simpleTypeMock(type);
 		} else if (type === "bytes") {
-			return "bytes";
+			return "deadbeef";
 		} else if (type === "date") {
 			return new Date().toISOString().split("T")[0];
 		} else if (type === "datetime") {
