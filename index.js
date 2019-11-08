@@ -1,3 +1,4 @@
 const path = require("path");
 
-export const PLAYGROUND_PUBLIC_PATH = path.join(__dirname, "./dist");
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.PLAYGROUND_PUBLIC_PATH = path.join(__dirname, "./dist");
