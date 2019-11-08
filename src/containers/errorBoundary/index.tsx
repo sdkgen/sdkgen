@@ -53,7 +53,7 @@ export default class ErrorBoundary extends React.Component<Props, State> {
 							Recarregar
 						</div>
 						<div onClick={this.clearSiteData} role="button">
-							Logout
+							Limpar dados locais
 						</div>
 					</div>
 					{showError && error ? (

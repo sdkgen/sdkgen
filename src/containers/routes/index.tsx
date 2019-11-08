@@ -25,8 +25,8 @@ export const Routes = observer(() => {
 		<Router history={history}>
 			<MainWrapper>
 				<Switch>
-					<Route path="/" exact component={Home} />
-					<Route path="/configuration" component={Configuration} />
+					<Route path="/playground/" exact component={Home} />
+					<Route path="/playground/configuration" component={Configuration} />
 					<Route component={NotFound} />
 				</Switch>
 			</MainWrapper>

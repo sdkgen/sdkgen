@@ -15,7 +15,7 @@ export class ConfigStore {
 	@observable
 	public deviceId: null | string = null;
 	@observable
-	public endpointUrl: null | string = null;
+	public endpointUrl!: string;
 	@observable
 	public canChangeEndpoint = false;
 

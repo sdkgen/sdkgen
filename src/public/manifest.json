@@ -1,6 +1,6 @@
 {
-	"short_name": "SDKGEN",
-	"name": "SDKGEN Playground",
+	"short_name": "sdkgen",
+	"name": "sdkgen Playground",
 	"icons": [
 		{
 			"src": "favicon.ico",

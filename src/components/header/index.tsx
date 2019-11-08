@@ -1,11 +1,11 @@
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import { faClone, faCog } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import classnames from "classnames";
+import { observer } from "mobx-react-lite";
 import * as React from "react";
 import { Link } from "react-router-dom";
-import classnames from "classnames";
 import RootStore from "stores";
-import { observer } from "mobx-react-lite";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClone, faCog } from "@fortawesome/free-solid-svg-icons";
-import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import s from "./header.scss";
 
 interface LinkInfo {
@@ -15,9 +15,9 @@ interface LinkInfo {
 }
 
 const links: LinkInfo[] = [
-	{ to: "/", label: "Endpoints", icon: faClone },
-	// { to: "/favorites", label: "Favorites", icon: faStar },
-	{ to: "/configuration", label: "Configuration", icon: faCog },
+	{ to: "/playground", label: "Endpoints", icon: faClone },
+	// { to: "/playground/favorites", label: "Favorites", icon: faStar },
+	{ to: "/playground/configuration", label: "Configuration", icon: faCog },
 ];
 
 export const MainHeader = observer(Header);
@@ -40,7 +40,7 @@ function Header() {
 			<div className={s.top}>
 				<div className={s.logo} />
 				<div>
-					<div className={s.title}>SDKGEN Playground</div>
+					<div className={s.title}>sdkgen Playground</div>
 				</div>
 			</div>
 			<div className={s.actions}>

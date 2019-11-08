@@ -1,7 +1,7 @@
-import { RootStore } from ".";
-import { observable } from "mobx";
-import { AstJson, ArgsType, TypeTable, TypeDescription } from "resources/types/ast";
 import { requestModel } from "helpers/requestModel";
+import { observable } from "mobx";
+import { ArgsType, AstJson, TypeDescription, TypeTable } from "resources/types/ast";
+import { RootStore } from ".";
 
 export const simpleStringTypes = [
 	"string",
@@ -44,9 +44,7 @@ export class RequestsStore {
 
 	public fetchAST = async () => {
 		try {
-			const response = await fetch(
-				`https://${this.rootStore.configStore.endpointUrl}/ast.json`,
-			);
+			const response = await fetch(`${this.rootStore.configStore.endpointUrl}/ast.json`);
 			const ast = await response.json();
 			this.AST = ast;
 			if (ast) this.createModels(ast);
@@ -132,7 +130,6 @@ export class RequestsStore {
 
 	public createModels = (AST: AstJson) => {
 		const { endpointUrl, deviceId } = this.rootStore.configStore;
-		const baseUrl = `https://${endpointUrl}`;
 
 		const FNs = Object.entries(AST.functionTable);
 		this.api = FNs.reduce((acc, [fName, fStruct]) => {
@@ -143,7 +140,7 @@ export class RequestsStore {
 				[fName]: new requestModel({
 					name: fName,
 					defaultArgsMock: argsMock,
-					baseUrl,
+					baseUrl: endpointUrl,
 					deviceId: deviceId!,
 				}),
 			};
