@@ -1,2 +1,2 @@
-# sdkgenplayground
+# @sdkgen/playground
 
