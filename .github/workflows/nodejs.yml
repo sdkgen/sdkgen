@@ -1,0 +1,25 @@
+name: Node CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Nodejs
+      uses: actions/setup-node@v1
+      with:
+        node-version: 12.x
+    - name: build
+      run: |
+        npm ci
+        npm run build --if-present
+    - name: Publish to npm
+      uses: pascalgn/npm-publish-action@1.1.0
+      with: 
+        tag_name: "v%s"
+      env: 
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+
