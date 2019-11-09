@@ -1,6 +1,6 @@
 {
   "name": "@sdkgen/parser",
-  "version": "1.0.26",
+  "version": "1.0.27",
   "description": "",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
