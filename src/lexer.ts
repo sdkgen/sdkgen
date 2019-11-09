@@ -195,8 +195,8 @@ export class Lexer {
                 }
             }
             default: {
-                if (this.currentChar().match(/[a-zA-Z]/)) {
-                    while (this.nextChar().match(/[a-zA-Z0-9]/)) {}
+                if (this.currentChar().match(/[a-zA-Z_]/)) {
+                    while (this.nextChar().match(/[a-zA-Z0-9_]/)) {}
                     const ident = this.source.substring(this.startPos, this.pos);
 
                     switch (ident) {
