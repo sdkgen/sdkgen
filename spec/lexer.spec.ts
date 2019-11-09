@@ -32,7 +32,9 @@ describe(Lexer, () => {
         new IdentifierToken("c"),
     ]);
 
-    itDoesntLex("aa_bb", "Unexpected character \"_\" at -:1:3");
+    itLexes("aa_bb", [
+        new IdentifierToken("aa_bb"),
+    ]);
 
     itLexes("type type", [
         new TypeKeywordToken,
