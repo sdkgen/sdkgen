@@ -16,7 +16,7 @@ export const simpleStringTypes = [
 	"xml",
 ];
 export const simpleTypes = [
-	"any",
+	"json",
 	"bool",
 	"hex",
 	"uuid",
@@ -63,7 +63,7 @@ export class RequestsStore {
 
 	private simpleTypeMock = (type: string) => {
 		const types: Record<string, any> = {
-			any: {anything: [1, 2, 3]},
+			json: {anything: [1, 2, 3]},
 			bool: true,
 			hex: "deadbeef",
 			uuid: uuidV4(),
