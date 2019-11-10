@@ -22,4 +22,7 @@ export function compatibilityCmd(argv: string[]) {
     for (const issue of issues) {
         console.log(issue);
     }
+
+    if (issues.length)
+        process.exit(1);
 }
