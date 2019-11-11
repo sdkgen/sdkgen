@@ -89,14 +89,16 @@ function simpleEncodeDecode(path: string, type: string, value: any) {
 }
 
 export function encode(typeTable: TypeTable, path: string, type: TypeDescription, value: any): any {
-    if (Array.isArray(type)) {
+    if (typeof type === "string" && !type.endsWith("?") && (value === null || value === undefined)) {
+        throw new Error(`Missing value at '${path}'`);
+    } else if (Array.isArray(type)) {
         if (!type.includes(value)) {
             throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
         }
         return value;
     } else if (typeof type === "object") {
         if (typeof value !== "object" || value === undefined) {
-            throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
+            throw new Error(`Invalid type at '${path}', expected object, got ${JSON.stringify(value)}`);
         }
         const obj: any = {};
         for (const key in type) {
@@ -151,14 +153,16 @@ export function encode(typeTable: TypeTable, path: string, type: TypeDescription
 }
 
 export function decode(typeTable: TypeTable, path: string, type: TypeDescription, value: any): any {
-    if (Array.isArray(type)) {
+    if (typeof type === "string" && !type.endsWith("?") && (value === null || value === undefined)) {
+        throw new Error(`Missing value at '${path}'`);
+    } else if (Array.isArray(type)) {
         if (!type.includes(value)) {
             throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
         }
         return value;
     } else if (typeof type === "object") {
         if (typeof value !== "object" || value === undefined) {
-            throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
+            throw new Error(`Invalid type at '${path}', expected object, got ${JSON.stringify(value)}`);
         }
         const obj: any = {};
         for (const key in type) {
