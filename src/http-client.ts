@@ -26,14 +26,14 @@ export class SdkgenHttpClient {
 
         const request = {
             version: 3,
-            requestId: ctx ? ctx.request.id + randomBytes(6).toString("hex") : randomBytes(16).toString("hex"),
+            requestId: ctx && ctx.request? ctx.request.id + randomBytes(6).toString("hex") : randomBytes(16).toString("hex"),
             name: functionName,
             args: encode(this.astJson.typeTable, `${functionName}.args`, func.args, args),
             extra: {
                 ...this.extra,
-                ...(ctx ? ctx.request.extra : {})
+                ...(ctx && ctx.request ? ctx.request.extra : {})
             },
-            deviceInfo: ctx ? ctx.request.deviceInfo : {
+            deviceInfo: ctx && ctx.request? ctx.request.deviceInfo : {
                 id: hostname(),
                 type: "node"
             },

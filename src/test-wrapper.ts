@@ -9,10 +9,8 @@ export function apiTestWrapper<T extends BaseApiConfig<any>>(api: T): T {
         (wrappedApi.fn as any)[functionName] = async (ctx: Context, args: any) => {
             const encodedArgs = encode(api.astJson.typeTable, `fn.${functionName}.args`, (api.astJson.functionTable as any)[functionName].args, args);
             const decodedArgs = decode(api.astJson.typeTable, `fn.${functionName}.args`, (api.astJson.functionTable as any)[functionName].args, encodedArgs);
-            if (!ctx.ip) {
-                ctx.ip = "0.0.0.0";
-            }
             ctx.request = {
+                ip: ctx.request && ctx.request.ip ? ctx.request.ip : "0.0.0.0",
                 args: encodedArgs,
                 deviceInfo: ctx.request && ctx.request.deviceInfo ? ctx.request.deviceInfo : {
                     id: randomBytes(16).toString("hex"),
