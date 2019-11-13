@@ -90,7 +90,7 @@ function simpleEncodeDecode(path: string, type: string, value: any) {
 
 export function encode(typeTable: TypeTable, path: string, type: TypeDescription, value: any): any {
     if (typeof type === "string" && !type.endsWith("?") && (value === null || value === undefined)) {
-        throw new Error(`Missing value at '${path}'`);
+        throw new Error(`Invalid type at '${path}', cannot be null`);
     } else if (Array.isArray(type)) {
         if (!type.includes(value)) {
             throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
@@ -154,7 +154,7 @@ export function encode(typeTable: TypeTable, path: string, type: TypeDescription
 
 export function decode(typeTable: TypeTable, path: string, type: TypeDescription, value: any): any {
     if (typeof type === "string" && !type.endsWith("?") && (value === null || value === undefined)) {
-        throw new Error(`Missing value at '${path}'`);
+        throw new Error(`Invalid type at '${path}', cannot be null`);
     } else if (Array.isArray(type)) {
         if (!type.includes(value)) {
             throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
