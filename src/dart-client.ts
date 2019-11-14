@@ -57,7 +57,7 @@ ${ast.operations.map(op => `
     }
 
     for (const type of ast.enumTypes) {
-        code += `  "${type.name}": EnumTypeDescription(${type.name}, ${type.name}.values, [\n    ${type.values.map(x => `"${x}"`).join(",\n    ")}\n  ]),\n`;
+        code += `  "${type.name}": EnumTypeDescription(${type.name}, ${type.name}.values, [\n    ${type.values.map(x => `"${x.value}"`).join(",\n    ")}\n  ]),\n`;
     }
 
     code += `};\n\n`
