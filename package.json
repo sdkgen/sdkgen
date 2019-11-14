@@ -49,7 +49,7 @@
   "dependencies": {
     "@fnando/cnpj": "^0.1.1",
     "@fnando/cpf": "^0.1.1",
-    "@sdkgen/dart-generator": "^1.0.15",
+    "@sdkgen/dart-generator": "^1.0.16",
     "@sdkgen/parser": "^1.0.25",
     "@sdkgen/playground": "^0.1.17",
     "@sdkgen/typescript-generator": "^1.0.29",
