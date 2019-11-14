@@ -18,7 +18,7 @@ export function cast(value: string, type: Type): string {
     } else if (type.constructor.name === "VoidPrimitiveType") {
         return value;
     } else if (type.constructor.name === "IntPrimitiveType" || type.constructor.name === "UIntPrimitiveType" || type.constructor.name === "MoneyPrimitiveType") {
-        return `${value}.round()`;
+        return `(${value}).round()`;
     } else {
         return `${value} as ${generateTypeName(type)}`;
     }
