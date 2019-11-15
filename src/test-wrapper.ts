@@ -50,7 +50,7 @@ export function apiTestWrapper<T extends BaseApiConfig<any>>(api: T): T {
                     throw err;
                 }
             } else {
-                const decodedRet = decode(api.astJson.typeTable, `fn.${functionName}.ret`, (api.astJson.functionTable as any)[functionName].ret, reply.result);
+                const decodedRet = decode(api.astJson.typeTable, `fn.${functionName}.ret`, (api.astJson.functionTable as any)[functionName].ret, JSON.parse(JSON.stringify(reply.result)));
                 return decodedRet;
             }
         };
