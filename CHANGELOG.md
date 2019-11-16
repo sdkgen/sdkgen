@@ -1,3 +1,7 @@
+## 1.0.9
+
+- fix: decode json with numbers always as double
+
 ## 1.0.8
 
 - Fix handling of array of objects
