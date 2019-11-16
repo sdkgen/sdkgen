@@ -63,7 +63,9 @@ class SdkgenHttpClient {
       };
 
       var response = await http.post(baseUrl, body: jsonEncode(body));
-      var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+      var responseBody = jsonDecode(utf8.decode(response.bodyBytes), reviver: (key, value) {
+        return value is int ? value.toDouble() : value;
+      });
 
       if (responseBody["error"] != null) {
         throw _throwError(
