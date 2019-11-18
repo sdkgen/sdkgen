@@ -9,6 +9,7 @@
         "build": "webpack",
         "test": "jest",
         "test:w": "jest --watchAll",
+        "test:wo": "jest --watch",
         "test:u": "jest -u",
         "precommit": "lint-staged",
         "check": "tsc -p tsconfig.json --noEmit",
