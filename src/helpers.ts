@@ -17,8 +17,8 @@ export function cast(value: string, type: Type): string {
         return `(${value} as List).map((e) => ${cast("e", (type as ArrayType).base)}).toList()`;
     } else if (type.constructor.name === "VoidPrimitiveType") {
         return value;
-    } else if (type.constructor.name === "IntPrimitiveType" || type.constructor.name === "UIntPrimitiveType" || type.constructor.name === "MoneyPrimitiveType") {
-        return `(${value} as double).round()`;
+    } else if (type.constructor.name === "FloatPrimitiveType" || type.constructor.name === "MoneyPrimitiveType") {
+        return `(${value} as num)?.toDouble()`;
     } else {
         return `${value} as ${generateTypeName(type)}`;
     }
