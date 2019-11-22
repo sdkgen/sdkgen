@@ -1,3 +1,7 @@
+## 1.0.10
+
+- fix: revert decode json with numbers always as double
+
 ## 1.0.9
 
 - fix: decode json with numbers always as double
