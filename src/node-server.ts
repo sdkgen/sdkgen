@@ -7,7 +7,7 @@ interface Options {
 export function generateNodeServerSource(ast: AstRoot, options: Options) {
     let code = "";
 
-    code += `import { Context, BaseApiConfig } from "@sdkgen/node-runtime";
+    code += `import { BaseApiConfig, Context, SdkgenError } from "@sdkgen/node-runtime";
 
 `;
 
@@ -27,15 +27,7 @@ export function generateNodeServerSource(ast: AstRoot, options: Options) {
     }
 
     code += `export class ApiConfig<ExtraContextT> extends BaseApiConfig<ExtraContextT> {
-    constructor() {
-        super();
-        this.fn = {} as any;
-        for (const name of Object.keys(this.astJson.functionTable)) {
-            (this.fn as any)[name] = async () => { throw this.err.Fatal(\`Function '\${name}' is not implemented\`); };
-        }
-    }
-
-    fn: {${
+    fn!: {${
         ast.operations.map(op => `
         ${op.prettyName}: (ctx: Context & ExtraContextT, args: {${op.args.map(arg =>
             `${arg.name}: ${generateTypescriptTypeName(arg.type)}`
@@ -43,7 +35,7 @@ export function generateNodeServerSource(ast: AstRoot, options: Options) {
     }
 
     err = {${ast.errors.map(err => `
-        ${err}: (message: string = "") => { throw new ${err}(message); }`).join(",")}
+        ${err}(message: string = "") { throw new ${err}(message); }`).join("")}
     }
 
     astJson = ${JSON.stringify(astToJson(ast), null, 4).replace(/"(\w+)":/g, '$1:').replace(/\n/g, "\n    ")}

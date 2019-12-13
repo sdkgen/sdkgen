@@ -7,7 +7,7 @@ interface Options {
 export function generateNodeClientSource(ast: AstRoot, options: Options) {
     let code = "";
 
-    code += `import { Context, SdkgenHttpClient } from "@sdkgen/node-runtime";
+    code += `import { Context, SdkgenError, SdkgenHttpClient } from "@sdkgen/node-runtime";
 
 `;
 

@@ -11,20 +11,7 @@ export function generateTypescriptEnum(type: EnumType) {
 }
 
 export function generateTypescriptErrorClass(name: string) {
-    return `export class ${name} extends Error {
-    type = "${name}";
-    message: string;
-    constructor(message?: string) {
-        super("${name}" + (message ? ": " + message : ""));
-        this.message = message || "";
-    }
-    public toJSON() {
-        return {
-            type: this.type,
-            message: this.message
-        };
-    }
-}\n`;
+    return `export class ${name} extends SdkgenError {}\n`;
 }
 
 export function clearForLogging(path: string, type: Type): string {
