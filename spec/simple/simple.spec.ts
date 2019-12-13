@@ -1,9 +1,9 @@
 import { Parser } from "@sdkgen/parser";
 import { generateNodeClientSource, generateNodeServerSource } from "@sdkgen/typescript-generator";
 import axios from "axios";
-import { unlinkSync, writeFileSync, lstatSync } from "fs";
-import { Context, SdkgenHttpServer } from "../../src";
 import { randomBytes } from "crypto";
+import { unlinkSync, writeFileSync } from "fs";
+import { Context, SdkgenHttpServer } from "../../src";
 
 writeFileSync(__dirname + "/api.ts", generateNodeServerSource(new Parser(__dirname + "/api.sdkgen").parse(), {}).replace("@sdkgen/node-runtime", "../../src"));
 const { api } = require(__dirname + "/api.ts");
