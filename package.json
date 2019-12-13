@@ -25,11 +25,11 @@
   "devDependencies": {
     "@types/command-line-args": "^5.0.0",
     "@types/command-line-usage": "^5.0.1",
-    "@types/jest": "^24.0.18",
-    "@types/node": "^12.7.11",
+    "@types/jest": "^24.0.23",
+    "@types/node": "^12.12.17",
     "jest": "^24.9.0",
-    "ts-jest": "^24.1.0",
-    "typescript": "^3.6.3"
+    "ts-jest": "^24.2.0",
+    "typescript": "^3.7.3"
   },
   "jest": {
     "transform": {
@@ -47,10 +47,10 @@
     ]
   },
   "dependencies": {
-    "@sdkgen/dart-generator": "^1.0.14",
-    "@sdkgen/parser": "^1.0.19",
-    "@sdkgen/typescript-generator": "^1.0.23",
+    "@sdkgen/dart-generator": "^1.0.20",
+    "@sdkgen/parser": "^1.0.27",
+    "@sdkgen/typescript-generator": "^1.0.30",
     "command-line-args": "^5.1.1",
-    "command-line-usage": "^6.0.2"
+    "command-line-usage": "^6.1.0"
   }
 }
