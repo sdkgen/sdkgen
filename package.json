@@ -1,6 +1,6 @@
 {
   "name": "@sdkgen/node-runtime",
-  "version": "1.0.55",
+  "version": "1.0.56",
   "description": "",
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
