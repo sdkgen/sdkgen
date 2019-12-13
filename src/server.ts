@@ -30,7 +30,3 @@ export abstract class BaseApiConfig<ExtraContextT = {}> {
         onHealthCheck: async () => true
     }
 }
-
-export abstract class SdkgenServer<ExtraContextT = {}> {
-    constructor(protected apiConfig: BaseApiConfig<ExtraContextT>, protected extraContext: ExtraContextT) {}
-}

@@ -10,17 +10,16 @@ import handler from "serve-handler";
 import { parse as parseUrl } from "url";
 import { Context, ContextReply, ContextRequest } from "./context";
 import { decode, encode } from "./encode-decode";
-import { BaseApiConfig, SdkgenServer } from "./server";
+import { BaseApiConfig } from "./server";
 
-export class SdkgenHttpServer<ExtraContextT = {}> extends SdkgenServer<ExtraContextT> {
+export class SdkgenHttpServer<ExtraContextT = {}> {
     public httpServer: Server;
     private headers = new Map<string, string>();
     private handlers: { method: string, matcher: string | RegExp, handler: (req: IncomingMessage, res: ServerResponse, body: string) => void }[] = [];
     public dynamicCorsOrigin = true;
     private ignoredUrlPrefix = "";
 
-    constructor(apiConfig: BaseApiConfig<ExtraContextT>, extraContext: ExtraContextT) {
-        super(apiConfig, extraContext);
+    constructor(protected apiConfig: BaseApiConfig<ExtraContextT>, private extraContext: ExtraContextT) {
         this.httpServer = createServer(this.handleRequest.bind(this));
         this.enableCors();
 
