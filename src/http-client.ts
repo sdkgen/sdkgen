@@ -24,20 +24,20 @@ export class SdkgenHttpClient {
             throw new Error(`Unknown function ${functionName}`);
         }
 
-        const request = {
+        const requestBody = JSON.stringify({
             version: 3,
-            requestId: ctx && ctx.request? ctx.request.id + randomBytes(6).toString("hex") : randomBytes(16).toString("hex"),
+            requestId: ctx && ctx.request ? ctx.request.id + randomBytes(6).toString("hex") : randomBytes(16).toString("hex"),
             name: functionName,
             args: encode(this.astJson.typeTable, `${functionName}.args`, func.args, args),
             extra: {
                 ...this.extra,
                 ...(ctx && ctx.request ? ctx.request.extra : {})
             },
-            deviceInfo: ctx && ctx.request? ctx.request.deviceInfo : {
+            deviceInfo: ctx && ctx.request ? ctx.request.deviceInfo : {
                 id: hostname(),
                 type: "node"
             },
-        };
+        });
 
         const options = {
             hostname: this.baseUrl.hostname,
@@ -61,26 +61,25 @@ export class SdkgenHttpClient {
                         } else {
                             resolve(response.result);
                         }
-                    } catch (e) {
-                        reject({ type: "Fatal", message: e.toString() });
+                    } catch (error) {
+                        reject({ type: "Fatal", message: `${error}` });
                     }
                 });
 
             });
 
-            req.on("error", (e) => {
-                console.error(`problem with request: ${e.message}`);
-                reject({ type: "Fatal", message: e.toString() });
+            req.on("error", error => {
+                reject({ type: "Fatal", message: `${error}` });
             });
 
-            req.write(JSON.stringify(request));
+            req.write(requestBody);
             req.end();
-        }).catch(err => {
-            const errClass = this.errClasses[err.type];
+        }).catch(error => {
+            const errClass = this.errClasses[error.type];
             if (errClass)
-                throw new errClass(err.message);
+                throw new errClass(error.message);
             else
-                throw err;
+                throw new (this.errClasses["Fatal"])(`${error.type}: ${error.message}`);
         });
 
         return decode(this.astJson.typeTable, `${functionName}.ret`, func.ret, encodedRet);
