@@ -1,4 +1,4 @@
-import { BaseApiConfig } from "./server";
+import { BaseApiConfig } from "./api-config";
 import { Context } from "./context";
 import { encode, decode } from "./encode-decode";
 import { randomBytes } from "crypto";

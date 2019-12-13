@@ -2,8 +2,14 @@ import { AstJson, AstRoot, jsonToAst } from "@sdkgen/parser";
 import { Context, ContextReply } from "./context";
 
 export abstract class BaseApiConfig<ExtraContextT = {}> {
-    astJson: AstJson = null as any
+    astJson!: AstJson;
     private _ast: AstRoot | null = null;
+
+    constructor() {
+        for (const name of Object.keys(this.astJson.functionTable)) {
+            this.fn[name] = async () => { this.err.Fatal(`Function '${name}' is not implemented`); };
+        }
+    }
 
     get ast() {
         if (!this._ast)

@@ -10,7 +10,7 @@ import handler from "serve-handler";
 import { parse as parseUrl } from "url";
 import { Context, ContextReply, ContextRequest } from "./context";
 import { decode, encode } from "./encode-decode";
-import { BaseApiConfig } from "./server";
+import { BaseApiConfig } from "./api-config";
 
 export class SdkgenHttpServer<ExtraContextT = {}> {
     public httpServer: Server;
