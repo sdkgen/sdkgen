@@ -1,30 +1,30 @@
 import { IncomingHttpHeaders } from "http";
 
 export interface Context {
-    request: ContextRequest
+    request: ContextRequest;
 }
 
 export interface ContextRequest {
-    version: number
-    id: string
-    ip: string
-    name: string
-    args: any
-    headers: IncomingHttpHeaders
+    args: any;
     deviceInfo: {
-        id: string
-        type: string
-        platform: any
-        version: string | null
-        language: string | null
-        timezone: string | null
-    }
+        id: string;
+        language: string | null;
+        platform: any;
+        timezone: string | null;
+        type: string;
+        version: string | null;
+    };
     extra: {
-        [name: string]: any
-    }
+        [name: string]: any;
+    };
+    headers: IncomingHttpHeaders;
+    id: string;
+    ip: string;
+    name: string;
+    version: number;
 }
 
 export interface ContextReply {
-    result?: any,
-    error?: any
+    error?: any;
+    result?: any;
 }

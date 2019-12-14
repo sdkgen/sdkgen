@@ -3,30 +3,32 @@ import { Context, ContextReply } from "./context";
 
 export abstract class BaseApiConfig<ExtraContextT = {}> {
     astJson!: AstJson;
+
     private _ast: AstRoot | null = null;
 
     get ast() {
-        if (!this._ast)
+        if (!this._ast) {
             this._ast = jsonToAst(this.astJson);
+        }
 
         return this._ast;
     }
 
     fn: {
-        [name: string]: ((ctx: Context & ExtraContextT, args: any) => any) | undefined
-    } = {}
+        [name: string]: ((ctx: Context & ExtraContextT, args: unknown) => unknown) | undefined;
+    } = {};
 
     err: {
-        [name: string]: (message?: string) => never
-    } = {}
+        [name: string]: (message?: string) => never;
+    } = {};
 
     hook: {
-        onRequestStart: (ctx: Context & ExtraContextT) => Promise<null | ContextReply>
-        onRequestEnd: (ctx: Context & ExtraContextT, reply: ContextReply) => Promise<null | ContextReply>
-        onHealthCheck: () => Promise<boolean>
+        onHealthCheck: () => Promise<boolean>;
+        onRequestEnd: (ctx: Context & ExtraContextT, reply: ContextReply) => Promise<null | ContextReply>;
+        onRequestStart: (ctx: Context & ExtraContextT) => Promise<null | ContextReply>;
     } = {
-        onRequestStart: async () => null,
+        onHealthCheck: async () => true,
         onRequestEnd: async () => null,
-        onHealthCheck: async () => true
-    }
+        onRequestStart: async () => null,
+    };
 }
