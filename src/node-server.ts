@@ -35,7 +35,7 @@ export function generateNodeServerSource(ast: AstRoot, options: Options) {
     }
 
     err = {${ast.errors.map(err => `
-        ${err}(message: string = "") { throw new ${err}(message); }`).join("")}
+        ${err}(message: string = "") { throw new ${err}(message); }`).join(",")}
     }
 
     astJson = ${JSON.stringify(astToJson(ast), null, 4).replace(/"(\w+)":/g, '$1:').replace(/\n/g, "\n    ")}
