@@ -15,7 +15,7 @@ export abstract class BaseApiConfig<ExtraContextT = {}> {
     }
 
     fn: {
-        [name: string]: ((ctx: Context & ExtraContextT, args: unknown) => unknown) | undefined;
+        [name: string]: ((ctx: Context & ExtraContextT, args: any) => any) | undefined;
     } = {};
 
     err: {
