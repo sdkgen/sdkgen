@@ -1,8 +1,13 @@
-import 'package:http/http.dart' as http;
-import 'package:convert/convert.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'dart:convert';
+import 'dart:io';
 import 'dart:math';
+
+import 'package:convert/convert.dart';
+import 'package:device_info/device_info.dart';
+import 'package:flutter/widgets.dart';
+import 'package:get_version/get_version.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'types.dart';
 
@@ -18,8 +23,10 @@ class SdkgenHttpClient {
   Map<String, Function> errTable;
   String deviceId;
   Random random = Random.secure();
+  BuildContext context;
 
-  SdkgenHttpClient(this.baseUrl, this.typeTable, this.fnTable, this.errTable);
+  SdkgenHttpClient(
+      this.baseUrl, this.context, this.typeTable, this.fnTable, this.errTable);
 
   _randomBytesHex(int bytes) {
     return hex.encode(List<int>.generate(bytes, (i) => random.nextInt(256)));
@@ -53,13 +60,41 @@ class SdkgenHttpClient {
             func.args[argName], argValue);
       });
 
+      var locale = Localizations.localeOf(context);
+
+      var platform = {
+        "os": Platform.operatingSystem,
+        "osVersion": Platform.operatingSystemVersion,
+        "dartVersion": Platform.version,
+        "appId": await GetVersion.appID,
+        "screenWidth": MediaQuery.of(context).size.width,
+        "screenHeight": MediaQuery.of(context).size.height
+      };
+
+      var deviceInfo = DeviceInfoPlugin();
+      if (Platform.isAndroid) {
+        var androidInfo = await deviceInfo.androidInfo;
+        platform["model"] = androidInfo.model;
+        platform["brand"] = androidInfo.brand;
+      } else if (Platform.isIOS) {
+        var iosInfo = await deviceInfo.iosInfo;
+        platform["model"] = iosInfo.model;
+      }
+
       var body = {
         "version": 3,
         "requestId": _randomBytesHex(16),
         "name": functionName,
         "args": encodedArgs,
         "extra": {},
-        "deviceInfo": {"id": await _deviceId(), "type": "dart"}
+        "deviceInfo": {
+          "id": await _deviceId(),
+          "language": "${locale.languageCode}-${locale.countryCode}",
+          "platform": platform,
+          "timezone": DateTime.now().timeZoneName,
+          "type": "flutter",
+          "version": await GetVersion.projectVersion
+        }
       };
 
       var response = await http.post(baseUrl, body: jsonEncode(body));

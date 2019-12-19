@@ -1,3 +1,5 @@
 .idea
 .packages
+.dart_tool
+.flutter-plugins*
 pubspec.lock
