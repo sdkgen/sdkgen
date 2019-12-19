@@ -7,7 +7,8 @@ interface Options {
 export function generateDartClientSource(ast: AstRoot, options: Options) {
     let code = "";
 
-    code += `import 'package:sdkgen_runtime/types.dart';
+    code += `import 'package:flutter/widgets.dart';
+import 'package:sdkgen_runtime/types.dart';
 import 'package:sdkgen_runtime/http_client.dart';
 
 `;
@@ -28,7 +29,7 @@ import 'package:sdkgen_runtime/http_client.dart';
     }
 
     code += `class ApiClient extends SdkgenHttpClient {
-  ApiClient(baseUrl) : super(baseUrl, _typeTable, _fnTable, _errTable);
+  ApiClient(String baseUrl, BuildContext context) : super(baseUrl, context, _typeTable, _fnTable, _errTable);
 ${ast.operations.map(op => `
   ${
     op.returnType.constructor.name === "VoidPrimitiveType" ? "" : `Future<${generateTypeName(op.returnType)}> `
