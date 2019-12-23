@@ -25,7 +25,7 @@
   "homepage": "https://github.com/sdkgen/node-runtime#readme",
   "devDependencies": {
     "@types/jest": "^24.0.23",
-    "@types/node": "^12.12.17",
+    "@types/node": "^13.1.0",
     "@types/request-ip": "0.0.34",
     "@typescript-eslint/eslint-plugin": "^2.8.0",
     "@typescript-eslint/parser": "^2.8.0",
