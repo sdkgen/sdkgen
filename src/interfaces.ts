@@ -1,5 +1,5 @@
 import { AstRoot } from "@sdkgen/parser";
-import { generateTypescriptEnum, generateTypescriptErrorClass, generateTypescriptInterface } from "./helpers";
+import { generateTypescriptEnum, generateTypescriptInterface } from "./helpers";
 
 interface Options {
 }
@@ -14,11 +14,6 @@ export function generateTypescriptInterfaces(ast: AstRoot, options: Options) {
 
     for (const type of ast.structTypes) {
         code += generateTypescriptInterface(type);
-        code += "\n";
-    }
-
-    for (const error of ast.errors) {
-        code += generateTypescriptErrorClass(error);
         code += "\n";
     }
 
