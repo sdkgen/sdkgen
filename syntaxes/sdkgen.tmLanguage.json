@@ -4,6 +4,8 @@
 		{
 			"include": "#any"
 		}, {
+			"include": "#annotations"
+		}, {
 			"name": "meta.variable",
 			"begin": "(\\$[a-zA-Z0-9]+) =",
 			"beginCaptures": {
@@ -85,10 +87,41 @@
 				}
 			]
 		},
+		"annotations": {
+			"patterns": [
+				{
+					"name": "meta.annotation.description",
+					"match": "(@description) ((?:.|\\\n)*)\n",
+					"captures": {
+						"1": {"name": "constant.numeric"},
+						"2": {"name": "comment.block.documentation"}
+					}
+				},
+				{
+					"name": "meta.annotation.arg",
+					"match": "(@arg) (\\w+) ((?:.|\\\\\\n)*)\n",
+					"captures": {
+						"1": {"name": "constant.numeric"},
+						"2": {"name": "variable.parameter"},
+						"3": {"name": "comment.block.documentation"}
+					}
+				},
+				{
+					"name": "meta.annotation.throws",
+					"match": "(@throws) (\\w+)\n",
+					"captures": {
+						"1": {"name": "constant.numeric"},
+						"2": {"name": "entity.name.type"}
+					}
+				}
+			]
+		},
 		"fields": {
 			"patterns": [
 				{
 					"include": "#any"
+				}, {
+					"include": "#annotations"
 				}, {
 					"name": "meta.field",
 					"begin": "(\\w+):",
