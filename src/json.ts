@@ -1,4 +1,4 @@
-import { ArrayType, AstRoot, DescriptionAnnotation, EnumType, EnumValue, Field, FunctionOperation, Operation, OptionalType, StructType, Type, TypeDefinition, TypeReference, ThrowsAnnotation } from "./ast";
+import { ArrayType, AstRoot, DescriptionAnnotation, EnumType, EnumValue, Field, FunctionOperation, Operation, OptionalType, StructType, ThrowsAnnotation, Type, TypeDefinition, TypeReference } from "./ast";
 import { analyse } from "./semantic/analyser";
 import { primitiveToAstClass } from "./utils";
 
@@ -17,7 +17,13 @@ interface FunctionTable {
 
 export type TypeDescription = string | string[] | { [name: string]: TypeDescription }
 
-type AnnotationJson = ["description", string] | ["throws", string]
+type AnnotationJson = {
+    type: "description",
+    text: string
+} | {
+    type: "throws",
+    error: string
+}
 
 export interface AstJson {
     typeTable: TypeTable
@@ -51,7 +57,7 @@ export function astToJson(ast: AstRoot): AstJson {
                 if (ann instanceof DescriptionAnnotation) {
                     const target = `fn.${op.prettyName}.${arg.name}`;
                     const list = annotations[target] = (annotations[target] || []);
-                    list.push(["description", ann.description]);
+                    list.push({type: "description", text: ann.text});
                 }
             }
         }
@@ -63,10 +69,10 @@ export function astToJson(ast: AstRoot): AstJson {
             const target = `fn.${op.prettyName}`;
             const list = annotations[target] = (annotations[target] || []);
             if (ann instanceof DescriptionAnnotation) {
-                list.push(["description", ann.description]);
+                list.push({type: "description", text: ann.text});
             }
             if (ann instanceof ThrowsAnnotation) {
-                list.push(["throws", ann.error]);
+                list.push({type: "throws", error: ann.error});
             }
         }
     }
@@ -123,8 +129,8 @@ export function jsonToAst(json: AstJson) {
             const field = new Field(argName, processType(func.args[argName]));
             const target = `fn.${functionName}.${argName}`;
             for (const annotationJson of json.annotations[target] || []) {
-                if (annotationJson[0] === "description") {
-                    field.annotations.push(new DescriptionAnnotation(annotationJson[1]));
+                if (annotationJson.type === "description") {
+                    field.annotations.push(new DescriptionAnnotation(annotationJson.text));
                 }
             }
             return field;
@@ -133,10 +139,10 @@ export function jsonToAst(json: AstJson) {
         const op = new FunctionOperation(functionName, args, processType(func.ret));
         const target = `fn.${functionName}`;
         for (const annotationJson of json.annotations[target] || []) {
-            if (annotationJson[0] === "description") {
-                op.annotations.push(new DescriptionAnnotation(annotationJson[1]));
-            } else if (annotationJson[0] === "throws") {
-                op.annotations.push(new ThrowsAnnotation(annotationJson[1]));
+            if (annotationJson.type === "description") {
+                op.annotations.push(new DescriptionAnnotation(annotationJson.text));
+            } else if (annotationJson.type === "throws") {
+                op.annotations.push(new ThrowsAnnotation(annotationJson.error));
             }
         }
 

@@ -216,7 +216,7 @@ export class Parser {
                 if (!arg) {
                     throw new ParserError(`Argument '${annotation.argName}' not found, at ${annotation.location}`);
                 }
-                arg.annotations.push(new DescriptionAnnotation(annotation.description).atLocation(annotation.location));
+                arg.annotations.push(new DescriptionAnnotation(annotation.text).atLocation(annotation.location));
             }
         }
         annotations = annotations.filter(ann => !(ann instanceof ArgDescriptionAnnotation));

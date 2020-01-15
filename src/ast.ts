@@ -138,7 +138,7 @@ export class FunctionOperation extends Operation {}
 export abstract class Annotation extends AstNode {}
 
 export class DescriptionAnnotation extends Annotation {
-    constructor(public description: string) { super(); }
+    constructor(public text: string) { super(); }
 }
 
 export class ThrowsAnnotation extends Annotation {
@@ -146,5 +146,5 @@ export class ThrowsAnnotation extends Annotation {
 }
 
 export class ArgDescriptionAnnotation extends Annotation {
-    constructor(public argName: string, public description: string) { super(); }
+    constructor(public argName: string, public text: string) { super(); }
 }

@@ -265,11 +265,11 @@ describe(Parser, () => {
             typeTable: {},
             annotations: {
                 "fn.doIt": [
-                    ["description", "does it"],
-                    ["description", "and does another thing too"]
+                    {type: "description", text: "does it"},
+                    {type: "description", text: "and does another thing too"}
                 ],
                 "fn.doIt.bar": [
-                    ["description", "Represents the number of things"]
+                    {type: "description", text: "Represents the number of things"}
                 ]
             }
         });
@@ -297,8 +297,8 @@ describe(Parser, () => {
             typeTable: {},
             annotations: {
                 "fn.doIt": [
-                    ["throws", "NotFound"],
-                    ["throws", "InvalidArgument"]
+                    {type: "throws", error: "NotFound"},
+                    {type: "throws", error: "InvalidArgument"}
                 ]
             }
         });
