@@ -17,12 +17,9 @@ interface FunctionTable {
 
 export type TypeDescription = string | string[] | { [name: string]: TypeDescription }
 
-type AnnotationJson = {
-    type: "description",
-    text: string
-} | {
-    type: "throws",
-    error: string
+interface AnnotationJson {
+    type: string,
+    value: any
 }
 
 export interface AstJson {
@@ -57,7 +54,7 @@ export function astToJson(ast: AstRoot): AstJson {
                 if (ann instanceof DescriptionAnnotation) {
                     const target = `fn.${op.prettyName}.${arg.name}`;
                     const list = annotations[target] = (annotations[target] || []);
-                    list.push({type: "description", text: ann.text});
+                    list.push({type: "description", value: ann.text});
                 }
             }
         }
@@ -69,10 +66,10 @@ export function astToJson(ast: AstRoot): AstJson {
             const target = `fn.${op.prettyName}`;
             const list = annotations[target] = (annotations[target] || []);
             if (ann instanceof DescriptionAnnotation) {
-                list.push({type: "description", text: ann.text});
+                list.push({type: "description", value: ann.text});
             }
             if (ann instanceof ThrowsAnnotation) {
-                list.push({type: "throws", error: ann.error});
+                list.push({type: "throws", value: ann.error});
             }
         }
     }
@@ -130,7 +127,7 @@ export function jsonToAst(json: AstJson) {
             const target = `fn.${functionName}.${argName}`;
             for (const annotationJson of json.annotations[target] || []) {
                 if (annotationJson.type === "description") {
-                    field.annotations.push(new DescriptionAnnotation(annotationJson.text));
+                    field.annotations.push(new DescriptionAnnotation(annotationJson.value));
                 }
             }
             return field;
@@ -140,9 +137,9 @@ export function jsonToAst(json: AstJson) {
         const target = `fn.${functionName}`;
         for (const annotationJson of json.annotations[target] || []) {
             if (annotationJson.type === "description") {
-                op.annotations.push(new DescriptionAnnotation(annotationJson.text));
+                op.annotations.push(new DescriptionAnnotation(annotationJson.value));
             } else if (annotationJson.type === "throws") {
-                op.annotations.push(new ThrowsAnnotation(annotationJson.error));
+                op.annotations.push(new ThrowsAnnotation(annotationJson.value));
             }
         }
 
