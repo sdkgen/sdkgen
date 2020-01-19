@@ -1,4 +1,4 @@
-import { requestModel } from "helpers/requestModel";
+import { requestModel, ModelAnotations } from "helpers/requestModel";
 import { observable } from "mobx";
 import { ArgsType, AstJson, TypeDescription, TypeTable } from "resources/types/ast";
 import { v4 as uuidV4 } from "uuid";
@@ -63,7 +63,7 @@ export class RequestsStore {
 
 	private simpleTypeMock = (type: string) => {
 		const types: Record<string, any> = {
-			json: {anything: [1, 2, 3]},
+			json: { anything: [1, 2, 3] },
 			bool: true,
 			hex: "deadbeef",
 			uuid: uuidV4(),
@@ -129,13 +129,36 @@ export class RequestsStore {
 		}
 	};
 
+	public getAnotations = (AST: AstJson, functionName: string): ModelAnotations => {
+		const functionAnnotations = AST.annotations[`fn.${functionName}`] || [];
+
+		const regex = RegExp(`fn.${functionName}\\.[^\.]*`);
+		const argsKeys = Object.keys(AST.annotations).filter(target => regex.test(target));
+
+		const argsAnnotations = argsKeys.reduce((acc, argKey) => {
+			// breaks 'fn.getBalance.bankCode' into ["fn", "getBalance", "bankCode"]
+			// and gets the last part, that is the arguemnt name
+			const argName = argKey.split(".")[2];
+			return {
+				...acc,
+				[argName]: AST.annotations[argKey],
+			};
+		}, {});
+
+		const annotations: ModelAnotations = {
+			func: functionAnnotations,
+			args: argsAnnotations,
+		};
+		return annotations;
+	};
+
 	public createModels = (AST: AstJson) => {
 		const { endpointUrl, deviceId } = this.rootStore.configStore;
 
 		const FNs = Object.entries(AST.functionTable);
 		this.api = FNs.reduce((acc, [fName, fStruct]) => {
 			const argsMock = this.createMockBasedOnTypes(fStruct.args, AST.typeTable);
-
+			const annotations = this.getAnotations(AST, fName);
 			return {
 				...acc,
 				[fName]: new requestModel({
@@ -143,6 +166,7 @@ export class RequestsStore {
 					defaultArgsMock: argsMock,
 					baseUrl: endpointUrl,
 					deviceId: deviceId!,
+					annotations,
 				}),
 			};
 		}, {});

@@ -1,7 +1,10 @@
 import { observable } from "mobx";
 import { RootStore } from ".";
 
-const endpointUrlFallback = location.origin;
+const endpointUrlFallback =
+	process.env.NODE_ENV === "development"
+		? `http://localhost:${process.env.SERVER_PORT}`
+		: location.origin;
 
 function randomBytesHex(len: number) {
 	let hex = "";
@@ -38,7 +41,9 @@ export class ConfigStore {
 	private syncWithLocalStorage = (override: boolean) => {
 		if (!override) {
 			this.deviceId = localStorage.getItem("deviceId") || randomBytesHex(16);
-			this.endpointUrl = this.canChangeEndpoint && localStorage.getItem("endpointUrl") || endpointUrlFallback;
+			this.endpointUrl =
+				(this.canChangeEndpoint && localStorage.getItem("endpointUrl")) ||
+				endpointUrlFallback;
 		} else {
 			if (this.deviceId) localStorage.setItem("deviceId", this.deviceId);
 			if (this.endpointUrl) localStorage.setItem("endpointUrl", this.endpointUrl);

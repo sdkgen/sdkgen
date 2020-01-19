@@ -5,6 +5,9 @@ import { componentSwitch } from "helpers/componentSwitch";
 import ReactJson from "react-json-view";
 import { requestModel } from "helpers/requestModel";
 import { TabKeys } from "../tabs";
+import { Annotations } from "../annotations";
+import { Errors } from "../errors";
+import { observer } from "mobx-react-lite";
 
 interface ContentProps {
 	activeTab: TabKeys;
@@ -13,7 +16,9 @@ interface ContentProps {
 	model: requestModel;
 }
 
-export default function Content(props: ContentProps) {
+export default observer(Content);
+
+function Content(props: ContentProps) {
 	const { activeTab, args, setJsonArgs, model } = props;
 
 	const Content = componentSwitch<TabKeys>(activeTab, {
@@ -44,17 +49,14 @@ export default function Content(props: ContentProps) {
 				<ReactJson src={model.response !== undefined ? model.response : {}} name={false} />
 			</div>
 		),
-		extra: (
+		annotations: (
 			<div className={s.responseWrapper}>
-				<p>
-					Did you know this is a <b>work in progress?</b>
-				</p>
-				<p>... well, now you know.</p>
+				<Annotations annotations={model.annotations} />
 			</div>
 		),
 		error: (
 			<div className={s.responseWrapper}>
-				{model.error ? <pre>{model.error}</pre> : <b>There is no errors</b>}
+				<Errors error={model.error} />
 			</div>
 		),
 		default: (

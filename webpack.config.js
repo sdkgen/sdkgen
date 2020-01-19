@@ -14,6 +14,7 @@ const hash = shouldBuildForProduction ? "[chunkhash]" : "[name]";
 const devServerHost = "localhost";
 
 const port = 4545;
+const defaultServerPort = 8000;
 const title = "Anapatrix";
 const rootDir = __dirname;
 
@@ -191,6 +192,7 @@ module.exports = {
 		new webpack.ExtendedAPIPlugin(),
 		new webpack.DefinePlugin({
 			"process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV || "development"),
+			"process.env.SERVER_PORT": JSON.stringify(process.env.SERVER_PORT || defaultServerPort),
 			"process.env.ENVIRONMENT": JSON.stringify(process.env.ENVIRONMENT || "BROWSER"),
 			"process.env.CI_COMMIT_REF_NAME": JSON.stringify(
 				process.env.CI_COMMIT_REF_NAME || "non-master-branch-name",
