@@ -18,7 +18,11 @@ export function SearchInput(props: Props) {
 				onChange={ev => props.onChange(ev.target.value)}
 			/>
 			<button type="submit" className={s.searchButton}>
-				<FontAwesomeIcon icon={faSearch} size="xs" />
+				<FontAwesomeIcon
+					//@ts-ignore
+					icon={faSearch}
+					size="xs"
+				/>
 			</button>
 		</div>
 	);

@@ -28,17 +28,28 @@ export default function Header(props: HeaderProps) {
 			<>
 				<div className={s.callName}>
 					<div>{model.name}</div>
-					<FontAwesomeIcon size="xs" icon={faLink} className={s.hrefIcon} />
+					<FontAwesomeIcon
+						size="xs"
+						//@ts-ignore
+						icon={faLink}
+						className={s.hrefIcon}
+					/>
 				</div>
 				<div>
 					{model.status !== "notFetched" ? (
 						<FontAwesomeIcon
 							size="xs"
+							//@ts-ignore
 							icon={faCircle}
 							className={classNames(s.statusCircle, accentColorClass)}
 						/>
 					) : null}
-					<FontAwesomeIcon size="xs" icon={faChevronDown} className={s.icon} />
+					<FontAwesomeIcon
+						size="xs"
+						//@ts-ignore
+						icon={faChevronDown}
+						className={s.icon}
+					/>
 				</div>
 			</>
 		);
@@ -47,9 +58,19 @@ export default function Header(props: HeaderProps) {
 		<div className={s.header} onClick={closeCard}>
 			<div className={s.callName}>
 				<div>{model.name}</div>
-				<FontAwesomeIcon size="xs" icon={faLink} className={s.hrefIcon} />
+				<FontAwesomeIcon
+					size="xs"
+					//@ts-ignore
+					icon={faLink}
+					className={s.hrefIcon}
+				/>
 			</div>
-			<FontAwesomeIcon size="xs" icon={faChevronUp} className={s.icon} />
+			<FontAwesomeIcon
+				size="xs"
+				//@ts-ignore
+				icon={faChevronUp}
+				className={s.icon}
+			/>
 		</div>
 	);
 }

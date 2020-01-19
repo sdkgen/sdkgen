@@ -3,7 +3,6 @@ import s from "./bottom.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay, faPause, faRedo } from "@fortawesome/free-solid-svg-icons";
 import classNames from "classnames";
-import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { RequestStatus } from "helpers/requestModel";
 
 interface BottomProps {
@@ -11,7 +10,10 @@ interface BottomProps {
 	status: RequestStatus;
 }
 export default function Bottom(props: BottomProps) {
-	const icons: Record<RequestStatus, IconProp> = {
+	const icons: Record<
+		RequestStatus,
+		any // bad library types
+	> = {
 		notFetched: faPlay,
 		fetching: faPause,
 		error: faRedo,

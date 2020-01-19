@@ -1,4 +1,3 @@
-import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faClone, faCog } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classnames from "classnames";
@@ -11,7 +10,7 @@ import s from "./header.scss";
 interface LinkInfo {
 	to: string;
 	label: string;
-	icon: IconProp;
+	icon: any; // bad library types
 }
 
 const links: LinkInfo[] = [
