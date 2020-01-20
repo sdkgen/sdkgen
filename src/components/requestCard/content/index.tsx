@@ -41,7 +41,14 @@ export default function Content(props: ContentProps) {
 		),
 		response: (
 			<div className={s.responseWrapper}>
-				<ReactJson src={model.response !== undefined ? model.response : {}} name={false} />
+				<ReactJson
+					src={
+						model.response !== undefined && model.response !== null
+							? model.response
+							: {}
+					}
+					name={false}
+				/>
 			</div>
 		),
 		extra: (
