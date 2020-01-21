@@ -10,7 +10,7 @@ export function Annotations(props: Props) {
 
 	const isEmpty = func.length === 0 && Object.keys(args).length === 0;
 
-	const emptyMessage = <div className={s.empty}>There is no annotations on this function.</div>;
+	const emptyMessage = <div className={s.empty}>There are no annotations on this function.</div>;
 
 	const funcAnnotations = func.map((a, index) => (
 		<div className={s.annotation} key={`func-${index}`}>
