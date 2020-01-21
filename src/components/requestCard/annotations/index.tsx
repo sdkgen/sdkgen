@@ -49,7 +49,7 @@ export function Annotations(props: Props) {
 	const argsSection =
 		argsAnnotations.length !== 0 ? (
 			<div className={s.section}>
-				<div className={s.title}>Arguments annotations</div>
+				<div className={s.title}>Arguments</div>
 				<div className={s.content}>{argsAnnotations}</div>
 			</div>
 		) : null;
