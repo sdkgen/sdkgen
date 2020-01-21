@@ -22,7 +22,7 @@ export function Annotations(props: Props) {
 	const funcSection =
 		funcAnnotations.length !== 0 ? (
 			<div className={s.section}>
-				<div className={s.title}>Function annotations</div>
+				<div className={s.title}>Function</div>
 				<div className={s.content}>{funcAnnotations}</div>
 			</div>
 		) : null;
