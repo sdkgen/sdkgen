@@ -510,6 +510,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
                     browserUserAgent: "string?",
                     id: "string?",
                     language: "string?",
+                    platform: "json?",
                     timezone: "string?",
                     type: "string?",
                     version: "string?",
@@ -535,6 +536,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
                 id: deviceInfo.id || randomBytes(16).toString("hex"),
                 language: deviceInfo.language || null,
                 platform: {
+                    ...(deviceInfo.platform ?? {}),
                     browserUserAgent: deviceInfo.browserUserAgent || null,
                 },
                 timezone: deviceInfo.timezone || null,
