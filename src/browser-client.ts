@@ -7,14 +7,14 @@ interface Options {
 export function generateBrowserClientSource(ast: AstRoot, options: Options) {
     let code = "";
 
-    code += `import { SdkgenHttpClient } from "@sdkgen/browser-runtime";
+    code += `import { SdkgenError, SdkgenHttpClient } from "@sdkgen/browser-runtime";
 
 `;
 
     for (const type of ast.enumTypes) {
         code += generateTypescriptEnum(type);
+        code += "\n";
     }
-    code += "\n";
 
     for (const type of ast.structTypes) {
         code += generateTypescriptInterface(type);
@@ -31,9 +31,9 @@ export function generateBrowserClientSource(ast: AstRoot, options: Options) {
         super(baseUrl, astJson, errClasses);
     }
 ${ast.operations.map(op => `
-    ${op.prettyName}(args: {${op.args.map(arg =>
+    ${op.prettyName}(args${op.args.length === 0 ? "?" : ""}: {${op.args.map(arg =>
         `${arg.name}${arg.type.name.endsWith("?") ? "?" : ""}: ${generateTypescriptTypeName(arg.type)}`
-    ).join(", ")}}): Promise<${generateTypescriptTypeName(op.returnType)}> { return this.makeRequest("${op.prettyName}", args); }`).join("")}
+    ).join(", ")}}): Promise<${generateTypescriptTypeName(op.returnType)}> { return this.makeRequest("${op.prettyName}", args ?? {}); }`).join("")}
 }\n\n`;
 
     code += `const errClasses = {\n${ast.errors.map(err => `    ${err}`).join(",\n")}\n};\n\n`;

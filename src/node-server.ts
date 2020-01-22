@@ -13,8 +13,8 @@ export function generateNodeServerSource(ast: AstRoot, options: Options) {
 
     for (const type of ast.enumTypes) {
         code += generateTypescriptEnum(type);
+        code += "\n";
     }
-    code += "\n";
 
     for (const type of ast.structTypes) {
         code += generateTypescriptInterface(type);
