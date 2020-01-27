@@ -2,7 +2,7 @@ import * as React from "react";
 import s from "./tabs.scss";
 import classNames from "classnames";
 
-export type TabKeys = "arguments" | "response" | "error" | "extra";
+export type TabKeys = "arguments" | "response" | "error" | "annotations";
 
 interface TabsProps {
 	activeTab: TabKeys;
@@ -17,7 +17,7 @@ export default function Tabs(props: TabsProps) {
 		{ key: "arguments", label: "Arguments" },
 		{ key: "response", label: "Response" },
 		{ key: "error", label: "Error" },
-		{ key: "extra", label: "Extra Information" },
+		{ key: "annotations", label: "Annotations" },
 	];
 
 	const tabCells = tabs.map(t => (

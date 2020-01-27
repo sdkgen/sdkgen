@@ -1,11 +1,22 @@
 import { observable } from "mobx";
+import { AnnotationJson } from "resources/types/ast";
 
 export type RequestStatus = "notFetched" | "sucess" | "fetching" | "error";
+
+export interface ModelAnotations {
+	func: AnnotationJson[];
+	args: Record<
+		string, // argumentName
+		AnnotationJson[]
+	>;
+}
+
 interface ConstructorArgument {
 	name: string;
 	defaultArgsMock: any;
 	baseUrl: string;
 	deviceId: string;
+	annotations: ModelAnotations;
 }
 
 export class requestModel {
@@ -13,6 +24,7 @@ export class requestModel {
 	public baseUrl: string;
 	public deviceId: string;
 	public name: string;
+	public annotations: ModelAnotations;
 
 	@observable
 	public response?: any;
@@ -84,6 +96,7 @@ export class requestModel {
 		this.name = config.name;
 		this.deviceId = config.deviceId;
 		this.baseUrl = config.baseUrl;
+		this.annotations = config.annotations;
 		this.loading = false;
 		this.response = undefined;
 		this.error = undefined;
