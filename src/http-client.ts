@@ -54,6 +54,7 @@ export class SdkgenHttpClient {
             },
             deviceInfo: {
                 id: getDeviceId(),
+                type: "web",
                 version: thisScript ? thisScript.src : "",
                 language: navigator.language,
                 browserUserAgent: navigator.userAgent,
