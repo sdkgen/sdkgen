@@ -3,12 +3,11 @@ import { TypeDescription, TypeTable } from "./ast";
 const simpleStringTypes = ["string", "cep", "email", "phone", "safehtml", "xml"];
 const simpleTypes = ["json", "bool", "hex", "uuid", "base64", "url", "int", "uint", "float", "money", "void", "latlng", ...simpleStringTypes];
 
-function bufferToBase64(buffer: ArrayBuffer) {
-    return btoa(String.fromCharCode(...new Uint8Array(buffer)));
+function bufferToBase64(buffer: Buffer) {
+    return buffer.toString("base64");
 }
-
 function base64ToBuffer(str: string) {
-    return new Uint8Array([...atob(str)].map(char => char.charCodeAt(0))).buffer;
+    return Buffer.from(str, "base64");
 }
 function simpleEncodeDecode(path: string, type: string, value: any) {
     if (typeof value === "bigint") {
@@ -121,7 +120,7 @@ export function encode(typeTable: TypeTable, path: string, type: TypeDescription
     } else if (simpleTypes.indexOf(type) >= 0) {
         return simpleEncodeDecode(path, type, value);
     } else if (type === "bytes") {
-        if (!(value instanceof ArrayBuffer)) {
+        if (!(value instanceof Buffer)) {
             throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
         }
         return bufferToBase64(value);
