@@ -1,0 +1,60 @@
+{
+	"error declaration": {
+		"prefix": "erd",
+		"body": "error ${1:ErrorName}",
+		"description": "Produce a error declaration with a name."
+	},
+	"enum declaration:": {
+		"prefix": "ed",
+		"body": [
+			"enum {",
+			"  ${1:enumValue}",
+			"  ${2:enumValue}",
+			"  ${3:enumValue}",
+			"}"
+		],
+		"description": "Produce an enum declaration."
+	},
+	"enum type declaration": {
+		"prefix": "etd",
+		"body": [
+			"type ${1:TypeName} enum {",
+			"  ${2:enumValue}",
+			"  ${3:enumValue}",
+			"  ${4:enumValue}",
+			"${0}}"
+		],
+		"description": "Produce an enum type declaration with three kinds of enum."
+	},
+	"function declaration": {
+		"prefix": "fd",
+		"body": "function ${1:functionName}(${2:parameterName}${3:: ${4:parameterType}})${5:: ${6:returnType}}",
+		"description": "Produce a generic function with name, parameter, parameter type and return type."
+	},
+	"get function declaration": {
+		"prefix": "gfd",
+		"body": "get ${1:functionName}(${2:parameterName}${3:: ${4:parameterType}})${5:: ${6:returnType}}",
+		"description": "Produce a get function with name, parameter, parameter type and return type."
+	},
+	"import declaration": {
+		"prefix": "impd",
+		"body": "import \"${1:importModulePath}\"",
+		"description": "Produce a get function with relative path."
+	},
+	"type declaration": {
+		"prefix": "td",
+		"body": [
+			"type ${1:TypeName} {",
+			"  ${2:propertyName}${3:: ${4:parameterType}}",
+			"  ${5:propertyName}${6:: ${7:parameterType}}",
+			"${0}}"
+
+		],
+		"description": "Produce a type declaration with a name, property name and a property type."
+	},
+	"url declaration": {
+		"prefix": "ud",
+		"body": "\\$url = \"${1:urlName}\"",
+		"description": "Produce a url variable."
+	}
+}
