@@ -1,0 +1,15 @@
+language: node_js
+node_js:
+- '8'
+- '10'
+- '12'
+deploy:
+  skip_cleanup: true
+  provider: npm
+  edge: true
+  email: guilherme@cubos.io
+  api_key:
+    secure: sgb53UDMyYwMzl2fHR2P5Udy9r6fz8J0IYSLaFxXQuM7AzpDvxz4Ea1w0gGz6pJ4C7MVDZWwd3ouMDq0wfEgIUe6A6VPD38l/JDNf2jlxgqwS9/4sYFUxrnqU1Z56Mw2JYcv11ZkbTKA4VupSlkQ4f7bcS0mZoINoy6e8Zemh3K3fSQTWHVVaVPed1Mc/orxiUmBkxmYLTI89WbtHgfv9nFu2rUhmnKJ/MhKpEaZoYsRkKInA1tCx2rYK35pskmFMigZtBenOFc8bUXz6iWBrsh/OWSTNYafZXfn6ePZc0uS69NZoHEwuIiQVyHeKU98JntnCaHep1RGaOiSWXIwIjNr6pmJW4mjQ4p+0jWlbk24jbeI3qpM/zQAgdB9QBEqNiH3d/BRSTXnZNsHyxPbmoMzyg0o9mSS3hXM+9FVdwzC8+MGecuVv4S5Jxhnp37DboIo0xctwo9dZPD9H0VqiNPz3n48/65gSbXEXYdfN7FZZ5enpBc+0IjTC2AsAeWSz2QAfCBiWNJV7zQLoeqRpGEONeuirr4TwSilMzq3Y94yaB8Cmm78JUpJJeyJV/HuXTOokkBisnAnwhftpfP/VK/JhaGuOOcaUTWW2yADlb9levbRkJIf2xCT59vOFszIXAdtrx5yw6kfJLU8aZb81T+tJ+Ss3uYwf2vwWkRsqkg=
+  on:
+    tags: true
+    repo: sdkgen/typescript-generator
