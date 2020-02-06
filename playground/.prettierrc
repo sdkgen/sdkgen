@@ -1,0 +1,30 @@
+{
+    "bracketSpacing": true,
+    "jsxBracketSameLine": false,
+    "parser": "typescript",
+    "printWidth": 100,
+    "semi": true,
+    "tabWidth": 4,
+    "trailingComma": "all",
+    "useTabs": true,
+    "overrides": [
+        {
+            "files": "*.scss",
+            "options": { 
+                "parser": "scss"
+            }
+        },
+        {
+            "files": "*.(js|jsx)",
+            "options": {
+                "parser": "babylon"
+            }
+        },
+        {
+            "files": "*.json",
+            "options": {
+                "parser": "json"
+            }
+        }
+    ]
+}

@@ -1,0 +1,74 @@
+{
+	"defaultSeverity": "warning",
+	"extends": ["tslint-react", "tslint-config-prettier"],
+	"rulesDirectory": [
+		"node_modules/tslint-microsoft-contrib",
+		"node_modules/tslint-misc-rules/rules",
+		"tslint-consistent-codestyle"
+	],
+	"rules": {
+		"member-access": true,
+		"missing-jsdoc": false,
+		"await-promise": false,
+		"adjacent-overload-signatures": true,
+		"deprecation": true,
+		"triple-equals": true,
+		"use-isnan": true,
+		"no-var-keyword": true,
+		"ordered-imports": false,
+		"strict-type-predicates": true,
+		"no-string-throw": true,
+		"no-string-literal": true,
+		"no-object-literal-type-assertion": true,
+		"import-blacklist": [true, "rxjs", "react-icons"],
+		"no-unnecessary-type-assertion": false,
+		"prefer-object-spread": true,
+		"prefer-const": [
+			true,
+			{
+				"destructuring": "all"
+			}
+		],
+		"arrow-return-shorthand": true,
+		"interface-over-type-literal": true,
+		"no-angle-bracket-type-assertion": true,
+		"object-literal-shorthand": true,
+		"return-undefined": true,
+		"variable-name": [
+			true,
+			"check-format",
+			"ban-keywords",
+			"allow-pascal-case",
+			"allow-leading-underscore"
+		],
+		"jsx-no-bind": true,
+		"jsx-no-lambda": false,
+		"jsx-self-close": true,
+		"jsx-no-string-ref": true,
+		"jsx-no-multiline-js": false,
+		"jsx-boolean-value": false,
+		// tslint-microsoft-contrib
+		"react-a11y-anchors": true,
+		"react-a11y-aria-unsupported-elements": true,
+		"react-a11y-event-has-role": true,
+		"react-a11y-image-button-has-alt": true,
+		"react-a11y-img-has-alt": true,
+		"react-a11y-lang": true,
+		"react-a11y-meta": true,
+		"react-a11y-props": true,
+		"react-a11y-proptypes": true,
+		"react-a11y-role-has-required-aria-props": true,
+		"react-a11y-role-supports-aria-props": true,
+		"react-a11y-role": true,
+		"react-a11y-tabindex-no-positive": true,
+		"react-a11y-titles": true,
+		// tslint-misc-rules
+		"class-method-newlines": true,
+		"jsx-no-braces-for-string-attributes": true,
+		"no-braces-for-single-line-arrow-functions": true,
+		// tslint-consistent-codestyle
+		"no-static-this": true,
+		"no-collapsible-if": true,
+		"prefer-while": true
+	}
+}
