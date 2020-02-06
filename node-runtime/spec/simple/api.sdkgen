@@ -1,0 +1,33 @@
+fn getUser(id: string): User
+
+type User {
+    name: string
+    age: uint
+}
+
+fn identity(types: AllTypes): AllTypes
+
+type AllTypes {
+    int: int
+    uint: uint
+    float: float
+    string: string
+    uuid: uuid
+    bool: bool
+    json: json
+    hex: hex
+    base64: base64
+    money: money
+    latlng: latlng
+    enum: enum { aa bb cc }
+    struct: {
+        aa: int
+    }
+    optional1: int?
+    optional2: int?
+    array: int[]
+    arrayOfOptionals: int?[]
+    bytes: bytes
+    date: date
+    datetime: datetime
+}
