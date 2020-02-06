@@ -1,0 +1,49 @@
+{
+  "name": "@sdkgen/dart-generator",
+  "version": "1.0.21",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "test": "jest --passWithNoTests",
+    "prepare": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sdkgen/dart-generator.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sdkgen/dart-generator/issues"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "homepage": "https://github.com/sdkgen/dart-generator#readme",
+  "devDependencies": {
+    "@types/jest": "^24.0.24",
+    "@types/node": "^13.1.0",
+    "jest": "^24.9.0",
+    "ts-jest": "^24.2.0",
+    "typescript": "^3.7.3"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "spec/.*\\.spec\\.ts$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "collectCoverage": true,
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
+  },
+  "dependencies": {
+    "@sdkgen/parser": "^1.0.27"
+  }
+}
