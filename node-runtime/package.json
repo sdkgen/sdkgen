@@ -57,10 +57,10 @@
   "dependencies": {
     "@fnando/cnpj": "^0.1.1",
     "@fnando/cpf": "^0.1.1",
-    "@sdkgen/dart-generator": "^1.0.17",
-    "@sdkgen/parser": "^1.0.27",
-    "@sdkgen/playground": "^0.1.19",
-    "@sdkgen/typescript-generator": "^1.0.30",
+    "@sdkgen/dart-generator": "file:../dart-generator",
+    "@sdkgen/parser": "file:../parser",
+    "@sdkgen/playground": "file:../playground",
+    "@sdkgen/typescript-generator": "file:../typescript-generator",
     "@types/serve-handler": "^6.1.0",
     "request-ip": "^2.1.3",
     "serve-handler": "^6.1.2"
