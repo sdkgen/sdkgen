@@ -64,7 +64,7 @@ jobs:
         channel: stable
     - run: flutter pub get
       working-directory: ./dart-runtime
-    - run: "sed 's/version: 0.0.0/version: '${echo \"${{ github.ref }}\" | cut -d'/' -f3}'/' -i pubspec.yaml"
+    - run: "sed 's/version: 0.0.0/version: '$(echo \"${{ github.ref }}\" | cut -d'/' -f3)'/' -i pubspec.yaml"
       working-directory: ./dart-runtime
     - run: bash -c 'mkdir -p ~/.pub-cache; echo "${{ env.PUB_CREDENTIALS }}" > ~/.pub-cache/credentials.json; flutter pub pub publish -f'
       working-directory: ./dart-runtime
