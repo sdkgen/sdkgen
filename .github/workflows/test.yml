@@ -1,0 +1,136 @@
+name: test
+on: [push]
+jobs:
+
+  test-browser-runtime:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [8.x, 10.x, 12.x, 13.x]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install
+      working-directory: ./browser-runtime
+    - run: npm test
+      working-directory: ./browser-runtime
+
+  test-cli:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [8.x, 10.x, 12.x, 13.x]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install
+      working-directory: ./cli
+    - run: npm test
+      working-directory: ./cli
+
+  test-dart-generator:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [8.x, 10.x, 12.x, 13.x]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install
+      working-directory: ./dart-generator
+    - run: npm test
+      working-directory: ./dart-generator
+
+  test-dart-runtime:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        flutter-version: [1.12.x, 1.13.x, 1.14.x]
+        flutter-channel: [stable, beta]
+        exclude:
+          - flutter-version: 1.12.x
+            flutter-channel: beta
+          - flutter-version: 1.13.x
+            flutter-channel: stable
+          - flutter-version: 1.14.x
+            flutter-channel: stable
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-java@v1
+      with:
+        java-version: 12.x
+    - uses: subosito/flutter-action@v1
+      with:
+        flutter-version: ${{ matrix.flutter-version }}
+        channel: ${{ matrix.flutter-channel }}
+    - run: flutter pub get
+      working-directory: ./dart-runtime
+    - run: flutter analyze
+      working-directory: ./dart-runtime
+
+  test-node-runtime:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [8.x, 10.x, 12.x, 13.x]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install
+      working-directory: ./node-runtime
+    - run: npm test
+      working-directory: ./node-runtime
+
+  test-parser:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [8.x, 10.x, 12.x, 13.x]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install
+      working-directory: ./parser
+    - run: npm test
+      working-directory: ./parser
+
+  test-playground:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # TODO: Enable 13.x. See #1.
+        node-version: [8.x, 10.x, 12.x]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install
+      working-directory: ./playground
+    - run: npm build
+      working-directory: ./playground
+
+  test-typescript-generator:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [8.x, 10.x, 12.x, 13.x]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install
+      working-directory: ./typescript-generator
+    - run: npm test
+      working-directory: ./typescript-generator
