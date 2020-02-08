@@ -9,6 +9,8 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - uses: actions/setup-node@v1
+      with:
+        registry-url: https://registry.npmjs.org
     - run: |
         npm install -g json && json -I -f package.json -e '
           this.version = "${{ github.ref }}".replace("refs/tags/", "");
