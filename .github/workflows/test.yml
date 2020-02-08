@@ -117,7 +117,7 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install
       working-directory: ./playground
-    - run: npm build
+    - run: npm run build
       working-directory: ./playground
 
   typescript-generator:
