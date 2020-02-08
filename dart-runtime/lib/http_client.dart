@@ -92,7 +92,9 @@ class SdkgenHttpClient {
           "language": "${locale.languageCode}-${locale.countryCode}",
           "platform": platform,
           "timezone": DateTime.now().timeZoneName,
-          "type": Platform.isAndroid ? "android" : Platform.isIOS ? "ios" : "flutter",
+          "type": Platform.isAndroid
+              ? "android"
+              : Platform.isIOS ? "ios" : "flutter",
           "version": await GetVersion.projectVersion
         }
       };
