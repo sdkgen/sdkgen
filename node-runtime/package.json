@@ -2,8 +2,7 @@
   "name": "@sdkgen/node-runtime",
   "version": "1.0.59",
   "description": "",
-  "main": "dist/src/index.js",
-  "types": "dist/src/index.d.ts",
+  "main": "src/index.ts",
   "scripts": {
     "test": "jest --passWithNoTests",
     "eslint:fix": "eslint --fix '**/*.{t,j}s'",
