@@ -1,6 +1,6 @@
 {
   "name": "@sdkgen/parser",
-  "version": "1.0.30",
+  "version": "0.0.0",
   "description": "",
   "main": "src/index.ts",
   "scripts": {

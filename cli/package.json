@@ -1,6 +1,6 @@
 {
   "name": "@sdkgen/cli",
-  "version": "1.0.14",
+  "version": "0.0.0",
   "description": "",
   "bin": {
     "sdkgen": "dist/src/index.js"
