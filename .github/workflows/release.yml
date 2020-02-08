@@ -27,3 +27,155 @@ jobs:
       working-directory: ./parser
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+
+  browser-runtime:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@v1
+      with:
+        registry-url: https://registry.npmjs.org
+    - run: |
+        npm install -g json && json -I -f package.json -e '
+          this.version = "${{ github.ref }}".replace("refs/tags/", "");
+          this.main = "dist/src/index.js";
+          this.types = "dist/src/index.d.ts";
+          for (const pkg in this.dependencies)
+            if (this.dependencies[pkg].startsWith("file:../"))
+              this.dependencies[pkg] = this.version;
+        '
+      working-directory: ./browser-runtime
+    - run: npm install
+      working-directory: ./browser-runtime
+    - run: npm publish
+      working-directory: ./browser-runtime
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+
+  typescript-generator:
+    needs: [parser]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@v1
+      with:
+        registry-url: https://registry.npmjs.org
+    - run: |
+        npm install -g json && json -I -f package.json -e '
+          this.version = "${{ github.ref }}".replace("refs/tags/", "");
+          this.main = "dist/src/index.js";
+          this.types = "dist/src/index.d.ts";
+          for (const pkg in this.dependencies)
+            if (this.dependencies[pkg].startsWith("file:../"))
+              this.dependencies[pkg] = this.version;
+        '
+      working-directory: ./typescript-generator
+    - run: npm install
+      working-directory: ./typescript-generator
+    - run: npm publish
+      working-directory: ./typescript-generator
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+
+  dart-generator:
+    needs: [parser]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@v1
+      with:
+        registry-url: https://registry.npmjs.org
+    - run: |
+        npm install -g json && json -I -f package.json -e '
+          this.version = "${{ github.ref }}".replace("refs/tags/", "");
+          this.main = "dist/src/index.js";
+          this.types = "dist/src/index.d.ts";
+          for (const pkg in this.dependencies)
+            if (this.dependencies[pkg].startsWith("file:../"))
+              this.dependencies[pkg] = this.version;
+        '
+      working-directory: ./dart-generator
+    - run: npm install
+      working-directory: ./dart-generator
+    - run: npm publish
+      working-directory: ./dart-generator
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+
+  cli:
+    needs: [parser, typescript-generator, dart-generator]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@v1
+      with:
+        registry-url: https://registry.npmjs.org
+    - run: |
+        npm install -g json && json -I -f package.json -e '
+          this.version = "${{ github.ref }}".replace("refs/tags/", "");
+          this.main = "dist/src/index.js";
+          this.types = "dist/src/index.d.ts";
+          for (const pkg in this.dependencies)
+            if (this.dependencies[pkg].startsWith("file:../"))
+              this.dependencies[pkg] = this.version;
+        '
+      working-directory: ./cli
+    - run: npm install
+      working-directory: ./cli
+    - run: npm publish
+      working-directory: ./cli
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+
+  playground:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@v1
+      with:
+        registry-url: https://registry.npmjs.org
+    - run: |
+        npm install -g json && json -I -f package.json -e '
+          this.version = "${{ github.ref }}".replace("refs/tags/", "");
+          this.main = "dist/src/index.js";
+          this.types = "dist/src/index.d.ts";
+          for (const pkg in this.dependencies)
+            if (this.dependencies[pkg].startsWith("file:../"))
+              this.dependencies[pkg] = this.version;
+        '
+      working-directory: ./playground
+    - run: npm install
+      working-directory: ./playground
+    - run: npm run build
+      working-directory: ./playground
+      env:
+        NODE_ENV: production
+    - run: npm publish
+      working-directory: ./playground
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+
+  node-runtime:
+    needs: [parser, typescript-generator, dart-generator, playground]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@v1
+      with:
+        registry-url: https://registry.npmjs.org
+    - run: |
+        npm install -g json && json -I -f package.json -e '
+          this.version = "${{ github.ref }}".replace("refs/tags/", "");
+          this.main = "dist/src/index.js";
+          this.types = "dist/src/index.d.ts";
+          for (const pkg in this.dependencies)
+            if (this.dependencies[pkg].startsWith("file:../"))
+              this.dependencies[pkg] = this.version;
+        '
+      working-directory: ./node-runtime
+    - run: npm install
+      working-directory: ./node-runtime
+    - run: npm publish
+      working-directory: ./node-runtime
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
