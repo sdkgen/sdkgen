@@ -1,11 +1,4 @@
-node_modules
-coverage
-dist
-npm-debug.log
-.awcache
-yarn-error.log
-.cache-loader
-/.gtm/
-.idea
-.DS_Store
-*.snap
+dist/
+node_modules/
+coverage/
+package-lock.json
