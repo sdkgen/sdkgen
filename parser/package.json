@@ -9,17 +9,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sdkgen/parser.git"
+    "url": "git+https://github.com/sdkgen/sdkgen.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/sdkgen/parser/issues"
+    "url": "https://github.com/sdkgen/sdkgen/issues"
   },
   "publishConfig": {
     "access": "public"
   },
-  "homepage": "https://github.com/sdkgen/parser#readme",
+  "homepage": "https://github.com/sdkgen/sdkgen#readme",
   "devDependencies": {
     "@types/jest": "^24.0.23",
     "@types/node": "^13.1.0",

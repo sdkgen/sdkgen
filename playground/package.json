@@ -23,12 +23,12 @@
     "author": "",
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/sdkgen/playground"
+        "url": "https://github.com/sdkgen/sdkgen"
     },
     "publishConfig": {
         "access": "public"
     },
-    "homepage": "https://github.com/sdkgen/playground#readme",
+    "homepage": "https://github.com/sdkgen/sdkgen#readme",
     "dependencies": {},
     "devDependencies": {
         "@fortawesome/fontawesome-svg-core": "^1.2.25",

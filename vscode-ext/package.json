@@ -9,7 +9,7 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/sdkgen/vscode-ext.git"
+        "url": "git+https://github.com/sdkgen/sdkgen.git"
     },
     "categories": [
         "Programming Languages",

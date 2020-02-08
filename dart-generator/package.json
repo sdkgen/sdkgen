@@ -9,17 +9,17 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sdkgen/dart-generator.git"
+    "url": "git+https://github.com/sdkgen/sdkgen.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/sdkgen/dart-generator/issues"
+    "url": "https://github.com/sdkgen/sdkgen/issues"
   },
   "publishConfig": {
     "access": "public"
   },
-  "homepage": "https://github.com/sdkgen/dart-generator#readme",
+  "homepage": "https://github.com/sdkgen/sdkgen#readme",
   "devDependencies": {
     "@types/jest": "^24.0.24",
     "@types/node": "^13.1.0",
