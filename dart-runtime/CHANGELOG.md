@@ -41,3 +41,7 @@
 ## 1.0.0
 
 - Initial version
+
+## 0.0.0
+
+- Unstable version

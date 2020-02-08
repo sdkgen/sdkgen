@@ -52,6 +52,23 @@ jobs:
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
+  dart-runtime:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-java@v1
+      with:
+        java-version: 12.x
+    - uses: subosito/flutter-action@v1
+      with:
+        channel: stable
+    - run: flutter pub get
+      working-directory: ./dart-runtime
+    - run: "sed 's/version: 0.0.0/version: '${echo \"${{ github.ref }}\" | cut -d'/' -f3}'/' -i pubspec.yaml"
+      working-directory: ./dart-runtime
+    - run: bash -c 'mkdir -p ~/.pub-cache; echo "${{ env.PUB_CREDENTIALS }}" > ~/.pub-cache/credentials.json; flutter pub pub publish -f'
+      working-directory: ./dart-runtime
+
   typescript-generator:
     needs: [parser]
     runs-on: ubuntu-latest

@@ -73,6 +73,8 @@ jobs:
       working-directory: ./dart-runtime
     - run: flutter analyze
       working-directory: ./dart-runtime
+    - run: flutter pub pub publish --dry-run
+      working-directory: ./dart-runtime
 
   node-runtime:
     runs-on: ubuntu-latest
