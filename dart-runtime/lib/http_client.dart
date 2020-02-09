@@ -89,7 +89,9 @@ class SdkgenHttpClient {
         "extra": {},
         "deviceInfo": {
           "id": await _deviceId(),
-          "language": locale == null ? null : "${locale.languageCode}-${locale.countryCode}",
+          "language": locale == null
+              ? null
+              : "${locale.languageCode}-${locale.countryCode}",
           "platform": platform,
           "timezone": DateTime.now().timeZoneName,
           "type": Platform.isAndroid
