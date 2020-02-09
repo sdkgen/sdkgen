@@ -3,12 +3,6 @@ import { TypeDescription, TypeTable } from "./ast";
 const simpleStringTypes = ["string", "cep", "email", "phone", "safehtml", "xml"];
 const simpleTypes = ["json", "bool", "hex", "uuid", "base64", "url", "int", "uint", "float", "money", "void", "latlng", ...simpleStringTypes];
 
-function bufferToBase64(buffer: Buffer) {
-    return buffer.toString("base64");
-}
-function base64ToBuffer(str: string) {
-    return Buffer.from(str, "base64");
-}
 function simpleEncodeDecode(path: string, type: string, value: any) {
     if (typeof value === "bigint") {
         value = Number(value);
@@ -40,7 +34,7 @@ function simpleEncodeDecode(path: string, type: string, value: any) {
         }
         return value.toLowerCase();
     } else if (type === "base64") {
-        if (typeof value !== "string" || bufferToBase64(base64ToBuffer(value)) !== value) {
+        if (typeof value !== "string" || Buffer.from(value, "base64").toString("base64") !== value) {
             throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
         }
         return value;
@@ -123,7 +117,7 @@ export function encode(typeTable: TypeTable, path: string, type: TypeDescription
         if (!(value instanceof Buffer)) {
             throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
         }
-        return bufferToBase64(value);
+        return value.toString("base64");
     } else if (type === "cpf") {
         if (typeof value !== "string") {
             throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
@@ -187,8 +181,8 @@ export function decode(typeTable: TypeTable, path: string, type: TypeDescription
         if (typeof value !== "string") {
             throw new Error(`Invalid type at '${path}', expected ${type} (base64), got ${JSON.stringify(value)}`);
         }
-        const buffer = base64ToBuffer(value);
-        if (bufferToBase64(buffer) !== value) {
+        const buffer = Buffer.from(value, "base64");
+        if (buffer.toString("base64") !== value) {
             throw new Error(`Invalid type at '${path}', expected ${type} (base64), got ${JSON.stringify(value)}`);
         }
         return buffer;
