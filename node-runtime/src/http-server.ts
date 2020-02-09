@@ -37,79 +37,43 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
         this.httpServer = createServer(this.handleRequest.bind(this));
         this.enableCors();
 
-        this.addHttpHandler("GET", "/targets/node/api.ts", (req, res) => {
+        const targetTable = [
+            ["/targets/node/api.ts", generateNodeServerSource],
+            ["/targets/node/client.ts", generateNodeClientSource],
+            ["/targets/web/client.ts", generateBrowserClientSource],
+            ["/targets/flutter/client.dart", generateDartClientSource],
+        ] as const;
+
+        for (const [path, generateFn] of targetTable) {
+            this.addHttpHandler("GET", path, (req, res) => {
+                if (!this.introspection) {
+                    res.statusCode = 404;
+                    res.end();
+                    return;
+                }
+
+                try {
+                    res.setHeader("Content-Type", "application/octet-stream");
+                    res.write(generateFn(apiConfig.ast, {}));
+                } catch (e) {
+                    console.error(e);
+                    res.statusCode = 500;
+                    res.write(e.toString());
+                }
+
+                res.end();
+            });
+        }
+
+        this.addHttpHandler("GET", "/ast.json", (req, res) => {
             if (!this.introspection) {
                 res.statusCode = 404;
                 res.end();
                 return;
             }
 
-            try {
-                res.setHeader("Content-Type", "application/octet-stream");
-                res.write(generateNodeServerSource(apiConfig.ast, {}));
-            } catch (e) {
-                console.error(e);
-                res.statusCode = 500;
-                res.write(e.toString());
-            }
-
-            res.end();
-        });
-
-        this.addHttpHandler("GET", "/targets/node/client.ts", (req, res) => {
-            if (!this.introspection) {
-                res.statusCode = 404;
-                res.end();
-                return;
-            }
-
-            try {
-                res.setHeader("Content-Type", "application/octet-stream");
-                res.write(generateNodeClientSource(apiConfig.ast, {}));
-            } catch (e) {
-                console.error(e);
-                res.statusCode = 500;
-                res.write(e.toString());
-            }
-
-            res.end();
-        });
-
-        this.addHttpHandler("GET", "/targets/web/client.ts", (req, res) => {
-            if (!this.introspection) {
-                res.statusCode = 404;
-                res.end();
-                return;
-            }
-
-            try {
-                res.setHeader("Content-Type", "application/octet-stream");
-                res.write(generateBrowserClientSource(apiConfig.ast, {}));
-            } catch (e) {
-                console.error(e);
-                res.statusCode = 500;
-                res.write(e.toString());
-            }
-
-            res.end();
-        });
-
-        this.addHttpHandler("GET", "/targets/flutter/client.dart", (req, res) => {
-            if (!this.introspection) {
-                res.statusCode = 404;
-                res.end();
-                return;
-            }
-
-            try {
-                res.setHeader("Content-Type", "application/octet-stream");
-                res.write(generateDartClientSource(apiConfig.ast, {}));
-            } catch (e) {
-                console.error(e);
-                res.statusCode = 500;
-                res.write(e.toString());
-            }
-
+            res.setHeader("Content-Type", "application/json");
+            res.write(JSON.stringify(apiConfig.astJson));
             res.end();
         });
 
@@ -137,18 +101,6 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
                 res.write(e.toString());
                 res.end();
             });
-        });
-
-        this.addHttpHandler("GET", "/ast.json", (req, res) => {
-            if (!this.introspection) {
-                res.statusCode = 404;
-                res.end();
-                return;
-            }
-
-            res.setHeader("Content-Type", "application/json");
-            res.write(JSON.stringify(apiConfig.astJson));
-            res.end();
         });
     }
 
