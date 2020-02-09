@@ -8,10 +8,10 @@ environment:
   flutter: ">=1.5.0 <2.0.0"
 
 dependencies:
-  http: ^0.12.0+2
+  http: ^0.12.0+4
   convert: ^2.1.1
-  shared_preferences: ^0.5.6
-  get_version: ^0.2.0+1
+  shared_preferences: ^0.5.6+1
+  get_version: ^0.2.1
   device_info: ^0.4.1+4
   flutter:
     sdk: flutter

@@ -21,11 +21,11 @@
   },
   "homepage": "https://github.com/sdkgen/sdkgen#readme",
   "devDependencies": {
-    "@types/jest": "^24.0.23",
+    "@types/jest": "^25.1.2",
     "@types/node": "^13.7.0",
-    "jest": "^24.9.0",
-    "ts-jest": "^24.2.0",
-    "typescript": "^3.7.3"
+    "jest": "^25.1.0",
+    "ts-jest": "^25.2.0",
+    "typescript": "^3.7.5"
   },
   "jest": {
     "transform": {
