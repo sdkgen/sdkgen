@@ -29,6 +29,8 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
 
     public dynamicCorsOrigin = true;
 
+    public introspection = true;
+
     private ignoredUrlPrefix = "";
 
     constructor(protected apiConfig: BaseApiConfig<ExtraContextT>, private extraContext: ExtraContextT) {
@@ -36,6 +38,12 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
         this.enableCors();
 
         this.addHttpHandler("GET", "/targets/node/api.ts", (req, res) => {
+            if (!this.introspection) {
+                res.statusCode = 404;
+                res.end();
+                return;
+            }
+
             try {
                 res.setHeader("Content-Type", "application/octet-stream");
                 res.write(generateNodeServerSource(apiConfig.ast, {}));
@@ -49,6 +57,12 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
         });
 
         this.addHttpHandler("GET", "/targets/node/client.ts", (req, res) => {
+            if (!this.introspection) {
+                res.statusCode = 404;
+                res.end();
+                return;
+            }
+
             try {
                 res.setHeader("Content-Type", "application/octet-stream");
                 res.write(generateNodeClientSource(apiConfig.ast, {}));
@@ -62,6 +76,12 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
         });
 
         this.addHttpHandler("GET", "/targets/web/client.ts", (req, res) => {
+            if (!this.introspection) {
+                res.statusCode = 404;
+                res.end();
+                return;
+            }
+
             try {
                 res.setHeader("Content-Type", "application/octet-stream");
                 res.write(generateBrowserClientSource(apiConfig.ast, {}));
@@ -75,6 +95,12 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
         });
 
         this.addHttpHandler("GET", "/targets/flutter/client.dart", (req, res) => {
+            if (!this.introspection) {
+                res.statusCode = 404;
+                res.end();
+                return;
+            }
+
             try {
                 res.setHeader("Content-Type", "application/octet-stream");
                 res.write(generateDartClientSource(apiConfig.ast, {}));
@@ -88,6 +114,12 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
         });
 
         this.addHttpHandler("GET", /^\/playground/u, (req, res) => {
+            if (!this.introspection) {
+                res.statusCode = 404;
+                res.end();
+                return;
+            }
+
             if (req.url) {
                 req.url = req.url.endsWith("/playground")
                     ? req.url.replace(/\/playground/u, "/index.html")
@@ -108,6 +140,12 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
         });
 
         this.addHttpHandler("GET", "/ast.json", (req, res) => {
+            if (!this.introspection) {
+                res.statusCode = 404;
+                res.end();
+                return;
+            }
+
             res.setHeader("Content-Type", "application/json");
             res.write(JSON.stringify(apiConfig.astJson));
             res.end();

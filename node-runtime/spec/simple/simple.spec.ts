@@ -1,13 +1,15 @@
-import { Parser } from "@sdkgen/parser";
+import { Parser, astToJson } from "@sdkgen/parser";
 import { generateNodeClientSource, generateNodeServerSource } from "@sdkgen/typescript-generator";
 import axios from "axios";
 import { randomBytes } from "crypto";
 import { unlinkSync, writeFileSync } from "fs";
 import { Context, SdkgenHttpServer } from "../../src";
 
+const ast = new Parser(`${__dirname}/api.sdkgen`).parse();
+
 writeFileSync(
     `${__dirname}/api.ts`,
-    generateNodeServerSource(new Parser(`${__dirname}/api.sdkgen`).parse(), {}).replace(
+    generateNodeServerSource(ast, {}).replace(
         "@sdkgen/node-runtime",
         "../../src",
     ),
@@ -37,7 +39,7 @@ const nodeLegacyClient = new NodeLegacyApiClient("http://localhost:8000");
 
 writeFileSync(
     `${__dirname}/nodeClient.ts`,
-    generateNodeClientSource(new Parser(`${__dirname}/api.sdkgen`).parse(), {}).replace(
+    generateNodeClientSource(ast, {}).replace(
         "@sdkgen/node-runtime",
         "../../src",
     ),
@@ -65,6 +67,12 @@ describe("Simple API", () => {
         expect(await axios.get("http://localhost:8000/oqpfnaewilfewigbwugbhlbiuas")).toMatchObject({
             data: { ok: true },
         });
+    });
+
+    test("Can get ast.json at runtime", async () => {
+        expect(await axios.get("http://localhost:8000/ast.json")).toMatchObject({ data: astToJson(ast) });
+        server.introspection = false;
+        await expect(axios.get("http://localhost:8000/ast.json")).rejects.toThrowError();
     });
 
     test("Can make a call from legacy node client", async () => {
