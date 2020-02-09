@@ -60,15 +60,15 @@ class SdkgenHttpClient {
             func.args[argName], argValue);
       });
 
-      var locale = Localizations.localeOf(context);
+      var locale = context == null ? null : Localizations.localeOf(context);
 
       var platform = {
         "os": Platform.operatingSystem,
         "osVersion": Platform.operatingSystemVersion,
         "dartVersion": Platform.version,
         "appId": await GetVersion.appID,
-        "screenWidth": MediaQuery.of(context).size.width,
-        "screenHeight": MediaQuery.of(context).size.height
+        "screenWidth": context == null ? 0 : MediaQuery.of(context).size.width,
+        "screenHeight": context == null ? 0 : MediaQuery.of(context).size.height
       };
 
       var deviceInfo = DeviceInfoPlugin();
@@ -89,7 +89,7 @@ class SdkgenHttpClient {
         "extra": {},
         "deviceInfo": {
           "id": await _deviceId(),
-          "language": "${locale.languageCode}-${locale.countryCode}",
+          "language": locale == null ? null : "${locale.languageCode}-${locale.countryCode}",
           "platform": platform,
           "timezone": DateTime.now().timeZoneName,
           "type": Platform.isAndroid
