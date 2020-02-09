@@ -7,7 +7,7 @@
     "test": "jest --passWithNoTests",
     "eslint:fix": "eslint --fix '**/*.{t,j}s'",
     "eslint:check": "eslint '**/*.{t,j}s'",
-    "prepare": "tsc"
+    "build": "tsc"
   },
   "repository": {
     "type": "git",

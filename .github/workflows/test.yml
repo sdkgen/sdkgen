@@ -14,6 +14,8 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install
       working-directory: ./browser-runtime
+    - run: npm run build
+      working-directory: ./browser-runtime
     - run: npm test
       working-directory: ./browser-runtime
 
@@ -29,6 +31,8 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install
       working-directory: ./cli
+    - run: npm run build
+      working-directory: ./cli
     - run: npm test
       working-directory: ./cli
 
@@ -43,6 +47,8 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm install
+      working-directory: ./dart-generator
+    - run: npm run build
       working-directory: ./dart-generator
     - run: npm test
       working-directory: ./dart-generator
@@ -90,6 +96,8 @@ jobs:
         node-version: ${{ matrix.node-version }}
     - run: npm install
       working-directory: ./node-runtime
+    - run: npm run build
+      working-directory: ./node-runtime
     - run: npm test
       working-directory: ./node-runtime
 
@@ -104,6 +112,8 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm install
+      working-directory: ./parser
+    - run: npm run build
       working-directory: ./parser
     - run: npm test
       working-directory: ./parser
@@ -135,6 +145,8 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: npm install
+      working-directory: ./typescript-generator
+    - run: npm run build
       working-directory: ./typescript-generator
     - run: npm test
       working-directory: ./typescript-generator

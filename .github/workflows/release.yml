@@ -23,6 +23,8 @@ jobs:
       working-directory: ./parser
     - run: npm install
       working-directory: ./parser
+    - run: npm run build
+      working-directory: ./parser
     - run: npm publish
       working-directory: ./parser
       env:
@@ -46,6 +48,8 @@ jobs:
         '
       working-directory: ./browser-runtime
     - run: npm install
+      working-directory: ./browser-runtime
+    - run: npm run build
       working-directory: ./browser-runtime
     - run: npm publish
       working-directory: ./browser-runtime
@@ -91,6 +95,8 @@ jobs:
       working-directory: ./typescript-generator
     - run: npm install
       working-directory: ./typescript-generator
+    - run: npm run build
+      working-directory: ./typescript-generator
     - run: npm publish
       working-directory: ./typescript-generator
       env:
@@ -116,6 +122,8 @@ jobs:
       working-directory: ./dart-generator
     - run: npm install
       working-directory: ./dart-generator
+    - run: npm run build
+      working-directory: ./dart-generator
     - run: npm publish
       working-directory: ./dart-generator
       env:
@@ -140,6 +148,8 @@ jobs:
         '
       working-directory: ./cli
     - run: npm install
+      working-directory: ./cli
+    - run: npm run build
       working-directory: ./cli
     - run: npm publish
       working-directory: ./cli
@@ -193,6 +203,8 @@ jobs:
         '
       working-directory: ./node-runtime
     - run: npm install
+      working-directory: ./node-runtime
+    - run: npm run build
       working-directory: ./node-runtime
     - run: npm publish
       working-directory: ./node-runtime
