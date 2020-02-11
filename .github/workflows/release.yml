@@ -7,7 +7,7 @@ jobs:
   parser:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
       with:
         registry-url: https://registry.npmjs.org
@@ -33,7 +33,7 @@ jobs:
   browser-runtime:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
       with:
         registry-url: https://registry.npmjs.org
@@ -80,7 +80,7 @@ jobs:
     needs: [parser]
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
       with:
         registry-url: https://registry.npmjs.org
@@ -107,7 +107,7 @@ jobs:
     needs: [parser]
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
       with:
         registry-url: https://registry.npmjs.org
@@ -134,7 +134,7 @@ jobs:
     needs: [parser, typescript-generator, dart-generator]
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
       with:
         registry-url: https://registry.npmjs.org
@@ -160,7 +160,7 @@ jobs:
   playground:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
       with:
         registry-url: https://registry.npmjs.org
@@ -189,7 +189,7 @@ jobs:
     needs: [parser, typescript-generator, dart-generator, playground]
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
       with:
         registry-url: https://registry.npmjs.org
