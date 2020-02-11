@@ -5,8 +5,8 @@ import 'dart:math';
 import 'package:convert/convert.dart';
 import 'package:device_info/device_info.dart';
 import 'package:flutter/widgets.dart';
-import 'package:get_version/get_version.dart';
 import 'package:http/http.dart' as http;
+import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'types.dart';
@@ -62,11 +62,16 @@ class SdkgenHttpClient {
 
       var locale = context == null ? null : Localizations.localeOf(context);
 
+      PackageInfo packageInfo;
+      try {
+        packageInfo = await PackageInfo.fromPlatform();
+      } catch (e) {}
+
       var platform = {
         "os": Platform.operatingSystem,
         "osVersion": Platform.operatingSystemVersion,
         "dartVersion": Platform.version,
-        "appId": await GetVersion.appID,
+        "appId": packageInfo?.packageName,
         "screenWidth": context == null ? 0 : MediaQuery.of(context).size.width,
         "screenHeight": context == null ? 0 : MediaQuery.of(context).size.height
       };
@@ -97,7 +102,7 @@ class SdkgenHttpClient {
           "type": Platform.isAndroid
               ? "android"
               : Platform.isIOS ? "ios" : "flutter",
-          "version": await GetVersion.projectVersion
+          "version": packageInfo?.version
         }
       };
 
