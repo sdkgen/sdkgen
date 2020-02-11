@@ -8,7 +8,7 @@ jobs:
   _version:
     runs-on: ubuntu-latest
     steps:
-      - run: echo 0.0.0-dev.$(date -u +'%Y%m%d%H%M%S') > version.txt
+      - run: echo -n 0.0.0-dev.$(date -u +'%Y%m%d%H%M%S') > version.txt
       - uses: actions/upload-artifact@v1
         with:
           name: version
@@ -27,7 +27,7 @@ jobs:
         registry-url: https://registry.npmjs.org
     - run: |
         npm install -g json && json -I -f package.json -e '
-          this.version = "'$(cat version/version.txt)'";
+          this.version = "'$(cat version.txt)'";
           this.main = "dist/src/index.js";
           this.types = "dist/src/index.d.ts";
           for (const pkg in this.dependencies)
@@ -57,7 +57,7 @@ jobs:
         registry-url: https://registry.npmjs.org
     - run: |
         npm install -g json && json -I -f package.json -e '
-          this.version = "'$(cat version/version.txt)'";
+          this.version = "'$(cat version.txt)'";
           this.main = "dist/src/index.js";
           this.types = "dist/src/index.d.ts";
           for (const pkg in this.dependencies)
@@ -90,7 +90,7 @@ jobs:
         channel: stable
     - run: flutter pub get
       working-directory: ./dart-runtime
-    - run: "sed 's/version: 0.0.0/version: '$(cat version/version.txt)'/' -i pubspec.yaml"
+    - run: "sed 's/version: 0.0.0/version: '$(cat version.txt)'/' -i pubspec.yaml"
       working-directory: ./dart-runtime
     - run: mkdir -p $PUB_CACHE && echo "$PUB_CREDENTIALS" > $PUB_CACHE/credentials.json && flutter pub pub publish -v -f
       working-directory: ./dart-runtime
@@ -111,7 +111,7 @@ jobs:
         registry-url: https://registry.npmjs.org
     - run: |
         npm install -g json && json -I -f package.json -e '
-          this.version = "'$(cat version/version.txt)'";
+          this.version = "'$(cat version.txt)'";
           this.main = "dist/src/index.js";
           this.types = "dist/src/index.d.ts";
           for (const pkg in this.dependencies)
@@ -141,7 +141,7 @@ jobs:
         registry-url: https://registry.npmjs.org
     - run: |
         npm install -g json && json -I -f package.json -e '
-          this.version = "'$(cat version/version.txt)'";
+          this.version = "'$(cat version.txt)'";
           this.main = "dist/src/index.js";
           this.types = "dist/src/index.d.ts";
           for (const pkg in this.dependencies)
@@ -171,7 +171,7 @@ jobs:
         registry-url: https://registry.npmjs.org
     - run: |
         npm install -g json && json -I -f package.json -e '
-          this.version = "'$(cat version/version.txt)'";
+          this.version = "'$(cat version.txt)'";
           this.main = "dist/src/index.js";
           this.types = "dist/src/index.d.ts";
           for (const pkg in this.dependencies)
@@ -201,7 +201,7 @@ jobs:
         registry-url: https://registry.npmjs.org
     - run: |
         npm install -g json && json -I -f package.json -e '
-          this.version = "'$(cat version/version.txt)'";
+          this.version = "'$(cat version.txt)'";
           this.main = "dist/src/index.js";
           this.types = "dist/src/index.d.ts";
           for (const pkg in this.dependencies)
@@ -233,7 +233,7 @@ jobs:
         registry-url: https://registry.npmjs.org
     - run: |
         npm install -g json && json -I -f package.json -e '
-          this.version = "'$(cat version/version.txt)'";
+          this.version = "'$(cat version.txt)'";
           this.main = "dist/src/index.js";
           this.types = "dist/src/index.d.ts";
           for (const pkg in this.dependencies)
