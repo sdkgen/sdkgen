@@ -132,7 +132,7 @@ export function encode(typeTable: TypeTable, path: string, type: TypeDescription
         if (!(value instanceof Date) && !(typeof value === "string" && value.match(/^[0-9]{4}-[01][0-9]-[0123][0-9]$/))) {
             throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
         }
-        return typeof value === "string" ? new Date(value).toISOString().split("T").shift() : value.toISOString().split("T").shift();
+        return typeof value === "string" ? new Date(value).toISOString().split("T")[0] : value.toISOString().split("T")[0];
     } else if (type === "datetime") {
         if (!(value instanceof Date) && !(typeof value === "string" && value.match(/^[0-9]{4}-[01][0-9]-[0123][0-9]T[012][0-9]:[0123456][0-9]:[0123456][0-9](\\.[0-9]{1,6})?Z?$/))) {
             throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
