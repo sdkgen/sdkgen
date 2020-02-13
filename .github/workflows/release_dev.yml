@@ -95,7 +95,7 @@ jobs:
     - run: mkdir -p $PUB_CACHE && echo "$PUB_CREDENTIALS" > $PUB_CACHE/credentials.json && flutter pub pub publish -v -f
       working-directory: ./dart-runtime
       env:
-        PUB_CACHE: ~/.pub-cache
+        PUB_CACHE: /.pub-cache
         PUB_CREDENTIALS: ${{ secrets.PUB_CREDENTIALS }}
 
   typescript-generator:
