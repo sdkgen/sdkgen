@@ -129,15 +129,15 @@ export function encode(typeTable: TypeTable, path: string, type: TypeDescription
         }
         return value;
     } else if (type === "date") {
-        if (!(value instanceof Date)) {
+        if (!(value instanceof Date) && !(typeof value === "string" && value.match(/^[0-9]{4}-[01][0-9]-[0123][0-9]$/))) {
             throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
         }
-        return value.toISOString().split("T")[0];
+        return typeof value === "string" ? new Date(value).toISOString().split("T")[0] : value.toISOString().split("T")[0];
     } else if (type === "datetime") {
-        if (!(value instanceof Date)) {
+        if (!(value instanceof Date) && !(typeof value === "string" && value.match(/^[0-9]{4}-[01][0-9]-[0123][0-9]T[012][0-9]:[0123456][0-9]:[0123456][0-9](\.[0-9]{1,6})?Z?$/))) {
             throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
         }
-        return value.toISOString().replace("Z", "");
+        return typeof value === "string" ? value.replace("Z", "") : value.toISOString().replace("Z", "");
     } else {
         const resolved = typeTable[type];
         if (resolved) {
