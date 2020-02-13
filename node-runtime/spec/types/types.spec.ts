@@ -56,11 +56,11 @@ describe("Encode/Decode", () => {
     });
 
     test("Process Date", () => {
-        expect(encode({}, "", "date", new Date(2020, 10, 10))).toBe("2020-11-10");
-        expect(encode({}, "", "date", new Date(2020, 10, 10, 15, 34, 50, 999))).toBe("2020-11-10");
+        expect(encode({}, "", "date", new Date("2020-11-10T00:00:00Z"))).toBe("2020-11-10");
+        expect(encode({}, "", "date", new Date("2020-11-10T15:34:50Z"))).toBe("2020-11-10");
         expect(encode({}, "", "date", "2020-11-10")).toBe("2020-11-10");
         expect(() => {
-            encode({}, "", "date", "2020-11-10T18:34:50Z");
+            encode({}, "", "date", "2020-11-10T15:34:50Z");
         }).toThrow();
         expect(() => {
             encode({}, "", "date", "hello world");
@@ -68,8 +68,8 @@ describe("Encode/Decode", () => {
     });
 
     test("Process Datetime", () => {
-        expect(encode({}, "", "datetime", new Date(2020, 10, 10, 15, 34, 50, 999))).toBe("2020-11-10T18:34:50.999");
-        expect(encode({}, "", "datetime", "2020-11-10T18:34:50Z")).toBe("2020-11-10T18:34:50");
+        expect(encode({}, "", "datetime", new Date("2020-11-10T15:34:50Z"))).toBe("2020-11-10T15:34:50.000");
+        expect(encode({}, "", "datetime", "2020-11-10T15:34:50Z")).toBe("2020-11-10T15:34:50");
         expect(() => {
             encode({}, "", "datetime", "2020-11-10");
         }).toThrow();
