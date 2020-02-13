@@ -175,7 +175,7 @@ export function encode(typeTable: TypeTable, path: string, type: TypeDescription
 
         return CNPJ.strip(value);
     } else if (type === "date") {
-        if (!(value instanceof Date) && !(typeof value === "string" && !isNaN(new Date(value).getTime()))) {
+        if (!(value instanceof Date) && !(typeof value === "string" && value.match(/^[0-9]{4}-[01][0-9]-[0123][0-9]$/))) {
             throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
         }
 
