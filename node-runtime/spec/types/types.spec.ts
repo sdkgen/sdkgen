@@ -69,13 +69,18 @@ describe("Encode/Decode", () => {
 
     test("Process Datetime", () => {
         expect(encode({}, "", "datetime", new Date("2020-11-10T15:34:50Z"))).toBe("2020-11-10T15:34:50.000");
-        expect(encode({}, "", "datetime", "2020-11-10T15:34:50Z")).toBe("2020-11-10T15:34:50");
+        expect(encode({}, "", "datetime", "2020-11-10T15:34:50Z")).toBe("2020-11-10T15:34:50.000");
         expect(encode({}, "", "datetime", "2020-11-10T15:34:50.999")).toBe("2020-11-10T15:34:50.999");
+        expect(encode({}, "", "datetime", "2020-11-10T15:34:50+01:00")).toBe("2020-11-10T14:34:50.000");
+        expect(encode({}, "", "datetime", "2020-11-10T15:34:50.999+01:00")).toBe("2020-11-10T14:34:50.999");
         expect(() => {
             encode({}, "", "datetime", "2020-11-10");
         }).toThrow();
         expect(() => {
             encode({}, "", "datetime", "hello world");
+        }).toThrow();
+        expect(() => {
+            encode({}, "", "datetime", "2020-11-10T15:34:50.999$01:00");
         }).toThrow();
     });
 });
