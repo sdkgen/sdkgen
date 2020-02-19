@@ -68,6 +68,9 @@ export class SdkgenHttpClient {
                         reject({ message: `${error}`, type: "Fatal" });
                     }
                 });
+                res.on("error", error => {
+                    reject({ message: `${error}`, type: "Fatal" });
+                });
             });
 
             req.on("error", error => {
