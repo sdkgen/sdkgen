@@ -525,7 +525,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
             return;
         }
 
-        if (req.method === "GET") {
+        if (req.method === "GET" && path === "/") {
             let ok: boolean;
 
             try {

@@ -51,13 +51,9 @@ describe("Simple API", () => {
         await server.close();
     });
 
-    test("Healthcheck on any GET route", async () => {
+    test("Healthcheck on 'GET /' only", async () => {
         expect(await axios.get("http://localhost:8000/")).toMatchObject({ data: { ok: true } });
-        expect(await axios.get("http://localhost:8000/egesg")).toMatchObject({ data: { ok: true } });
-        expect(await axios.get("http://localhost:8000/erh/eh/erh/erh/er")).toMatchObject({ data: { ok: true } });
-        expect(await axios.get("http://localhost:8000/oqpfnaewilfewigbwugbhlbiuas")).toMatchObject({
-            data: { ok: true },
-        });
+        await expect(axios.get("http://localhost:8000/egesg")).rejects.toThrowError();
     });
 
     test("Can get ast.json at runtime", async () => {
