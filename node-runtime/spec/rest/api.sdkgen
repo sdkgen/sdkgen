@@ -1,4 +1,7 @@
 
-@rest GET /add/{first}/{second}
+@rest GET /add1/{first}/{second}
 @rest GET /add2?{first}&{second}
+@rest GET /add3?{first} [header x-second: {second}]
+@rest POST /add4 [body {first}] [header x-second: {second}]
+@rest POST /add5 [body {second}] [header x-first: {first}]
 fn add(first: int, second: string): string

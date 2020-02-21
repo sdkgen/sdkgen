@@ -1,25 +1,24 @@
 import { generateDartClientSource } from "@sdkgen/dart-generator";
 import {
     AstJson,
-    ThrowsAnnotation,
-    RestAnnotation,
+    Base64PrimitiveType,
     BoolPrimitiveType,
-    UIntPrimitiveType,
-    IntPrimitiveType,
-    MoneyPrimitiveType,
-    FloatPrimitiveType,
-    OptionalType,
-    StringPrimitiveType,
+    BytesPrimitiveType,
+    CepPrimitiveType,
+    CnpjPrimitiveType,
+    CpfPrimitiveType,
     DatePrimitiveType,
     DateTimePrimitiveType,
-    CpfPrimitiveType,
-    CnpjPrimitiveType,
-    CepPrimitiveType,
-    UuidPrimitiveType,
+    FloatPrimitiveType,
     HexPrimitiveType,
-    Base64PrimitiveType,
-    BytesPrimitiveType,
-    JsonPrimitiveType,
+    IntPrimitiveType,
+    MoneyPrimitiveType,
+    OptionalType,
+    RestAnnotation,
+    StringPrimitiveType,
+    ThrowsAnnotation,
+    UIntPrimitiveType,
+    UuidPrimitiveType,
 } from "@sdkgen/parser";
 import { PLAYGROUND_PUBLIC_PATH } from "@sdkgen/playground";
 import {
@@ -28,16 +27,16 @@ import {
     generateNodeServerSource,
 } from "@sdkgen/typescript-generator";
 import { randomBytes } from "crypto";
+import FileType from "file-type";
 import { createServer, IncomingMessage, Server, ServerResponse } from "http";
 import { hostname } from "os";
+import { parse as parseQuerystring } from "querystring";
 import { getClientIp } from "request-ip";
 import staticFilesHandler from "serve-handler";
 import { parse as parseUrl } from "url";
-import { parse as parseQuerystring } from "querystring";
 import { BaseApiConfig } from "./api-config";
 import { Context, ContextReply, ContextRequest } from "./context";
 import { decode, encode } from "./encode-decode";
-import FileType from "file-type";
 
 export class SdkgenHttpServer<ExtraContextT = {}> {
     public httpServer: Server;
@@ -156,7 +155,9 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
         const existing = this.headers.get(cleanHeader);
 
         if (existing) {
-            this.headers.set(cleanHeader, `${existing}, ${value}`);
+            if (!existing.includes(value)) {
+                this.headers.set(cleanHeader, `${existing}, ${value}`);
+            }
         } else {
             this.headers.set(cleanHeader, value);
         }
@@ -215,7 +216,11 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
                         }
                         pathRegex += escapeRegExp(pathFragments[i]);
                     }
-                    pathRegex += "$";
+                    pathRegex += "/?$";
+
+                    for (const header of ann.headers.keys()) {
+                        this.addHeader("Access-Control-Allow-Headers", header);
+                    }
 
                     this.addHttpHandler(ann.method, new RegExp(pathRegex), (req, res, body) => {
                         try {
@@ -497,7 +502,8 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
         body: Buffer,
         hrStart: [number, number],
     ) {
-        let path = parseUrl(req.url || "").pathname || "";
+        const { pathname, query } = parseUrl(req.url || "");
+        let path = pathname || "";
 
         if (path.startsWith(this.ignoredUrlPrefix)) {
             path = path.slice(this.ignoredUrlPrefix.length);
@@ -506,7 +512,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
         const externalHandler = this.findBestHandler(path, req);
 
         if (externalHandler) {
-            this.log(`HTTP ${req.method} ${path}`);
+            this.log(`HTTP ${req.method} ${path}${query ? `?${query}` : ""}`);
             externalHandler.handler(req, res, body);
             return;
         }

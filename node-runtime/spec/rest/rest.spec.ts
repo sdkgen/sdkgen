@@ -25,6 +25,17 @@ const nodeClient = new NodeApiClient("http://localhost:8001");
 
 const server = new SdkgenHttpServer(api, { aaa: true });
 
+function get(path: string, headers?: any) {
+    return axios.get("http://localhost:8001" + path, {
+        transformResponse: [
+            data => {
+                return data;
+            },
+        ],
+        headers,
+    });
+}
+
 describe("Rest API", () => {
     beforeAll(() => {
         server.listen(8001);
@@ -36,44 +47,102 @@ describe("Rest API", () => {
 
     test("add with sdkgen", async () => {
         expect(await nodeClient.add(null, { first: 1, second: "aa" })).toEqual("1aa");
-
-        expect(
-            await axios.get("http://localhost:8001/add/1/aa", {
-                transformResponse: [
-                    data => {
-                        return data;
-                    },
-                ],
-            }),
-        ).toMatchObject({
-            data: "1aa",
-        });
-
-        expect(
-            await axios.get("http://localhost:8001/add/1/aa", {
-                transformResponse: [
-                    data => {
-                        return data;
-                    },
-                ],
-                headers: {
-                    accept: "application/json",
-                },
-            }),
-        ).toMatchObject({
-            data: '"1aa"',
-        });
-
-        expect(
-            await axios.get("http://localhost:8001/add2?second=aa&first=1", {
-                transformResponse: [
-                    data => {
-                        return data;
-                    },
-                ],
-            }),
-        ).toMatchObject({
-            data: "1aa",
-        });
     });
+
+    const table = [
+        { method: "GET", path: "/add1/1/aa", result: "1aa" },
+        { method: "GET", path: "/add1/1/aa/", result: "1aa" },
+        {
+            method: "GET",
+            path: "/add1/1/aa",
+            result: '"1aa"',
+            headers: {
+                accept: "application/json",
+            },
+        },
+        { method: "GET", path: "/add2?second=aa&first=1", result: "1aa" },
+        { method: "GET", path: "/add2?first=1&second=aa", result: "1aa" },
+        {
+            method: "GET",
+            path: "/add3?first=1",
+            result: "1aa",
+            headers: {
+                "x-second": "aa",
+            },
+        },
+        {
+            method: "GET",
+            path: "/add3?first=1",
+            result: '"1aa"',
+            headers: {
+                accept: "application/json",
+                "x-second": "aa",
+            },
+        },
+        {
+            method: "POST",
+            path: "/add4",
+            result: "1aa",
+            headers: {
+                "x-second": "aa",
+            },
+            data: "1",
+        },
+        {
+            method: "POST",
+            path: "/add4",
+            result: '"1aa"',
+            headers: {
+                accept: "application/json",
+                "x-second": "aa",
+            },
+            data: "1",
+        },
+        {
+            method: "POST",
+            path: "/add5",
+            result: "1aa",
+            headers: {
+                "x-first": "1",
+            },
+            data: "aa",
+        },
+        {
+            method: "POST",
+            path: "/add5",
+            result: "1aa",
+            headers: {
+                "content-type": "application/json",
+                "x-first": "1",
+            },
+            data: '"aa"',
+        },
+        {
+            method: "POST",
+            path: "/add5",
+            result: '"1aa"',
+            headers: {
+                accept: "application/json",
+                "content-type": "application/json",
+                "x-first": "1",
+            },
+            data: '"aa"',
+        },
+    ];
+
+    for (const { method, path, result, headers, data } of table) {
+        test(`${method} ${path}` + (headers ? ` with headers ${JSON.stringify(headers)}` : ""), async () => {
+            expect(
+                await axios.request({
+                    url: "http://localhost:8001" + path,
+                    method: method as any,
+                    transformResponse: [data => data],
+                    headers,
+                    data,
+                }),
+            ).toMatchObject({
+                data: result,
+            });
+        });
+    }
 });
