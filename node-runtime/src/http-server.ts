@@ -1,5 +1,26 @@
 import { generateDartClientSource } from "@sdkgen/dart-generator";
-import { AstJson, ThrowsAnnotation } from "@sdkgen/parser";
+import {
+    AstJson,
+    ThrowsAnnotation,
+    RestAnnotation,
+    BoolPrimitiveType,
+    UIntPrimitiveType,
+    IntPrimitiveType,
+    MoneyPrimitiveType,
+    FloatPrimitiveType,
+    OptionalType,
+    StringPrimitiveType,
+    DatePrimitiveType,
+    DateTimePrimitiveType,
+    CpfPrimitiveType,
+    CnpjPrimitiveType,
+    CepPrimitiveType,
+    UuidPrimitiveType,
+    HexPrimitiveType,
+    Base64PrimitiveType,
+    BytesPrimitiveType,
+    JsonPrimitiveType,
+} from "@sdkgen/parser";
 import { PLAYGROUND_PUBLIC_PATH } from "@sdkgen/playground";
 import {
     generateBrowserClientSource,
@@ -12,9 +33,11 @@ import { hostname } from "os";
 import { getClientIp } from "request-ip";
 import staticFilesHandler from "serve-handler";
 import { parse as parseUrl } from "url";
+import { parse as parseQuerystring } from "querystring";
 import { BaseApiConfig } from "./api-config";
 import { Context, ContextReply, ContextRequest } from "./context";
 import { decode, encode } from "./encode-decode";
+import FileType from "file-type";
 
 export class SdkgenHttpServer<ExtraContextT = {}> {
     public httpServer: Server;
@@ -24,7 +47,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
     private handlers: Array<{
         method: string;
         matcher: string | RegExp;
-        handler: (req: IncomingMessage, res: ServerResponse, body: string) => void;
+        handler: (req: IncomingMessage, res: ServerResponse, body: Buffer) => void;
     }> = [];
 
     public dynamicCorsOrigin = true;
@@ -36,6 +59,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
     constructor(protected apiConfig: BaseApiConfig<ExtraContextT>, private extraContext: ExtraContextT) {
         this.httpServer = createServer(this.handleRequest.bind(this));
         this.enableCors();
+        this.attachRestHandlers();
 
         const targetTable = [
             ["/targets/node/api.ts", generateNodeServerSource],
@@ -118,7 +142,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
     }
 
     close() {
-        this.httpServer.close();
+        return new Promise((resolve, reject) => this.httpServer.close(error => (error ? reject(error) : resolve())));
     }
 
     private enableCors() {
@@ -141,7 +165,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
     addHttpHandler(
         method: string,
         matcher: string | RegExp,
-        handler: (req: IncomingMessage, res: ServerResponse, body: string) => void,
+        handler: (req: IncomingMessage, res: ServerResponse, body: Buffer) => void,
     ) {
         this.handlers.push({ handler, matcher, method });
     }
@@ -172,6 +196,245 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
             });
 
         return matchingHandlers.length ? matchingHandlers[0] : null;
+    }
+
+    private attachRestHandlers() {
+        function escapeRegExp(str: string) {
+            return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+        }
+
+        for (const op of this.apiConfig.ast.operations) {
+            for (const ann of op.annotations) {
+                if (ann instanceof RestAnnotation) {
+                    const pathFragments = ann.path.split(/\{\w+\}/u);
+
+                    let pathRegex = "^";
+                    for (let i = 0; i < pathFragments.length; ++i) {
+                        if (i > 0) {
+                            pathRegex += "(.+?)";
+                        }
+                        pathRegex += escapeRegExp(pathFragments[i]);
+                    }
+                    pathRegex += "$";
+
+                    this.addHttpHandler(ann.method, new RegExp(pathRegex), (req, res, body) => {
+                        try {
+                            const args: any = {};
+
+                            const { pathname, query } = parseUrl(req.url || "");
+                            const match = pathname?.match(pathRegex);
+
+                            if (!match) {
+                                res.statusCode = 404;
+                                return;
+                            }
+
+                            const simpleArgs = new Map<string, string | null>();
+
+                            for (let i = 0; i < ann.pathVariables.length; ++i) {
+                                const argName = ann.pathVariables[i];
+                                const argValue = match[i + 1];
+                                simpleArgs.set(argName, argValue);
+                            }
+
+                            const parsedQuery = query ? parseQuerystring(query) : {};
+                            for (const argName of ann.queryVariables) {
+                                const argValue = parsedQuery[argName] ?? null;
+                                simpleArgs.set(argName, Array.isArray(argValue) ? argValue.join("") : argValue);
+                            }
+
+                            for (const [headerName, argName] of ann.headers) {
+                                const argValue = req.headers[headerName] ?? null;
+                                simpleArgs.set(argName, Array.isArray(argValue) ? argValue.join("") : argValue);
+                            }
+
+                            if (ann.bodyVariable) {
+                                const argName = ann.bodyVariable;
+                                let type = op.args.find(arg => arg.name === argName)!.type;
+
+                                if (req.headers["content-type"] === "application/json") {
+                                    args[argName] = JSON.parse(body.toString());
+                                } else {
+                                    let solved = false;
+
+                                    if (type instanceof OptionalType) {
+                                        if (body.length === 0) {
+                                            args[argName] = null;
+                                            solved = true;
+                                        } else {
+                                            type = type.base;
+                                        }
+                                    }
+
+                                    if (!solved) {
+                                        if (
+                                            type instanceof BoolPrimitiveType ||
+                                            type instanceof IntPrimitiveType ||
+                                            type instanceof UIntPrimitiveType ||
+                                            type instanceof FloatPrimitiveType ||
+                                            type instanceof StringPrimitiveType ||
+                                            type instanceof DatePrimitiveType ||
+                                            type instanceof DateTimePrimitiveType ||
+                                            type instanceof MoneyPrimitiveType ||
+                                            type instanceof CpfPrimitiveType ||
+                                            type instanceof CnpjPrimitiveType ||
+                                            type instanceof CepPrimitiveType ||
+                                            type instanceof UuidPrimitiveType ||
+                                            type instanceof HexPrimitiveType ||
+                                            type instanceof Base64PrimitiveType
+                                        ) {
+                                            simpleArgs.set(argName, body.toString());
+                                        } else if (type instanceof BytesPrimitiveType) {
+                                            args[argName] = body.toString("base64");
+                                        } else {
+                                            args[argName] = JSON.parse(body.toString());
+                                        }
+                                    }
+                                }
+                            }
+
+                            for (const [argName, argValue] of simpleArgs) {
+                                let type = op.args.find(arg => arg.name === argName)!.type;
+
+                                if (type instanceof OptionalType) {
+                                    if (argValue === null) {
+                                        args[argName] = null;
+                                        continue;
+                                    } else {
+                                        type = type.base;
+                                    }
+                                } else if (argValue === null) {
+                                    args[argName] = argValue;
+                                    continue;
+                                }
+
+                                if (type instanceof BoolPrimitiveType) {
+                                    if (argValue === "true") {
+                                        args[argName] = true;
+                                    } else if (argValue === "false") {
+                                        args[argName] = false;
+                                    } else {
+                                        args[argName] = argValue;
+                                    }
+                                } else if (
+                                    type instanceof UIntPrimitiveType ||
+                                    type instanceof IntPrimitiveType ||
+                                    type instanceof MoneyPrimitiveType
+                                ) {
+                                    args[argName] = parseInt(argValue, 10);
+                                } else if (type instanceof FloatPrimitiveType) {
+                                    args[argName] = parseFloat(argValue);
+                                } else {
+                                    args[argName] = argValue;
+                                }
+                            }
+
+                            const ip = getClientIp(req);
+                            if (!ip) {
+                                throw new Error("Couldn't determine client IP");
+                            }
+
+                            const request: ContextRequest = {
+                                name: op.name,
+                                ip,
+                                headers: req.headers,
+                                id: randomBytes(16).toString("hex"),
+                                version: 3,
+                                deviceInfo: {
+                                    id: randomBytes(16).toString("hex"),
+                                    type: "rest",
+                                    platform: null,
+                                    language: null,
+                                    timezone: null,
+                                    version: null,
+                                },
+                                extra: {},
+                                args,
+                            };
+
+                            this.executeRequest(request, (ctx, reply) => {
+                                try {
+                                    if (reply.error) {
+                                        res.statusCode = 400;
+                                        res.write(this.makeResponseError(reply.error).message);
+                                        res.end();
+                                        return;
+                                    }
+
+                                    if (req.headers.accept === "application/json") {
+                                        res.write(JSON.stringify(reply.result));
+                                        res.end();
+                                    } else {
+                                        let type = op.returnType;
+
+                                        if (type instanceof OptionalType) {
+                                            if (reply.result === null) {
+                                                res.statusCode = 204;
+                                                res.end();
+                                                return;
+                                            } else {
+                                                type = type.base;
+                                            }
+                                        }
+
+                                        if (
+                                            type instanceof BoolPrimitiveType ||
+                                            type instanceof IntPrimitiveType ||
+                                            type instanceof UIntPrimitiveType ||
+                                            type instanceof FloatPrimitiveType ||
+                                            type instanceof StringPrimitiveType ||
+                                            type instanceof DatePrimitiveType ||
+                                            type instanceof DateTimePrimitiveType ||
+                                            type instanceof MoneyPrimitiveType ||
+                                            type instanceof CpfPrimitiveType ||
+                                            type instanceof CnpjPrimitiveType ||
+                                            type instanceof CepPrimitiveType ||
+                                            type instanceof UuidPrimitiveType ||
+                                            type instanceof HexPrimitiveType ||
+                                            type instanceof Base64PrimitiveType
+                                        ) {
+                                            res.setHeader("content-type", "text/plain");
+                                            res.write(`${reply.result}`);
+                                            res.end();
+                                        } else if (type instanceof BytesPrimitiveType) {
+                                            FileType.fromBuffer(reply.result)
+                                                .then(fileType => {
+                                                    res.setHeader(
+                                                        "content-type",
+                                                        fileType?.mime ?? "application/octet-stream",
+                                                    );
+                                                })
+                                                .catch(() => {
+                                                    res.setHeader("content-type", "application/octet-stream");
+                                                })
+                                                .then(() => {
+                                                    res.write(reply.result);
+                                                    res.end();
+                                                });
+                                        } else {
+                                            res.write(JSON.stringify(reply.result));
+                                            res.end();
+                                        }
+                                    }
+                                } catch (error) {
+                                    console.error(error);
+                                    if (!res.headersSent) {
+                                        res.statusCode = 500;
+                                    }
+                                    res.end();
+                                }
+                            });
+                        } catch (error) {
+                            console.error(error);
+                            if (!res.headersSent) {
+                                res.statusCode = 500;
+                            }
+                            res.end();
+                        }
+                    });
+                }
+            }
+        }
     }
 
     private handleRequest(req: IncomingMessage, res: ServerResponse) {
@@ -206,11 +469,11 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
             return;
         }
 
-        let body = "";
+        let body: Buffer[] = [];
 
-        req.on("data", chunk => (body += chunk.toString()));
+        req.on("data", chunk => body.push(chunk));
         req.on("end", async () =>
-            this.handleRequestWithBody(req, res, body, hrStart).catch(e =>
+            this.handleRequestWithBody(req, res, Buffer.concat(body), hrStart).catch(e =>
                 this.writeReply(res, null, { error: e }, hrStart),
             ),
         );
@@ -231,7 +494,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
     private async handleRequestWithBody(
         req: IncomingMessage,
         res: ServerResponse,
-        body: string,
+        body: Buffer,
         hrStart: [number, number],
     ) {
         let path = parseUrl(req.url || "").pathname || "";
@@ -265,7 +528,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
                 ok = false;
             }
 
-            res.writeHead(ok ? 200 : 500);
+            res.statusCode = ok ? 200 : 500;
             res.write(JSON.stringify({ ok }));
             res.end();
             return;
@@ -291,7 +554,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
             return;
         }
 
-        const request = this.parseRequest(req, body, clientIp);
+        const request = this.parseRequest(req, body.toString(), clientIp);
 
         if (!request) {
             this.writeReply(
@@ -305,6 +568,13 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
             return;
         }
 
+        this.executeRequest(request, (ctx, reply) => this.writeReply(res, ctx, reply, hrStart));
+    }
+
+    private async executeRequest(
+        request: ContextRequest,
+        writeReply: (ctx: Context | null, reply: ContextReply) => void,
+    ) {
         const ctx: Context & ExtraContextT = {
             ...this.extraContext,
             request,
@@ -316,14 +586,9 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
         const functionImplementation = this.apiConfig.fn[ctx.request.name];
 
         if (!functionDescription || !functionImplementation) {
-            this.writeReply(
-                res,
-                ctx,
-                {
-                    error: this.fatalError(`Function does not exist: ${ctx.request.name}`),
-                },
-                hrStart,
-            );
+            writeReply(ctx, {
+                error: this.fatalError(`Function does not exist: ${ctx.request.name}`),
+            });
             return;
         }
 
@@ -373,7 +638,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
             }
         }
 
-        this.writeReply(res, ctx, reply, hrStart);
+        writeReply(ctx, reply);
     }
 
     private parseRequest(req: IncomingMessage, body: string, ip: string): ContextRequest | null {
@@ -564,6 +829,9 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
         const deltaTime = process.hrtime(hrStart);
         const duration = deltaTime[0] + deltaTime[1] * 1e-9;
 
+        if (reply.error) {
+            console.error(reply.error);
+        }
         this.log(
             `${ctx.request.id} [${duration.toFixed(6)}s] ${ctx.request.name}() -> ${
                 reply.error ? this.makeResponseError(reply.error).type : "OK"

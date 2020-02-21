@@ -47,8 +47,8 @@ describe("Simple API", () => {
         server.listen();
     });
 
-    afterAll(() => {
-        server.close();
+    afterAll(async () => {
+        await server.close();
     });
 
     test("Healthcheck on any GET route", async () => {

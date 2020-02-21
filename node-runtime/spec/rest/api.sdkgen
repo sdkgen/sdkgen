@@ -1,0 +1,4 @@
+
+@rest GET /add/{first}/{second}
+@rest GET /add2?{first}&{second}
+fn add(first: int, second: string): string

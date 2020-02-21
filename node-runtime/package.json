@@ -61,6 +61,7 @@
     "@sdkgen/playground": "file:../playground",
     "@sdkgen/typescript-generator": "file:../typescript-generator",
     "@types/serve-handler": "^6.1.0",
+    "file-type": "^14.1.2",
     "request-ip": "^2.1.3",
     "serve-handler": "^6.1.2"
   }
