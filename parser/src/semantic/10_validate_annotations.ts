@@ -1,6 +1,51 @@
-import { AstNode, EnumValue, DescriptionAnnotation, Field, TypeDefinition, Operation, ThrowsAnnotation } from "../ast";
+import {
+    AstNode,
+    EnumValue,
+    DescriptionAnnotation,
+    Field,
+    TypeDefinition,
+    Operation,
+    ThrowsAnnotation,
+    RestAnnotation,
+    BoolPrimitiveType,
+    IntPrimitiveType,
+    UIntPrimitiveType,
+    FloatPrimitiveType,
+    StringPrimitiveType,
+    DatePrimitiveType,
+    DateTimePrimitiveType,
+    MoneyPrimitiveType,
+    CpfPrimitiveType,
+    CnpjPrimitiveType,
+    EmailPrimitiveType,
+    PhonePrimitiveType,
+    CepPrimitiveType,
+    UuidPrimitiveType,
+    HexPrimitiveType,
+    Base64PrimitiveType,
+    OptionalType,
+} from "../ast";
 import { Visitor } from "./visitor";
 import { SemanticError } from "./analyser";
+
+const REST_ENCODABLE_TYPES: Function[] = [
+    BoolPrimitiveType,
+    IntPrimitiveType,
+    UIntPrimitiveType,
+    FloatPrimitiveType,
+    StringPrimitiveType,
+    DatePrimitiveType,
+    DateTimePrimitiveType,
+    MoneyPrimitiveType,
+    CpfPrimitiveType,
+    CnpjPrimitiveType,
+    EmailPrimitiveType,
+    PhonePrimitiveType,
+    CepPrimitiveType,
+    UuidPrimitiveType,
+    HexPrimitiveType,
+    Base64PrimitiveType,
+];
 
 export class ValidateAnnotationsVisitor extends Visitor {
     visit(node: AstNode) {
@@ -35,6 +80,35 @@ export class ValidateAnnotationsVisitor extends Visitor {
                 } else if (annotation instanceof ThrowsAnnotation) {
                     if (!this.root.errors.includes(annotation.error)) {
                         throw new SemanticError(`Unknown error type '${annotation.error}' at ${annotation.location}`);
+                    }
+                } else if (annotation instanceof RestAnnotation) {
+                    const allVariables = [...annotation.pathVariables, ...annotation.queryVariables, ...annotation.headers.values()];
+                    if (allVariables.length !== new Set(allVariables).size) {
+                        throw new SemanticError(`Arguments must appear only once for rest annotation at ${annotation.location}`);
+                    }
+
+                    for (const name of allVariables) {
+                        const arg = node.args.find(arg => arg.name === name);
+                        if (!arg) {
+                            throw new SemanticError(`Argument '${name}' not found at ${annotation.location}`);
+                        }
+
+                        if (
+                            !REST_ENCODABLE_TYPES.includes(arg.type.constructor) &&
+                            !(
+                                (annotation.queryVariables.includes(name) || [...annotation.headers.values()].includes(name)) &&
+                                arg.type instanceof OptionalType &&
+                                REST_ENCODABLE_TYPES.includes(arg.type.base.constructor)
+                            )
+                        ) {
+                            throw new SemanticError(`Argument '${name}' can't have this type for rest annotation at ${annotation.location}`);
+                        }
+                    }
+
+                    for (const arg of node.args) {
+                        if (!allVariables.includes(arg.name) && annotation.bodyVariable !== arg.name) {
+                            throw new SemanticError(`Argument '${name}' should be present in the rest annotation at ${annotation.location}`);
+                        }
                     }
                 } else {
                     throw new SemanticError(`Cannot have this type of annotation at ${annotation.location}`);

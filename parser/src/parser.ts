@@ -48,6 +48,7 @@ import {
     TypeKeywordToken,
 } from "./token";
 import { primitiveToAstClass } from "./utils";
+import { parseRestAnnotation } from "./restparser";
 
 export class ParserError extends Error {}
 
@@ -184,9 +185,10 @@ export class Parser {
     private acceptAnnotations() {
         while (this.token instanceof AnnotationToken) {
             const words = this.token.value.split(" ");
+            const body = this.token.value.slice(words[0].length).trim();
             switch (words[0]) {
                 case "description":
-                    this.annotations.push(new DescriptionAnnotation(this.token.value.slice(words[0].length).trim()).at(this.token));
+                    this.annotations.push(new DescriptionAnnotation(body).at(this.token));
                     break;
                 case "arg":
                     this.annotations.push(
@@ -194,7 +196,14 @@ export class Parser {
                     );
                     break;
                 case "throws":
-                    this.annotations.push(new ThrowsAnnotation(this.token.value.slice(words[0].length).trim()).at(this.token));
+                    this.annotations.push(new ThrowsAnnotation(body).at(this.token));
+                    break;
+                case "rest":
+                    try {
+                        this.annotations.push(parseRestAnnotation(body).at(this.token));
+                    } catch (error) {
+                        throw new ParserError(`${error.message} at ${this.token.location}`);
+                    }
                     break;
                 default:
                     throw new ParserError(`Unknown annotation '${words[0]}' at ${this.token.location}`);

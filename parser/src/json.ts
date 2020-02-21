@@ -13,6 +13,7 @@ import {
     Type,
     TypeDefinition,
     TypeReference,
+    RestAnnotation,
 } from "./ast";
 import { analyse } from "./semantic/analyser";
 import { primitiveToAstClass } from "./utils";
@@ -86,6 +87,19 @@ export function astToJson(ast: AstRoot): AstJson {
             if (ann instanceof ThrowsAnnotation) {
                 list.push({ type: "throws", value: ann.error });
             }
+            if (ann instanceof RestAnnotation) {
+                list.push({
+                    type: "rest",
+                    value: {
+                        method: ann.method,
+                        path: ann.path,
+                        pathVariables: ann.pathVariables,
+                        queryVariables: ann.queryVariables,
+                        headers: [...ann.headers.entries()],
+                        bodyVariable: ann.bodyVariable,
+                    },
+                });
+            }
         }
     }
 
@@ -153,6 +167,9 @@ export function jsonToAst(json: AstJson) {
                 op.annotations.push(new DescriptionAnnotation(annotationJson.value));
             } else if (annotationJson.type === "throws") {
                 op.annotations.push(new ThrowsAnnotation(annotationJson.value));
+            } else if (annotationJson.type === "rest") {
+                const { method, path, pathVariables, queryVariables, headers, bodyVariable } = annotationJson.value;
+                op.annotations.push(new RestAnnotation(method, path, pathVariables, queryVariables, new Map(headers), bodyVariable));
             }
         }
 
