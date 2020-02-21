@@ -63,7 +63,7 @@ function simpleEncodeDecode(path: string, type: string, value: any) {
         let url: URL;
         if (isValid) {
             try {
-                url = new URL(value)
+                url = new URL(value);
             } catch (e) {
                 isValid = false;
             }
@@ -102,10 +102,8 @@ export function encode(typeTable: TypeTable, path: string, type: TypeDescription
         }
         return obj;
     } else if (type.endsWith("?")) {
-        if (value === null || value === undefined)
-            return null;
-        else
-            return encode(typeTable, path, type.slice(0, type.length - 1), value);
+        if (value === null || value === undefined) return null;
+        else return encode(typeTable, path, type.slice(0, type.length - 1), value);
     } else if (type.endsWith("[]")) {
         if (!Array.isArray(value)) {
             throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
@@ -134,7 +132,15 @@ export function encode(typeTable: TypeTable, path: string, type: TypeDescription
         }
         return typeof value === "string" ? new Date(value).toISOString().split("T")[0] : value.toISOString().split("T")[0];
     } else if (type === "datetime") {
-        if (!(value instanceof Date) && !(typeof value === "string" && value.match(/^[0-9]{4}-[01][0-9]-[0123][0-9]T[012][0-9]:[0123456][0-9]:[0123456][0-9](?:\.[0-9]{1,6})?(?:Z|[+-][012][0-9]:[0123456][0-9])?$/))) {
+        if (
+            !(value instanceof Date) &&
+            !(
+                typeof value === "string" &&
+                value.match(
+                    /^[0-9]{4}-[01][0-9]-[0123][0-9]T[012][0-9]:[0123456][0-9]:[0123456][0-9](?:\.[0-9]{1,6})?(?:Z|[+-][012][0-9]:[0123456][0-9])?$/,
+                )
+            )
+        ) {
             throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
         }
         return (typeof value === "string" ? new Date(value) : value).toISOString().replace("Z", "");
@@ -166,10 +172,8 @@ export function decode(typeTable: TypeTable, path: string, type: TypeDescription
         }
         return obj;
     } else if (type.endsWith("?")) {
-        if (value === null || value === undefined)
-            return null;
-        else
-            return decode(typeTable, path, type.slice(0, type.length - 1), value);
+        if (value === null || value === undefined) return null;
+        else return decode(typeTable, path, type.slice(0, type.length - 1), value);
     } else if (type.endsWith("[]")) {
         if (!Array.isArray(value)) {
             throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);

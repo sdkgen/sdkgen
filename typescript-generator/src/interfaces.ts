@@ -1,8 +1,7 @@
 import { AstRoot } from "@sdkgen/parser";
 import { generateTypescriptEnum, generateTypescriptInterface } from "./helpers";
 
-interface Options {
-}
+interface Options {}
 
 export function generateTypescriptInterfaces(ast: AstRoot, options: Options) {
     let code = "";

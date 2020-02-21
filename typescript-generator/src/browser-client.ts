@@ -1,8 +1,7 @@
 import { AstRoot, astToJson } from "@sdkgen/parser";
 import { generateTypescriptEnum, generateTypescriptErrorClass, generateTypescriptInterface, generateTypescriptTypeName } from "./helpers";
 
-interface Options {
-}
+interface Options {}
 
 export function generateBrowserClientSource(ast: AstRoot, options: Options) {
     let code = "";
@@ -30,15 +29,19 @@ export function generateBrowserClientSource(ast: AstRoot, options: Options) {
     constructor(baseUrl: string) {
         super(baseUrl, astJson, errClasses);
     }
-${ast.operations.map(op => `
-    ${op.prettyName}(args${op.args.length === 0 ? "?" : ""}: {${op.args.map(arg =>
-        `${arg.name}${arg.type.name.endsWith("?") ? "?" : ""}: ${generateTypescriptTypeName(arg.type)}`
-    ).join(", ")}}): Promise<${generateTypescriptTypeName(op.returnType)}> { return this.makeRequest("${op.prettyName}", args || {}); }`).join("")}
+${ast.operations
+    .map(
+        op => `
+    ${op.prettyName}(args${op.args.length === 0 ? "?" : ""}: {${op.args
+            .map(arg => `${arg.name}${arg.type.name.endsWith("?") ? "?" : ""}: ${generateTypescriptTypeName(arg.type)}`)
+            .join(", ")}}): Promise<${generateTypescriptTypeName(op.returnType)}> { return this.makeRequest("${op.prettyName}", args || {}); }`,
+    )
+    .join("")}
 }\n\n`;
 
     code += `const errClasses = {\n${ast.errors.map(err => `    ${err}`).join(",\n")}\n};\n\n`;
 
-    code += `const astJson = ${JSON.stringify(astToJson(ast), null, 4).replace(/"(\w+)":/g, '$1:')}`;
+    code += `const astJson = ${JSON.stringify(astToJson(ast), null, 4).replace(/"(\w+)":/g, "$1:")}`;
 
     return code;
 }

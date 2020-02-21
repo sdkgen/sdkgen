@@ -1,8 +1,7 @@
 import { AstRoot } from "@sdkgen/parser";
 import { cast, generateClass, generateEnum, generateErrorClass, generateTypeName } from "./helpers";
 
-interface Options {
-}
+interface Options {}
 
 export function generateDartClientSource(ast: AstRoot, options: Options) {
     let code = "";
@@ -30,16 +29,20 @@ import 'package:sdkgen_runtime/http_client.dart';
 
     code += `class ApiClient extends SdkgenHttpClient {
   ApiClient(String baseUrl, [BuildContext context]) : super(baseUrl, context, _typeTable, _fnTable, _errTable);
-${ast.operations.map(op => `
-  ${
-    op.returnType.constructor.name === "VoidPrimitiveType" ? "" : `Future<${generateTypeName(op.returnType)}> `
-  }${op.prettyName}(${op.args.length === 0 ? "" : `{${
-      op.args.map(arg => `${generateTypeName(arg.type)} ${arg.name}`).join(", ")}}`
-    }) async { ${op.returnType.constructor.name === "VoidPrimitiveType" ? "" : "return "}${cast(`await makeRequest("${op.prettyName}", {${op.args.map(arg => `"${arg.name}": ${arg.name}`).join(", ")}})`, op.returnType)}; }`
-).join("")}
+${ast.operations
+    .map(
+        op => `
+  ${op.returnType.constructor.name === "VoidPrimitiveType" ? "" : `Future<${generateTypeName(op.returnType)}> `}${op.prettyName}(${
+            op.args.length === 0 ? "" : `{${op.args.map(arg => `${generateTypeName(arg.type)} ${arg.name}`).join(", ")}}`
+        }) async { ${op.returnType.constructor.name === "VoidPrimitiveType" ? "" : "return "}${cast(
+            `await makeRequest("${op.prettyName}", {${op.args.map(arg => `"${arg.name}": ${arg.name}`).join(", ")}})`,
+            op.returnType,
+        )}; }`,
+    )
+    .join("")}
 }\n\n`;
 
-    code += `var _typeTable = {\n`
+    code += `var _typeTable = {\n`;
 
     for (const type of ast.structTypes) {
         code += `  "${type.name}": StructTypeDescription(${type.name}, {\n`;
@@ -58,26 +61,28 @@ ${ast.operations.map(op => `
     }
 
     for (const type of ast.enumTypes) {
-        code += `  "${type.name}": EnumTypeDescription(${type.name}, ${type.name}.values, [\n    ${type.values.map(x => `"${x.value}"`).join(",\n    ")}\n  ]),\n`;
+        code += `  "${type.name}": EnumTypeDescription(${type.name}, ${type.name}.values, [\n    ${type.values
+            .map(x => `"${x.value}"`)
+            .join(",\n    ")}\n  ]),\n`;
     }
 
-    code += `};\n\n`
+    code += `};\n\n`;
 
-    code += `var _fnTable = {\n`
+    code += `var _fnTable = {\n`;
     for (const op of ast.operations) {
         code += `  "${op.prettyName}": FunctionDescription("${op.returnType.name}", {\n`;
         for (const arg of op.args) {
-            code += `    "${arg.name}": "${arg.type.name}",\n`
+            code += `    "${arg.name}": "${arg.type.name}",\n`;
         }
         code += `  }),\n`;
     }
-    code += `};\n\n`
+    code += `};\n\n`;
 
-    code += `var _errTable = {\n`
+    code += `var _errTable = {\n`;
     for (const error of ast.errors) {
         code += `  "${error}": (msg) => ${error}(msg),\n`;
     }
-    code += `};\n`
+    code += `};\n`;
 
     return code;
 }

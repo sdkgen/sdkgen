@@ -1,18 +1,60 @@
-import { AnnotationToken, ArraySymbolToken, ColonSymbolToken, CommaSymbolToken, CurlyCloseSymbolToken, CurlyOpenSymbolToken, EnumKeywordToken, EqualSymbolToken, ErrorKeywordToken, ExclamationMarkSymbolToken, FalseKeywordToken, FunctionKeywordToken, GetKeywordToken, IdentifierToken, ImportKeywordToken, OptionalSymbolToken, ParensCloseSymbolToken, ParensOpenSymbolToken, PrimitiveTypeToken, SpreadSymbolToken, StringLiteralToken, Token, TrueKeywordToken, TypeKeywordToken } from "./token";
+import {
+    AnnotationToken,
+    ArraySymbolToken,
+    ColonSymbolToken,
+    CommaSymbolToken,
+    CurlyCloseSymbolToken,
+    CurlyOpenSymbolToken,
+    EnumKeywordToken,
+    EqualSymbolToken,
+    ErrorKeywordToken,
+    ExclamationMarkSymbolToken,
+    FalseKeywordToken,
+    FunctionKeywordToken,
+    GetKeywordToken,
+    IdentifierToken,
+    ImportKeywordToken,
+    OptionalSymbolToken,
+    ParensCloseSymbolToken,
+    ParensOpenSymbolToken,
+    PrimitiveTypeToken,
+    SpreadSymbolToken,
+    StringLiteralToken,
+    Token,
+    TrueKeywordToken,
+    TypeKeywordToken,
+} from "./token";
 
 export class LexerError extends Error {}
 
 export class Lexer {
     public static readonly PRIMITIVES = new Set([
-        "bool", "int", "uint", "float", "string", "date", "datetime", "bytes",
-        "money", "cpf", "cnpj", "email", "phone", "cep", "latlng", "url",
-        "uuid", "hex", "base64", "safehtml", "xml", "void", "json"
+        "bool",
+        "int",
+        "uint",
+        "float",
+        "string",
+        "date",
+        "datetime",
+        "bytes",
+        "money",
+        "cpf",
+        "cnpj",
+        "email",
+        "phone",
+        "cep",
+        "latlng",
+        "url",
+        "uuid",
+        "hex",
+        "base64",
+        "safehtml",
+        "xml",
+        "void",
+        "json",
     ]);
 
-    public static readonly KEYWORDS = new Set([
-        ...Lexer.PRIMITIVES,
-        "error", "enum", "type", "import", "get", "function", "fn", "true", "false"
-    ]);
+    public static readonly KEYWORDS = new Set([...Lexer.PRIMITIVES, "error", "enum", "type", "import", "get", "function", "fn", "true", "false"]);
 
     private startPos = 0;
     private startLine = 1;
@@ -21,9 +63,7 @@ export class Lexer {
     private line = 1;
     private column = 1;
 
-    constructor(private readonly source: string, public readonly filename: string = "-") {
-
-    }
+    constructor(private readonly source: string, public readonly filename: string = "-") {}
 
     private currentChar() {
         return this.source[this.pos] || "\0";
@@ -96,45 +136,45 @@ export class Lexer {
                 break;
             case "{":
                 this.nextChar();
-                token = new CurlyOpenSymbolToken;
+                token = new CurlyOpenSymbolToken();
                 break;
             case "}":
                 this.nextChar();
-                token = new CurlyCloseSymbolToken;
+                token = new CurlyCloseSymbolToken();
                 break;
             case "(":
                 this.nextChar();
-                token = new ParensOpenSymbolToken;
+                token = new ParensOpenSymbolToken();
                 break;
             case ")":
                 this.nextChar();
-                token = new ParensCloseSymbolToken;
+                token = new ParensCloseSymbolToken();
                 break;
             case "?":
                 this.nextChar();
-                token = new OptionalSymbolToken;
+                token = new OptionalSymbolToken();
                 break;
             case ":":
                 this.nextChar();
-                token = new ColonSymbolToken;
+                token = new ColonSymbolToken();
                 break;
             case "=":
                 this.nextChar();
-                token = new EqualSymbolToken;
+                token = new EqualSymbolToken();
                 break;
             case "!":
                 this.nextChar();
-                token = new ExclamationMarkSymbolToken;
+                token = new ExclamationMarkSymbolToken();
                 break;
             case ",":
                 this.nextChar();
-                token = new CommaSymbolToken;
+                token = new CommaSymbolToken();
                 break;
             case "[":
                 switch (this.nextChar()) {
                     case "]": {
                         this.nextChar();
-                        token = new ArraySymbolToken;
+                        token = new ArraySymbolToken();
                         break;
                     }
                 }
@@ -145,7 +185,7 @@ export class Lexer {
                         switch (this.nextChar()) {
                             case ".": {
                                 this.nextChar();
-                                token = new SpreadSymbolToken;
+                                token = new SpreadSymbolToken();
                                 break;
                             }
                         }
@@ -157,13 +197,13 @@ export class Lexer {
                 let pos = this.startPos + 1;
                 while (body[body.length - 1] === "\\") {
                     body = body.slice(0, body.length - 1).trim();
-                    while (!["\0", "\n"].includes(this.nextChar())) { }
+                    while (!["\0", "\n"].includes(this.nextChar())) {}
                     body = (body + " " + this.source.substring(pos, this.pos).trim()).trim();
                     pos = this.pos + 1;
                 }
                 token = new AnnotationToken(body.trim());
                 break;
-            case "\"": {
+            case '"': {
                 const chars = [];
                 outerLoop: while (true) {
                     switch (this.nextChar()) {
@@ -184,7 +224,7 @@ export class Lexer {
                                     break;
                             }
                             break;
-                        case "\"":
+                        case '"':
                             this.nextChar();
                             token = new StringLiteralToken(chars.join(""));
                             break outerLoop;
@@ -201,19 +241,19 @@ export class Lexer {
 
                     switch (ident) {
                         case "error":
-                            token = new ErrorKeywordToken;
+                            token = new ErrorKeywordToken();
                             break;
                         case "enum":
-                            token = new EnumKeywordToken;
+                            token = new EnumKeywordToken();
                             break;
                         case "type":
-                            token = new TypeKeywordToken;
+                            token = new TypeKeywordToken();
                             break;
                         case "import":
-                            token = new ImportKeywordToken;
+                            token = new ImportKeywordToken();
                             break;
                         case "get":
-                            token = new GetKeywordToken;
+                            token = new GetKeywordToken();
                             break;
                         case "function":
                             token = new FunctionKeywordToken("function");
@@ -222,10 +262,10 @@ export class Lexer {
                             token = new FunctionKeywordToken("fn");
                             break;
                         case "true":
-                            token = new TrueKeywordToken;
+                            token = new TrueKeywordToken();
                             break;
                         case "false":
-                            token = new FalseKeywordToken;
+                            token = new FalseKeywordToken();
                             break;
                         default:
                             token = Lexer.PRIMITIVES.has(ident) ? new PrimitiveTypeToken(ident) : new IdentifierToken(ident);

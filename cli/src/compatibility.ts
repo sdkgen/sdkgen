@@ -23,6 +23,5 @@ export function compatibilityCmd(argv: string[]) {
         console.log(issue);
     }
 
-    if (issues.length)
-        process.exit(1);
+    if (issues.length) process.exit(1);
 }

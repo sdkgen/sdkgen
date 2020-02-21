@@ -1,4 +1,28 @@
-import { JsonPrimitiveType, Base64PrimitiveType, BoolPrimitiveType, BytesPrimitiveType, CepPrimitiveType, CnpjPrimitiveType, CpfPrimitiveType, DatePrimitiveType, DateTimePrimitiveType, EmailPrimitiveType, FloatPrimitiveType, HexPrimitiveType, IntPrimitiveType, LatLngPrimitiveType, MoneyPrimitiveType, PhonePrimitiveType, SafeHtmlPrimitiveType, StringPrimitiveType, UIntPrimitiveType, UrlPrimitiveType, UuidPrimitiveType, VoidPrimitiveType, XmlPrimitiveType } from "./ast";
+import {
+    JsonPrimitiveType,
+    Base64PrimitiveType,
+    BoolPrimitiveType,
+    BytesPrimitiveType,
+    CepPrimitiveType,
+    CnpjPrimitiveType,
+    CpfPrimitiveType,
+    DatePrimitiveType,
+    DateTimePrimitiveType,
+    EmailPrimitiveType,
+    FloatPrimitiveType,
+    HexPrimitiveType,
+    IntPrimitiveType,
+    LatLngPrimitiveType,
+    MoneyPrimitiveType,
+    PhonePrimitiveType,
+    SafeHtmlPrimitiveType,
+    StringPrimitiveType,
+    UIntPrimitiveType,
+    UrlPrimitiveType,
+    UuidPrimitiveType,
+    VoidPrimitiveType,
+    XmlPrimitiveType,
+} from "./ast";
 
 export const primitiveToAstClass = new Map<string, any>();
 primitiveToAstClass.set("string", StringPrimitiveType);

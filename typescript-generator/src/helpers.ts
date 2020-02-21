@@ -95,10 +95,8 @@ export function generateTypescriptTypeName(type: Type): string {
         case "ArrayType": {
             const base = (type as ArrayType).base;
             const baseGen = generateTypescriptTypeName(base);
-            if (base.constructor.name === "OptionalType")
-                return `(${baseGen})[]`;
-            else
-                return `${baseGen}[]`;
+            if (base.constructor.name === "OptionalType") return `(${baseGen})[]`;
+            else return `${baseGen}[]`;
         }
 
         case "StructType":

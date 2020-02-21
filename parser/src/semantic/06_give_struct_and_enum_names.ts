@@ -4,7 +4,7 @@ import { Visitor } from "./visitor";
 
 export class GiveStructAndEnumNamesVisitor extends Visitor {
     path: string[] = [];
-    names = new Map<string, {type: Type, path: string[]}>();
+    names = new Map<string, { type: Type; path: string[] }>();
 
     visit(node: AstNode) {
         if (node instanceof TypeDefinition) {
@@ -21,9 +21,13 @@ export class GiveStructAndEnumNamesVisitor extends Visitor {
             node.name = this.path.map(s => s[0].toUpperCase() + s.slice(1)).join("");
             const previous = this.names.get(node.name);
             if (previous && JSON.stringify(previous.type) !== JSON.stringify(node)) {
-                throw new SemanticError(`The name of the type '${this.path.join(".")}' at ${node.location} will conflict with '${previous.path.join(".")}' at ${previous.type.location}`);
+                throw new SemanticError(
+                    `The name of the type '${this.path.join(".")}' at ${node.location} will conflict with '${previous.path.join(".")}' at ${
+                        previous.type.location
+                    }`,
+                );
             }
-            this.names.set(node.name, {type: node, path: [...this.path]});
+            this.names.set(node.name, { type: node, path: [...this.path] });
             super.visit(node);
         } else {
             super.visit(node);

@@ -1,8 +1,7 @@
 import { AstRoot, astToJson } from "@sdkgen/parser";
 import { generateTypescriptEnum, generateTypescriptErrorClass, generateTypescriptInterface, generateTypescriptTypeName } from "./helpers";
 
-interface Options {
-}
+interface Options {}
 
 export function generateNodeServerSource(ast: AstRoot, options: Options) {
     let code = "";
@@ -27,18 +26,27 @@ export function generateNodeServerSource(ast: AstRoot, options: Options) {
     }
 
     code += `export class ApiConfig<ExtraContextT> extends BaseApiConfig<ExtraContextT> {
-    fn!: {${
-        ast.operations.map(op => `
-        ${op.prettyName}: (ctx: Context & ExtraContextT, args: {${op.args.map(arg =>
-            `${arg.name}: ${generateTypescriptTypeName(arg.type)}`
-        ).join(", ")}}) => Promise<${generateTypescriptTypeName(op.returnType)}>`).join("")}
+    fn!: {${ast.operations
+        .map(
+            op => `
+        ${op.prettyName}: (ctx: Context & ExtraContextT, args: {${op.args
+                .map(arg => `${arg.name}: ${generateTypescriptTypeName(arg.type)}`)
+                .join(", ")}}) => Promise<${generateTypescriptTypeName(op.returnType)}>`,
+        )
+        .join("")}
     }
 
-    err = {${ast.errors.map(err => `
-        ${err}(message: string = "") { throw new ${err}(message); }`).join(",")}
+    err = {${ast.errors
+        .map(
+            err => `
+        ${err}(message: string = "") { throw new ${err}(message); }`,
+        )
+        .join(",")}
     }
 
-    astJson = ${JSON.stringify(astToJson(ast), null, 4).replace(/"(\w+)":/g, '$1:').replace(/\n/g, "\n    ")}
+    astJson = ${JSON.stringify(astToJson(ast), null, 4)
+        .replace(/"(\w+)":/g, "$1:")
+        .replace(/\n/g, "\n    ")}
 }
 
 export const api = new ApiConfig<{}>();
