@@ -9,7 +9,7 @@ export class TokenLocation {
 }
 
 export class Token {
-    public location = new TokenLocation
+    public location = new TokenLocation();
 
     constructor(public value: string = "") {
         Object.defineProperty(this, "location", { enumerable: false });
@@ -25,20 +25,20 @@ export class Token {
     }
 }
 
-export class IdentifierToken extends Token { }
-export class StringLiteralToken extends Token { }
-export class EqualSymbolToken extends Token { }
-export class ExclamationMarkSymbolToken extends Token { }
-export class CurlyOpenSymbolToken extends Token { }
-export class CurlyCloseSymbolToken extends Token { }
-export class ParensOpenSymbolToken extends Token { }
-export class ParensCloseSymbolToken extends Token { }
-export class ColonSymbolToken extends Token { }
-export class OptionalSymbolToken extends Token { }
-export class ArraySymbolToken extends Token { }
-export class CommaSymbolToken extends Token { }
-export class SpreadSymbolToken extends Token { }
-export class AnnotationToken extends Token { }
+export class IdentifierToken extends Token {}
+export class StringLiteralToken extends Token {}
+export class EqualSymbolToken extends Token {}
+export class ExclamationMarkSymbolToken extends Token {}
+export class CurlyOpenSymbolToken extends Token {}
+export class CurlyCloseSymbolToken extends Token {}
+export class ParensOpenSymbolToken extends Token {}
+export class ParensCloseSymbolToken extends Token {}
+export class ColonSymbolToken extends Token {}
+export class OptionalSymbolToken extends Token {}
+export class ArraySymbolToken extends Token {}
+export class CommaSymbolToken extends Token {}
+export class SpreadSymbolToken extends Token {}
+export class AnnotationToken extends Token {}
 
 export class ImportKeywordToken extends Token {
     maybeAsIdentifier() {

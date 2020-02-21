@@ -2,6 +2,14 @@ name: test
 on: [push]
 jobs:
 
+  prettier:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+    - run: npm i -g prettier
+    - run: prettier -c '**/*.ts'
+
   browser-runtime:
     runs-on: ubuntu-latest
     strategy:

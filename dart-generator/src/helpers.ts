@@ -63,7 +63,7 @@ export function generateTypeName(type: Type): string {
         case "OptionalType":
             return generateTypeName((type as OptionalType).base);
         case "ArrayType":
-            return `List<${generateTypeName((type as ArrayType).base)}>`
+            return `List<${generateTypeName((type as ArrayType).base)}>`;
         case "StructType":
             return type.name;
         case "EnumType":

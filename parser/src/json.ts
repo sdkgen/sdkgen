@@ -1,32 +1,47 @@
-import { ArrayType, AstRoot, DescriptionAnnotation, EnumType, EnumValue, Field, FunctionOperation, Operation, OptionalType, StructType, ThrowsAnnotation, Type, TypeDefinition, TypeReference } from "./ast";
+import {
+    ArrayType,
+    AstRoot,
+    DescriptionAnnotation,
+    EnumType,
+    EnumValue,
+    Field,
+    FunctionOperation,
+    Operation,
+    OptionalType,
+    StructType,
+    ThrowsAnnotation,
+    Type,
+    TypeDefinition,
+    TypeReference,
+} from "./ast";
 import { analyse } from "./semantic/analyser";
 import { primitiveToAstClass } from "./utils";
 
 interface TypeTable {
-    [name: string]: TypeDescription
+    [name: string]: TypeDescription;
 }
 
 interface FunctionTable {
     [name: string]: {
         args: {
-            [arg: string]: TypeDescription
-        },
-        ret: TypeDescription
-    }
+            [arg: string]: TypeDescription;
+        };
+        ret: TypeDescription;
+    };
 }
 
-export type TypeDescription = string | string[] | { [name: string]: TypeDescription }
+export type TypeDescription = string | string[] | { [name: string]: TypeDescription };
 
 interface AnnotationJson {
-    type: string,
-    value: any
+    type: string;
+    value: any;
 }
 
 export interface AstJson {
-    typeTable: TypeTable
-    functionTable: FunctionTable
-    errors: string[]
-    annotations: { [target: string]: AnnotationJson[] }
+    typeTable: TypeTable;
+    functionTable: FunctionTable;
+    errors: string[];
+    annotations: { [target: string]: AnnotationJson[] };
 }
 
 export function astToJson(ast: AstRoot): AstJson {
@@ -34,7 +49,7 @@ export function astToJson(ast: AstRoot): AstJson {
     const typeTable: TypeTable = {};
 
     for (const { name, fields } of ast.structTypes) {
-        const obj: any = typeTable[name] = {};
+        const obj: any = (typeTable[name] = {});
         for (const field of fields) {
             obj[field.name] = field.type.name;
         }
@@ -49,27 +64,27 @@ export function astToJson(ast: AstRoot): AstJson {
     for (const op of ast.operations) {
         const args: any = {};
         for (const arg of op.args) {
-            args[arg.name] = arg.type.name
+            args[arg.name] = arg.type.name;
             for (const ann of arg.annotations) {
                 if (ann instanceof DescriptionAnnotation) {
                     const target = `fn.${op.prettyName}.${arg.name}`;
-                    const list = annotations[target] = (annotations[target] || []);
-                    list.push({type: "description", value: ann.text});
+                    const list = (annotations[target] = annotations[target] || []);
+                    list.push({ type: "description", value: ann.text });
                 }
             }
         }
         functionTable[op.prettyName] = {
             args,
-            ret: op.returnType.name
-        }
+            ret: op.returnType.name,
+        };
         for (const ann of op.annotations) {
             const target = `fn.${op.prettyName}`;
-            const list = annotations[target] = (annotations[target] || []);
+            const list = (annotations[target] = annotations[target] || []);
             if (ann instanceof DescriptionAnnotation) {
-                list.push({type: "description", value: ann.text});
+                list.push({ type: "description", value: ann.text });
             }
             if (ann instanceof ThrowsAnnotation) {
-                list.push({type: "throws", value: ann.error});
+                list.push({ type: "throws", value: ann.error });
             }
         }
     }
@@ -80,7 +95,7 @@ export function astToJson(ast: AstRoot): AstJson {
         typeTable,
         functionTable,
         errors,
-        annotations
+        annotations,
     };
 }
 
@@ -93,7 +108,7 @@ export function jsonToAst(json: AstJson) {
         if (typeof description === "string") {
             const primitiveClass = primitiveToAstClass.get(description);
             if (primitiveClass) {
-                return new primitiveClass;
+                return new primitiveClass();
             } else if (description.endsWith("?")) {
                 return new OptionalType(processType(description.slice(0, description.length - 1)));
             } else if (description.endsWith("[]")) {
@@ -104,9 +119,7 @@ export function jsonToAst(json: AstJson) {
         } else if (Array.isArray(description)) {
             return new EnumType(description.map(v => new EnumValue(v)));
         } else {
-            const fields = Object.keys(description).map(fieldName =>
-                new Field(fieldName, processType(description[fieldName]))
-            );
+            const fields = Object.keys(description).map(fieldName => new Field(fieldName, processType(description[fieldName])));
             return new StructType(fields, []);
         }
     }

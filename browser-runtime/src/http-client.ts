@@ -2,13 +2,12 @@ import { AstJson } from "./ast";
 import { decode, encode } from "./encode-decode";
 
 interface ErrClasses {
-    [className: string]: any
+    [className: string]: any;
 }
 
 function randomBytesHex(len: number) {
     let hex = "";
-    for (let i = 0; i < 2 * len; ++i)
-        hex += "0123456789abcdef"[Math.floor(Math.random() * 16)];
+    for (let i = 0; i < 2 * len; ++i) hex += "0123456789abcdef"[Math.floor(Math.random() * 16)];
     return hex;
 }
 
@@ -22,12 +21,12 @@ function getDeviceId() {
             localStorage.setItem("deviceId", deviceId);
         }
         return deviceId;
-    } catch (e) { }
+    } catch (e) {}
     return fallbackDeviceId;
 }
 
 export class SdkgenHttpClient {
-    private baseUrl: string
+    private baseUrl: string;
     extra = new Map<string, any>();
 
     successHook: (result: any, name: string, args: any) => void = () => {};
@@ -58,7 +57,7 @@ export class SdkgenHttpClient {
                 version: thisScript ? thisScript.src : "",
                 language: navigator.language,
                 browserUserAgent: navigator.userAgent,
-                timezone: typeof Intl === "object" ? Intl.DateTimeFormat().resolvedOptions().timeZone : null
+                timezone: typeof Intl === "object" ? Intl.DateTimeFormat().resolvedOptions().timeZone : null,
             },
         };
 
@@ -93,10 +92,8 @@ export class SdkgenHttpClient {
             req.send(JSON.stringify(request));
         }).catch(err => {
             const errClass = this.errClasses[err.type];
-            if (errClass)
-                throw new errClass(err.message);
-            else
-                throw err;
+            if (errClass) throw new errClass(err.message);
+            else throw err;
         });
 
         const ret = decode(this.astJson.typeTable, `${functionName}.ret`, func.ret, encodedRet);

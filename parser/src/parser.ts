@@ -1,29 +1,72 @@
 import { readFileSync } from "fs";
 import { dirname, resolve } from "path";
-import { Annotation, ArgDescriptionAnnotation, ArrayType, AstRoot, DescriptionAnnotation, EnumType, EnumValue, Field, FunctionOperation, GetOperation, Operation, OptionalType, StructType, ThrowsAnnotation, Type, TypeDefinition, TypeReference, VoidPrimitiveType } from "./ast";
+import {
+    Annotation,
+    ArgDescriptionAnnotation,
+    ArrayType,
+    AstRoot,
+    DescriptionAnnotation,
+    EnumType,
+    EnumValue,
+    Field,
+    FunctionOperation,
+    GetOperation,
+    Operation,
+    OptionalType,
+    StructType,
+    ThrowsAnnotation,
+    Type,
+    TypeDefinition,
+    TypeReference,
+    VoidPrimitiveType,
+} from "./ast";
 import { Lexer } from "./lexer";
 import { analyse } from "./semantic/analyser";
-import { AnnotationToken, ArraySymbolToken, ColonSymbolToken, CommaSymbolToken, CurlyCloseSymbolToken, CurlyOpenSymbolToken, EnumKeywordToken, ErrorKeywordToken, ExclamationMarkSymbolToken, FalseKeywordToken, FunctionKeywordToken, GetKeywordToken, IdentifierToken, ImportKeywordToken, OptionalSymbolToken, ParensCloseSymbolToken, ParensOpenSymbolToken, PrimitiveTypeToken, SpreadSymbolToken, StringLiteralToken, Token, TrueKeywordToken, TypeKeywordToken } from "./token";
+import {
+    AnnotationToken,
+    ArraySymbolToken,
+    ColonSymbolToken,
+    CommaSymbolToken,
+    CurlyCloseSymbolToken,
+    CurlyOpenSymbolToken,
+    EnumKeywordToken,
+    ErrorKeywordToken,
+    ExclamationMarkSymbolToken,
+    FalseKeywordToken,
+    FunctionKeywordToken,
+    GetKeywordToken,
+    IdentifierToken,
+    ImportKeywordToken,
+    OptionalSymbolToken,
+    ParensCloseSymbolToken,
+    ParensOpenSymbolToken,
+    PrimitiveTypeToken,
+    SpreadSymbolToken,
+    StringLiteralToken,
+    Token,
+    TrueKeywordToken,
+    TypeKeywordToken,
+} from "./token";
 import { primitiveToAstClass } from "./utils";
 
 export class ParserError extends Error {}
 
 interface MultiExpectMatcher {
-    ImportKeywordToken?: (token: ImportKeywordToken) => any
-    TypeKeywordToken?: (token: TypeKeywordToken) => any
-    GetKeywordToken?: (token: GetKeywordToken) => any
-    FunctionKeywordToken?: (token: FunctionKeywordToken) => any
-    ErrorKeywordToken?: (token: ErrorKeywordToken) => any
-    IdentifierToken?: (token: IdentifierToken) => any
-    CurlyOpenSymbolToken?: (token: CurlyOpenSymbolToken) => any
-    EnumKeywordToken?: (token: EnumKeywordToken) => any
-    PrimitiveTypeToken?: (token: PrimitiveTypeToken) => any
-    ArraySymbolToken?: (token: ArraySymbolToken) => any
-    OptionalSymbolToken?: (token: OptionalSymbolToken) => any
-    CurlyCloseSymbolToken?: (token: CurlyCloseSymbolToken) => any
-    SpreadSymbolToken?: (token: SpreadSymbolToken) => any
-    TrueKeywordToken?: (token: TrueKeywordToken) => any
-    FalseKeywordToken?: (token: FalseKeywordToken) => any
+    ImportKeywordToken?: (token: ImportKeywordToken) => any;
+    TypeKeywordToken?: (token: TypeKeywordToken) => any;
+    GetKeywordToken?: (token: GetKeywordToken) => any;
+    FunctionKeywordToken?: (token: FunctionKeywordToken) => any;
+    ErrorKeywordToken?: (token: ErrorKeywordToken) => any;
+    IdentifierToken?: (token: IdentifierToken) => any;
+    CurlyOpenSymbolToken?: (token: CurlyOpenSymbolToken) => any;
+    EnumKeywordToken?: (token: EnumKeywordToken) => any;
+    PrimitiveTypeToken?: (token: PrimitiveTypeToken) => any;
+    ArraySymbolToken?: (token: ArraySymbolToken) => any;
+    OptionalSymbolToken?: (token: OptionalSymbolToken) => any;
+    CurlyCloseSymbolToken?: (token: CurlyCloseSymbolToken) => any;
+    SpreadSymbolToken?: (token: SpreadSymbolToken) => any;
+    TrueKeywordToken?: (token: TrueKeywordToken) => any;
+    FalseKeywordToken?: (token: FalseKeywordToken) => any;
 }
 
 export class Parser {
@@ -56,7 +99,11 @@ export class Parser {
 
     private multiExpect(matcher: MultiExpectMatcher) {
         if (!this.token) {
-            throw new ParserError(`Expected ${Object.keys(matcher).map(x => x.replace("Token", "")).join(" or ")}, but found end of file`);
+            throw new ParserError(
+                `Expected ${Object.keys(matcher)
+                    .map(x => x.replace("Token", ""))
+                    .join(" or ")}, but found end of file`,
+            );
         }
 
         const tokenName = (this.token.constructor as any).name;
@@ -70,7 +117,11 @@ export class Parser {
             }
         }
 
-        throw new ParserError(`Expected ${Object.keys(matcher).map(x => x.replace("Token", "")).join(" or ")} at ${this.token.location}, but found ${this.token}`);
+        throw new ParserError(
+            `Expected ${Object.keys(matcher)
+                .map(x => x.replace("Token", ""))
+                .join(" or ")} at ${this.token.location}, but found ${this.token}`,
+        );
     }
 
     private expect(x: typeof IdentifierToken): IdentifierToken;
@@ -138,7 +189,9 @@ export class Parser {
                     this.annotations.push(new DescriptionAnnotation(this.token.value.slice(words[0].length).trim()).at(this.token));
                     break;
                 case "arg":
-                    this.annotations.push(new ArgDescriptionAnnotation(words[1], this.token.value.slice(words[0].length + 1 + words[1].length).trim()).at(this.token));
+                    this.annotations.push(
+                        new ArgDescriptionAnnotation(words[1], this.token.value.slice(words[0].length + 1 + words[1].length).trim()).at(this.token),
+                    );
                     break;
                 case "throws":
                     this.annotations.push(new ThrowsAnnotation(this.token.value.slice(words[0].length).trim()).at(this.token));
@@ -162,7 +215,9 @@ export class Parser {
 
         const name = this.expect(IdentifierToken).value;
         if (!name[0].match(/[A-Z]/)) {
-            throw new ParserError(`The custom type name must start with an uppercase letter, but found '${JSON.stringify(name)}' at ${this.token!.location}`);
+            throw new ParserError(
+                `The custom type name must start with an uppercase letter, but found '${JSON.stringify(name)}' at ${this.token!.location}`,
+            );
         }
         this.nextToken();
 
@@ -182,7 +237,7 @@ export class Parser {
 
         const openingToken: GetKeywordToken | FunctionKeywordToken = this.multiExpect({
             GetKeywordToken: token => token,
-            FunctionKeywordToken: token => token
+            FunctionKeywordToken: token => token,
         });
         this.nextToken();
 
@@ -230,9 +285,7 @@ export class Parser {
             returnType = this.parseType();
         }
 
-        const op = openingToken instanceof GetKeywordToken ?
-            new GetOperation(name, args, returnType) :
-            new FunctionOperation(name, args, returnType);
+        const op = openingToken instanceof GetKeywordToken ? new GetOperation(name, args, returnType) : new FunctionOperation(name, args, returnType);
 
         op.annotations = annotations;
 
@@ -264,7 +317,7 @@ export class Parser {
                     this.checkCannotHaveAnnotationsHere();
                     this.nextToken();
                     finished = true;
-                }
+                },
             });
         }
 
@@ -334,7 +387,7 @@ export class Parser {
                     this.checkCannotHaveAnnotationsHere();
                     this.nextToken();
                     finished = true;
-                }
+                },
             });
         }
 
@@ -356,17 +409,15 @@ export class Parser {
             PrimitiveTypeToken: token => {
                 this.nextToken();
                 const primitiveClass = primitiveToAstClass.get(token.value);
-                if (primitiveClass)
-                    return new primitiveClass().at(token);
-                else
-                    throw new ParserError(`BUG! Should handle primitive ${token.value}`);
-            }
+                if (primitiveClass) return new primitiveClass().at(token);
+                else throw new ParserError(`BUG! Should handle primitive ${token.value}`);
+            },
         });
 
         while (this.token instanceof ArraySymbolToken || this.token instanceof OptionalSymbolToken) {
             this.multiExpect({
-                ArraySymbolToken: token => result = new ArrayType(result).at(token),
-                OptionalSymbolToken: token => result = new OptionalType(result).at(token)
+                ArraySymbolToken: token => (result = new ArrayType(result).at(token)),
+                OptionalSymbolToken: token => (result = new OptionalType(result).at(token)),
             });
             this.nextToken();
         }

@@ -9,8 +9,7 @@ export class ApplyStructSpreadsVisitor extends Visitor {
 
     visit(node: AstNode) {
         if (node instanceof StructType) {
-            if (this.processed.has(node))
-                return;
+            if (this.processed.has(node)) return;
             this.processed.add(node);
         }
 
@@ -19,7 +18,9 @@ export class ApplyStructSpreadsVisitor extends Visitor {
         if (node instanceof StructType) {
             for (const other of node.spreads.map(t => t.type)) {
                 if (!(other instanceof StructType)) {
-                    throw new SemanticError(`A spread operator in a struct can't refer to something that is not a struct, in '${node.name}' at ${node.location}.`);
+                    throw new SemanticError(
+                        `A spread operator in a struct can't refer to something that is not a struct, in '${node.name}' at ${node.location}.`,
+                    );
                 }
 
                 this.visit(other); // recursion!

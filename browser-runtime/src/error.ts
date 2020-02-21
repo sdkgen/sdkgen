@@ -1,4 +1,3 @@
-
 export abstract class SdkgenError extends Error {
     constructor(message?: string) {
         super(message);
@@ -8,7 +7,7 @@ export abstract class SdkgenError extends Error {
     public toJSON() {
         return {
             type: this.constructor.name,
-            message: this.message
+            message: this.message,
         };
     }
 }
