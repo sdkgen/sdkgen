@@ -407,18 +407,20 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
                                             res.write(`${reply.result}`);
                                             res.end();
                                         } else if (type instanceof BytesPrimitiveType) {
-                                            FileType.fromBuffer(reply.result)
+                                            const buffer = Buffer.from(reply.result, "base64");
+                                            FileType.fromBuffer(buffer)
                                                 .then(fileType => {
                                                     res.setHeader(
                                                         "content-type",
                                                         fileType?.mime ?? "application/octet-stream",
                                                     );
                                                 })
-                                                .catch(() => {
+                                                .catch(err => {
+                                                    console.error(err);
                                                     res.setHeader("content-type", "application/octet-stream");
                                                 })
                                                 .then(() => {
-                                                    res.write(reply.result);
+                                                    res.write(buffer);
                                                     res.end();
                                                 });
                                         } else {
@@ -530,7 +532,13 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
             return;
         }
 
-        if (req.method === "GET" && path === "/") {
+        if (req.method === "GET") {
+            if (path !== "/") {
+                res.writeHead(404);
+                res.end();
+                return;
+            }
+
             let ok: boolean;
 
             try {

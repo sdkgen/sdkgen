@@ -14,6 +14,10 @@ api.fn.add = async (ctx: Context, { first, second }: { first: number; second: st
     return `${first}${second}`;
 };
 
+api.fn.maybe = async (ctx: Context, { bin }: { bin: string | null }) => {
+    return bin !== null ? Buffer.from(bin, "hex") : null;
+};
+
 writeFileSync(
     `${__dirname}/nodeClient.ts`,
     generateNodeClientSource(ast, {}).replace("@sdkgen/node-runtime", "../../src"),
@@ -24,17 +28,6 @@ unlinkSync(`${__dirname}/nodeClient.ts`);
 const nodeClient = new NodeApiClient("http://localhost:8001");
 
 const server = new SdkgenHttpServer(api, { aaa: true });
-
-function get(path: string, headers?: any) {
-    return axios.get("http://localhost:8001" + path, {
-        transformResponse: [
-            data => {
-                return data;
-            },
-        ],
-        headers,
-    });
-}
 
 describe("Rest API", () => {
     beforeAll(() => {
@@ -128,21 +121,51 @@ describe("Rest API", () => {
             },
             data: '"aa"',
         },
+        {
+            method: "GET",
+            path: "/maybe1",
+            result: "",
+            statusCode: 204,
+        },
+        {
+            method: "GET",
+            path: "/maybe1?bin=4d546864",
+            result: "MThd",
+            resultHeaders: {
+                "content-type": "audio/midi",
+            },
+        },
+        {
+            method: "GET",
+            path: "/maybe1?bin=61",
+            result: "a",
+            resultHeaders: {
+                "content-type": "application/octet-stream",
+            },
+        },
+        {
+            method: "GET",
+            path: "/maybe1?bin=61",
+            result: '"YQ=="',
+            headers: {
+                accept: "application/json",
+            },
+        },
     ];
 
-    for (const { method, path, result, headers, data } of table) {
+    for (const { method, path, result, headers, data, statusCode, resultHeaders } of table) {
         test(`${method} ${path}` + (headers ? ` with headers ${JSON.stringify(headers)}` : ""), async () => {
-            expect(
-                await axios.request({
-                    url: "http://localhost:8001" + path,
-                    method: method as any,
-                    transformResponse: [data => data],
-                    headers,
-                    data,
-                }),
-            ).toMatchObject({
-                data: result,
+            const response = await axios.request({
+                url: "http://localhost:8001" + path,
+                method: method as any,
+                transformResponse: [data => data],
+                headers,
+                data,
             });
+
+            expect(response.data).toEqual(result);
+            expect(response.status).toEqual(statusCode ?? 200);
+            expect(response.headers).toMatchObject(resultHeaders ?? {});
         });
     }
 });

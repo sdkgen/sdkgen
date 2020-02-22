@@ -5,3 +5,6 @@
 @rest POST /add4 [body {first}] [header x-second: {second}]
 @rest POST /add5 [body {second}] [header x-first: {first}]
 fn add(first: int, second: string): string
+
+@rest GET /maybe1?{bin}
+fn maybe(bin: hex?): bytes?
