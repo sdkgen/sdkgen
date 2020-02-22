@@ -1,4 +1,4 @@
-import { requestModel, ModelAnotations } from "helpers/requestModel";
+import { ModelAnotations, requestModel } from "helpers/requestModel";
 import { observable } from "mobx";
 import { ArgsType, AstJson, TypeDescription, TypeTable } from "resources/types/ast";
 import { v4 as uuidV4 } from "uuid";

@@ -1,4 +1,4 @@
-import { Parser, astToJson } from "@sdkgen/parser";
+import { astToJson, Parser } from "@sdkgen/parser";
 import { generateNodeClientSource, generateNodeServerSource } from "@sdkgen/typescript-generator";
 import axios from "axios";
 import { randomBytes } from "crypto";

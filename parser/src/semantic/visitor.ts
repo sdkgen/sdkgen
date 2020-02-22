@@ -1,4 +1,4 @@
-import { ArrayType, AstNode, AstRoot, Field, Operation, OptionalType, StructType, TypeDefinition, TypeReference } from "../ast";
+import { ArrayType, AstNode, AstRoot, Field, Operation, OptionalType, StructType, TypeDefinition } from "../ast";
 
 export abstract class Visitor {
     constructor(protected root: AstRoot) {}

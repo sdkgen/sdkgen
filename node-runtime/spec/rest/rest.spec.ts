@@ -1,8 +1,8 @@
 import { Parser } from "@sdkgen/parser";
 import { generateNodeClientSource, generateNodeServerSource } from "@sdkgen/typescript-generator";
+import axios from "axios";
 import { unlinkSync, writeFileSync } from "fs";
 import { Context, SdkgenHttpServer } from "../../src";
-import axios from "axios";
 
 const ast = new Parser(`${__dirname}/api.sdkgen`).parse();
 

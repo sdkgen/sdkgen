@@ -8,12 +8,12 @@ import {
     FunctionOperation,
     Operation,
     OptionalType,
+    RestAnnotation,
     StructType,
     ThrowsAnnotation,
     Type,
     TypeDefinition,
     TypeReference,
-    RestAnnotation,
 } from "./ast";
 import { analyse } from "./semantic/analyser";
 import { primitiveToAstClass } from "./utils";

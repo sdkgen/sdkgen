@@ -1,6 +1,6 @@
-import * as React from "react";
 // import RootStore from "stores";
 import { MainHeader } from "components/header";
+import * as React from "react";
 import s from "./mainWrapper.scss";
 
 interface Props {}

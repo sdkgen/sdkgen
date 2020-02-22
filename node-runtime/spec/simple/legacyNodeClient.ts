@@ -1,5 +1,5 @@
-import * as https from "https";
 import * as http from "http";
+import * as https from "https";
 import { URL } from "url";
 export interface User {
     name: string;

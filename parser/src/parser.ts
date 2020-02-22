@@ -21,6 +21,7 @@ import {
     VoidPrimitiveType,
 } from "./ast";
 import { Lexer } from "./lexer";
+import { parseRestAnnotation } from "./restparser";
 import { analyse } from "./semantic/analyser";
 import {
     AnnotationToken,
@@ -48,7 +49,6 @@ import {
     TypeKeywordToken,
 } from "./token";
 import { primitiveToAstClass } from "./utils";
-import { parseRestAnnotation } from "./restparser";
 
 export class ParserError extends Error {}
 

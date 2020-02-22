@@ -1,16 +1,15 @@
+import loadable, { Options } from "@loadable/component";
+// import Rootstore from "stores";
+import { PageLoading } from "components/loading";
+import { MainWrapper } from "containers/mainWrapper";
+import { createBrowserHistory } from "history";
+import { observer } from "mobx-react-lite";
+import { syncHistoryWithStore } from "mobx-react-router";
 import * as React from "react";
 import { Router } from "react-router";
 import { Route, Switch } from "react-router-dom";
-import loadable, { Options } from "@loadable/component";
-import { syncHistoryWithStore } from "mobx-react-router";
 import { rootStore } from "stores";
-import { createBrowserHistory } from "history";
 const history = syncHistoryWithStore(createBrowserHistory(), rootStore.routerStore);
-
-import { MainWrapper } from "containers/mainWrapper";
-import { observer } from "mobx-react-lite";
-// import Rootstore from "stores";
-import { PageLoading } from "components/loading";
 
 const asyncOptions: Options<any> = {
 	fallback: <PageLoading />,

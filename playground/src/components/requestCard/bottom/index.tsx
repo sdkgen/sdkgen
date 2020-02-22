@@ -1,9 +1,9 @@
-import * as React from "react";
-import s from "./bottom.scss";
+import { faPause, faPlay, faRedo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlay, faPause, faRedo } from "@fortawesome/free-solid-svg-icons";
 import classNames from "classnames";
 import { RequestStatus } from "helpers/requestModel";
+import * as React from "react";
+import s from "./bottom.scss";
 
 interface BottomProps {
 	onClick: (status: RequestStatus) => void;
