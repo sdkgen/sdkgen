@@ -1,6 +1,7 @@
 import { generateDartClientSource } from "@sdkgen/dart-generator";
 import {
     AstJson,
+    AstRoot,
     Base64PrimitiveType,
     BoolPrimitiveType,
     BytesPrimitiveType,
@@ -12,6 +13,7 @@ import {
     FloatPrimitiveType,
     HexPrimitiveType,
     IntPrimitiveType,
+    jsonToAst,
     MoneyPrimitiveType,
     OptionalType,
     RestAnnotation,
@@ -55,7 +57,10 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
 
     private ignoredUrlPrefix = "";
 
+    private ast: AstRoot;
+
     constructor(protected apiConfig: BaseApiConfig<ExtraContextT>, private extraContext: ExtraContextT) {
+        this.ast = jsonToAst(apiConfig.astJson);
         this.httpServer = createServer(this.handleRequest.bind(this));
         this.enableCors();
         this.attachRestHandlers();
@@ -77,7 +82,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
 
                 try {
                     res.setHeader("Content-Type", "application/octet-stream");
-                    res.write(generateFn(apiConfig.ast, {}));
+                    res.write(generateFn(this.ast, {}));
                 } catch (e) {
                     console.error(e);
                     res.statusCode = 500;
@@ -204,7 +209,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
             return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
         }
 
-        for (const op of this.apiConfig.ast.operations) {
+        for (const op of this.ast.operations) {
             for (const ann of op.annotations) {
                 if (ann instanceof RestAnnotation) {
                     const pathFragments = ann.path.split(/\{\w+\}/u);
@@ -629,7 +634,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
 
         // If errors, check if the error type is one of the @throws annotation. If it isn't, change to Fatal
         if (reply.error) {
-            const functionAst = this.apiConfig.ast.operations.find(op => op.name === ctx.request.name);
+            const functionAst = this.ast.operations.find(op => op.name === ctx.request.name);
 
             if (functionAst) {
                 const allowedErrors = functionAst.annotations

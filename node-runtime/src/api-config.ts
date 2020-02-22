@@ -1,18 +1,8 @@
-import { AstJson, AstRoot, jsonToAst } from "@sdkgen/parser";
+import { AstJson } from "@sdkgen/parser";
 import { Context, ContextReply } from "./context";
 
 export abstract class BaseApiConfig<ExtraContextT = {}> {
     astJson!: AstJson;
-
-    private _ast: AstRoot | null = null;
-
-    get ast() {
-        if (!this._ast) {
-            this._ast = jsonToAst(this.astJson);
-        }
-
-        return this._ast;
-    }
 
     fn: {
         [name: string]: ((ctx: Context & ExtraContextT, args: any) => any) | undefined;
