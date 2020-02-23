@@ -6,5 +6,16 @@
 @rest POST /add5 [body {second}] [header x-first: {first}]
 fn add(first: int, second: string): string
 
-@rest GET /maybe1?{bin}
+@rest GET /maybe?{bin}
+@rest POST /maybe [body {bin}]
 fn maybe(bin: hex?): bytes?
+
+@rest POST /hex [body {bin}]
+fn hex(bin: bytes): hex
+
+type Obj {
+    val: int
+}
+
+@rest POST /obj [body {obj}]
+fn obj(obj: Obj): Obj

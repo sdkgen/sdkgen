@@ -366,12 +366,14 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
                                 try {
                                     if (reply.error) {
                                         res.statusCode = 400;
-                                        res.write(this.makeResponseError(reply.error).message);
+                                        res.setHeader("content-type", "application/json");
+                                        res.write(JSON.stringify(this.makeResponseError(reply.error)));
                                         res.end();
                                         return;
                                     }
 
                                     if (req.headers.accept === "application/json") {
+                                        res.setHeader("content-type", "application/json");
                                         res.write(JSON.stringify(reply.result));
                                         res.end();
                                     } else {
@@ -424,6 +426,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
                                                     res.end();
                                                 });
                                         } else {
+                                            res.setHeader("content-type", "application/json");
                                             res.write(JSON.stringify(reply.result));
                                             res.end();
                                         }

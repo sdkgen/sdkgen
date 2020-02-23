@@ -18,6 +18,17 @@ api.fn.maybe = async (ctx: Context, { bin }: { bin: string | null }) => {
     return bin !== null ? Buffer.from(bin, "hex") : null;
 };
 
+api.fn.hex = async (ctx: Context, { bin }: { bin: Buffer }) => {
+    return bin.toString("hex");
+};
+
+api.fn.obj = async (ctx: Context, { obj }: { obj: { val: number } }) => {
+    if (obj.val === 0) {
+        throw "Value is zero ~ spec error";
+    }
+    return obj;
+};
+
 writeFileSync(
     `${__dirname}/nodeClient.ts`,
     generateNodeClientSource(ast, {}).replace("@sdkgen/node-runtime", "../../src"),
@@ -123,13 +134,13 @@ describe("Rest API", () => {
         },
         {
             method: "GET",
-            path: "/maybe1",
+            path: "/maybe",
             result: "",
             statusCode: 204,
         },
         {
             method: "GET",
-            path: "/maybe1?bin=4d546864",
+            path: "/maybe?bin=4d546864",
             result: "MThd",
             resultHeaders: {
                 "content-type": "audio/midi",
@@ -137,7 +148,7 @@ describe("Rest API", () => {
         },
         {
             method: "GET",
-            path: "/maybe1?bin=61",
+            path: "/maybe?bin=61",
             result: "a",
             resultHeaders: {
                 "content-type": "application/octet-stream",
@@ -145,10 +156,50 @@ describe("Rest API", () => {
         },
         {
             method: "GET",
-            path: "/maybe1?bin=61",
+            path: "/maybe?bin=61",
             result: '"YQ=="',
             headers: {
                 accept: "application/json",
+            },
+        },
+        {
+            method: "POST",
+            path: "/maybe",
+            result: "",
+            statusCode: 204,
+        },
+        {
+            method: "POST",
+            path: "/maybe",
+            result: "a",
+            resultHeaders: {
+                "content-type": "application/octet-stream",
+            },
+            data: "61",
+        },
+        {
+            method: "POST",
+            path: "/hex",
+            result: "61",
+            data: "a",
+        },
+        {
+            method: "POST",
+            path: "/obj",
+            result: `{"val":15}`,
+            data: `{"val":15}`,
+            resultHeaders: {
+                "content-type": "application/json",
+            },
+        },
+        {
+            method: "POST",
+            path: "/obj",
+            result: `{"message":"Value is zero ~ spec error","type":"Fatal"}`,
+            data: `{"val":0}`,
+            statusCode: 400,
+            resultHeaders: {
+                "content-type": "application/json",
             },
         },
     ];
@@ -161,6 +212,7 @@ describe("Rest API", () => {
                 transformResponse: [data => data],
                 headers,
                 data,
+                validateStatus: () => true,
             });
 
             expect(response.data).toEqual(result);
