@@ -1,33 +1,7 @@
 import { generateDartClientSource } from "@sdkgen/dart-generator";
-import {
-    AstJson,
-    AstRoot,
-    Base64PrimitiveType,
-    BoolPrimitiveType,
-    BytesPrimitiveType,
-    CepPrimitiveType,
-    CnpjPrimitiveType,
-    CpfPrimitiveType,
-    DatePrimitiveType,
-    DateTimePrimitiveType,
-    FloatPrimitiveType,
-    HexPrimitiveType,
-    IntPrimitiveType,
-    jsonToAst,
-    MoneyPrimitiveType,
-    OptionalType,
-    RestAnnotation,
-    StringPrimitiveType,
-    ThrowsAnnotation,
-    UIntPrimitiveType,
-    UuidPrimitiveType,
-} from "@sdkgen/parser";
+import { AstJson, AstRoot, Base64PrimitiveType, BoolPrimitiveType, BytesPrimitiveType, CepPrimitiveType, CnpjPrimitiveType, CpfPrimitiveType, DatePrimitiveType, DateTimePrimitiveType, FloatPrimitiveType, HexPrimitiveType, IntPrimitiveType, jsonToAst, MoneyPrimitiveType, OptionalType, RestAnnotation, StringPrimitiveType, ThrowsAnnotation, UIntPrimitiveType, UuidPrimitiveType } from "@sdkgen/parser";
 import { PLAYGROUND_PUBLIC_PATH } from "@sdkgen/playground";
-import {
-    generateBrowserClientSource,
-    generateNodeClientSource,
-    generateNodeServerSource,
-} from "@sdkgen/typescript-generator";
+import { generateBrowserClientSource, generateNodeClientSource, generateNodeServerSource } from "@sdkgen/typescript-generator";
 import { randomBytes } from "crypto";
 import FileType from "file-type";
 import { createServer, IncomingMessage, Server, ServerResponse } from "http";
@@ -39,6 +13,7 @@ import { parse as parseUrl } from "url";
 import { BaseApiConfig } from "./api-config";
 import { Context, ContextReply, ContextRequest } from "./context";
 import { decode, encode } from "./encode-decode";
+import { setupSwagger } from "./swagger";
 
 export class SdkgenHttpServer<ExtraContextT = {}> {
     public httpServer: Server;
@@ -57,7 +32,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
 
     private ignoredUrlPrefix = "";
 
-    private ast: AstRoot;
+    public readonly ast: AstRoot;
 
     constructor(protected apiConfig: BaseApiConfig<ExtraContextT>, private extraContext: ExtraContextT) {
         this.ast = jsonToAst(apiConfig.astJson);
@@ -209,9 +184,16 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
             return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
         }
 
+        let hasSwagger = false;
+
         for (const op of this.ast.operations) {
             for (const ann of op.annotations) {
                 if (ann instanceof RestAnnotation) {
+                    if (!hasSwagger) {
+                        setupSwagger(this);
+                        hasSwagger = true;
+                    }
+
                     const pathFragments = ann.path.split(/\{\w+\}/u);
 
                     let pathRegex = "^";
@@ -381,7 +363,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
 
                                         if (type instanceof OptionalType) {
                                             if (reply.result === null) {
-                                                res.statusCode = 204;
+                                                res.statusCode = ann.method === "GET" ? 404 : 204;
                                                 res.end();
                                                 return;
                                             } else {

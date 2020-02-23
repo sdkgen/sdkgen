@@ -136,7 +136,7 @@ describe("Rest API", () => {
             method: "GET",
             path: "/maybe",
             result: "",
-            statusCode: 204,
+            statusCode: 404,
         },
         {
             method: "GET",
