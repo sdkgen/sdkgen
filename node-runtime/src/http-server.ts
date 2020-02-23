@@ -1,7 +1,33 @@
 import { generateDartClientSource } from "@sdkgen/dart-generator";
-import { AstJson, AstRoot, Base64PrimitiveType, BoolPrimitiveType, BytesPrimitiveType, CepPrimitiveType, CnpjPrimitiveType, CpfPrimitiveType, DatePrimitiveType, DateTimePrimitiveType, FloatPrimitiveType, HexPrimitiveType, IntPrimitiveType, jsonToAst, MoneyPrimitiveType, OptionalType, RestAnnotation, StringPrimitiveType, ThrowsAnnotation, UIntPrimitiveType, UuidPrimitiveType } from "@sdkgen/parser";
+import {
+    AstJson,
+    AstRoot,
+    Base64PrimitiveType,
+    BoolPrimitiveType,
+    BytesPrimitiveType,
+    CepPrimitiveType,
+    CnpjPrimitiveType,
+    CpfPrimitiveType,
+    DatePrimitiveType,
+    DateTimePrimitiveType,
+    FloatPrimitiveType,
+    HexPrimitiveType,
+    IntPrimitiveType,
+    jsonToAst,
+    MoneyPrimitiveType,
+    OptionalType,
+    RestAnnotation,
+    StringPrimitiveType,
+    ThrowsAnnotation,
+    UIntPrimitiveType,
+    UuidPrimitiveType,
+} from "@sdkgen/parser";
 import { PLAYGROUND_PUBLIC_PATH } from "@sdkgen/playground";
-import { generateBrowserClientSource, generateNodeClientSource, generateNodeServerSource } from "@sdkgen/typescript-generator";
+import {
+    generateBrowserClientSource,
+    generateNodeClientSource,
+    generateNodeServerSource,
+} from "@sdkgen/typescript-generator";
 import { randomBytes } from "crypto";
 import FileType from "file-type";
 import { createServer, IncomingMessage, Server, ServerResponse } from "http";
