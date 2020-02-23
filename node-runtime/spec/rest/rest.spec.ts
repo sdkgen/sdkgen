@@ -38,7 +38,7 @@ unlinkSync(`${__dirname}/nodeClient.ts`);
 
 const nodeClient = new NodeApiClient("http://localhost:8001");
 
-const server = new SdkgenHttpServer(api, { aaa: true });
+const server = new SdkgenHttpServer(api, {});
 
 describe("Rest API", () => {
     beforeAll(() => {
@@ -53,7 +53,15 @@ describe("Rest API", () => {
         expect(await nodeClient.add(null, { first: 1, second: "aa" })).toEqual("1aa");
     });
 
-    const table = [
+    const table: {
+        method: "GET" | "POST" | "DELETE" | "PUT" | "PATCH";
+        path: string;
+        result: string;
+        data?: string;
+        headers?: object;
+        statusCode?: number;
+        resultHeaders?: object;
+    }[] = [
         { method: "GET", path: "/add1/1/aa", result: "1aa" },
         { method: "GET", path: "/add1/1/aa/", result: "1aa" },
         {
@@ -64,6 +72,7 @@ describe("Rest API", () => {
                 accept: "application/json",
             },
         },
+        { method: "GET", path: "/add2&second=aa&first=1", result: "", statusCode: 404 },
         { method: "GET", path: "/add2?second=aa&first=1", result: "1aa" },
         { method: "GET", path: "/add2?first=1&second=aa", result: "1aa" },
         {
@@ -208,7 +217,7 @@ describe("Rest API", () => {
         test(`${method} ${path}` + (headers ? ` with headers ${JSON.stringify(headers)}` : ""), async () => {
             const response = await axios.request({
                 url: "http://localhost:8001" + path,
-                method: method as any,
+                method,
                 transformResponse: [data => data],
                 headers,
                 data,
