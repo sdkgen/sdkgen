@@ -113,6 +113,21 @@
 						"1": {"name": "constant.numeric"},
 						"2": {"name": "entity.name.type"}
 					}
+				},
+				{
+					"name": "meta.annotations.rest",
+					"begin": "(@rest) (\\w+)",
+					"beginCaptures": {
+						"1": {"name": "constant.numeric"},
+						"2": {"name": "entity.name.type"}
+					},
+					"end": "\n",
+					"patterns": [
+						{
+							"name": "variable.parameter",
+							"match": "\\{\\w+\\}"
+						}
+					]
 				}
 			]
 		},
