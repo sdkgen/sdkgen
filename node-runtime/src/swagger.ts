@@ -174,12 +174,10 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
                                 required: !(arg.type instanceof OptionalType),
                                 schema: typeToSchema(definitions, arg.type),
                                 description:
-                                    [
-                                        ...(arg.type instanceof OptionalType ? ["Opcional."] : []),
-                                        ...arg.annotations
-                                            .filter(x => x instanceof DescriptionAnnotation)
-                                            .map(x => (x as DescriptionAnnotation).text),
-                                    ].join(" ") || undefined,
+                                    arg.annotations
+                                        .filter(x => x instanceof DescriptionAnnotation)
+                                        .map(x => (x as DescriptionAnnotation).text)
+                                        .join(" ") || undefined,
                             })),
                             requestBody: ann.bodyVariable
                                 ? {
@@ -323,12 +321,10 @@ function typeToSchema(definitions: any, type: Type): any {
                     field.name,
                     {
                         description:
-                            [
-                                ...(field.type instanceof OptionalType ? ["Opcional."] : []),
-                                ...field.annotations
-                                    .filter(x => x instanceof DescriptionAnnotation)
-                                    .map(x => (x as DescriptionAnnotation).text),
-                            ].join(" ") || undefined,
+                            field.annotations
+                                .filter(x => x instanceof DescriptionAnnotation)
+                                .map(x => (x as DescriptionAnnotation).text)
+                                .join(" ") || undefined,
                         ...typeToSchema(definitions, field.type),
                     },
                 ]),
