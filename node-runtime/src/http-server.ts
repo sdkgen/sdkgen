@@ -36,6 +36,7 @@ import { parse as parseQuerystring } from "querystring";
 import { getClientIp } from "request-ip";
 import staticFilesHandler from "serve-handler";
 import { parse as parseUrl } from "url";
+import { promisify } from "util";
 import { BaseApiConfig } from "./api-config";
 import { Context, ContextReply, ContextRequest } from "./context";
 import { decode, encode } from "./encode-decode";
@@ -147,7 +148,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
     }
 
     close() {
-        return new Promise((resolve, reject) => this.httpServer.close(error => (error ? reject(error) : resolve())));
+        return promisify(this.httpServer.close.bind(this.httpServer))();
     }
 
     private enableCors() {
