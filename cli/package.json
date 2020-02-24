@@ -50,6 +50,7 @@
     "@sdkgen/dart-generator": "file:../dart-generator",
     "@sdkgen/parser": "file:../parser",
     "@sdkgen/typescript-generator": "file:../typescript-generator",
+    "@sdkgen/kt-generator": "file:../kt-generator",
     "command-line-args": "^5.1.1",
     "command-line-usage": "^6.1.0"
   }

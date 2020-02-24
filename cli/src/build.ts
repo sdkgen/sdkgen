@@ -1,3 +1,4 @@
+import { generateKtClientSource } from "@sdkgen/kt-generator";
 import { generateDartClientSource } from "@sdkgen/dart-generator";
 import { Parser } from "@sdkgen/parser";
 import {
@@ -85,6 +86,10 @@ export function buildCmd(argv: string[]) {
         }
         case "flutter": {
             writeFileSync(options.output, generateDartClientSource(ast, {}));
+            break;
+        }
+        case "android": {
+            writeFileSync(options.output, generateKtClientSource(ast, {}));
             break;
         }
         default: {
