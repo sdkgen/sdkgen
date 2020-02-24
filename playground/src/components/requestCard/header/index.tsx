@@ -1,9 +1,9 @@
-import * as React from "react";
-import s from "./header.scss";
+import { faChevronDown, faChevronUp, faCircle, faLink } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown, faChevronUp, faLink, faCircle } from "@fortawesome/free-solid-svg-icons";
 import classNames from "classnames";
 import { requestModel, RequestStatus } from "helpers/requestModel";
+import * as React from "react";
+import s from "./header.scss";
 
 interface HeaderProps {
 	open?: boolean;

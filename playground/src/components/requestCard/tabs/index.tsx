@@ -1,6 +1,6 @@
+import classNames from "classnames";
 import * as React from "react";
 import s from "./tabs.scss";
-import classNames from "classnames";
 
 export type TabKeys = "arguments" | "response" | "error" | "annotations";
 

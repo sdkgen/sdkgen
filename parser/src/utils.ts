@@ -1,5 +1,4 @@
 import {
-    JsonPrimitiveType,
     Base64PrimitiveType,
     BoolPrimitiveType,
     BytesPrimitiveType,
@@ -12,6 +11,7 @@ import {
     FloatPrimitiveType,
     HexPrimitiveType,
     IntPrimitiveType,
+    JsonPrimitiveType,
     LatLngPrimitiveType,
     MoneyPrimitiveType,
     PhonePrimitiveType,

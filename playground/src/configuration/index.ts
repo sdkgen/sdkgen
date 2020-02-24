@@ -1,8 +1,8 @@
+import { setupAnalytics } from "./analytics";
 import { setupEndpoint } from "./endpoint";
 import { setupPolyfills } from "./polyfills";
-import { setupServiceWorker } from "./serviceWorker";
-import { setupAnalytics } from "./analytics";
 import { setupSentry } from "./sentry";
+import { setupServiceWorker } from "./serviceWorker";
 
 // IS BUILDING FOR PRODUCTION
 const isProductionBuild = process.env.NODE_ENV === "production";

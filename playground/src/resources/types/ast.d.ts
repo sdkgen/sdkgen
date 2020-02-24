@@ -17,7 +17,7 @@ export type TypeDescription = string | string[] | { [name: string]: TypeDescript
 
 interface AnnotationJson {
 	type: string;
-	value: string; // the original was "any", but i belive it will always be string
+	value: any;
 }
 
 export interface AstJson {

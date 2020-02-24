@@ -206,3 +206,16 @@ export class ArgDescriptionAnnotation extends Annotation {
         super();
     }
 }
+
+export class RestAnnotation extends Annotation {
+    constructor(
+        public method: string,
+        public path: string,
+        public pathVariables: string[],
+        public queryVariables: string[],
+        public headers: Map<string, string>,
+        public bodyVariable: string | null,
+    ) {
+        super();
+    }
+}

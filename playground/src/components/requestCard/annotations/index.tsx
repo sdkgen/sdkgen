@@ -1,6 +1,6 @@
+import { ModelAnotations } from "helpers/requestModel";
 import * as React from "react";
 import s from "./annotations.scss";
-import { ModelAnotations } from "helpers/requestModel";
 interface Props {
 	annotations: ModelAnotations;
 }
@@ -15,7 +15,7 @@ export function Annotations(props: Props) {
 	const funcAnnotations = func.map((a, index) => (
 		<div className={s.annotation} key={`func-${index}`}>
 			<div className={s.type}>{a.type}:</div>
-			<div className={s.value}>{a.value}</div>
+			<div className={s.value}>{JSON.stringify(a.value)}</div>
 		</div>
 	));
 
@@ -33,7 +33,7 @@ export function Annotations(props: Props) {
 		const groupedAnnotations = annotations.map((a, index) => (
 			<div className={s.annotation} key={`arg-${argName}-${index}`}>
 				<div className={s.type}>{a.type}:</div>
-				<div className={s.value}>{a.value}</div>
+				<div className={s.value}>{JSON.stringify(a.value)}</div>
 			</div>
 		));
 
