@@ -599,7 +599,15 @@ describe(Parser, () => {
                 @rest GET /aaa/{arg}
                 fn foo(arg: string?): string
             `,
-            "can't have this type",
+            "path argument 'arg' can't be nullable",
+        );
+
+        expectDoesntParse(
+            `
+                @rest GET /aaa/{arg}
+                fn foo(arg: string[]): string
+            `,
+            "Argument 'arg' can't have type 'string[]' for rest annotation",
         );
 
         expectDoesntParse(
@@ -607,7 +615,15 @@ describe(Parser, () => {
                 @rest GET /aaa
                 fn foo(arg: string): string
             `,
-            "should be present",
+            "is missing",
+        );
+
+        expectDoesntParse(
+            `
+                @rest GET /aaa
+                fn foo(): void
+            `,
+            "GET rest endpoint must return something",
         );
     });
 });

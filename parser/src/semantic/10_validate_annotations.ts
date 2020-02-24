@@ -22,6 +22,7 @@ import {
     TypeDefinition,
     UIntPrimitiveType,
     UuidPrimitiveType,
+    VoidPrimitiveType,
 } from "../ast";
 import { SemanticError } from "./analyser";
 import { Visitor } from "./visitor";
@@ -89,22 +90,27 @@ export class ValidateAnnotationsVisitor extends Visitor {
                             throw new SemanticError(`Argument '${name}' not found at ${annotation.location}`);
                         }
 
-                        if (
-                            !REST_ENCODABLE_TYPES.includes(arg.type.constructor) &&
-                            !(
-                                (annotation.queryVariables.includes(name) || [...annotation.headers.values()].includes(name)) &&
-                                arg.type instanceof OptionalType &&
-                                REST_ENCODABLE_TYPES.includes(arg.type.base.constructor)
-                            )
-                        ) {
-                            throw new SemanticError(`Argument '${name}' can't have this type for rest annotation at ${annotation.location}`);
+                        if (annotation.pathVariables.includes(name) && arg.type instanceof OptionalType) {
+                            throw new SemanticError(`The path argument '${name}' can't be nullable at ${annotation.location}`);
+                        }
+
+                        const baseType = arg.type instanceof OptionalType ? arg.type.base : arg.type;
+
+                        if (!REST_ENCODABLE_TYPES.includes(baseType.constructor)) {
+                            throw new SemanticError(
+                                `Argument '${name}' can't have type '${arg.type.name}' for rest annotation at ${annotation.location}`,
+                            );
                         }
                     }
 
                     for (const arg of node.args) {
                         if (!allVariables.includes(arg.name) && annotation.bodyVariable !== arg.name) {
-                            throw new SemanticError(`Argument '${name}' should be present in the rest annotation at ${annotation.location}`);
+                            throw new SemanticError(`Argument '${arg.name}' is missing from the rest annotation at ${annotation.location}`);
                         }
+                    }
+
+                    if (annotation.method === "GET" && node.returnType instanceof VoidPrimitiveType) {
+                        throw new SemanticError(`A GET rest endpoint must return something at ${annotation.location}`);
                     }
                 } else {
                     throw new SemanticError(`Cannot have this type of annotation at ${annotation.location}`);
