@@ -1,6 +1,6 @@
+import * as CNPJ from "@fnando/cnpj";
+import * as CPF from "@fnando/cpf";
 import { AstJson, TypeDescription } from "@sdkgen/parser";
-const CPF = require("@fnando/cpf/dist/node");
-const CNPJ = require("@fnando/cnpj/dist/node");
 
 type TypeTable = AstJson["typeTable"];
 
