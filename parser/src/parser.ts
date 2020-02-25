@@ -74,6 +74,7 @@ export class Parser {
     private readonly lexers: Lexer[];
     private token: Token | null = null;
     private annotations: Annotation[] = [];
+    private warnings: string[] = [];
 
     constructor(source: Lexer | string) {
         if (!(source instanceof Lexer)) {
@@ -147,6 +148,7 @@ export class Parser {
         const operations: Operation[] = [];
         const typeDefinition: TypeDefinition[] = [];
         const errors: string[] = [];
+        this.warnings = [];
 
         while (this.token) {
             this.acceptAnnotations();
@@ -178,6 +180,7 @@ export class Parser {
         }
 
         const ast = new AstRoot(typeDefinition, operations, errors);
+        ast.warnings = this.warnings;
         analyse(ast);
         return ast;
     }
@@ -249,6 +252,10 @@ export class Parser {
             FunctionKeywordToken: token => token,
         });
         this.nextToken();
+
+        if (["get", "function"].includes(openingToken.maybeAsIdentifier().value)) {
+            this.warnings.push(`Keyword '${openingToken.maybeAsIdentifier().value}' is deprecated at ${openingToken.location}. Use 'fn' instead.`);
+        }
 
         const name = this.expect(IdentifierToken).value;
         this.nextToken();

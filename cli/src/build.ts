@@ -43,28 +43,28 @@ export function buildCmd(argv: string[]) {
             ]),
         );
         process.exit(0);
-        return;
     }
 
     if (!options.source) {
         console.error("Error: Missing source option.");
         process.exit(1);
-        return;
     }
 
     if (!options.output) {
         console.error("Error: Missing output option.");
         process.exit(1);
-        return;
     }
 
     if (!options.target) {
         console.error("Error: Missing target option.");
         process.exit(1);
-        return;
     }
 
     const ast = new Parser(options.source).parse();
+
+    for (const warning of ast.warnings) {
+        console.error(`WARNING: ${warning}`);
+    }
 
     switch (options.target) {
         case "typescript_nodeserver": {
@@ -90,7 +90,6 @@ export function buildCmd(argv: string[]) {
         default: {
             console.error(`Error: Unknown target '${options.target}'`);
             process.exit(1);
-            return;
         }
     }
 }
