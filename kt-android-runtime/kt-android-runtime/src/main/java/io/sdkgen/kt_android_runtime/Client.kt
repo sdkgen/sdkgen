@@ -1,6 +1,5 @@
 package io.sdkgen.kt_android_runtime
 
-import android.R
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Point
@@ -9,8 +8,6 @@ import android.provider.Settings
 import android.view.WindowManager
 import com.google.gson.Gson
 import com.google.gson.JsonObject
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -22,7 +19,12 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 @Suppress("unused")
-class Client(private val baseUrl: String, private val applicationContext: Context, private val useStaging: Boolean = false) {
+class Client(
+    private val baseUrl: String,
+    private val applicationContext: Context,
+    private val defaultTimeoutMillis: Long = 10000L,
+    private val useStaging: Boolean = false
+) {
 
     data class InternalResposne(val error: JsonObject?, val result: JsonObject?)
 
@@ -30,7 +32,6 @@ class Client(private val baseUrl: String, private val applicationContext: Contex
     private val hexArray = "0123456789abcdef".toCharArray()
     private val gson = Gson()
     private val connectionPool = ConnectionPool(100, 100, TimeUnit.SECONDS)
-    private val defaultTimeoutMillis = 10000L
     private val httpClient = OkHttpClient.Builder()
         .connectionPool(connectionPool)
         .dispatcher(Dispatcher().apply { maxRequests = 200 ; maxRequestsPerHost = 200 })

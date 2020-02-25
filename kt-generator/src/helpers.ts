@@ -9,7 +9,7 @@ export function generateClass(type: StructType) {
 }
 
 export function generateErrorClass(error: string) {
-    return `data class ${error}(val msg: String): SdkgenError(msg)\n`;
+    return `data class ${error}(val msg: String): Error(msg)\n`;
 }
 
 
@@ -57,7 +57,7 @@ export function generateTypeName(type: Type): string {
         case "LatLngPrimitiveType":
             return "Location";
         case "VoidPrimitiveType":
-            return "";
+            return "Unit";
         case "AnyPrimitiveType":
             return "Any";
         case "OptionalType":

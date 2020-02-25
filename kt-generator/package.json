@@ -2,31 +2,30 @@
   "name": "@sdkgen/kt-generator",
   "version": "0.0.0",
   "description": "",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "src/index.ts",
   "scripts": {
     "test": "jest --passWithNoTests",
-    "prepare": "tsc"
+    "build": "tsc"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/sdkgen/kt-generator.git"
+    "url": "git+https://github.com/sdkgen/sdkgen.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/sdkgen/kt-generator/issues"
+    "url": "https://github.com/sdkgen/sdkgen/issues"
   },
   "publishConfig": {
     "access": "public"
   },
-  "homepage": "https://github.com/sdkgen/kt-generator#readme",
+  "homepage": "https://github.com/sdkgen/sdkgen#readme",
   "devDependencies": {
-    "@types/jest": "^24.0.24",
-    "@types/node": "^13.1.0",
-    "jest": "^24.9.0",
-    "ts-jest": "^24.2.0",
-    "typescript": "^3.7.3"
+    "@types/jest": "^25.1.2",
+    "@types/node": "^13.7.0",
+    "jest": "^25.1.0",
+    "ts-jest": "^25.2.0",
+    "typescript": "^3.7.5"
   },
   "jest": {
     "transform": {
@@ -44,6 +43,6 @@
     ]
   },
   "dependencies": {
-    "@sdkgen/parser": "^1.0.27"
+    "@sdkgen/parser": "file:../parser"
   }
 }
