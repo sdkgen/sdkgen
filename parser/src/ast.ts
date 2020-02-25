@@ -77,15 +77,6 @@ export class CnpjPrimitiveType extends PrimitiveType {
 export class EmailPrimitiveType extends PrimitiveType {
     name = "email";
 }
-export class PhonePrimitiveType extends PrimitiveType {
-    name = "phone";
-}
-export class CepPrimitiveType extends PrimitiveType {
-    name = "cep";
-}
-export class LatLngPrimitiveType extends PrimitiveType {
-    name = "latlng";
-}
 export class UrlPrimitiveType extends PrimitiveType {
     name = "url";
 }
@@ -97,9 +88,6 @@ export class HexPrimitiveType extends PrimitiveType {
 }
 export class Base64PrimitiveType extends PrimitiveType {
     name = "base64";
-}
-export class SafeHtmlPrimitiveType extends PrimitiveType {
-    name = "safehtml";
 }
 export class XmlPrimitiveType extends PrimitiveType {
     name = "xml";

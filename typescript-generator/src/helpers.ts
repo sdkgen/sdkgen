@@ -70,18 +70,12 @@ export function generateTypescriptTypeName(type: Type): string {
         case "CpfPrimitiveType":
         case "CnpjPrimitiveType":
         case "EmailPrimitiveType":
-        case "PhonePrimitiveType":
-        case "CepPrimitiveType":
         case "UrlPrimitiveType":
         case "UuidPrimitiveType":
         case "HexPrimitiveType":
         case "Base64PrimitiveType":
-        case "SafeHtmlPrimitiveType":
         case "XmlPrimitiveType":
             return "string";
-
-        case "LatLngPrimitiveType":
-            return "{lat: number, lng: number}";
 
         case "VoidPrimitiveType":
             return "void";

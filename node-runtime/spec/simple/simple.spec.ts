@@ -91,7 +91,6 @@ describe("Simple API", () => {
             hex: "f84c4d20",
             int: -25,
             json: [{ a: 23, b: "odcbu" }],
-            latlng: { lat: 24.26, lng: -123.1346 },
             money: 356,
             optional1: null,
             optional2: 2525,
