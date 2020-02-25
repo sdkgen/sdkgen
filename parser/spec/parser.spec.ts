@@ -29,7 +29,7 @@ describe(Parser, () => {
                 `
                     get ${p === "bool" ? "isFoo" : "foo"}(): ${p}
                     get bar(): ${p}?
-                    get baz(): ${p}[]
+                    fn getBaz(): ${p}[]
                 `,
                 {
                     errors: ["Fatal"],
@@ -50,6 +50,7 @@ describe(Parser, () => {
                     typeTable: {},
                     annotations: {},
                 },
+                ["Keyword 'get' is deprecated at -:2:21. Use 'fn' instead.", "Keyword 'get' is deprecated at -:3:21. Use 'fn' instead."],
             );
         });
     }
@@ -157,7 +158,7 @@ describe(Parser, () => {
                     b: int
                 }
 
-                get baz(): Baz
+                fn getBaz(): Baz
             `,
             {
                 errors: ["Foo", "Bar", "Fatal"],
@@ -221,7 +222,7 @@ describe(Parser, () => {
 
         expectDoesntParse(
             `
-                function foo(a: string, a: int)
+                fn foo(a: string, a: int)
             `,
             "redeclare",
         );
@@ -283,6 +284,7 @@ describe(Parser, () => {
                 },
                 annotations: {},
             },
+            ["Keyword 'function' is deprecated at -:6:17. Use 'fn' instead."],
         );
     });
 
@@ -628,10 +630,11 @@ describe(Parser, () => {
     });
 });
 
-function expectParses(source: string, json: AstJson) {
+function expectParses(source: string, json: AstJson, warnings: string[] = []) {
     const parser = new Parser(new Lexer(source));
     const ast = parser.parse();
 
+    expect(ast.warnings).toEqual(warnings);
     expect(astToJson(ast)).toEqual(json);
     expect(astToJson(ast)).toEqual(astToJson(jsonToAst(astToJson(ast))));
 }

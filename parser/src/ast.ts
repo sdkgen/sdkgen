@@ -3,16 +3,15 @@ import { Token, TokenLocation } from "./token";
 export class AstRoot {
     structTypes: StructType[] = [];
     enumTypes: EnumType[] = [];
+    warnings: string[] = [];
 
     constructor(public typeDefinitions: TypeDefinition[] = [], public operations: Operation[] = [], public errors: string[] = []) {}
 }
 
 export abstract class AstNode {
     public location = new TokenLocation();
-    private kind: string;
 
     constructor() {
-        this.kind = this.constructor.name;
         Object.defineProperty(this, "location", { enumerable: false });
     }
 
