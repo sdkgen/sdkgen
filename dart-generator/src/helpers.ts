@@ -42,18 +42,13 @@ export function generateTypeName(type: Type): string {
             return "List<int>";
         case "MoneyPrimitiveType":
             return "int";
-        case "LatLngPrimitiveType":
-            return "LatLng";
         case "CpfPrimitiveType":
         case "CnpjPrimitiveType":
         case "EmailPrimitiveType":
-        case "PhonePrimitiveType":
-        case "CepPrimitiveType":
         case "UrlPrimitiveType":
         case "UuidPrimitiveType":
         case "HexPrimitiveType":
         case "Base64PrimitiveType":
-        case "SafeHtmlPrimitiveType":
         case "XmlPrimitiveType":
             return "String";
         case "VoidPrimitiveType":

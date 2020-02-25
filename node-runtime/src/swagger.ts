@@ -3,7 +3,6 @@ import {
     Base64PrimitiveType,
     BoolPrimitiveType,
     BytesPrimitiveType,
-    CepPrimitiveType,
     CnpjPrimitiveType,
     CpfPrimitiveType,
     DatePrimitiveType,
@@ -199,7 +198,6 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
                                                   bodyType instanceof MoneyPrimitiveType ||
                                                   bodyType instanceof CpfPrimitiveType ||
                                                   bodyType instanceof CnpjPrimitiveType ||
-                                                  bodyType instanceof CepPrimitiveType ||
                                                   bodyType instanceof UuidPrimitiveType ||
                                                   bodyType instanceof HexPrimitiveType ||
                                                   bodyType instanceof BytesPrimitiveType ||
@@ -237,7 +235,6 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
                                                           op.returnType instanceof MoneyPrimitiveType ||
                                                           op.returnType instanceof CpfPrimitiveType ||
                                                           op.returnType instanceof CnpjPrimitiveType ||
-                                                          op.returnType instanceof CepPrimitiveType ||
                                                           op.returnType instanceof UuidPrimitiveType ||
                                                           op.returnType instanceof HexPrimitiveType ||
                                                           op.returnType instanceof BytesPrimitiveType ||
@@ -332,7 +329,6 @@ function typeToSchema(definitions: any, type: Type): any {
         };
     } else if (
         type instanceof StringPrimitiveType ||
-        type instanceof CepPrimitiveType ||
         type instanceof UuidPrimitiveType ||
         type instanceof HexPrimitiveType ||
         type instanceof Base64PrimitiveType

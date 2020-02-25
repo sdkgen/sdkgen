@@ -5,7 +5,6 @@ import {
     Base64PrimitiveType,
     BoolPrimitiveType,
     BytesPrimitiveType,
-    CepPrimitiveType,
     CnpjPrimitiveType,
     CpfPrimitiveType,
     DatePrimitiveType,
@@ -297,7 +296,6 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
                                             type instanceof MoneyPrimitiveType ||
                                             type instanceof CpfPrimitiveType ||
                                             type instanceof CnpjPrimitiveType ||
-                                            type instanceof CepPrimitiveType ||
                                             type instanceof UuidPrimitiveType ||
                                             type instanceof HexPrimitiveType ||
                                             type instanceof Base64PrimitiveType
@@ -409,7 +407,6 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
                                             type instanceof MoneyPrimitiveType ||
                                             type instanceof CpfPrimitiveType ||
                                             type instanceof CnpjPrimitiveType ||
-                                            type instanceof CepPrimitiveType ||
                                             type instanceof UuidPrimitiveType ||
                                             type instanceof HexPrimitiveType ||
                                             type instanceof Base64PrimitiveType

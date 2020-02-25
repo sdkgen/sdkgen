@@ -3,7 +3,6 @@ import {
     AstRoot,
     Base64PrimitiveType,
     BytesPrimitiveType,
-    CepPrimitiveType,
     CnpjPrimitiveType,
     CpfPrimitiveType,
     DatePrimitiveType,
@@ -15,8 +14,6 @@ import {
     IntPrimitiveType,
     MoneyPrimitiveType,
     OptionalType,
-    PhonePrimitiveType,
-    SafeHtmlPrimitiveType,
     StringPrimitiveType,
     StructType,
     Type,
@@ -85,7 +82,6 @@ function checkClientToServer(path: string, issues: string[], t1: Type, t2: Type)
         (t1 instanceof MoneyPrimitiveType && t2 instanceof UIntPrimitiveType) ||
         (t1 instanceof UuidPrimitiveType && t2 instanceof StringPrimitiveType) ||
         (t1 instanceof XmlPrimitiveType && t2 instanceof StringPrimitiveType) ||
-        (t1 instanceof SafeHtmlPrimitiveType && t2 instanceof StringPrimitiveType) ||
         (t1 instanceof DatePrimitiveType && t2 instanceof StringPrimitiveType) ||
         (t1 instanceof DateTimePrimitiveType && t2 instanceof StringPrimitiveType) ||
         (t1 instanceof CpfPrimitiveType && t2 instanceof StringPrimitiveType) ||
@@ -95,8 +91,6 @@ function checkClientToServer(path: string, issues: string[], t1: Type, t2: Type)
         (t1 instanceof BytesPrimitiveType && t2 instanceof StringPrimitiveType) ||
         (t1 instanceof BytesPrimitiveType && t2 instanceof Base64PrimitiveType) ||
         (t1 instanceof UrlPrimitiveType && t2 instanceof StringPrimitiveType) ||
-        (t1 instanceof CepPrimitiveType && t2 instanceof StringPrimitiveType) ||
-        (t1 instanceof PhonePrimitiveType && t2 instanceof StringPrimitiveType) ||
         (t1 instanceof EmailPrimitiveType && t2 instanceof StringPrimitiveType) ||
         (t1 instanceof EnumType && t2 instanceof StringPrimitiveType)
     ) {
@@ -174,7 +168,6 @@ function checkServerToClient(path: string, issues: string[], t1: Type, t2: Type)
         (t1 instanceof UIntPrimitiveType && t2 instanceof MoneyPrimitiveType) ||
         (t1 instanceof StringPrimitiveType && t2 instanceof UuidPrimitiveType) ||
         (t1 instanceof StringPrimitiveType && t2 instanceof XmlPrimitiveType) ||
-        (t1 instanceof StringPrimitiveType && t2 instanceof SafeHtmlPrimitiveType) ||
         (t1 instanceof StringPrimitiveType && t2 instanceof DatePrimitiveType) ||
         (t1 instanceof StringPrimitiveType && t2 instanceof DateTimePrimitiveType) ||
         (t1 instanceof StringPrimitiveType && t2 instanceof CpfPrimitiveType) ||
@@ -184,8 +177,6 @@ function checkServerToClient(path: string, issues: string[], t1: Type, t2: Type)
         (t1 instanceof StringPrimitiveType && t2 instanceof BytesPrimitiveType) ||
         (t1 instanceof Base64PrimitiveType && t2 instanceof BytesPrimitiveType) ||
         (t1 instanceof StringPrimitiveType && t2 instanceof UrlPrimitiveType) ||
-        (t1 instanceof StringPrimitiveType && t2 instanceof CepPrimitiveType) ||
-        (t1 instanceof StringPrimitiveType && t2 instanceof PhonePrimitiveType) ||
         (t1 instanceof StringPrimitiveType && t2 instanceof EmailPrimitiveType) ||
         (t1 instanceof StringPrimitiveType && t2 instanceof EnumType)
     ) {

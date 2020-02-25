@@ -18,7 +18,6 @@ type AllTypes {
     hex: hex
     base64: base64
     money: money
-    latlng: latlng
     enum: enum { aa bb cc }
     struct: {
         aa: int

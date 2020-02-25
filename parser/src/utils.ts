@@ -2,7 +2,6 @@ import {
     Base64PrimitiveType,
     BoolPrimitiveType,
     BytesPrimitiveType,
-    CepPrimitiveType,
     CnpjPrimitiveType,
     CpfPrimitiveType,
     DatePrimitiveType,
@@ -12,10 +11,7 @@ import {
     HexPrimitiveType,
     IntPrimitiveType,
     JsonPrimitiveType,
-    LatLngPrimitiveType,
     MoneyPrimitiveType,
-    PhonePrimitiveType,
-    SafeHtmlPrimitiveType,
     StringPrimitiveType,
     UIntPrimitiveType,
     UrlPrimitiveType,
@@ -37,14 +33,10 @@ primitiveToAstClass.set("money", MoneyPrimitiveType);
 primitiveToAstClass.set("cpf", CpfPrimitiveType);
 primitiveToAstClass.set("cnpj", CnpjPrimitiveType);
 primitiveToAstClass.set("email", EmailPrimitiveType);
-primitiveToAstClass.set("phone", PhonePrimitiveType);
-primitiveToAstClass.set("cep", CepPrimitiveType);
-primitiveToAstClass.set("latlng", LatLngPrimitiveType);
 primitiveToAstClass.set("url", UrlPrimitiveType);
 primitiveToAstClass.set("uuid", UuidPrimitiveType);
 primitiveToAstClass.set("hex", HexPrimitiveType);
 primitiveToAstClass.set("base64", Base64PrimitiveType);
-primitiveToAstClass.set("safehtml", SafeHtmlPrimitiveType);
 primitiveToAstClass.set("xml", XmlPrimitiveType);
 primitiveToAstClass.set("json", JsonPrimitiveType);
 primitiveToAstClass.set("void", VoidPrimitiveType);
