@@ -12,7 +12,6 @@ export function generateErrorClass(error: string) {
     return `class ${error}(message: String): Error(message)\n`;
 }
 
-
 // Don`t know if will have use to this method yet.
 // export function cast(value: string, type: Type): string {
 //     if (type.constructor.name === "ArrayType") {
@@ -63,7 +62,7 @@ export function generateTypeName(type: Type): string {
         case "OptionalType":
             return `${generateTypeName((type as OptionalType).base)}?`;
         case "ArrayType":
-            return `ArrayList<${generateTypeName((type as ArrayType).base)}>`
+            return `ArrayList<${generateTypeName((type as ArrayType).base)}>`;
         case "StructType":
             return type.name;
         case "EnumType":
@@ -96,7 +95,7 @@ export function generateJsonAddRepresentation(type: Type, fieldName: string): st
         case "BoolPrimitiveType":
             return `addProperty(\"${fieldName}\", ${mangle(fieldName)})\n`;
         case "OptionalType":
-            return generateJsonAddRepresentation((type as OptionalType).base, fieldName)
+            return generateJsonAddRepresentation((type as OptionalType).base, fieldName);
         case "DatePrimitiveType":
             return `addProperty(\"${fieldName}\", SimpleDateFormat(\"yyyy-MM-dd\", Locale.getDefault()).format(${mangle(fieldName)}))`;
         case "DateTimePrimitiveType":
@@ -119,22 +118,96 @@ export function generateJsonAddRepresentation(type: Type, fieldName: string): st
 
 export function mangle(fieldName: string): string {
     const mangleList = [
-        "in", "out", "as", "as?", "break", "class", "continue", "do", "else", "false",
-        "for", "fun", "if", "in", "!in", "interface", "is", "!is", "null", "object",
-        "package", "return", "super", "this", "throw", "true", "try", "typealias",
-        "val", "var", "when", "while", "by", "catch", "constructor", "delegate",
-        "dynamic", "field", "file", "finally", "get", "import", "init", "param",
-        "property", "receiver", "set", "setparam", "where", "actual", "abstract",
-        "annotation", "companion", "const", "crossinline", "data", "enum", "expect",
-        "external", "final", "infix", "inline", "inner", "internal", "lateinit", "noinline",
-        "open", "operator", "out", "override", "private", "protected", "public", "reified",
-        "sealed", "suspend", "tailrec", "vararg", "Double", "Float", "Long", "Int", "Short", "Byte"
+        "in",
+        "out",
+        "as",
+        "as?",
+        "break",
+        "class",
+        "continue",
+        "do",
+        "else",
+        "false",
+        "for",
+        "fun",
+        "if",
+        "in",
+        "!in",
+        "interface",
+        "is",
+        "!is",
+        "null",
+        "object",
+        "package",
+        "return",
+        "super",
+        "this",
+        "throw",
+        "true",
+        "try",
+        "typealias",
+        "val",
+        "var",
+        "when",
+        "while",
+        "by",
+        "catch",
+        "constructor",
+        "delegate",
+        "dynamic",
+        "field",
+        "file",
+        "finally",
+        "get",
+        "import",
+        "init",
+        "param",
+        "property",
+        "receiver",
+        "set",
+        "setparam",
+        "where",
+        "actual",
+        "abstract",
+        "annotation",
+        "companion",
+        "const",
+        "crossinline",
+        "data",
+        "enum",
+        "expect",
+        "external",
+        "final",
+        "infix",
+        "inline",
+        "inner",
+        "internal",
+        "lateinit",
+        "noinline",
+        "open",
+        "operator",
+        "out",
+        "override",
+        "private",
+        "protected",
+        "public",
+        "reified",
+        "sealed",
+        "suspend",
+        "tailrec",
+        "vararg",
+        "Double",
+        "Float",
+        "Long",
+        "Int",
+        "Short",
+        "Byte",
     ];
 
     const hasConflicted = (element: string) => element === fieldName;
     if (mangleList.some(hasConflicted)) {
         return `_${fieldName}`;
-    } 
+    }
 
     return fieldName;
 }

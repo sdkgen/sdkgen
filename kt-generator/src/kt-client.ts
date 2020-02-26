@@ -116,7 +116,7 @@ object API { \n`;
         else
             SdkGenHttpClient(baseUrl, applicationContext, defaultTimeoutMillis = defaultTimeoutMillis)
     }\n\n`;
-    
+
     for (const type of ast.enumTypes) {
         code += `   ${generateEnum(type)}`;
         code += "\n";
@@ -128,8 +128,8 @@ object API { \n`;
     for (const type of ast.structTypes) {
         code += `   ${generateClass(type)}\n`;
     }
-    
-    const errorTypeEnumEntries: string[] = []
+
+    const errorTypeEnumEntries: string[] = [];
     for (const error of ast.errors) {
         code += `   ${generateErrorClass(error)}\n`;
         errorTypeEnumEntries.push(error);
@@ -138,12 +138,12 @@ object API { \n`;
     if (errorTypeEnumEntries.length > 0) {
         code += `   
     enum class ErrorType {
-        ${errorTypeEnumEntries.join(',\n        ')},
+        ${errorTypeEnumEntries.join(",\n        ")},
         Error;
 
         fun type(): Class<out API.Error> {
             return when(this) {
-                ${errorTypeEnumEntries.map(error => `${error} -> API.${error}::class.java`).join('\n              ')} 
+                ${errorTypeEnumEntries.map(error => `${error} -> API.${error}::class.java`).join("\n              ")} 
                 else ->  API.Error::class.java
             }
         } 
@@ -151,27 +151,38 @@ object API { \n`;
     }
 
     code += `   interface Calls { \n`;
-    code += ast.operations. map ( op => {
-        let args = op.args.map( arg => `${mangle(arg.name)}: ${generateTypeName(arg.type)}`).concat(`callback: ((response: Response<${generateTypeName(op.returnType)}>) -> Unit)? = null`)
-        return `       fun ${mangle(op.prettyName)}(${args}): Deferred<Response<out ${generateTypeName(op.returnType)}>> \n`
-    }).join('');
+    code += ast.operations
+        .map(op => {
+            let args = op.args
+                .map(arg => `${mangle(arg.name)}: ${generateTypeName(arg.type)}`)
+                .concat(`callback: ((response: Response<${generateTypeName(op.returnType)}>) -> Unit)? = null`);
+            return `       fun ${mangle(op.prettyName)}(${args}): Deferred<Response<out ${generateTypeName(op.returnType)}>> \n`;
+        })
+        .join("");
     code += `   }\n\n`;
 
     code += `   class CallsImpl: Calls {\n`;
     code += `       private val sdkgenIOScope = CoroutineScope(IO)\n`;
-    code += ast.operations.map( op => { 
-            let opImpl = ""
-            let args = op.args.map( arg => `${mangle(arg.name)}: ${generateTypeName(arg.type)}`).concat(`callback: ((response: Response<${generateTypeName(op.returnType)}>) -> Unit)?`)
-            opImpl += `       override fun ${mangle(op.prettyName)}(${args}): Deferred<Response<out ${generateTypeName(op.returnType)}>> = sdkgenIOScope.async { \n`
-            opImpl += `             if (client == null) { \n`
-            opImpl += `                 val response: Response<${generateTypeName(op.returnType)}> = Response(Fatal("Você precisa iniciar o SdkGen para fazer chamadas."), null)\n`
-            opImpl += `                 callback?.invoke(response)\n`
-            opImpl += `                 return@async response \n`
-            opImpl += `             }\n`
-                
-            if (op.args.length > 0) { 
+    code += ast.operations
+        .map(op => {
+            let opImpl = "";
+            let args = op.args
+                .map(arg => `${mangle(arg.name)}: ${generateTypeName(arg.type)}`)
+                .concat(`callback: ((response: Response<${generateTypeName(op.returnType)}>) -> Unit)?`);
+            opImpl += `       override fun ${mangle(op.prettyName)}(${args}): Deferred<Response<out ${generateTypeName(
+                op.returnType,
+            )}>> = sdkgenIOScope.async { \n`;
+            opImpl += `             if (client == null) { \n`;
+            opImpl += `                 val response: Response<${generateTypeName(
+                op.returnType,
+            )}> = Response(Fatal("Você precisa iniciar o SdkGen para fazer chamadas."), null)\n`;
+            opImpl += `                 callback?.invoke(response)\n`;
+            opImpl += `                 return@async response \n`;
+            opImpl += `             }\n`;
+
+            if (op.args.length > 0) {
                 opImpl += `             val bodyArgs = JsonObject().apply { \n`;
-                op.args.forEach( arg => {
+                op.args.forEach(arg => {
                     opImpl += `                 ${generateJsonAddRepresentation(arg.type, arg.name)}\n`;
                 });
                 opImpl += `             }\n`;
@@ -195,7 +206,8 @@ object API { \n`;
             opImpl += `             return@async response \n`;
             opImpl += `       } \n`;
             return opImpl;
-    }).join('');
+        })
+        .join("");
     code += `   }\n`;
 
     code += `}`;
