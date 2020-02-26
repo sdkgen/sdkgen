@@ -155,7 +155,7 @@ object API { \n`;
         .map(op => {
             let args = op.args
                 .map(arg => `${mangle(arg.name)}: ${generateTypeName(arg.type)}`)
-                .concat([`timeoutMillis: Long? = null`, `callback: ((response: Response<${generateTypeName(op.returnType)}>) -> Unit)? = null`] );
+                .concat([`timeoutMillis: Long? = null`, `callback: ((response: Response<${generateTypeName(op.returnType)}>) -> Unit)? = null`]);
             return `       fun ${mangle(op.prettyName)}(${args}): Deferred<Response<out ${generateTypeName(op.returnType)}>> \n`;
         })
         .join("");
