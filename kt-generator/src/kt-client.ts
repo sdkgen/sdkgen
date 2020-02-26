@@ -151,18 +151,22 @@ object API { \n`;
     }
 
     code += `   interface Calls { \n`;
-    code += ast.operations.map ( op => 
-            `       fun ${mangle(op.prettyName)}(${op.args.map( arg => `${mangle(arg.name)}: ${generateTypeName(arg.type)}`)}): Flow<Response<${generateTypeName(op.returnType)}>> \n`
-    ).join('');
+    code += ast.operations. map ( op => {
+        let args = op.args.map( arg => `${mangle(arg.name)}: ${generateTypeName(arg.type)}`).concat(`callback: ((response: Response<${generateTypeName(op.returnType)}>) -> Unit)? = null`)
+        return `       fun ${mangle(op.prettyName)}(${args}): Deferred<Response<out ${generateTypeName(op.returnType)}>> \n`
+    }).join('');
     code += `   }\n\n`;
 
     code += `   class CallsImpl: Calls {\n`;
+    code += `       private val sdkgenIOScope = CoroutineScope(IO)\n`;
     code += ast.operations.map( op => { 
             let opImpl = ""
-            opImpl += `       override fun ${mangle(op.prettyName)}(${op.args.map( arg => `${mangle(arg.name)}: ${generateTypeName(arg.type)}`)}) = flow<Response<${generateTypeName(op.returnType)}>> { \n`
+            let args = op.args.map( arg => `${mangle(arg.name)}: ${generateTypeName(arg.type)}`).concat(`callback: ((response: Response<${generateTypeName(op.returnType)}>) -> Unit)?`)
+            opImpl += `       override fun ${mangle(op.prettyName)}(${args}): Deferred<Response<out ${generateTypeName(op.returnType)}>> = sdkgenIOScope.async { \n`
             opImpl += `             if (client == null) { \n`
-            opImpl += `                 emit(Response(Fatal("Você precisa iniciar o SdkGen para fazer chamadas."), null))\n`
-            opImpl += `                 return@flow \n`
+            opImpl += `                 val response: Response<${generateTypeName(op.returnType)}> = Response(Fatal("Você precisa iniciar o SdkGen para fazer chamadas."), null)\n`
+            opImpl += `                 callback?.invoke(response)\n`
+            opImpl += `                 return@async response \n`
             opImpl += `             }\n`
                 
             if (op.args.length > 0) { 
@@ -186,8 +190,10 @@ object API { \n`;
             opImpl += `                 gson.fromJson(r.error, errorType.type()) \n`;
             opImpl += `             } else null \n`;
             opImpl += `\n`;
-            opImpl += `             emit(Response(error, data)) \n`;
-            opImpl += `       }.flowOn(IO) \n`;
+            opImpl += `             val response: Response<${generateTypeName(op.returnType)}> = Response(error, data) \n`;
+            opImpl += `             callback?.invoke(response) \n`;
+            opImpl += `             return@async response \n`;
+            opImpl += `       } \n`;
             return opImpl;
     }).join('');
     code += `   }\n`;
