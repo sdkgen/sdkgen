@@ -1,5 +1,5 @@
 import { AstRoot } from "@sdkgen/parser";
-import { generateClass, generateEnum, generateErrorClass, generateTypeName } from "./helpers";
+import { generateClass, generateEnum, generateErrorClass, generateTypeName, generateJsonAddRepresentation, mangle } from "./helpers";
 
 interface Options {}
 
@@ -23,25 +23,28 @@ import android.content.Context
 import android.graphics.Point
 import android.provider.Settings
 import android.util.Log
-import com.google.gson.Gson
-import okhttp3.*
+import com.google.gson.*
 import java.io.IOException
 import java.io.Serializable
 import org.json.JSONArray
-import com.google.gson.reflect.TypeToken
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
-import okhttp3.RequestBody.Companion.toRequestBody
-import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import java.io.InvalidObjectException
 import kotlin.concurrent.timerTask
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.Flow
-import io.sdkgen.kt_android_runtime.Client
-import com.google.gson.JsonObject
+import io.sdkgen.runtime.SdkGenHttpClient
+import java.lang.reflect.Type
+import java.text.ParseException
+import kotlin.experimental.and
+import com.google.gson.reflect.TypeToken
+
+
+inline fun <reified T> Gson.fromJson(json: String) = fromJson<T>(json, object: TypeToken<T>() {}.type)
+inline fun <reified T> Gson.fromJson(json: JsonElement) = fromJson<T>(json, object: TypeToken<T>() {}.type)
 
 @ExperimentalCoroutinesApi
 @Suppress("DeferredIsResult", "unused")
@@ -49,84 +52,147 @@ import com.google.gson.JsonObject
 object API { \n`;
 
     code += ` 
-    private var client: Client? = null     
-    private val gson = Gson()
+    private class ByteArrayDeserializer : JsonDeserializer<ByteArray> {
+        @Throws(JsonParseException::class)
+        override fun deserialize(element: JsonElement, arg1: Type?, arg2: JsonDeserializationContext?): ByteArray {
+            try {
+                return android.util.Base64.decode(element.asString, android.util.Base64.DEFAULT)
+            } catch (e: Exception) {
+                throw JsonIOException("Erro ao serializar um campo de bytes.")
+            }
+        }
+    }
 
-    fun initialize(baseUrl: String, useStaging: Boolean, applicationContext: Context, defaultTimeoutMillis: Long? = null) {
+    private class ByteArrayOptDeserializer : JsonDeserializer<ByteArray?> {
+        @Throws(JsonParseException::class)
+        override fun deserialize(element: JsonElement, arg1: Type?, arg2: JsonDeserializationContext?): ByteArray? {
+            return try {
+                android.util.Base64.decode(element.asString, android.util.Base64.DEFAULT)
+            } catch (e: Exception) {
+                null
+            }
+        }
+    }
+
+    private class CalendarDeserializer : JsonDeserializer<Calendar> {
+        @Throws(JsonParseException::class)
+        override fun deserialize(element: JsonElement, arg1: Type?, arg2: JsonDeserializationContext?): Calendar {
+            val date = element.asString
+            val formatter = SimpleDateFormat("M/d/yy hh:mm a")
+            formatter.timeZone = TimeZone.getTimeZone("UTC")
+            try {
+                return Calendar.getInstance().apply { time = formatter.parse(date)!! }
+            } catch (e: Exception) {
+                throw JsonIOException("Erro ao serializar um campo de data.")
+            }
+        }
+    }
+
+    private class CalendarOptDeserializer : JsonDeserializer<Calendar?> {
+        override fun deserialize(element: JsonElement, arg1: Type?, arg2: JsonDeserializationContext?): Calendar? {
+            val date = element.asString
+            val formatter = SimpleDateFormat("M/d/yy hh:mm a", Locale.getDefault())
+            formatter.timeZone = TimeZone.getTimeZone("UTC")
+            return try {
+                Calendar.getInstance().apply { time = formatter.parse(date)!! }
+            } catch (e: Exception) {
+                null
+            }
+        }
+    }
+
+    private var client: SdkGenHttpClient? = null
+    private val gson = GsonBuilder()
+        .registerTypeAdapter(object: TypeToken<Calendar?>() {}.type, CalendarOptDeserializer())
+        .registerTypeAdapter(object: TypeToken<Calendar>() {}.type, CalendarDeserializer())
+        .registerTypeAdapter(object: TypeToken<ByteArray>() {}.type, ByteArrayDeserializer())
+        .registerTypeAdapter(object: TypeToken<ByteArray?>() {}.type, ByteArrayOptDeserializer())
+        .create()
+    var calls = CallsImpl()
+
+    fun initialize(baseUrl: String, applicationContext: Context, defaultTimeoutMillis: Long? = null) {
         client = if (defaultTimeoutMillis == null)
-            Client(baseUrl, applicationContext, useStaging = useStaging)
+            SdkGenHttpClient(baseUrl, applicationContext)
         else
-            Client(baseUrl, applicationContext, useStaging = useStaging, defaultTimeoutMillis = defaultTimeoutMillis)
-    }\n\n`
+            SdkGenHttpClient(baseUrl, applicationContext, defaultTimeoutMillis = defaultTimeoutMillis)
+    }\n\n`;
     
     for (const type of ast.enumTypes) {
-        code += generateEnum(type);
+        code += `   ${generateEnum(type)}`;
         code += "\n";
     }
 
-    code += `   open class Error(val message: String? = null)\n`
-    code += `   data class Response<T>(val error: Error?, val data: T?)\n\n`
+    code += `   open class Error(val message: String? = null)\n\n`;
+    code += `   data class Response<T>(val error: Error?, val data: T?)\n\n`;
 
     for (const type of ast.structTypes) {
         code += `   ${generateClass(type)}\n`;
     }
-
+    
+    const errorTypeEnumEntries: string[] = []
     for (const error of ast.errors) {
         code += `   ${generateErrorClass(error)}\n`;
+        errorTypeEnumEntries.push(error);
     }
 
-    code += `   interface Calls { \n`
-    code += ast.operations.map ( op => 
-            `       fun ${op.prettyName}(${op.args.map( arg => `${arg.name}: ${generateTypeName(arg.type)}`)}): Flow<Response<${generateTypeName(op.returnType)}>> \n`
-    ).join('')
-    code += `   }\n\n`
+    if (errorTypeEnumEntries.length > 0) {
+        code += `   
+    enum class ErrorType {
+        ${errorTypeEnumEntries.join(',\n        ')},
+        Error;
 
-    code += `   class CallsImpl(): Calls {\n`
+        fun type(): Class<out API.Error> {
+            return when(this) {
+                ${errorTypeEnumEntries.map(error => `${error} -> API.${error}::class.java`).join('\n              ')} 
+                else ->  API.Error::class.java
+            }
+        } 
+    }\n\n`;
+    }
+
+    code += `   interface Calls { \n`;
+    code += ast.operations.map ( op => 
+            `       fun ${mangle(op.prettyName)}(${op.args.map( arg => `${mangle(arg.name)}: ${generateTypeName(arg.type)}`)}): Flow<Response<${generateTypeName(op.returnType)}>> \n`
+    ).join('');
+    code += `   }\n\n`;
+
+    code += `   class CallsImpl: Calls {\n`;
     code += ast.operations.map( op => { 
             let opImpl = ""
-            opImpl += `       override fun ${op.prettyName}(${op.args.map( arg => `${arg.name}: ${generateTypeName(arg.type)}`)}) = flow<Response<${generateTypeName(op.returnType)}>> { \n`
+            opImpl += `       override fun ${mangle(op.prettyName)}(${op.args.map( arg => `${mangle(arg.name)}: ${generateTypeName(arg.type)}`)}) = flow<Response<${generateTypeName(op.returnType)}>> { \n`
             opImpl += `             if (client == null) { \n`
             opImpl += `                 emit(Response(Fatal("Você precisa iniciar o SdkGen para fazer chamadas."), null))\n`
             opImpl += `                 return@flow \n`
             opImpl += `             }\n`
                 
             if (op.args.length > 0) { 
-                opImpl += `         val bodyArgs = JsonObject().apply { \n`
-                op.args.map( arg => {
-                    switch(arg.type.constructor.name) {
-                        case "ArrayType":
-                        case "StructType":
-                        case "EnumType": 
-                        case "TypeReference": 
-                            opImpl += `             add(\"${arg.name}\", gson.toJsonTree(${arg.name}))\n`
-                        break;
-                        default:
-                            opImpl += `             addProperty(\"${arg.name}\", ${arg.name})\n`
-                        break;
-                    }    
-                }).join('')
-                opImpl += `         }\n`
+                opImpl += `             val bodyArgs = JsonObject().apply { \n`;
+                op.args.forEach( arg => {
+                    opImpl += `                 ${generateJsonAddRepresentation(arg.type, arg.name)}\n`;
+                });
+                opImpl += `             }\n`;
             } else {
-                opImpl += `         val bodyArgs: JsonObject? = null`
+                opImpl += `         val bodyArgs: JsonObject? = null`;
             }
 
-            opImpl += `\n`
-            opImpl += `             val r = client?.makeRequest(\"${op.prettyName}\", bodyArgs)\n`
-            opImpl += `             val data = if (r?.result != null) \n`
-            opImpl += `                 gson.fromJson(r.result, object : TypeToken<${generateTypeName(op.returnType)}>() {}.type)\n`
-            opImpl += `             else null \n`
-            opImpl += `\n`
-            opImpl += `             val error = if (r?.error != null) \n`
-            opImpl += `                 gson.fromJson(r.result, Error::class.java) \n`
-            opImpl += `             else null \n`
-            opImpl += `\n`
-            opImpl += `             emit(Response(error, data)) \n`
-            opImpl += `       }.flowOn(IO) \n`
-            return opImpl
-    }).join('')
-    code += `   }\n`
+            opImpl += `\n`;
+            opImpl += `             val r = client?.makeRequest(\"${op.prettyName}\", bodyArgs)\n`;
+            opImpl += `             val data = if (r?.result?.get("result") != null) \n`;
+            opImpl += `                 gson.fromJson<${generateTypeName(op.returnType)}>(r.result?.get("result")!!)\n`;
+            opImpl += `             else null \n`;
+            opImpl += `\n`;
+            opImpl += `             val error = if (r?.error != null) { \n`;
+            opImpl += `                 val errorType = try { ErrorType.valueOf(r.error?.get("type")?.asString ?: "") } catch (e: Exception) { ErrorType.Error } \n`;
+            opImpl += `                 gson.fromJson(r.error, errorType.type()) \n`;
+            opImpl += `             } else null \n`;
+            opImpl += `\n`;
+            opImpl += `             emit(Response(error, data)) \n`;
+            opImpl += `       }.flowOn(IO) \n`;
+            return opImpl;
+    }).join('');
+    code += `   }\n`;
 
-    code += `}`
+    code += `}`;
 
     return code;
 }
