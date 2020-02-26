@@ -155,7 +155,7 @@ object API { \n`;
         .map(op => {
             let args = op.args
                 .map(arg => `${mangle(arg.name)}: ${generateTypeName(arg.type)}`)
-                .concat(`callback: ((response: Response<${generateTypeName(op.returnType)}>) -> Unit)? = null`);
+                .concat([`timeoutMillis: Long? = null`, `callback: ((response: Response<${generateTypeName(op.returnType)}>) -> Unit)? = null`] );
             return `       fun ${mangle(op.prettyName)}(${args}): Deferred<Response<out ${generateTypeName(op.returnType)}>> \n`;
         })
         .join("");
@@ -168,7 +168,7 @@ object API { \n`;
             let opImpl = "";
             let args = op.args
                 .map(arg => `${mangle(arg.name)}: ${generateTypeName(arg.type)}`)
-                .concat(`callback: ((response: Response<${generateTypeName(op.returnType)}>) -> Unit)?`);
+                .concat([`timeoutMillis: Long?`, `callback: ((response: Response<${generateTypeName(op.returnType)}>) -> Unit)?`]);
             opImpl += `       override fun ${mangle(op.prettyName)}(${args}): Deferred<Response<out ${generateTypeName(
                 op.returnType,
             )}>> = sdkgenIOScope.async { \n`;
@@ -191,7 +191,7 @@ object API { \n`;
             }
 
             opImpl += `\n`;
-            opImpl += `             val r = client?.makeRequest(\"${op.prettyName}\", bodyArgs)\n`;
+            opImpl += `             val r = client?.makeRequest(\"${op.prettyName}\", bodyArgs, timeoutMillis)\n`;
             opImpl += `             val data = if (r?.result?.get("result") != null) \n`;
             opImpl += `                 gson.fromJson<${generateTypeName(op.returnType)}>(r.result?.get("result")!!)\n`;
             opImpl += `             else null \n`;

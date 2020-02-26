@@ -10,10 +10,10 @@ import com.google.gson.*
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
+import java.io.InterruptedIOException
 import java.net.SocketTimeoutException
 import java.util.*
 import java.util.concurrent.TimeUnit
-import kotlin.concurrent.timerTask
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
@@ -24,7 +24,7 @@ class SdkGenHttpClient(
     private val defaultTimeoutMillis: Long = 10000L
 ) {
 
-    data class InternalResposne(val error: JsonObject?, val result: JsonObject?)
+    data class InternalResponse(val error: JsonObject?, val result: JsonObject?)
 
     private val random = Random()
     private val hexArray = "0123456789abcdef".toCharArray()
@@ -104,22 +104,24 @@ class SdkGenHttpClient(
     @SuppressLint("HardwareIds")
     private fun makeDeviceObj(): JsonObject {
         return JsonObject().apply {
-            addProperty("type", "android")
-            addProperty("fingerprint", Settings.Secure.getString(applicationContext.contentResolver, Settings.Secure.ANDROID_ID))
+            val pref = applicationContext.getSharedPreferences("api", Context.MODE_PRIVATE)
+            if (pref.contains("deviceId"))
+                addProperty("id", pref.getString("deviceId", null))
+
+            addProperty("language", language())
             add("platform", JsonObject().apply {
                 addProperty("version", Build.VERSION.RELEASE)
                 addProperty("sdkVersion", Build.VERSION.SDK_INT)
                 addProperty("brand", Build.BRAND)
                 addProperty("model", Build.MODEL)
             })
-
+            addProperty("timezone", Calendar.getInstance().timeZone.displayName)
+            addProperty("type", "android")
             try {
                 addProperty("version", applicationContext.packageManager.getPackageInfo(applicationContext.packageName, 0).versionName)
             } catch (e: Exception) {
                 addProperty("version", "unknown")
             }
-
-            addProperty("language", language())
             add("screen", JsonObject().apply {
                 val manager = applicationContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager
                 val display = manager.defaultDisplay
@@ -128,39 +130,36 @@ class SdkGenHttpClient(
                 addProperty("width", size.x)
                 addProperty("height", size.y)
             })
-
-            val pref = applicationContext.getSharedPreferences("api", Context.MODE_PRIVATE)
-            if (pref.contains("deviceId"))
-                addProperty("id", pref.getString("deviceId", null))
         }
     }
 
-    suspend fun makeRequest(functionName: String, bodyArgs: JsonObject?, timeoutMillis: Long = defaultTimeoutMillis): InternalResposne = suspendCoroutine { continuation ->
-        val httpTimer = Timer()
+    suspend fun makeRequest(functionName: String, bodyArgs: JsonObject?, timeoutMillis: Long? = null): InternalResponse = suspendCoroutine { continuation ->
         try {
             val body = JsonObject().apply {
-                addProperty("id", callId())
-                add("device", makeDeviceObj())
+                addProperty("version", 3)
+                addProperty("requestId", callId())
                 addProperty("name", functionName)
                 add("args", bodyArgs ?: JsonObject())
+                add("extra", JsonObject().apply { addProperty("fingerprint", Settings.Secure.getString(applicationContext.contentResolver, Settings.Secure.ANDROID_ID)) })
+                add("deviceInfo", makeDeviceObj())
             }
 
             val request = Request.Builder()
-                .url("https://$baseUrl/$functionName")
+                .url("$baseUrl${if (baseUrl.last() == '/') "" else "/"}$functionName")
                 .post(body.toString().toRequestBody("application/json; charset=utf-8".toMediaType()))
                 .build()
 
             val call = httpClient.newCall(request)
+            call.timeout().timeout(timeoutMillis ?: defaultTimeoutMillis, TimeUnit.MILLISECONDS)
+
             try {
-                httpTimer.schedule(timerTask { call.timeout() }, timeoutMillis)
                 val response = call.execute()
-                httpTimer.cancel()
-                if (response.code == 502) {
+                if (response.code in 500..599) {
                     continuation.resume(
-                        InternalResposne(
+                        InternalResponse(
                             JsonObject().apply {
                                 addProperty("type", "Fatal")
-                                addProperty("message", "Erro Fatal (502) - Tente novamente")
+                                addProperty("message", "Erro Fatal (${response.code}) - Tente novamente")
                             },
                             null
                         )
@@ -174,7 +173,7 @@ class SdkGenHttpClient(
                 } catch (e: Exception) {
                     e.printStackTrace()
                     continuation.resume(
-                        InternalResposne(
+                        InternalResponse(
                             JsonObject().apply {
                                 addProperty("type", "Fatal")
                                 addProperty("message", "Erro de serialização")
@@ -185,23 +184,19 @@ class SdkGenHttpClient(
                     return@suspendCoroutine
                 }
 
-                val pref = applicationContext.getSharedPreferences("api", Context.MODE_PRIVATE)
-                pref.edit().putString("deviceId", responseBody.get("deviceId").asString).apply()
-
-                if (!responseBody.get("ok").asBoolean) {
+                if (response.code != 200) {
                     val jsonError = responseBody.getAsJsonObject("error")
-                    continuation.resume(InternalResposne(jsonError, null))
+                    continuation.resume(InternalResponse(jsonError, null))
                 } else {
-                    continuation.resume(InternalResposne(null, responseBody))
+                    continuation.resume(InternalResponse(null, responseBody))
                 }
                 response.close()
             } catch (e: Exception) {
-                httpTimer.cancel()
                 e.printStackTrace()
                 continuation.resume(
-                    InternalResposne(
+                    InternalResponse(
                         JsonObject().apply {
-                            if (e is SocketTimeoutException || e is InterruptedException) {
+                            if (e is SocketTimeoutException || e is InterruptedIOException) {
                                 addProperty("type", "Connection")
                                 addProperty("message", "Conexão excedeu o tempo de espera.")
                             } else {
@@ -216,7 +211,7 @@ class SdkGenHttpClient(
         } catch (e: Exception) {
             e.printStackTrace()
             continuation.resume(
-                InternalResposne(
+                InternalResponse(
                     JsonObject().apply {
                         addProperty("type", "Fatal")
                         addProperty("message", "Ocorreu um erro desconhecido na conexão.")
