@@ -719,10 +719,12 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
             JSON.parse(body),
         );
 
+        const deviceId = parsed.device.id || randomBytes(20).toString("hex");
+
         return {
             args: parsed.args,
             deviceInfo: {
-                id: parsed.device.id || parsed.id,
+                id: deviceId,
                 language: parsed.device.language,
                 platform: parsed.device.platform,
                 timezone: parsed.device.timezone,
@@ -731,7 +733,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
             },
             extra: {},
             headers: req.headers,
-            id: parsed.id,
+            id: `${deviceId}-${parsed.id}`,
             ip,
             name: parsed.name,
             version: 1,
@@ -752,7 +754,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
                     },
                     name: "string",
                     partnerId: "string?",
-                    requestId: "string",
+                    requestId: "string?",
                     sessionId: "string?",
                 },
             },
@@ -778,7 +780,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
                 sessionId: parsed.sessionId,
             },
             headers: req.headers,
-            id: parsed.requestId,
+            id: `${parsed.deviceId}-${parsed.requestId || randomBytes(16).toString("hex")}`,
             ip,
             name: parsed.name,
             version: 2,
@@ -812,11 +814,12 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
         );
 
         const deviceInfo = parsed.deviceInfo || {};
+        const deviceId = deviceInfo.id || randomBytes(16).toString("hex");
 
         return {
             args: parsed.args,
             deviceInfo: {
-                id: deviceInfo.id || randomBytes(16).toString("hex"),
+                id: deviceId,
                 language: deviceInfo.language || null,
                 platform: {
                     ...(deviceInfo.platform ?? {}),
@@ -828,7 +831,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
             },
             extra: parsed.extra ? { ...parsed.extra } : {},
             headers: req.headers,
-            id: parsed.requestId || randomBytes(16).toString("hex"),
+            id: `${deviceId}-${parsed.requestId || randomBytes(16).toString("hex")}`,
             ip,
             name: parsed.name,
             version: 3,
