@@ -31,7 +31,6 @@ export function generateTypeName(type: Type): string {
         case "CpfPrimitiveType":
         case "CnpjPrimitiveType":
         case "EmailPrimitiveType":
-        case "PhonePrimitiveType":
         case "CepPrimitiveType":
         case "UrlPrimitiveType":
         case "UuidPrimitiveType":
@@ -53,8 +52,6 @@ export function generateTypeName(type: Type): string {
             return "Boolean";
         case "BytesPrimitiveType":
             return "ByteArray";
-        case "LatLngPrimitiveType":
-            return "Location";
         case "VoidPrimitiveType":
             return "Unit";
         case "AnyPrimitiveType":
@@ -80,7 +77,6 @@ export function generateJsonAddRepresentation(type: Type, fieldName: string): st
         case "CpfPrimitiveType":
         case "CnpjPrimitiveType":
         case "EmailPrimitiveType":
-        case "PhonePrimitiveType":
         case "CepPrimitiveType":
         case "UrlPrimitiveType":
         case "UuidPrimitiveType":
@@ -100,7 +96,6 @@ export function generateJsonAddRepresentation(type: Type, fieldName: string): st
             return `addProperty(\"${fieldName}\", SimpleDateFormat(\"yyyy-MM-dd\", Locale.getDefault()).format(${mangle(fieldName)}))`;
         case "DateTimePrimitiveType":
             return `addProperty(\"${fieldName}\", SimpleDateFormat(\"yyyy-MM-dd'T'HH:mm:ss.SSS\", Locale.getDefault()).format(${mangle(fieldName)}))`;
-        case "LatLngPrimitiveType":
         case "ArrayType":
         case "StructType":
         case "EnumType":
@@ -121,7 +116,6 @@ export function mangle(fieldName: string): string {
         "in",
         "out",
         "as",
-        "as?",
         "break",
         "class",
         "continue",
@@ -132,7 +126,6 @@ export function mangle(fieldName: string): string {
         "fun",
         "if",
         "in",
-        "!in",
         "interface",
         "is",
         "!is",

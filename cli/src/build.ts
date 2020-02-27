@@ -88,7 +88,7 @@ export function buildCmd(argv: string[]) {
             writeFileSync(options.output, generateDartClientSource(ast, {}));
             break;
         }
-        case "android": {
+        case "kotlin_android": {
             writeFileSync(options.output, generateKtClientSource(ast, {}));
             break;
         }

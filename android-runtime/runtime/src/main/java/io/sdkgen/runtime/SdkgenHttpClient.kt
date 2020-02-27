@@ -29,7 +29,7 @@ class SdkGenHttpClient(
     private val random = Random()
     private val hexArray = "0123456789abcdef".toCharArray()
     private val gson = Gson()
-    private val connectionPool = ConnectionPool(100, 100, TimeUnit.SECONDS)
+    private val connectionPool = ConnectionPool(10, 5, TimeUnit.MINUTES)
     private val httpClient = OkHttpClient.Builder()
         .connectionPool(connectionPool)
         .dispatcher(Dispatcher().apply { maxRequests = 200 ; maxRequestsPerHost = 200 })
@@ -133,6 +133,7 @@ class SdkGenHttpClient(
         }
     }
 
+    @SuppressLint("HardwareIds")
     suspend fun makeRequest(functionName: String, bodyArgs: JsonObject?, timeoutMillis: Long? = null): InternalResponse = suspendCoroutine { continuation ->
         try {
             val body = JsonObject().apply {
@@ -159,7 +160,7 @@ class SdkGenHttpClient(
                         InternalResponse(
                             JsonObject().apply {
                                 addProperty("type", "Fatal")
-                                addProperty("message", "Erro Fatal (${response.code}) - Tente novamente")
+                                addProperty("message", applicationContext.getString(R.string.error_call_code, response.code.toString()))
                             },
                             null
                         )
@@ -176,7 +177,7 @@ class SdkGenHttpClient(
                         InternalResponse(
                             JsonObject().apply {
                                 addProperty("type", "Fatal")
-                                addProperty("message", "Erro de serialização")
+                                addProperty("message", applicationContext.getString(R.string.error_serialization))
                             },
                             null
                         )
@@ -198,10 +199,10 @@ class SdkGenHttpClient(
                         JsonObject().apply {
                             if (e is SocketTimeoutException || e is InterruptedIOException) {
                                 addProperty("type", "Connection")
-                                addProperty("message", "Conexão excedeu o tempo de espera.")
+                                addProperty("message", applicationContext.getString(R.string.error_call_timeout))
                             } else {
                                 addProperty("type", "Fatal")
-                                addProperty("message", "Chamada falhou sem mensagem de erro!")
+                                addProperty("message", applicationContext.getString(R.string.error_call_failed_without_message))
                             }
                         },
                         null
@@ -214,7 +215,7 @@ class SdkGenHttpClient(
                 InternalResponse(
                     JsonObject().apply {
                         addProperty("type", "Fatal")
-                        addProperty("message", "Ocorreu um erro desconhecido na conexão.")
+                        addProperty("message", applicationContext.getString(R.string.error_unknown))
                     },
                     null
                 )

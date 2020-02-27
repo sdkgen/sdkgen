@@ -9,39 +9,38 @@ export function generateKtClientSource(ast: AstRoot, options: Options) {
     code += `
 @file:Suppress("UnusedImport")
 
+import android.annotation.SuppressLint
+import android.content.Context
+import android.content.pm.PackageManager
+import android.graphics.Point
+import android.os.Build
+import android.provider.Settings
 import android.util.Base64
-import org.json.JSONObject
+import android.util.Log
+import android.view.WindowManager
+import com.google.gson.*
+import com.google.gson.reflect.TypeToken
+import io.sdkgen.runtime.SdkGenHttpClient
+import java.io.IOException
+import java.io.InvalidObjectException
+import java.io.Serializable
+import java.lang.reflect.Type
+import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.concurrent.TimeUnit
-import android.view.WindowManager
-import android.content.pm.PackageManager
-import android.os.Build
-import org.json.JSONException
-import android.annotation.SuppressLint
-import android.content.Context
-import android.graphics.Point
-import android.provider.Settings
-import android.util.Log
-import com.google.gson.*
-import java.io.IOException
-import java.io.Serializable
-import org.json.JSONArray
-import kotlinx.coroutines.*
-import kotlinx.coroutines.Dispatchers.IO
+import kotlin.concurrent.timerTask
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
-import java.io.InvalidObjectException
-import kotlin.concurrent.timerTask
+import kotlin.experimental.and
+import kotlinx.coroutines.*
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.Flow
-import io.sdkgen.runtime.SdkGenHttpClient
-import java.lang.reflect.Type
-import java.text.ParseException
-import kotlin.experimental.and
-import com.google.gson.reflect.TypeToken
-
+import org.json.JSONArray
+import org.json.JSONException
+import org.json.JSONObject
 
 inline fun <reified T> Gson.fromJson(json: String) = fromJson<T>(json, object: TypeToken<T>() {}.type)
 inline fun <reified T> Gson.fromJson(json: JsonElement) = fromJson<T>(json, object: TypeToken<T>() {}.type)
