@@ -1,4 +1,4 @@
-import { generateKtClientSource } from "@sdkgen/kt-generator";
+import { generateKtClientSource } from "@sdkgen/kotlin-generator";
 import { generateDartClientSource } from "@sdkgen/dart-generator";
 import { Parser } from "@sdkgen/parser";
 import {

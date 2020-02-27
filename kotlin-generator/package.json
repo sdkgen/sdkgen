@@ -1,5 +1,5 @@
 {
-  "name": "@sdkgen/kt-generator",
+  "name": "@sdkgen/kotlin-generator",
   "version": "0.0.0",
   "description": "",
   "main": "src/index.ts",
