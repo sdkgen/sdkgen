@@ -1,8 +1,7 @@
 <resources>
-    <string name="app_name">runtime</string>
-    <string name="error_call_timeout">Conexão excedeu o tempo de espera.</string>
-    <string name="error_call_failed_without_message">Chamada falhou sem mensagem de erro!</string>
-    <string name="error_unknown">Ocorreu um erro desconhecido na conexão.</string>
-    <string name="error_serialization">Erro de serialização</string>
-    <string name="error_call_code">Erro Fatal (%1$s) - Tente novamente</string>
+    <string name="sdkgen_error_call_timeout">Conexão excedeu o tempo de espera.</string>
+    <string name="sdkgen_error_call_failed_without_message">Chamada falhou sem mensagem de erro!</string>
+    <string name="sdkgen_error_unknown">Ocorreu um erro desconhecido na conexão.</string>
+    <string name="sdkgen_error_serialization">Erro de serialização</string>
+    <string name="sdkgen_error_call_code">Erro Fatal (%1$s) - Tente novamente</string>
 </resources>

@@ -18,7 +18,7 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 @Suppress("unused")
-class SdkGenHttpClient(
+class SdkgenHttpClient(
     private val baseUrl: String,
     private val applicationContext: Context,
     private val defaultTimeoutMillis: Long = 10000L
@@ -160,7 +160,7 @@ class SdkGenHttpClient(
                         InternalResponse(
                             JsonObject().apply {
                                 addProperty("type", "Fatal")
-                                addProperty("message", applicationContext.getString(R.string.error_call_code, response.code.toString()))
+                                addProperty("message", applicationContext.getString(R.string.sdkgen_error_call_code, response.code.toString()))
                             },
                             null
                         )
@@ -177,7 +177,7 @@ class SdkGenHttpClient(
                         InternalResponse(
                             JsonObject().apply {
                                 addProperty("type", "Fatal")
-                                addProperty("message", applicationContext.getString(R.string.error_serialization))
+                                addProperty("message", applicationContext.getString(R.string.sdkgen_error_serialization))
                             },
                             null
                         )
@@ -199,10 +199,10 @@ class SdkGenHttpClient(
                         JsonObject().apply {
                             if (e is SocketTimeoutException || e is InterruptedIOException) {
                                 addProperty("type", "Connection")
-                                addProperty("message", applicationContext.getString(R.string.error_call_timeout))
+                                addProperty("message", applicationContext.getString(R.string.sdkgen_error_call_timeout))
                             } else {
                                 addProperty("type", "Fatal")
-                                addProperty("message", applicationContext.getString(R.string.error_call_failed_without_message))
+                                addProperty("message", applicationContext.getString(R.string.sdkgen_error_call_failed_without_message))
                             }
                         },
                         null
@@ -215,7 +215,7 @@ class SdkGenHttpClient(
                 InternalResponse(
                     JsonObject().apply {
                         addProperty("type", "Fatal")
-                        addProperty("message", applicationContext.getString(R.string.error_unknown))
+                        addProperty("message", applicationContext.getString(R.string.sdkgen_error_unknown))
                     },
                     null
                 )

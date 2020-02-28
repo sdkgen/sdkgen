@@ -1,4 +1,4 @@
-import { generateKtClientSource } from "@sdkgen/kotlin-generator";
+import { generateAndroidClientSource } from "@sdkgen/kotlin-generator";
 import { generateDartClientSource } from "@sdkgen/dart-generator";
 import { Parser } from "@sdkgen/parser";
 import {
@@ -89,7 +89,7 @@ export function buildCmd(argv: string[]) {
             break;
         }
         case "kotlin_android": {
-            writeFileSync(options.output, generateKtClientSource(ast, {}));
+            writeFileSync(options.output, generateAndroidClientSource(ast, {}));
             break;
         }
         default: {

@@ -31,12 +31,10 @@ export function generateTypeName(type: Type): string {
         case "CpfPrimitiveType":
         case "CnpjPrimitiveType":
         case "EmailPrimitiveType":
-        case "CepPrimitiveType":
         case "UrlPrimitiveType":
         case "UuidPrimitiveType":
         case "HexPrimitiveType":
         case "Base64PrimitiveType":
-        case "SafeHtmlPrimitiveType":
         case "XmlPrimitiveType":
             return "String";
         case "IntPrimitiveType":
@@ -54,7 +52,7 @@ export function generateTypeName(type: Type): string {
             return "ByteArray";
         case "VoidPrimitiveType":
             return "Unit";
-        case "AnyPrimitiveType":
+        case "JsonPrimitiveType":
             return "Any";
         case "OptionalType":
             return `${generateTypeName((type as OptionalType).base)}?`;
@@ -77,12 +75,10 @@ export function generateJsonAddRepresentation(type: Type, fieldName: string): st
         case "CpfPrimitiveType":
         case "CnpjPrimitiveType":
         case "EmailPrimitiveType":
-        case "CepPrimitiveType":
         case "UrlPrimitiveType":
         case "UuidPrimitiveType":
         case "HexPrimitiveType":
         case "Base64PrimitiveType":
-        case "SafeHtmlPrimitiveType":
         case "XmlPrimitiveType":
         case "IntPrimitiveType":
         case "UIntPrimitiveType":
@@ -100,7 +96,7 @@ export function generateJsonAddRepresentation(type: Type, fieldName: string): st
         case "StructType":
         case "EnumType":
         case "TypeReference":
-        case "AnyPrimitiveType":
+        case "JsonPrimitiveType":
             return `add(\"${fieldName}\", gson.toJsonTree(${mangle(fieldName)}))`;
         case "VoidPrimitiveType":
             return "";
@@ -128,7 +124,6 @@ export function mangle(fieldName: string): string {
         "in",
         "interface",
         "is",
-        "!is",
         "null",
         "object",
         "package",
@@ -197,8 +192,7 @@ export function mangle(fieldName: string): string {
         "Byte",
     ];
 
-    const hasConflicted = (element: string) => element === fieldName;
-    if (mangleList.some(hasConflicted)) {
+    if (mangleList.includes(fieldName)) {
         return `_${fieldName}`;
     }
 

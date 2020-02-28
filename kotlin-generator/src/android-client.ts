@@ -3,7 +3,7 @@ import { generateClass, generateEnum, generateErrorClass, generateTypeName, gene
 
 interface Options {}
 
-export function generateKtClientSource(ast: AstRoot, options: Options) {
+export function generateAndroidClientSource(ast: AstRoot, options: Options) {
     let code = "";
 
     code += `
@@ -20,7 +20,7 @@ import android.util.Log
 import android.view.WindowManager
 import com.google.gson.*
 import com.google.gson.reflect.TypeToken
-import io.sdkgen.runtime.SdkGenHttpClient
+import io.sdkgen.runtime.SdkgenHttpClient
 import java.io.IOException
 import java.io.InvalidObjectException
 import java.io.Serializable
@@ -50,7 +50,7 @@ inline fun <reified T> Gson.fromJson(json: JsonElement) = fromJson<T>(json, obje
 @SuppressLint("SimpleDateFormat", "StaticFieldLeak")
 object API { \n`;
 
-    code += ` 
+    code += `
     private class ByteArrayDeserializer : JsonDeserializer<ByteArray> {
         @Throws(JsonParseException::class)
         override fun deserialize(element: JsonElement, arg1: Type?, arg2: JsonDeserializationContext?): ByteArray {
@@ -100,7 +100,7 @@ object API { \n`;
         }
     }
 
-    private var client: SdkGenHttpClient? = null
+    private var client: SdkgenHttpClient? = null
     private val gson = GsonBuilder()
         .registerTypeAdapter(object: TypeToken<Calendar?>() {}.type, CalendarOptDeserializer())
         .registerTypeAdapter(object: TypeToken<Calendar>() {}.type, CalendarDeserializer())
@@ -111,9 +111,9 @@ object API { \n`;
 
     fun initialize(baseUrl: String, applicationContext: Context, defaultTimeoutMillis: Long? = null) {
         client = if (defaultTimeoutMillis == null)
-            SdkGenHttpClient(baseUrl, applicationContext)
+            SdkgenHttpClient(baseUrl, applicationContext)
         else
-            SdkGenHttpClient(baseUrl, applicationContext, defaultTimeoutMillis = defaultTimeoutMillis)
+            SdkgenHttpClient(baseUrl, applicationContext, defaultTimeoutMillis = defaultTimeoutMillis)
     }\n\n`;
 
     for (const type of ast.enumTypes) {
@@ -135,17 +135,17 @@ object API { \n`;
     }
 
     if (errorTypeEnumEntries.length > 0) {
-        code += `   
+        code += `
     enum class ErrorType {
         ${errorTypeEnumEntries.join(",\n        ")},
         Error;
 
         fun type(): Class<out API.Error> {
             return when(this) {
-                ${errorTypeEnumEntries.map(error => `${error} -> API.${error}::class.java`).join("\n              ")} 
+                ${errorTypeEnumEntries.map(error => `${error} -> API.${error}::class.java`).join("\n              ")}
                 else ->  API.Error::class.java
             }
-        } 
+        }
     }\n\n`;
     }
 
@@ -207,8 +207,8 @@ object API { \n`;
             return opImpl;
         })
         .join("");
-    code += `   }\n`;
 
+    code += `   }\n`;
     code += `}`;
 
     return code;
