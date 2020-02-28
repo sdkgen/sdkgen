@@ -158,3 +158,20 @@ jobs:
       working-directory: ./typescript-generator
     - run: npm test
       working-directory: ./typescript-generator
+
+  kotlin-generator:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [8.x, 10.x, 12.x, 13.x]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install
+      working-directory: ./kotlin-generator
+    - run: npm run build
+      working-directory: ./kotlin-generator
+    - run: npm test
+      working-directory: ./kotlin-generator
