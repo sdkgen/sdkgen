@@ -1,4 +1,30 @@
-import { ArrayType, EnumType, OptionalType, StructType, Type, TypeReference } from "@sdkgen/parser";
+import {
+    ArrayType,
+    Base64PrimitiveType,
+    BoolPrimitiveType,
+    BytesPrimitiveType,
+    CnpjPrimitiveType,
+    CpfPrimitiveType,
+    DatePrimitiveType,
+    DateTimePrimitiveType,
+    EmailPrimitiveType,
+    EnumType,
+    FloatPrimitiveType,
+    HexPrimitiveType,
+    IntPrimitiveType,
+    JsonPrimitiveType,
+    MoneyPrimitiveType,
+    OptionalType,
+    StringPrimitiveType,
+    StructType,
+    Type,
+    TypeReference,
+    UIntPrimitiveType,
+    UrlPrimitiveType,
+    UuidPrimitiveType,
+    VoidPrimitiveType,
+    XmlPrimitiveType,
+} from "@sdkgen/parser";
 
 export function generateTypescriptInterface(type: StructType) {
     return `export interface ${type.name} {
@@ -15,23 +41,23 @@ export function generateTypescriptErrorClass(name: string) {
 }
 
 export function clearForLogging(path: string, type: Type): string {
-    switch (type.constructor.name) {
-        case "TypeReference":
+    switch (type.constructor) {
+        case TypeReference:
             return clearForLogging(path, (type as TypeReference).type);
 
-        case "OptionalType": {
+        case OptionalType: {
             const code = clearForLogging(path, (type as OptionalType).base);
             if (code) return `if (${path} !== null && ${path} !== undefined) { ${code} }`;
             else return "";
         }
 
-        case "ArrayType": {
+        case ArrayType: {
             const code = clearForLogging("el", (type as ArrayType).base);
             if (code) return `for (const el of ${path}) { ${code} }`;
             else return "";
         }
 
-        case "StructType":
+        case StructType:
             const codes: string[] = [];
             for (const field of (type as StructType).fields) {
                 if (field.secret) {
@@ -49,55 +75,55 @@ export function clearForLogging(path: string, type: Type): string {
 }
 
 export function generateTypescriptTypeName(type: Type): string {
-    switch (type.constructor.name) {
-        case "IntPrimitiveType":
-        case "UIntPrimitiveType":
-        case "MoneyPrimitiveType":
-        case "FloatPrimitiveType":
+    switch (type.constructor) {
+        case IntPrimitiveType:
+        case UIntPrimitiveType:
+        case MoneyPrimitiveType:
+        case FloatPrimitiveType:
             return "number";
 
-        case "DatePrimitiveType":
-        case "DateTimePrimitiveType":
+        case DatePrimitiveType:
+        case DateTimePrimitiveType:
             return "Date";
 
-        case "BoolPrimitiveType":
+        case BoolPrimitiveType:
             return "boolean";
 
-        case "BytesPrimitiveType":
+        case BytesPrimitiveType:
             return "Buffer";
 
-        case "StringPrimitiveType":
-        case "CpfPrimitiveType":
-        case "CnpjPrimitiveType":
-        case "EmailPrimitiveType":
-        case "UrlPrimitiveType":
-        case "UuidPrimitiveType":
-        case "HexPrimitiveType":
-        case "Base64PrimitiveType":
-        case "XmlPrimitiveType":
+        case StringPrimitiveType:
+        case CpfPrimitiveType:
+        case CnpjPrimitiveType:
+        case EmailPrimitiveType:
+        case UrlPrimitiveType:
+        case UuidPrimitiveType:
+        case HexPrimitiveType:
+        case Base64PrimitiveType:
+        case XmlPrimitiveType:
             return "string";
 
-        case "VoidPrimitiveType":
+        case VoidPrimitiveType:
             return "void";
 
-        case "JsonPrimitiveType":
+        case JsonPrimitiveType:
             return "any";
 
-        case "OptionalType":
+        case OptionalType:
             return generateTypescriptTypeName((type as OptionalType).base) + " | null";
 
-        case "ArrayType": {
+        case ArrayType: {
             const base = (type as ArrayType).base;
             const baseGen = generateTypescriptTypeName(base);
-            if (base.constructor.name === "OptionalType") return `(${baseGen})[]`;
+            if (base instanceof OptionalType) return `(${baseGen})[]`;
             else return `${baseGen}[]`;
         }
 
-        case "StructType":
-        case "EnumType":
+        case StructType:
+        case EnumType:
             return type.name;
 
-        case "TypeReference":
+        case TypeReference:
             return generateTypescriptTypeName((type as TypeReference).type);
 
         default:
