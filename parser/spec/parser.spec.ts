@@ -29,7 +29,7 @@ describe(Parser, () => {
                 `
                     get ${p === "bool" ? "isFoo" : "foo"}(): ${p}
                     get bar(): ${p}?
-                    get baz(): ${p}[]
+                    fn getBaz(): ${p}[]
                 `,
                 {
                     errors: ["Fatal"],
@@ -50,6 +50,7 @@ describe(Parser, () => {
                     typeTable: {},
                     annotations: {},
                 },
+                ["Keyword 'get' is deprecated at -:2:21. Use 'fn' instead.", "Keyword 'get' is deprecated at -:3:21. Use 'fn' instead."],
             );
         });
     }
@@ -157,7 +158,7 @@ describe(Parser, () => {
                     b: int
                 }
 
-                get baz(): Baz
+                fn getBaz(): Baz
             `,
             {
                 errors: ["Foo", "Bar", "Fatal"],
@@ -221,7 +222,7 @@ describe(Parser, () => {
 
         expectDoesntParse(
             `
-                function foo(a: string, a: int)
+                fn foo(a: string, a: int)
             `,
             "redeclare",
         );
@@ -283,6 +284,7 @@ describe(Parser, () => {
                 },
                 annotations: {},
             },
+            ["Keyword 'function' is deprecated at -:6:17. Use 'fn' instead."],
         );
     });
 
@@ -349,12 +351,290 @@ describe(Parser, () => {
             },
         );
     });
+
+    test("handles rest annotations", () => {
+        expectParses(
+            `
+                @rest GET /foo
+                fn foo(): string
+
+                @rest GET /users/{id}/name
+                fn name(id: string): string
+
+                @rest GET /users/count?{since}&{until}
+                fn userCount(since: date?, until: date?): uint
+            `,
+            {
+                errors: ["Fatal"],
+                functionTable: {
+                    name: {
+                        args: {
+                            id: "string",
+                        },
+                        ret: "string",
+                    },
+                    foo: {
+                        args: {},
+                        ret: "string",
+                    },
+                    userCount: {
+                        args: {
+                            since: "date?",
+                            until: "date?",
+                        },
+                        ret: "uint",
+                    },
+                },
+                typeTable: {},
+                annotations: {
+                    "fn.name": [
+                        {
+                            type: "rest",
+                            value: {
+                                method: "GET",
+                                path: "/users/{id}/name",
+                                pathVariables: ["id"],
+                                queryVariables: [],
+                                headers: [],
+                                bodyVariable: null,
+                            },
+                        },
+                    ],
+                    "fn.foo": [
+                        {
+                            type: "rest",
+                            value: {
+                                method: "GET",
+                                path: "/foo",
+                                pathVariables: [],
+                                queryVariables: [],
+                                headers: [],
+                                bodyVariable: null,
+                            },
+                        },
+                    ],
+                    "fn.userCount": [
+                        {
+                            type: "rest",
+                            value: {
+                                method: "GET",
+                                path: "/users/count",
+                                pathVariables: [],
+                                queryVariables: ["since", "until"],
+                                headers: [],
+                                bodyVariable: null,
+                            },
+                        },
+                    ],
+                },
+            },
+        );
+
+        expectParses(
+            `
+                @rest GET /chats/{chatId}/messages?{since}&{until} [header x-token: {token}]
+                fn getMessages(token: base64, chatId: uuid, since: datetime?, until: datetime?): string[]
+            `,
+            {
+                errors: ["Fatal"],
+                functionTable: {
+                    getMessages: {
+                        args: {
+                            token: "base64",
+                            chatId: "uuid",
+                            since: "datetime?",
+                            until: "datetime?",
+                        },
+                        ret: "string[]",
+                    },
+                },
+                typeTable: {},
+                annotations: {
+                    "fn.getMessages": [
+                        {
+                            type: "rest",
+                            value: {
+                                method: "GET",
+                                path: "/chats/{chatId}/messages",
+                                pathVariables: ["chatId"],
+                                queryVariables: ["since", "until"],
+                                headers: [["x-token", "token"]],
+                                bodyVariable: null,
+                            },
+                        },
+                    ],
+                },
+            },
+        );
+
+        expectParses(
+            `
+                @rest GET /posts [header user-agent: {userAgent}] [header accept-language: {lang}] [header x-token: {token}]
+                fn getPosts(userAgent: string, lang: string, token: base64): uuid
+            `,
+            {
+                errors: ["Fatal"],
+                functionTable: {
+                    getPosts: {
+                        args: {
+                            userAgent: "string",
+                            lang: "string",
+                            token: "base64",
+                        },
+                        ret: "uuid",
+                    },
+                },
+                typeTable: {},
+                annotations: {
+                    "fn.getPosts": [
+                        {
+                            type: "rest",
+                            value: {
+                                method: "GET",
+                                path: "/posts",
+                                pathVariables: [],
+                                queryVariables: [],
+                                headers: [
+                                    ["user-agent", "userAgent"],
+                                    ["accept-language", "lang"],
+                                    ["x-token", "token"],
+                                ],
+                                bodyVariable: null,
+                            },
+                        },
+                    ],
+                },
+            },
+        );
+
+        expectParses(
+            `
+                type NewUser {
+                    name: string
+                }
+
+                type User {
+                    id: uuid
+                }
+
+                @rest POST /users [body {user}]
+                fn createNewUser(user: NewUser): User
+            `,
+            {
+                errors: ["Fatal"],
+                functionTable: {
+                    createNewUser: {
+                        args: {
+                            user: "NewUser",
+                        },
+                        ret: "User",
+                    },
+                },
+                typeTable: {
+                    NewUser: {
+                        name: "string",
+                    },
+                    User: {
+                        id: "uuid",
+                    },
+                },
+                annotations: {
+                    "fn.createNewUser": [
+                        {
+                            type: "rest",
+                            value: {
+                                method: "POST",
+                                path: "/users",
+                                pathVariables: [],
+                                queryVariables: [],
+                                headers: [],
+                                bodyVariable: "user",
+                            },
+                        },
+                    ],
+                },
+            },
+        );
+
+        expectDoesntParse(
+            `
+                @rest HEAD /foo
+                fn foo(): string
+            `,
+            "Unsupported method 'HEAD'",
+        );
+
+        expectDoesntParse(
+            `
+                @rest GET /foo/{id}
+                fn foo(): string
+            `,
+            "Argument 'id' not found",
+        );
+
+        expectDoesntParse(
+            `
+                @rest GET /foo?{id}
+                fn foo(): string
+            `,
+            "Argument 'id' not found",
+        );
+
+        expectDoesntParse(
+            `
+                @rest GET aaa
+                fn foo(): string
+            `,
+            "Invalid path",
+        );
+
+        expectDoesntParse(
+            `
+                @rest GET /aaa?oug
+                fn foo(): string
+            `,
+            "Invalid querystring on path",
+        );
+
+        expectDoesntParse(
+            `
+                @rest GET /aaa/{arg}
+                fn foo(arg: string?): string
+            `,
+            "path argument 'arg' can't be nullable",
+        );
+
+        expectDoesntParse(
+            `
+                @rest GET /aaa/{arg}
+                fn foo(arg: string[]): string
+            `,
+            "Argument 'arg' can't have type 'string[]' for rest annotation",
+        );
+
+        expectDoesntParse(
+            `
+                @rest GET /aaa
+                fn foo(arg: string): string
+            `,
+            "is missing",
+        );
+
+        expectDoesntParse(
+            `
+                @rest GET /aaa
+                fn foo(): void
+            `,
+            "GET rest endpoint must return something",
+        );
+    });
 });
 
-function expectParses(source: string, json: AstJson) {
+function expectParses(source: string, json: AstJson, warnings: string[] = []) {
     const parser = new Parser(new Lexer(source));
     const ast = parser.parse();
 
+    expect(ast.warnings).toEqual(warnings);
     expect(astToJson(ast)).toEqual(json);
     expect(astToJson(ast)).toEqual(astToJson(jsonToAst(astToJson(ast))));
 }

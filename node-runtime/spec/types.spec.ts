@@ -1,4 +1,4 @@
-import { decode, encode } from "../../src";
+import { decode, encode } from "../src";
 
 describe("Encode/Decode", () => {
     test("Process CPF", async () => {

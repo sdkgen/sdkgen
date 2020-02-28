@@ -1,7 +1,7 @@
-import * as React from "react";
+import { faSearch } from "@fortawesome/free-solid-svg-icons";
 // import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import * as React from "react";
 import s from "./searchInput.scss";
 
 interface Props {

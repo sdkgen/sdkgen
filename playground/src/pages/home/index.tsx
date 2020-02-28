@@ -1,10 +1,10 @@
-import * as React from "react";
-import { observer } from "mobx-react-lite";
-import s from "./home.scss";
-import { SearchInput } from "components/searchInput";
 import { RequestCard } from "components/requestCard";
-import { useDebounce } from "use-debounce";
+import { SearchInput } from "components/searchInput";
+import { observer } from "mobx-react-lite";
+import * as React from "react";
 import RootStore from "stores";
+import { useDebounce } from "use-debounce";
+import s from "./home.scss";
 
 function Home() {
 	const { requestsStore } = React.useContext(RootStore);

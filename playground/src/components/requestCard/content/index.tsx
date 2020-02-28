@@ -1,13 +1,13 @@
-import * as React from "react";
-import s from "./content.scss";
-import MonacoEditor from "react-monaco-editor";
 import { componentSwitch } from "helpers/componentSwitch";
-import ReactJson from "react-json-view";
 import { requestModel } from "helpers/requestModel";
-import { TabKeys } from "../tabs";
+import { observer } from "mobx-react-lite";
+import * as React from "react";
+import ReactJson from "react-json-view";
+import MonacoEditor from "react-monaco-editor";
 import { Annotations } from "../annotations";
 import { Errors } from "../errors";
-import { observer } from "mobx-react-lite";
+import { TabKeys } from "../tabs";
+import s from "./content.scss";
 
 interface ContentProps {
 	activeTab: TabKeys;

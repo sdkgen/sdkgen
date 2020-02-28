@@ -113,6 +113,21 @@
 						"1": {"name": "constant.numeric"},
 						"2": {"name": "entity.name.type"}
 					}
+				},
+				{
+					"name": "meta.annotations.rest",
+					"begin": "(@rest) (\\w+)",
+					"beginCaptures": {
+						"1": {"name": "constant.numeric"},
+						"2": {"name": "entity.name.type"}
+					},
+					"end": "\n",
+					"patterns": [
+						{
+							"name": "variable.parameter",
+							"match": "\\{\\w+\\}"
+						}
+					]
 				}
 			]
 		},
@@ -150,7 +165,7 @@
 					"include": "#any"
 				}, {
 					"name": "keyword.type",
-					"match": "\\b(bool|int|uint|float|string|datetime|date|bytes|void|money|cpf|cnpj|email|phone|cep|latlng|url|uuid|hex|base64|safehtml|xml|json)\\b"
+					"match": "\\b(bool|int|uint|float|string|datetime|date|bytes|void|money|cpf|cnpj|email|url|uuid|hex|base64|xml|json)\\b"
 				}, {
 					"name": "markup.bold",
 					"match": "(\\?|\\[\\])"

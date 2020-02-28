@@ -1,4 +1,4 @@
-import { Parser, astToJson } from "@sdkgen/parser";
+import { astToJson, Parser } from "@sdkgen/parser";
 import { generateNodeClientSource, generateNodeServerSource } from "@sdkgen/typescript-generator";
 import axios from "axios";
 import { randomBytes } from "crypto";
@@ -47,17 +47,13 @@ describe("Simple API", () => {
         server.listen();
     });
 
-    afterAll(() => {
-        server.close();
+    afterAll(async () => {
+        await server.close();
     });
 
-    test("Healthcheck on any GET route", async () => {
+    test("Healthcheck on 'GET /' only", async () => {
         expect(await axios.get("http://localhost:8000/")).toMatchObject({ data: { ok: true } });
-        expect(await axios.get("http://localhost:8000/egesg")).toMatchObject({ data: { ok: true } });
-        expect(await axios.get("http://localhost:8000/erh/eh/erh/erh/er")).toMatchObject({ data: { ok: true } });
-        expect(await axios.get("http://localhost:8000/oqpfnaewilfewigbwugbhlbiuas")).toMatchObject({
-            data: { ok: true },
-        });
+        await expect(axios.get("http://localhost:8000/egesg")).rejects.toThrowError();
     });
 
     test("Can get ast.json at runtime", async () => {
@@ -95,7 +91,6 @@ describe("Simple API", () => {
             hex: "f84c4d20",
             int: -25,
             json: [{ a: 23, b: "odcbu" }],
-            latlng: { lat: 24.26, lng: -123.1346 },
             money: 356,
             optional1: null,
             optional2: 2525,

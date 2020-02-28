@@ -3,16 +3,15 @@ import { Token, TokenLocation } from "./token";
 export class AstRoot {
     structTypes: StructType[] = [];
     enumTypes: EnumType[] = [];
+    warnings: string[] = [];
 
     constructor(public typeDefinitions: TypeDefinition[] = [], public operations: Operation[] = [], public errors: string[] = []) {}
 }
 
 export abstract class AstNode {
     public location = new TokenLocation();
-    private kind: string;
 
     constructor() {
-        this.kind = this.constructor.name;
         Object.defineProperty(this, "location", { enumerable: false });
     }
 
@@ -77,15 +76,6 @@ export class CnpjPrimitiveType extends PrimitiveType {
 export class EmailPrimitiveType extends PrimitiveType {
     name = "email";
 }
-export class PhonePrimitiveType extends PrimitiveType {
-    name = "phone";
-}
-export class CepPrimitiveType extends PrimitiveType {
-    name = "cep";
-}
-export class LatLngPrimitiveType extends PrimitiveType {
-    name = "latlng";
-}
 export class UrlPrimitiveType extends PrimitiveType {
     name = "url";
 }
@@ -97,9 +87,6 @@ export class HexPrimitiveType extends PrimitiveType {
 }
 export class Base64PrimitiveType extends PrimitiveType {
     name = "base64";
-}
-export class SafeHtmlPrimitiveType extends PrimitiveType {
-    name = "safehtml";
 }
 export class XmlPrimitiveType extends PrimitiveType {
     name = "xml";
@@ -203,6 +190,19 @@ export class ThrowsAnnotation extends Annotation {
 
 export class ArgDescriptionAnnotation extends Annotation {
     constructor(public argName: string, public text: string) {
+        super();
+    }
+}
+
+export class RestAnnotation extends Annotation {
+    constructor(
+        public method: string,
+        public path: string,
+        public pathVariables: string[],
+        public queryVariables: string[],
+        public headers: Map<string, string>,
+        public bodyVariable: string | null,
+    ) {
         super();
     }
 }
