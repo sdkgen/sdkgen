@@ -1,4 +1,30 @@
-import { ArrayType, EnumType, OptionalType, StructType, Type, TypeReference } from "@sdkgen/parser";
+import {
+    ArrayType,
+    Base64PrimitiveType,
+    BoolPrimitiveType,
+    BytesPrimitiveType,
+    CnpjPrimitiveType,
+    CpfPrimitiveType,
+    DatePrimitiveType,
+    DateTimePrimitiveType,
+    EmailPrimitiveType,
+    EnumType,
+    FloatPrimitiveType,
+    HexPrimitiveType,
+    IntPrimitiveType,
+    JsonPrimitiveType,
+    MoneyPrimitiveType,
+    OptionalType,
+    StringPrimitiveType,
+    StructType,
+    Type,
+    TypeReference,
+    UIntPrimitiveType,
+    UrlPrimitiveType,
+    UuidPrimitiveType,
+    VoidPrimitiveType,
+    XmlPrimitiveType,
+} from "@sdkgen/parser";
 
 export function generateEnum(type: EnumType) {
     return `enum ${type.name} {\n  ${type.values.map(x => x.value).join(",\n  ")}\n}\n`;
@@ -13,11 +39,11 @@ export function generateErrorClass(error: string) {
 }
 
 export function cast(value: string, type: Type): string {
-    if (type.constructor.name === "ArrayType") {
+    if (type instanceof ArrayType) {
         return `(${value} as List).map((e) => ${cast("e", (type as ArrayType).base)}).toList()`;
-    } else if (type.constructor.name === "VoidPrimitiveType") {
+    } else if (type instanceof VoidPrimitiveType) {
         return value;
-    } else if (type.constructor.name === "FloatPrimitiveType" || type.constructor.name === "MoneyPrimitiveType") {
+    } else if (type instanceof FloatPrimitiveType || type instanceof MoneyPrimitiveType) {
         return `(${value} as num)?.toDouble()`;
     } else {
         return `${value} as ${generateTypeName(type)}`;
@@ -25,45 +51,45 @@ export function cast(value: string, type: Type): string {
 }
 
 export function generateTypeName(type: Type): string {
-    switch (type.constructor.name) {
-        case "StringPrimitiveType":
+    switch (type.constructor) {
+        case StringPrimitiveType:
             return "String";
-        case "IntPrimitiveType":
-        case "UIntPrimitiveType":
+        case IntPrimitiveType:
+        case UIntPrimitiveType:
             return "int";
-        case "FloatPrimitiveType":
+        case FloatPrimitiveType:
             return "double";
-        case "DatePrimitiveType":
-        case "DateTimePrimitiveType":
+        case DatePrimitiveType:
+        case DateTimePrimitiveType:
             return "DateTime";
-        case "BoolPrimitiveType":
+        case BoolPrimitiveType:
             return "bool";
-        case "BytesPrimitiveType":
+        case BytesPrimitiveType:
             return "List<int>";
-        case "MoneyPrimitiveType":
+        case MoneyPrimitiveType:
             return "int";
-        case "CpfPrimitiveType":
-        case "CnpjPrimitiveType":
-        case "EmailPrimitiveType":
-        case "UrlPrimitiveType":
-        case "UuidPrimitiveType":
-        case "HexPrimitiveType":
-        case "Base64PrimitiveType":
-        case "XmlPrimitiveType":
+        case CpfPrimitiveType:
+        case CnpjPrimitiveType:
+        case EmailPrimitiveType:
+        case UrlPrimitiveType:
+        case UuidPrimitiveType:
+        case HexPrimitiveType:
+        case Base64PrimitiveType:
+        case XmlPrimitiveType:
             return "String";
-        case "VoidPrimitiveType":
+        case VoidPrimitiveType:
             return "void";
-        case "AnyPrimitiveType":
+        case JsonPrimitiveType:
             return "Object";
-        case "OptionalType":
+        case OptionalType:
             return generateTypeName((type as OptionalType).base);
-        case "ArrayType":
+        case ArrayType:
             return `List<${generateTypeName((type as ArrayType).base)}>`;
-        case "StructType":
+        case StructType:
             return type.name;
-        case "EnumType":
+        case EnumType:
             return type.name;
-        case "TypeReference":
+        case TypeReference:
             return generateTypeName((type as TypeReference).type);
         default:
             throw new Error(`BUG: generateTypeName with ${type.constructor.name}`);
