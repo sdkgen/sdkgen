@@ -1,6 +1,7 @@
 import { Parser } from "@sdkgen/parser";
 import { generateNodeClientSource, generateNodeServerSource } from "@sdkgen/typescript-generator";
 import axios from "axios";
+import FormData from "form-data";
 import { unlinkSync, writeFileSync } from "fs";
 import { Context, SdkgenHttpServer } from "../../src";
 
@@ -27,6 +28,10 @@ api.fn.obj = async (ctx: Context, { obj }: { obj: { val: number } }) => {
         throw "Value is zero ~ spec error";
     }
     return obj;
+};
+
+api.fn.uploadFile = async (ctx: Context, args: {}) => {
+    return ctx.request.files;
 };
 
 writeFileSync(
@@ -57,7 +62,7 @@ describe("Rest API", () => {
         method: "GET" | "POST" | "DELETE" | "PUT" | "PATCH";
         path: string;
         result: string;
-        data?: string;
+        data?: string | Buffer;
         headers?: object;
         statusCode?: number;
         resultHeaders?: object;
@@ -141,6 +146,22 @@ describe("Rest API", () => {
             },
             data: '"aa"',
         },
+        { method: "POST", path: "/add6?second=aa&first=1", result: "1aa" },
+        { method: "POST", path: "/add6?first=1&second=aa", result: "1aa" },
+        {
+            method: "POST",
+            path: "/add6",
+            result: "1aa",
+            data: "second=aa&first=1",
+            headers: { "content-type": "application/x-www-form-urlencoded" },
+        },
+        {
+            method: "POST",
+            path: "/add6",
+            result: "1aa",
+            data: "first=1&second=aa",
+            headers: { "content-type": "application/x-www-form-urlencoded" },
+        },
         {
             method: "GET",
             path: "/maybe",
@@ -211,6 +232,32 @@ describe("Rest API", () => {
                 "content-type": "application/json",
             },
         },
+        {
+            method: "POST",
+            path: "/upload",
+            result: `[]`,
+            statusCode: 200,
+            resultHeaders: {
+                "content-type": "application/json",
+            },
+        },
+        (() => {
+            const form = new FormData();
+            form.append("file", Buffer.from("Hello"), "test.txt");
+            return {
+                method: "POST" as const,
+                path: "/upload",
+                result: `[{"name":"test.txt","data":"SGVsbG8="}]`,
+                statusCode: 200,
+                resultHeaders: {
+                    "content-type": "application/json",
+                },
+                data: form.getBuffer(),
+                headers: {
+                    ...form.getHeaders(),
+                },
+            };
+        })(),
     ];
 
     for (const { method, path, result, headers, data, statusCode, resultHeaders } of table) {

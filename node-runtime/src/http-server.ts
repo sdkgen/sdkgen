@@ -27,6 +27,7 @@ import {
     generateNodeClientSource,
     generateNodeServerSource,
 } from "@sdkgen/typescript-generator";
+import Busboy from "busboy";
 import { randomBytes } from "crypto";
 import FileType from "file-type";
 import { createServer, IncomingMessage, Server, ServerResponse } from "http";
@@ -235,9 +236,10 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
                         this.addHeader("Access-Control-Allow-Headers", header);
                     }
 
-                    this.addHttpHandler(ann.method, new RegExp(pathRegex), (req, res, body) => {
+                    this.addHttpHandler(ann.method, new RegExp(pathRegex), async (req, res, body) => {
                         try {
                             const args: any = {};
+                            const files: ContextRequest["files"] = [];
 
                             const { pathname, query } = parseUrl(req.url || "");
                             const match = pathname?.match(pathRegex);
@@ -266,7 +268,39 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
                                 simpleArgs.set(argName, Array.isArray(argValue) ? argValue.join("") : argValue);
                             }
 
-                            if (ann.bodyVariable) {
+                            if (
+                                !ann.bodyVariable &&
+                                req.headers["content-type"] === "application/x-www-form-urlencoded"
+                            ) {
+                                const parsedQuery = parseQuerystring(body.toString());
+                                for (const argName of ann.queryVariables) {
+                                    const argValue = parsedQuery[argName] ?? null;
+                                    simpleArgs.set(argName, Array.isArray(argValue) ? argValue.join("") : argValue);
+                                }
+                            } else if (
+                                !ann.bodyVariable &&
+                                req.headers["content-type"]?.match(/^multipart\/form-data/i)
+                            ) {
+                                const busboy = new Busboy({ headers: req.headers });
+
+                                busboy.on("field", (field, value) => {
+                                    if (ann.queryVariables.includes(field)) {
+                                        simpleArgs.set(field, `${value}`);
+                                    }
+                                });
+
+                                busboy.on("file", (field, file, name, encoding, mimetype) => {
+                                    const chunks: Buffer[] = [];
+                                    file.on("data", data => chunks.push(Buffer.from(data, encoding as any)));
+                                    file.on("end", () => files.push({ name, data: Buffer.concat(chunks) }));
+                                });
+
+                                await new Promise((resolve, reject) => {
+                                    busboy.on("finish", resolve);
+                                    busboy.on("error", reject);
+                                    busboy.write(body);
+                                });
+                            } else if (ann.bodyVariable) {
                                 const argName = ann.bodyVariable;
                                 let type = op.args.find(arg => arg.name === argName)!.type;
 
@@ -367,6 +401,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
                                 },
                                 extra: {},
                                 args,
+                                files,
                             };
 
                             this.executeRequest(request, (ctx, reply) => {
@@ -737,6 +772,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
             ip,
             name: parsed.name,
             version: 1,
+            files: [],
         };
     }
 
@@ -784,6 +820,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
             ip,
             name: parsed.name,
             version: 2,
+            files: [],
         };
     }
 
@@ -835,6 +872,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
             ip,
             name: parsed.name,
             version: 3,
+            files: [],
         };
     }
 

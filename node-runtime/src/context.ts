@@ -22,6 +22,10 @@ export interface ContextRequest {
     ip: string;
     name: string;
     version: number;
+    files: {
+        name: string;
+        data: Buffer;
+    }[];
 }
 
 export interface ContextReply {
