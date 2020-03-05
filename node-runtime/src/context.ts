@@ -1,4 +1,5 @@
 import { IncomingHttpHeaders } from "http";
+import { Readable } from "stream";
 
 export interface Context {
     request: ContextRequest;
@@ -24,7 +25,7 @@ export interface ContextRequest {
     version: number;
     files: {
         name: string;
-        data: Buffer;
+        contents: Readable;
     }[];
 }
 

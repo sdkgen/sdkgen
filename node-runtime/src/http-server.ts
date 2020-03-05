@@ -30,6 +30,7 @@ import {
 import Busboy from "busboy";
 import { randomBytes } from "crypto";
 import FileType from "file-type";
+import { createReadStream, createWriteStream, unlink } from "fs";
 import { createServer, IncomingMessage, Server, ServerResponse } from "http";
 import { hostname } from "os";
 import { parse as parseQuerystring } from "querystring";
@@ -290,9 +291,17 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
                                 });
 
                                 busboy.on("file", (field, file, name, encoding, mimetype) => {
-                                    const chunks: Buffer[] = [];
-                                    file.on("data", data => chunks.push(Buffer.from(data, encoding as any)));
-                                    file.on("end", () => files.push({ name, data: Buffer.concat(chunks) }));
+                                    const fileName = randomBytes(32).toString("hex");
+                                    const writeStream = createWriteStream(fileName);
+                                    writeStream.on("open", () => {
+                                        file.pipe(createWriteStream(fileName));
+                                        files.push({ name, contents: createReadStream(fileName) });
+                                        unlink(fileName, err => {
+                                            if (err) {
+                                                console.error(err);
+                                            }
+                                        });
+                                    });
                                 });
 
                                 await new Promise((resolve, reject) => {

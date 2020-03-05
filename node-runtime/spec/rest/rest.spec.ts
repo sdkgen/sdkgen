@@ -3,6 +3,7 @@ import { generateNodeClientSource, generateNodeServerSource } from "@sdkgen/type
 import axios from "axios";
 import FormData from "form-data";
 import { unlinkSync, writeFileSync } from "fs";
+import { Readable } from "stream";
 import { Context, SdkgenHttpServer } from "../../src";
 
 const ast = new Parser(`${__dirname}/api.sdkgen`).parse();
@@ -30,8 +31,22 @@ api.fn.obj = async (ctx: Context, { obj }: { obj: { val: number } }) => {
     return obj;
 };
 
+function readAllStream(stream: Readable) {
+    return new Promise((resolve, reject) => {
+        const chunks: Buffer[] = [];
+        stream.on("error", err => reject(err));
+        stream.on("data", data => chunks.push(Buffer.from(data)));
+        stream.on("end", () => resolve(Buffer.concat(chunks)));
+    });
+}
+
 api.fn.uploadFile = async (ctx: Context, args: {}) => {
-    return ctx.request.files;
+    return await Promise.all(
+        ctx.request.files.map(async ({ name, contents }) => ({
+            name,
+            data: await readAllStream(contents),
+        })),
+    );
 };
 
 writeFileSync(
