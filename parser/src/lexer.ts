@@ -1,4 +1,29 @@
-import { AnnotationToken, ArraySymbolToken, ColonSymbolToken, CommaSymbolToken, CurlyCloseSymbolToken, CurlyOpenSymbolToken, EnumKeywordToken, EqualSymbolToken, ErrorKeywordToken, ExclamationMarkSymbolToken, FalseKeywordToken, FunctionKeywordToken, GetKeywordToken, IdentifierToken, ImportKeywordToken, OptionalSymbolToken, ParensCloseSymbolToken, ParensOpenSymbolToken, PrimitiveTypeToken, SpreadSymbolToken, StringLiteralToken, Token, TrueKeywordToken, TypeKeywordToken } from "./token";
+import {
+    AnnotationToken,
+    ArraySymbolToken,
+    ColonSymbolToken,
+    CommaSymbolToken,
+    CurlyCloseSymbolToken,
+    CurlyOpenSymbolToken,
+    EnumKeywordToken,
+    EqualSymbolToken,
+    ErrorKeywordToken,
+    ExclamationMarkSymbolToken,
+    FalseKeywordToken,
+    FunctionKeywordToken,
+    GetKeywordToken,
+    IdentifierToken,
+    ImportKeywordToken,
+    OptionalSymbolToken,
+    ParensCloseSymbolToken,
+    ParensOpenSymbolToken,
+    PrimitiveTypeToken,
+    SpreadSymbolToken,
+    StringLiteralToken,
+    Token,
+    TrueKeywordToken,
+    TypeKeywordToken,
+} from "./token";
 
 export class LexerError extends Error {}
 
