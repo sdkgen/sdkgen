@@ -37,29 +37,18 @@ class LatLng {
 
 const simpleStringTypes = [
   "string",
-  "cep",
   "cnpj",
   "cpf",
   "email",
   "phone",
-  "safehtml",
   "url",
-  "xml"
+  "xml",
+  "uuid",
+  "base64",
+  "hex"
 ];
-var simpleTypes = [
-      "any",
-      "bool",
-      "hex",
-      "uuid",
-      "base64",
-      "int",
-      "uint",
-      "float",
-      "money",
-      "void",
-      "latlng"
-    ] +
-    simpleStringTypes;
+var simpleTypes =
+    ["any", "bool", "int", "uint", "float", "money"] + simpleStringTypes;
 
 simpleEncodeDecode(
     Map<String, Object> typeTable, String path, Object type, Object value) {
@@ -113,6 +102,12 @@ encode(Map<String, Object> typeTable, String path, Object type, Object value) {
                 "Invalid Type at '$path', expected ${jsonEncode(type)}, got ${jsonEncode(value)}");
           }
           return Base64Encoder().convert(value);
+        case "bigint":
+          if (!(value is BigInt)) {
+            throw SdkgenTypeException(
+                "Invalid Type at '$path', expected ${jsonEncode(type)}, got ${jsonEncode(value)}");
+          }
+          return (value as BigInt).toString();
         case "date":
           if (!(value is DateTime)) {
             throw SdkgenTypeException(
@@ -189,6 +184,13 @@ decode(Map<String, Object> typeTable, String path, Object type, Object value) {
                 "Invalid Type at '$path', expected ${jsonEncode(type)}, got ${jsonEncode(value)}");
           }
           return Base64Decoder().convert(value);
+        case "bigint":
+          if (!(value is num) &&
+              (!(value is String) || !RegExp(r'^-?[0-9]+$').hasMatch(value))) {
+            throw SdkgenTypeException(
+                "Invalid Type at '$path', expected ${jsonEncode(type)}, got ${jsonEncode(value)}");
+          }
+          return value is num ? BigInt.from(value) : BigInt.parse(value);
         case "date":
           if (!(value is String) ||
               !RegExp(r'^[0-9]{4}-[01][0-9]-[0123][0-9]$').hasMatch(value)) {

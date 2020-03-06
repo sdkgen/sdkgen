@@ -33,6 +33,7 @@ export class Lexer {
         "int",
         "uint",
         "float",
+        "bigint",
         "string",
         "date",
         "datetime",
