@@ -3,6 +3,7 @@ import {
     AstJson,
     AstRoot,
     Base64PrimitiveType,
+    BigIntPrimitiveType,
     BoolPrimitiveType,
     BytesPrimitiveType,
     CnpjPrimitiveType,
@@ -294,6 +295,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
                                             type instanceof DatePrimitiveType ||
                                             type instanceof DateTimePrimitiveType ||
                                             type instanceof MoneyPrimitiveType ||
+                                            type instanceof BigIntPrimitiveType ||
                                             type instanceof CpfPrimitiveType ||
                                             type instanceof CnpjPrimitiveType ||
                                             type instanceof UuidPrimitiveType ||
@@ -405,6 +407,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
                                             type instanceof DatePrimitiveType ||
                                             type instanceof DateTimePrimitiveType ||
                                             type instanceof MoneyPrimitiveType ||
+                                            type instanceof BigIntPrimitiveType ||
                                             type instanceof CpfPrimitiveType ||
                                             type instanceof CnpjPrimitiveType ||
                                             type instanceof UuidPrimitiveType ||
