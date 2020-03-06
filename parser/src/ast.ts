@@ -49,6 +49,9 @@ export class UIntPrimitiveType extends PrimitiveType {
 export class FloatPrimitiveType extends PrimitiveType {
     name = "float";
 }
+export class BigIntPrimitiveType extends PrimitiveType {
+    name = "bigint";
+}
 export class DatePrimitiveType extends PrimitiveType {
     name = "date";
 }

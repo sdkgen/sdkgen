@@ -165,7 +165,7 @@
 					"include": "#any"
 				}, {
 					"name": "keyword.type",
-					"match": "\\b(bool|int|uint|float|string|datetime|date|bytes|void|money|cpf|cnpj|email|url|uuid|hex|base64|xml|json)\\b"
+					"match": "\\b(bool|int|uint|float|bigint|string|datetime|date|bytes|void|money|cpf|cnpj|email|url|uuid|hex|base64|xml|json)\\b"
 				}, {
 					"name": "markup.bold",
 					"match": "(\\?|\\[\\])"

@@ -1,6 +1,7 @@
 import {
     ArrayType,
     Base64PrimitiveType,
+    BigIntPrimitiveType,
     BoolPrimitiveType,
     BytesPrimitiveType,
     CnpjPrimitiveType,
@@ -81,6 +82,9 @@ export function generateTypescriptTypeName(type: Type): string {
         case MoneyPrimitiveType:
         case FloatPrimitiveType:
             return "number";
+
+        case BigIntPrimitiveType:
+            return "BigInt";
 
         case DatePrimitiveType:
         case DateTimePrimitiveType:
