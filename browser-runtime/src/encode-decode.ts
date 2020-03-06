@@ -36,33 +36,21 @@ function simpleEncodeDecode(path: string, type: string, value: any) {
         }
         return value;
     } else if (type === "int") {
-        if (typeof value === "bigint") {
-            value = Number(value);
-        }
         if (typeof value !== "number" || (value | 0) !== value) {
             throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
         }
         return value;
     } else if (type === "uint") {
-        if (typeof value === "bigint") {
-            value = Number(value);
-        }
         if (typeof value !== "number" || (value | 0) !== value || value < 0) {
             throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
         }
         return value;
     } else if (type === "float") {
-        if (typeof value === "bigint") {
-            value = Number(value);
-        }
         if (typeof value !== "number") {
             throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
         }
         return value;
     } else if (type === "money") {
-        if (typeof value === "bigint") {
-            value = Number(value);
-        }
         if (typeof value !== "number" || !Number.isInteger(value)) {
             throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
         }
