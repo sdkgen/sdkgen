@@ -16,6 +16,7 @@ const simpleTypes = [
     "hex",
     "uuid",
     "base64",
+    "void",
     ...simpleStringTypes,
 ];
 
