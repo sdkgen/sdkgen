@@ -41,7 +41,7 @@ function readAllStream(stream: Readable) {
 }
 
 api.fn.uploadFile = async (ctx: Context, args: {}) => {
-    return await Promise.all(
+    return Promise.all(
         ctx.request.files.map(async ({ name, contents }) => ({
             name,
             data: await readAllStream(contents),

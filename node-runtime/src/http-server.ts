@@ -271,7 +271,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
 
                             if (
                                 !ann.bodyVariable &&
-                                req.headers["content-type"] === "application/x-www-form-urlencoded"
+                                req.headers["content-type"]?.match(/^application\/x-www-form-urlencoded/iu)
                             ) {
                                 const parsedQuery = parseQuerystring(body.toString());
                                 for (const argName of ann.queryVariables) {
@@ -280,9 +280,10 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
                                 }
                             } else if (
                                 !ann.bodyVariable &&
-                                req.headers["content-type"]?.match(/^multipart\/form-data/i)
+                                req.headers["content-type"]?.match(/^multipart\/form-data/iu)
                             ) {
                                 const busboy = new Busboy({ headers: req.headers });
+                                const filePromises: Promise<void>[] = [];
 
                                 busboy.on("field", (field, value) => {
                                     if (ann.queryVariables.includes(field)) {
@@ -293,15 +294,25 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
                                 busboy.on("file", (field, file, name, encoding, mimetype) => {
                                     const fileName = randomBytes(32).toString("hex");
                                     const writeStream = createWriteStream(fileName);
-                                    writeStream.on("open", () => {
-                                        file.pipe(createWriteStream(fileName));
-                                        files.push({ name, contents: createReadStream(fileName) });
-                                        unlink(fileName, err => {
-                                            if (err) {
-                                                console.error(err);
-                                            }
-                                        });
-                                    });
+                                    filePromises.push(
+                                        new Promise((resolve, reject) => {
+                                            writeStream.on("error", reject);
+
+                                            writeStream.on("open", () => {
+                                                files.push({ name, contents: createReadStream(fileName) });
+
+                                                unlink(fileName, err => {
+                                                    if (err) {
+                                                        reject(err);
+                                                        writeStream.end();
+                                                    }
+                                                });
+
+                                                writeStream.on("close", resolve);
+                                                file.pipe(writeStream);
+                                            });
+                                        }),
+                                    );
                                 });
 
                                 await new Promise((resolve, reject) => {
@@ -309,6 +320,8 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
                                     busboy.on("error", reject);
                                     busboy.write(body);
                                 });
+
+                                await Promise.all(filePromises);
                             } else if (ann.bodyVariable) {
                                 const argName = ann.bodyVariable;
                                 let type = op.args.find(arg => arg.name === argName)!.type;
