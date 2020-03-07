@@ -4,7 +4,7 @@ import { AstJson, TypeDescription } from "@sdkgen/parser";
 
 type TypeTable = AstJson["typeTable"];
 
-const simpleStringTypes = ["string", "email", "phone", "xml"];
+const simpleStringTypes = ["string", "email", "xml"];
 const simpleTypes = [
     "json",
     "bool",
