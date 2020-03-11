@@ -32,7 +32,25 @@ export function generateEnum(type: EnumType) {
 }
 
 export function generateClass(type: StructType) {
-    return `class ${type.name} {\n  ${type.fields.map(field => `${generateTypeName(field.type)} ${field.name};`).join("\n  ")}\n}\n`;
+    return `class ${type.name} {\n  ${type.fields
+        .map((field: any) => `${generateTypeName(field.type)} ${field.name};`)
+        .join("\n  ")}\n\n${generateConstructor(type)}}\n`;
+}
+
+///Generate the class constructor with the tag [@required] for non nullable types
+function generateConstructor(type: StructType): string {
+    const doubleSpace = "  ";
+    const fourSpaces = "    ";
+    var str = `${doubleSpace}${type.name}({`;
+
+    type.fields.array.forEach((field: any) => {
+        if (field.type instanceof OptionalType) str.concat(fourSpaces);
+        else str.concat(`${fourSpaces}@required `);
+        str.concat(`this.${field.name},\n`);
+    });
+
+    str.concat(`${doubleSpace}});\n`);
+    return str;
 }
 
 export function generateErrorClass(error: string) {
