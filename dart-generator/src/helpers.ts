@@ -41,15 +41,17 @@ export function generateClass(type: StructType) {
 function generateConstructor(type: StructType): string {
     const doubleSpace = "  ";
     const fourSpaces = "    ";
-    var str = `${doubleSpace}${type.name}({`;
+    var str = `${doubleSpace}${type.name}({\n`;
 
-    type.fields.array.forEach((field: any) => {
-        if (field.type instanceof OptionalType) str.concat(fourSpaces);
-        else str.concat(`${fourSpaces}@required `);
-        str.concat(`this.${field.name},\n`);
+    type.fields.forEach((field: any) => {
+        if (field.type instanceof OptionalType) {
+            str = str.concat(fourSpaces);
+        } else {
+            str = str.concat(`${fourSpaces}@required `);
+        }
+        str = str.concat(`this.${field.name},\n`);
     });
-
-    str.concat(`${doubleSpace}});\n`);
+    str = str.concat(`${doubleSpace}});\n`);
     return str;
 }
 
