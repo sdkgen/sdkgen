@@ -279,3 +279,22 @@ jobs:
       working-directory: ./node-runtime
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+
+  dotnetcore-runtime:
+    needs: [_version]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/download-artifact@v1
+      with:
+        name: version
+    - uses: actions/setup-dotnet@v1
+    - run: |
+        sed -i 's/<Version>0.0.0<\/Version>/<Version>'$(cat ../version/version.txt)'<\/Version>/' dotnetcore-runtime.csproj
+      working-directory: ./dotnetcore-runtime
+    - run: dotnet pack
+      working-directory: ./dotnetcore-runtime
+    - run: dotnet nuget push *.nupkg -k $NUGET_TOKEN -s https://api.nuget.org/v3/index.json
+      working-directory: ./dotnetcore-runtime
+      env:
+        NUGET_TOKEN: ${{ secrets.NUGET_TOKEN }}
