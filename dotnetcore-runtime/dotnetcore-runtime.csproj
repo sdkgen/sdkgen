@@ -5,7 +5,7 @@
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <PackageId>SdkgenRuntime</PackageId>
+    <PackageId>Sdkgen.Runtime</PackageId>
     <Version>0.0.0</Version>
     <Authors>sdkgen</Authors>
     <Company>sdkgen</Company>

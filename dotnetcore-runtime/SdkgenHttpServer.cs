@@ -12,7 +12,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace SdkgenRuntime
+namespace Sdkgen.Runtime
 {
     public class SdkgenException : Exception
     {

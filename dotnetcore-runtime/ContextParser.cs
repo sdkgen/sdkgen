@@ -1,7 +1,7 @@
 using System.Text.Json;
 using System.Collections.Generic;
 
-namespace SdkgenRuntime
+namespace Sdkgen.Runtime
 {
     class ContextParser
     {
