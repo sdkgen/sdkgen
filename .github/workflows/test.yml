@@ -175,3 +175,16 @@ jobs:
       working-directory: ./csharp-generator
     - run: npm test
       working-directory: ./csharp-generator
+
+  dotnetcore-runtime:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dotnet-version: [3.0.103, 3.1.200]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{ matrix.dotnet-version }}
+    - run: dotnet pack
+      working-directory: ./dotnetcore-runtime
