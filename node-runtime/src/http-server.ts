@@ -854,7 +854,6 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
         const parsed = decode(
             {
                 DeviceInfo: {
-                    browserUserAgent: "string?",
                     id: "string?",
                     language: "string?",
                     platform: "json?",
@@ -883,10 +882,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
             deviceInfo: {
                 id: deviceId,
                 language: deviceInfo.language || null,
-                platform: {
-                    ...(deviceInfo.platform ?? {}),
-                    browserUserAgent: deviceInfo.browserUserAgent || null,
-                },
+                platform: parsed.platform ? { ...parsed.platform } : {},
                 timezone: deviceInfo.timezone || null,
                 type: deviceInfo.type || "api",
                 version: deviceInfo.version || null,
