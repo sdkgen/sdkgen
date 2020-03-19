@@ -10,7 +10,7 @@ using System.Globalization;
 using System.Numerics;
 using System.Text.Json;
 using System.Threading.Tasks;
-using SdkgenRuntime;
+using Sdkgen.Runtime;
 
 namespace SdkgenGenerated
 {
@@ -24,7 +24,7 @@ namespace SdkgenGenerated
             ...op.args.map(arg => `${generateTypeName(arg.type)} ${ident(arg.name)}`),
         ].join(", ")})
         {
-            return Task.FromException${returnTypeAngle}(new FatalException("function '${op.name}' not implemented"));
+            return Task.FromException${returnTypeAngle}(new FatalException("Function '${op.name}' not implemented."));
         }
 `;
     }
@@ -46,7 +46,7 @@ namespace SdkgenGenerated
                             ${
                                 arg.type instanceof OptionalType
                                     ? `${arg.name}Json_ = new JsonElement()`
-                                    : `throw new FatalException("'${op.name}().args.${arg.name}' must be set to a value of type ${arg.type.name}");`
+                                    : `throw new FatalException("'${op.name}().args.${arg.name}' must be set to a value of type ${arg.type.name}.");`
                             }
                         }
                         ${generateTypeName(arg.type)} ${ident(arg.name)};
@@ -75,7 +75,7 @@ namespace SdkgenGenerated
     code += `
                 default:
                     {
-                        throw new FatalException($"unknown function '{context_.Name}'");
+                        throw new FatalException($"Unknown function '{context_.Name}'.");
                     }
             }
         }
