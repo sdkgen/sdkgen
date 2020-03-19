@@ -164,7 +164,7 @@ export function generateStruct(struct: StructType) {
         {
             if (json_.ValueKind != JsonValueKind.Object)
             {
-                throw new FatalException(string.Format("'{0}' must be an object", path_));
+                throw new FatalException(string.Format("'{0}' must be an object.", path_));
             }\n${struct.fields
                 .map(
                     field => `            JsonElement ${field.name}Json_;
@@ -173,7 +173,7 @@ export function generateStruct(struct: StructType) {
                 ${
                     field.type instanceof OptionalType
                         ? `${field.name}Json_ = new JsonElement();`
-                        : `throw new FatalException(string.Format("'{0}.${field.name}' must be set to a value of type ${field.type.name}", path_));`
+                        : `throw new FatalException(string.Format("'{0}.${field.name}' must be set to a value of type ${field.type.name}.", path_));`
                 }
             }
             ${generateTypeName(field.type)} ${ident(field.name)};
@@ -218,7 +218,7 @@ export function generateEnum(type: EnumType) {
         {
             if (json_.ValueKind != JsonValueKind.String)
             {
-                throw new FatalException(string.Format("'{0}' must be a string", path_));
+                throw new FatalException(string.Format("'{0}' must be a string.", path_));
             }
             var value = json_.GetString();${type.values
                 .map(
@@ -229,7 +229,7 @@ export function generateEnum(type: EnumType) {
             }`,
                 )
                 .join("")}
-            throw new FatalException(string.Format("'{0}' must be one of: (${type.values.map(({ value }) => `'${value}'`).join(", ")})", path_));
+            throw new FatalException(string.Format("'{0}' must be one of: (${type.values.map(({ value }) => `'${value}'`).join(", ")}).", path_));
         }
 
         void Encode${type.name}(${type.name} obj_, Utf8JsonWriter resultWriter_, string path_)
@@ -262,7 +262,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
             return `
                 if (${jsonElementVar}.ValueKind != JsonValueKind.Number || !${jsonElementVar}.TryGetUInt32(out ${targetVar}))
                 {
-                    throw new FatalException(string.Format("'{0}' must be an unsigned integer", ${path}));
+                    throw new FatalException(string.Format("'{0}' must be an unsigned integer.", ${path}));
                 }
             `
                 .replace(/\n                /g, "\n")
@@ -272,7 +272,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
             return `
                 if (${jsonElementVar}.ValueKind != JsonValueKind.Number || !${jsonElementVar}.TryGetDecimal(out ${targetVar}) || ${targetVar} % 1 != 0)
                 {
-                    throw new FatalException(string.Format("'{0}' must be an integer amount of cents", ${path}));
+                    throw new FatalException(string.Format("'{0}' must be an integer amount of cents.", ${path}));
                 }
                 ${targetVar} /= 100;
             `
@@ -283,7 +283,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
             return `
                 if (${jsonElementVar}.ValueKind != JsonValueKind.Number || !${jsonElementVar}.TryGetDouble(out ${targetVar}))
                 {
-                    throw new FatalException(string.Format("'{0}' must be a floating-point number", ${path}));
+                    throw new FatalException(string.Format("'{0}' must be a floating-point number.", ${path}));
                 }
             `
                 .replace(/\n                /g, "\n")
@@ -293,7 +293,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
             return `
                 if (${jsonElementVar}.ValueKind != JsonValueKind.String || !BigInteger.TryParse(${jsonElementVar}.GetString(), out ${targetVar}))
                 {
-                    throw new FatalException(string.Format("'{0}' must be an arbitrarily large integer in a string", ${path}));
+                    throw new FatalException(string.Format("'{0}' must be an arbitrarily large integer in a string.", ${path}));
                 }
             `
                 .replace(/\n                /g, "\n")
@@ -303,7 +303,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
             return `
                 if (${jsonElementVar}.ValueKind != JsonValueKind.String)
                 {
-                    throw new FatalException(string.Format("'{0}' must be a string", ${path}));
+                    throw new FatalException(string.Format("'{0}' must be a string.", ${path}));
                 }
                 ${targetVar} = ${jsonElementVar}.GetString();
             `
@@ -315,7 +315,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
             return `
                 if (${jsonElementVar}.ValueKind != JsonValueKind.String)
                 {
-                    throw new FatalException(string.Format("'{0}' must be a valid CPF string", ${path}));
+                    throw new FatalException(string.Format("'{0}' must be a valid CPF string.", ${path}));
                 }
                 ${targetVar} = ${jsonElementVar}.GetString();
             `
@@ -327,7 +327,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
             return `
                 if (${jsonElementVar}.ValueKind != JsonValueKind.String)
                 {
-                    throw new FatalException(string.Format("'{0}' must be a valid CNPJ string", ${path}));
+                    throw new FatalException(string.Format("'{0}' must be a valid CNPJ string.", ${path}));
                 }
                 ${targetVar} = ${jsonElementVar}.GetString();
             `
@@ -339,7 +339,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
             return `
                 if (${jsonElementVar}.ValueKind != JsonValueKind.String)
                 {
-                    throw new FatalException(string.Format("'{0}' must be a valid email", ${path}));
+                    throw new FatalException(string.Format("'{0}' must be a valid email.", ${path}));
                 }
                 ${targetVar} = ${jsonElementVar}.GetString();
             `
@@ -351,7 +351,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
             return `
                 if (${jsonElementVar}.ValueKind != JsonValueKind.String)
                 {
-                    throw new FatalException(string.Format("'{0}' must be a valid URL string", ${path}));
+                    throw new FatalException(string.Format("'{0}' must be a valid URL string.", ${path}));
                 }
                 ${targetVar} = ${jsonElementVar}.GetString();
             `
@@ -363,7 +363,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
             return `
                 if (${jsonElementVar}.ValueKind != JsonValueKind.String)
                 {
-                    throw new FatalException(string.Format("'{0}' must be a valid UUID", ${path}));
+                    throw new FatalException(string.Format("'{0}' must be a valid UUID.", ${path}));
                 }
                 ${targetVar} = ${jsonElementVar}.GetString();
             `
@@ -375,7 +375,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
             return `
                 if (${jsonElementVar}.ValueKind != JsonValueKind.String)
                 {
-                    throw new FatalException(string.Format("'{0}' must be a valid hex string", ${path}));
+                    throw new FatalException(string.Format("'{0}' must be a valid hex string.", ${path}));
                 }
                 ${targetVar} = ${jsonElementVar}.GetString();
             `
@@ -387,7 +387,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
             return `
                 if (${jsonElementVar}.ValueKind != JsonValueKind.String)
                 {
-                    throw new FatalException(string.Format("'{0}' must be a base64 string", ${path}));
+                    throw new FatalException(string.Format("'{0}' must be a base64 string.", ${path}));
                 }
                 ${targetVar} = ${jsonElementVar}.GetString();
             `
@@ -399,7 +399,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
             return `
                 if (${jsonElementVar}.ValueKind != JsonValueKind.String)
                 {
-                    throw new FatalException(string.Format("'{0}' must be a XML string", ${path}));
+                    throw new FatalException(string.Format("'{0}' must be a XML string.", ${path}));
                 }
                 ${targetVar} = ${jsonElementVar}.GetString();
             `
@@ -410,7 +410,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
             return `
                 if (${jsonElementVar}.ValueKind != JsonValueKind.True && ${jsonElementVar}.ValueKind != JsonValueKind.False)
                 {
-                    throw new FatalException(string.Format("'{0}' must be either true or false", ${path}));
+                    throw new FatalException(string.Format("'{0}' must be either true or false.", ${path}));
                 }
                 ${targetVar} = ${jsonElementVar}.GetBoolean();
             `
@@ -421,7 +421,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
             return `
                 if (${jsonElementVar}.ValueKind != JsonValueKind.String)
                 {
-                    throw new FatalException(string.Format("'{0}' must be a string", ${path}));
+                    throw new FatalException(string.Format("'{0}' must be a string.", ${path}));
                 }
                 try
                 {
@@ -429,7 +429,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
                 }
                 catch (FormatException)
                 {
-                    throw new FatalException(string.Format("'{0}' must be a base64 string", ${path}));
+                    throw new FatalException(string.Format("'{0}' must be a base64 string.", ${path}));
                 }
             `
                 .replace(/\n                /g, "\n")
@@ -482,7 +482,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
                 return `
                 if (${jsonElementVar}.ValueKind == JsonValueKind.Null || ${jsonElementVar}.ValueKind == JsonValueKind.Undefined)
                 {
-                    throw new FatalException(string.Format("'{0}' can't be null", ${path}));
+                    throw new FatalException(string.Format("'{0}' can't be null.", ${path}));
                 }
                 ${targetVar} = ${jsonElementVar};
             `
@@ -495,7 +495,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
             return `
                 if (${jsonElementVar}.ValueKind != JsonValueKind.String || !(DateTime.TryParseExact(${jsonElementVar}.GetString(), "yyyy-MM-ddTHH:mm:ss.FFFFFFF", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal, out ${targetVar}) || DateTime.TryParseExact(${jsonElementVar}.GetString(), "yyyy-MM-ddTHH:mm:ss.FFFFFFF'Z'", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal, out ${targetVar})))
                 {
-                    throw new FatalException(string.Format("'{0}' must be a datetime", ${path}));
+                    throw new FatalException(string.Format("'{0}' must be a datetime.", ${path}));
                 }
             `
                 .replace(/\n                /g, "\n")
@@ -505,7 +505,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
             return `
                 if (${jsonElementVar}.ValueKind != JsonValueKind.String || !(DateTime.TryParseExact(${jsonElementVar}.GetString(), "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal | DateTimeStyles.AssumeUniversal, out ${targetVar})))
                 {
-                    throw new FatalException(string.Format("'{0}' must be a date", ${path}));
+                    throw new FatalException(string.Format("'{0}' must be a date.", ${path}));
                 }
             `
                 .replace(/\n                /g, "\n")
@@ -515,7 +515,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
             return `
                 if (${jsonElementVar}.ValueKind != JsonValueKind.Array)
                 {
-                    throw new FatalException(string.Format("'{0}' must be a date", ${path}));
+                    throw new FatalException(string.Format("'{0}' must be a date.", ${path}));
                 }
                 ${targetVar} = new ${generateTypeName(type)}();
                 for (var i${suffix} = 0; i${suffix} < ${jsonElementVar}.GetArrayLength(); ++i${suffix})
