@@ -289,12 +289,9 @@ jobs:
       with:
         name: version
     - uses: actions/setup-dotnet@v1
-    - run: |
-        sed -i 's/<Version>0.0.0<\/Version>/<Version>'$(cat ../version/version.txt)'<\/Version>/' dotnetcore-runtime.csproj
+    - run: dotnet pack -c:Release -p:PackageVersion=$(cat ../version/version.txt)
       working-directory: ./dotnetcore-runtime
-    - run: dotnet pack
-      working-directory: ./dotnetcore-runtime
-    - run: dotnet nuget push *.nupkg -k $NUGET_TOKEN -s https://api.nuget.org/v3/index.json
+    - run: dotnet nuget push bin/**/*.nupkg -k $NUGET_TOKEN -s https://api.nuget.org/v3/index.json
       working-directory: ./dotnetcore-runtime
       env:
         NUGET_TOKEN: ${{ secrets.NUGET_TOKEN }}
