@@ -56,7 +56,9 @@ export class SdkgenHttpClient {
                 type: "web",
                 version: thisScript ? thisScript.src : "",
                 language: navigator.language,
-                browserUserAgent: navigator.userAgent,
+                platform: {
+                    browserUserAgent: navigator.userAgent,
+                },
                 timezone: typeof Intl === "object" ? Intl.DateTimeFormat().resolvedOptions().timeZone : null,
             },
         };
