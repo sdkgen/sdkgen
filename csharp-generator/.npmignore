@@ -1,0 +1,5 @@
+src/
+spec/
+coverage/
+package-lock.json
+tsconfig.json
