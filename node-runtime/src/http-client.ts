@@ -71,6 +71,9 @@ export class SdkgenHttpClient {
                 res.on("error", error => {
                     reject({ message: `${error}`, type: "Fatal" });
                 });
+                res.on("aborted", () => {
+                  reject({ message: "Request aborted", type: "Fatal" });
+                });
             });
 
             req.on("error", error => {
