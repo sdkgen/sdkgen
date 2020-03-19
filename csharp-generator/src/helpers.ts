@@ -609,10 +609,12 @@ export function encodeType(type: Type, valueVar: string, path: string, suffix = 
                 resultWriter_.WriteStartArray();
                 for (var i${suffix} = 0; i${suffix} < ${valueVar}.Count; ++i${suffix})
                 {
-                    ${encodeType((type as ArrayType).base, `${valueVar}[i${suffix}]`, `string.Format("{0}[{1}]", ${path}, i)`, suffix + 1).replace(
-                        /\n/g,
-                        "\n                    ",
-                    )}
+                    ${encodeType(
+                        (type as ArrayType).base,
+                        `${valueVar}[i${suffix}]`,
+                        `string.Format("{0}[{1}]", ${path}, i${suffix})`,
+                        suffix + 1,
+                    ).replace(/\n/g, "\n                    ")}
                 }
                 resultWriter_.WriteEndArray();
             `
