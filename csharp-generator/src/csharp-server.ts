@@ -90,9 +90,7 @@ namespace SdkgenGenerated
     }
 
     code += `
-        public string GetAstJson() => @"${JSON.stringify(astToJson(ast), null, 4)
-            .replace(/"/g, '""')
-            .replace(/\n/g, "\n        ")}";
+        public string GetAstJson() => @"${JSON.stringify(astToJson(ast), null, 4).replace(/"/g, '""').replace(/\n/g, "\n        ")}";
     }
 `;
     for (const error of ast.errors) {

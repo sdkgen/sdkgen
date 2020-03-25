@@ -133,7 +133,7 @@ export class RequestsStore {
 		const functionAnnotations = AST.annotations[`fn.${functionName}`] || [];
 
 		const regex = RegExp(`fn.${functionName}\\.[^\.]*`);
-		const argsKeys = Object.keys(AST.annotations).filter(target => regex.test(target));
+		const argsKeys = Object.keys(AST.annotations).filter((target) => regex.test(target));
 
 		const argsAnnotations = argsKeys.reduce((acc, argKey) => {
 			// breaks 'fn.getBalance.bankCode' into ["fn", "getBalance", "bankCode"]
