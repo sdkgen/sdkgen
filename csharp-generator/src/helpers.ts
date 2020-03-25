@@ -120,6 +120,7 @@ const typesWithNativeNullable: any[] = [
     HexPrimitiveType,
     Base64PrimitiveType,
     XmlPrimitiveType,
+    StructType,
     ArrayType,
 ];
 
@@ -580,6 +581,11 @@ export function encodeType(type: Type, valueVar: string, path: string, suffix = 
             return `resultWriter_.WriteStringValue(${valueVar});`;
         }
         case OptionalType: {
+            let realBaseType = (type as OptionalType).base;
+            while (realBaseType instanceof TypeReference) {
+                realBaseType = realBaseType.type;
+            }
+
             return `
                 if (${valueVar} == null)
                 {
@@ -588,8 +594,8 @@ export function encodeType(type: Type, valueVar: string, path: string, suffix = 
                 else
                 {
                     ${encodeType(
-                        (type as OptionalType).base,
-                        typesWithNativeNullable.includes((type as OptionalType).base.constructor) ? valueVar : `${valueVar}.Value`,
+                        realBaseType,
+                        typesWithNativeNullable.includes(realBaseType.constructor) ? valueVar : `${valueVar}.Value`,
                         path,
                         suffix,
                     ).replace(/\n/g, "\n                    ")}
