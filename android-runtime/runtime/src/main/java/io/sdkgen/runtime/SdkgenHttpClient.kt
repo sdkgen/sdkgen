@@ -6,9 +6,11 @@ import android.graphics.Point
 import android.os.Build
 import android.provider.Settings
 import android.view.WindowManager
-import com.google.gson.*
-import okhttp3.*
+import com.google.gson.Gson
+import com.google.gson.JsonObject
 import okhttp3.MediaType.Companion.toMediaType
+import okhttp3.OkHttpClient
+import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.InterruptedIOException
 import java.net.SocketTimeoutException
@@ -18,25 +20,21 @@ import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
 
 @Suppress("unused")
-class SdkgenHttpClient(
+open class SdkgenHttpClient(
     private val baseUrl: String,
     private val applicationContext: Context,
     private val defaultTimeoutMillis: Long = 10000L
 ) {
-
     data class InternalResponse(val error: JsonObject?, val result: JsonObject?)
 
     private val random = Random()
     private val hexArray = "0123456789abcdef".toCharArray()
     private val gson = Gson()
-    private val connectionPool = ConnectionPool(10, 5, TimeUnit.MINUTES)
     private val httpClient = OkHttpClient.Builder()
-        .connectionPool(connectionPool)
-        .dispatcher(Dispatcher().apply { maxRequests = 200 ; maxRequestsPerHost = 200 })
-        .connectTimeout(180, TimeUnit.SECONDS)
-        .readTimeout(180, TimeUnit.SECONDS)
-        .callTimeout(180, TimeUnit.SECONDS)
-        .writeTimeout(180, TimeUnit.SECONDS)
+        .connectTimeout(5, TimeUnit.MINUTES)
+        .readTimeout(5, TimeUnit.MINUTES)
+        .callTimeout(5, TimeUnit.MINUTES)
+        .writeTimeout(5, TimeUnit.MINUTES)
         .build()
 
     private fun callId(): String {
@@ -47,16 +45,19 @@ class SdkgenHttpClient(
 
     private fun bytesToHex(bytes: ByteArray): String {
         val hexChars = CharArray(bytes.size * 2)
+
         for (j in bytes.indices) {
             val v = bytes[j].toInt() and 0xFF
-            hexChars[j * 2] = hexArray[v ushr 4 ]
+            hexChars[j * 2] = hexArray[v ushr 4]
             hexChars[j * 2 + 1] = hexArray[v and 0x0F]
         }
+
         return String(hexChars)
     }
 
     private fun language(): String {
         val loc = Locale.getDefault()
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             return loc.toLanguageTag()
         }
@@ -91,9 +92,11 @@ class SdkgenHttpClient(
         }
 
         val bcp47Tag = StringBuilder(language)
+
         if (region.isNotEmpty()) {
             bcp47Tag.append(sep).append(region)
         }
+
         if (variant.isNotEmpty()) {
             bcp47Tag.append(sep).append(variant)
         }
@@ -105,8 +108,10 @@ class SdkgenHttpClient(
     private fun makeDeviceObj(): JsonObject {
         return JsonObject().apply {
             val pref = applicationContext.getSharedPreferences("api", Context.MODE_PRIVATE)
-            if (pref.contains("deviceId"))
+
+            if (pref.contains("deviceId")) {
                 addProperty("id", pref.getString("deviceId", null))
+            }
 
             addProperty("language", language())
             add("platform", JsonObject().apply {
@@ -115,13 +120,16 @@ class SdkgenHttpClient(
                 addProperty("brand", Build.BRAND)
                 addProperty("model", Build.MODEL)
             })
+
             addProperty("timezone", Calendar.getInstance().timeZone.displayName)
             addProperty("type", "android")
+
             try {
                 addProperty("version", applicationContext.packageManager.getPackageInfo(applicationContext.packageName, 0).versionName)
             } catch (e: Exception) {
                 addProperty("version", "unknown")
             }
+
             add("screen", JsonObject().apply {
                 val manager = applicationContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager
                 val display = manager.defaultDisplay
@@ -134,7 +142,11 @@ class SdkgenHttpClient(
     }
 
     @SuppressLint("HardwareIds")
-    suspend fun makeRequest(functionName: String, bodyArgs: JsonObject?, timeoutMillis: Long? = null): InternalResponse = suspendCoroutine { continuation ->
+    suspend fun makeRequest(
+        functionName: String,
+        bodyArgs: JsonObject?,
+        timeoutMillis: Long? = null
+    ): InternalResponse = suspendCoroutine { continuation ->
         try {
             val body = JsonObject().apply {
                 addProperty("version", 3)
@@ -155,7 +167,8 @@ class SdkgenHttpClient(
 
             try {
                 val response = call.execute()
-                if (response.code in 500..599) {
+
+                if (response.code in 501..599) {
                     continuation.resume(
                         InternalResponse(
                             JsonObject().apply {
@@ -165,6 +178,7 @@ class SdkgenHttpClient(
                             null
                         )
                     )
+
                     return@suspendCoroutine
                 }
 
@@ -173,6 +187,7 @@ class SdkgenHttpClient(
                     gson.fromJson(stringBody, JsonObject::class.java)
                 } catch (e: Exception) {
                     e.printStackTrace()
+
                     continuation.resume(
                         InternalResponse(
                             JsonObject().apply {
@@ -182,6 +197,7 @@ class SdkgenHttpClient(
                             null
                         )
                     )
+
                     return@suspendCoroutine
                 }
 
@@ -191,9 +207,11 @@ class SdkgenHttpClient(
                 } else {
                     continuation.resume(InternalResponse(null, responseBody))
                 }
+
                 response.close()
             } catch (e: Exception) {
                 e.printStackTrace()
+
                 continuation.resume(
                     InternalResponse(
                         JsonObject().apply {
@@ -211,6 +229,7 @@ class SdkgenHttpClient(
             }
         } catch (e: Exception) {
             e.printStackTrace()
+
             continuation.resume(
                 InternalResponse(
                     JsonObject().apply {

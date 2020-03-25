@@ -5,11 +5,11 @@ export function generateEnum(type: EnumType) {
 }
 
 export function generateClass(type: StructType) {
-    return `data class ${type.name}(${type.fields.map(field => `val ${mangle(field.name)}: ${generateTypeName(field.type)}`).join(",  ")})\n`;
+    return `data class ${type.name}(\n${type.fields.map(field => `        val ${mangle(field.name)}: ${generateTypeName(field.type)}`).join(",\n")}\n    )\n`;
 }
 
 export function generateErrorClass(error: string) {
-    return `class ${error}(message: String): Error(message)\n`;
+    return `class ${error}(message: String) : Error(message)\n`;
 }
 
 // Don`t know if will have use to this method yet.
@@ -85,13 +85,13 @@ export function generateJsonAddRepresentation(type: Type, fieldName: string): st
         case "MoneyPrimitiveType":
         case "FloatPrimitiveType":
         case "BoolPrimitiveType":
-            return `addProperty(\"${fieldName}\", ${mangle(fieldName)})\n`;
+            return `addProperty(\"${fieldName}\", ${mangle(fieldName)})`;
         case "OptionalType":
             return generateJsonAddRepresentation((type as OptionalType).base, fieldName);
         case "DatePrimitiveType":
-            return `addProperty(\"${fieldName}\", SimpleDateFormat(\"yyyy-MM-dd\", Locale.getDefault()).format(${mangle(fieldName)}))`;
+            return `addProperty(\"${fieldName}\", SimpleDateFormat(\"yyyy-MM-dd\", Locale.US).format(${mangle(fieldName)}))`;
         case "DateTimePrimitiveType":
-            return `addProperty(\"${fieldName}\", SimpleDateFormat(\"yyyy-MM-dd'T'HH:mm:ss.SSS\", Locale.getDefault()).format(${mangle(fieldName)}))`;
+            return `addProperty(\"${fieldName}\", SimpleDateFormat(\"yyyy-MM-dd'T'HH:mm:ss.SSS\", Locale.US).format(${mangle(fieldName)}))`;
         case "ArrayType":
         case "StructType":
         case "EnumType":
@@ -101,7 +101,7 @@ export function generateJsonAddRepresentation(type: Type, fieldName: string): st
         case "VoidPrimitiveType":
             return "";
         case "BytesPrimitiveType":
-            return `addProperty(\"${fieldName}\", android.util.Base64.encodeToString(${mangle(fieldName)}, android.util.Base64.DEFAULT))`;
+            return `addProperty(\"${fieldName}\", Base64.encodeToString(${mangle(fieldName)}, Base64.DEFAULT))`;
         default:
             throw new Error(`BUG: No result found for generateJsonRepresentation with ${type.constructor.name}`);
     }
