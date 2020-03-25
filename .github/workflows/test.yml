@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [8.x, 10.x, 12.x, 13.x]
+        node-version: [10.x, 12.x, 13.x]
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
@@ -31,7 +31,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [8.x, 10.x, 12.x, 13.x]
+        node-version: [10.x, 12.x, 13.x]
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
@@ -48,7 +48,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [8.x, 10.x, 12.x, 13.x]
+        node-version: [10.x, 12.x, 13.x]
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
@@ -96,7 +96,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [8.x, 10.x, 12.x, 13.x]
+        node-version: [10.x, 12.x, 13.x]
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
@@ -113,7 +113,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [8.x, 10.x, 12.x, 13.x]
+        node-version: [10.x, 12.x, 13.x]
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
@@ -131,7 +131,7 @@ jobs:
     strategy:
       matrix:
         # TODO: Enable 13.x. See #1.
-        node-version: [8.x, 10.x, 12.x]
+        node-version: [10.x, 12.x]
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
@@ -146,7 +146,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [8.x, 10.x, 12.x, 13.x]
+        node-version: [10.x, 12.x, 13.x]
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
@@ -159,11 +159,41 @@ jobs:
     - run: npm test
       working-directory: ./typescript-generator
 
+  csharp-generator:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x, 13.x]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        node-version: ${{ matrix.node-version }}
+    - run: npm install
+      working-directory: ./csharp-generator
+    - run: npm run build
+      working-directory: ./csharp-generator
+    - run: npm test
+      working-directory: ./csharp-generator
+
+  dotnetcore-runtime:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dotnet-version: [3.0.103, 3.1.200]
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{ matrix.dotnet-version }}
+    - run: dotnet pack
+      working-directory: ./dotnetcore-runtime
+
   kotlin-generator:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [8.x, 10.x, 12.x, 13.x]
+        node-version: [10.x, 12.x, 13.x]
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v1

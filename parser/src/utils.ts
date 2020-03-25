@@ -1,5 +1,6 @@
 import {
     Base64PrimitiveType,
+    BigIntPrimitiveType,
     BoolPrimitiveType,
     BytesPrimitiveType,
     CnpjPrimitiveType,
@@ -27,6 +28,7 @@ primitiveToAstClass.set("uint", UIntPrimitiveType);
 primitiveToAstClass.set("date", DatePrimitiveType);
 primitiveToAstClass.set("datetime", DateTimePrimitiveType);
 primitiveToAstClass.set("float", FloatPrimitiveType);
+primitiveToAstClass.set("bigint", BigIntPrimitiveType);
 primitiveToAstClass.set("bool", BoolPrimitiveType);
 primitiveToAstClass.set("bytes", BytesPrimitiveType);
 primitiveToAstClass.set("money", MoneyPrimitiveType);

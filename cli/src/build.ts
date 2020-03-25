@@ -1,5 +1,6 @@
-import { generateAndroidClientSource } from "@sdkgen/kotlin-generator";
+import { generateCSharpServerSource } from "@sdkgen/csharp-generator";
 import { generateDartClientSource } from "@sdkgen/dart-generator";
+import { generateAndroidClientSource } from "@sdkgen/kotlin-generator";
 import { Parser } from "@sdkgen/parser";
 import {
     generateBrowserClientSource,
@@ -86,6 +87,10 @@ export function buildCmd(argv: string[]) {
         }
         case "flutter": {
             writeFileSync(options.output, generateDartClientSource(ast, {}));
+            break;
+        }
+        case "csharp_server": {
+            writeFileSync(options.output, generateCSharpServerSource(ast, {}));
             break;
         }
         case "kotlin_android": {

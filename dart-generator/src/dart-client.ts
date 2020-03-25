@@ -1,4 +1,4 @@
-import { AstRoot } from "@sdkgen/parser";
+import { AstRoot, VoidPrimitiveType } from "@sdkgen/parser";
 import { cast, generateClass, generateEnum, generateErrorClass, generateTypeName } from "./helpers";
 
 interface Options {}
@@ -32,9 +32,9 @@ import 'package:sdkgen_runtime/http_client.dart';
 ${ast.operations
     .map(
         op => `
-  ${op.returnType.constructor.name === "VoidPrimitiveType" ? "" : `Future<${generateTypeName(op.returnType)}> `}${op.prettyName}(${
+  ${op.returnType instanceof VoidPrimitiveType ? "Future<void> " : `Future<${generateTypeName(op.returnType)}> `}${op.prettyName}(${
             op.args.length === 0 ? "" : `{${op.args.map(arg => `${generateTypeName(arg.type)} ${arg.name}`).join(", ")}}`
-        }) async { ${op.returnType.constructor.name === "VoidPrimitiveType" ? "" : "return "}${cast(
+        }) async { ${op.returnType instanceof VoidPrimitiveType ? "" : "return "}${cast(
             `await makeRequest("${op.prettyName}", {${op.args.map(arg => `"${arg.name}": ${arg.name}`).join(", ")}})`,
             op.returnType,
         )}; }`,

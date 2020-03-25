@@ -1,6 +1,7 @@
 import {
     AstNode,
     Base64PrimitiveType,
+    BigIntPrimitiveType,
     BoolPrimitiveType,
     CnpjPrimitiveType,
     CpfPrimitiveType,
@@ -30,6 +31,7 @@ const REST_ENCODABLE_TYPES: Function[] = [
     BoolPrimitiveType,
     IntPrimitiveType,
     UIntPrimitiveType,
+    BigIntPrimitiveType,
     FloatPrimitiveType,
     StringPrimitiveType,
     DatePrimitiveType,

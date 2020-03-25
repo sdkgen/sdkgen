@@ -2,6 +2,7 @@ import {
     ArrayType,
     AstRoot,
     Base64PrimitiveType,
+    BigIntPrimitiveType,
     BytesPrimitiveType,
     CnpjPrimitiveType,
     CpfPrimitiveType,
@@ -80,6 +81,10 @@ function checkClientToServer(path: string, issues: string[], t1: Type, t2: Type)
         (t1 instanceof IntPrimitiveType && t2 instanceof FloatPrimitiveType) ||
         (t1 instanceof MoneyPrimitiveType && t2 instanceof IntPrimitiveType) ||
         (t1 instanceof MoneyPrimitiveType && t2 instanceof UIntPrimitiveType) ||
+        (t1 instanceof UIntPrimitiveType && t2 instanceof BigIntPrimitiveType) ||
+        (t1 instanceof IntPrimitiveType && t2 instanceof BigIntPrimitiveType) ||
+        (t1 instanceof MoneyPrimitiveType && t2 instanceof BigIntPrimitiveType) ||
+        (t1 instanceof BigIntPrimitiveType && t2 instanceof StringPrimitiveType) ||
         (t1 instanceof UuidPrimitiveType && t2 instanceof StringPrimitiveType) ||
         (t1 instanceof XmlPrimitiveType && t2 instanceof StringPrimitiveType) ||
         (t1 instanceof DatePrimitiveType && t2 instanceof StringPrimitiveType) ||
@@ -166,6 +171,10 @@ function checkServerToClient(path: string, issues: string[], t1: Type, t2: Type)
         (t1 instanceof FloatPrimitiveType && t2 instanceof IntPrimitiveType) ||
         (t1 instanceof IntPrimitiveType && t2 instanceof MoneyPrimitiveType) ||
         (t1 instanceof UIntPrimitiveType && t2 instanceof MoneyPrimitiveType) ||
+        (t1 instanceof BigIntPrimitiveType && t2 instanceof UIntPrimitiveType) ||
+        (t1 instanceof BigIntPrimitiveType && t2 instanceof IntPrimitiveType) ||
+        (t1 instanceof BigIntPrimitiveType && t2 instanceof MoneyPrimitiveType) ||
+        (t1 instanceof StringPrimitiveType && t2 instanceof BigIntPrimitiveType) ||
         (t1 instanceof StringPrimitiveType && t2 instanceof UuidPrimitiveType) ||
         (t1 instanceof StringPrimitiveType && t2 instanceof XmlPrimitiveType) ||
         (t1 instanceof StringPrimitiveType && t2 instanceof DatePrimitiveType) ||

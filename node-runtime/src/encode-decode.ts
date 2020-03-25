@@ -4,28 +4,23 @@ import { AstJson, TypeDescription } from "@sdkgen/parser";
 
 type TypeTable = AstJson["typeTable"];
 
-const simpleStringTypes = ["string", "cep", "email", "phone", "safehtml", "xml"];
+const simpleStringTypes = ["string", "email", "xml"];
 const simpleTypes = [
     "json",
     "bool",
-    "hex",
-    "uuid",
-    "base64",
     "url",
     "int",
     "uint",
     "float",
     "money",
+    "hex",
+    "uuid",
+    "base64",
     "void",
-    "latlng",
     ...simpleStringTypes,
 ];
 
 function simpleEncodeDecode(path: string, type: string, value: any) {
-    if (typeof value === "bigint") {
-        value = Number(value);
-    }
-
     if (type === "json") {
         if (value === null || value === undefined) {
             return null;
@@ -108,12 +103,6 @@ function simpleEncodeDecode(path: string, type: string, value: any) {
         return url.toString();
     } else if (type === "void") {
         return null;
-    } else if (type === "latlng") {
-        if (typeof value !== "object" || typeof value.lat !== "number" || typeof value.lng !== "number") {
-            throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
-        }
-
-        return value;
     }
 
     throw new Error(`Unknown type '${type}' at '${path}'`);
@@ -162,6 +151,11 @@ export function encode(typeTable: TypeTable, path: string, type: TypeDescription
         }
 
         return value.toString("base64");
+    } else if (type === "bigint") {
+        if (!(value instanceof BigInt)) {
+            throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
+        }
+        return value.toString();
     } else if (type === "cpf") {
         if (typeof value !== "string" || !CPF.isValid(value)) {
             throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
@@ -259,6 +253,11 @@ export function decode(typeTable: TypeTable, path: string, type: TypeDescription
         }
 
         return buffer;
+    } else if (type === "bigint") {
+        if (typeof value !== "number" && (typeof value !== "string" || !value.match(/^-?[0-9]+$/))) {
+            throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
+        }
+        return BigInt(value);
     } else if (type === "cpf") {
         if (typeof value !== "string" || !CPF.isValid(value)) {
             throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);

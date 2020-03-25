@@ -3,6 +3,7 @@ import {
     AstJson,
     AstRoot,
     Base64PrimitiveType,
+    BigIntPrimitiveType,
     BoolPrimitiveType,
     BytesPrimitiveType,
     CnpjPrimitiveType,
@@ -27,8 +28,10 @@ import {
     generateNodeClientSource,
     generateNodeServerSource,
 } from "@sdkgen/typescript-generator";
+import Busboy from "busboy";
 import { randomBytes } from "crypto";
 import FileType from "file-type";
+import { createReadStream, createWriteStream, unlink } from "fs";
 import { createServer, IncomingMessage, Server, ServerResponse } from "http";
 import { hostname } from "os";
 import { parse as parseQuerystring } from "querystring";
@@ -235,9 +238,10 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
                         this.addHeader("Access-Control-Allow-Headers", header);
                     }
 
-                    this.addHttpHandler(ann.method, new RegExp(pathRegex), (req, res, body) => {
+                    this.addHttpHandler(ann.method, new RegExp(pathRegex), async (req, res, body) => {
                         try {
                             const args: any = {};
+                            const files: ContextRequest["files"] = [];
 
                             const { pathname, query } = parseUrl(req.url || "");
                             const match = pathname?.match(pathRegex);
@@ -266,7 +270,60 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
                                 simpleArgs.set(argName, Array.isArray(argValue) ? argValue.join("") : argValue);
                             }
 
-                            if (ann.bodyVariable) {
+                            if (
+                                !ann.bodyVariable &&
+                                req.headers["content-type"]?.match(/^application\/x-www-form-urlencoded/iu)
+                            ) {
+                                const parsedQuery = parseQuerystring(body.toString());
+                                for (const argName of ann.queryVariables) {
+                                    const argValue = parsedQuery[argName] ?? null;
+                                    simpleArgs.set(argName, Array.isArray(argValue) ? argValue.join("") : argValue);
+                                }
+                            } else if (
+                                !ann.bodyVariable &&
+                                req.headers["content-type"]?.match(/^multipart\/form-data/iu)
+                            ) {
+                                const busboy = new Busboy({ headers: req.headers });
+                                const filePromises: Promise<void>[] = [];
+
+                                busboy.on("field", (field, value) => {
+                                    if (ann.queryVariables.includes(field)) {
+                                        simpleArgs.set(field, `${value}`);
+                                    }
+                                });
+
+                                busboy.on("file", (field, file, name, encoding, mimetype) => {
+                                    const fileName = randomBytes(32).toString("hex");
+                                    const writeStream = createWriteStream(fileName);
+                                    filePromises.push(
+                                        new Promise((resolve, reject) => {
+                                            writeStream.on("error", reject);
+
+                                            writeStream.on("open", () => {
+                                                files.push({ name, contents: createReadStream(fileName) });
+
+                                                unlink(fileName, err => {
+                                                    if (err) {
+                                                        reject(err);
+                                                        writeStream.end();
+                                                    }
+                                                });
+
+                                                writeStream.on("close", resolve);
+                                                file.pipe(writeStream);
+                                            });
+                                        }),
+                                    );
+                                });
+
+                                await new Promise((resolve, reject) => {
+                                    busboy.on("finish", resolve);
+                                    busboy.on("error", reject);
+                                    busboy.write(body);
+                                });
+
+                                await Promise.all(filePromises);
+                            } else if (ann.bodyVariable) {
                                 const argName = ann.bodyVariable;
                                 let type = op.args.find(arg => arg.name === argName)!.type;
 
@@ -294,6 +351,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
                                             type instanceof DatePrimitiveType ||
                                             type instanceof DateTimePrimitiveType ||
                                             type instanceof MoneyPrimitiveType ||
+                                            type instanceof BigIntPrimitiveType ||
                                             type instanceof CpfPrimitiveType ||
                                             type instanceof CnpjPrimitiveType ||
                                             type instanceof UuidPrimitiveType ||
@@ -367,6 +425,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
                                 },
                                 extra: {},
                                 args,
+                                files,
                             };
 
                             this.executeRequest(request, (ctx, reply) => {
@@ -405,6 +464,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
                                             type instanceof DatePrimitiveType ||
                                             type instanceof DateTimePrimitiveType ||
                                             type instanceof MoneyPrimitiveType ||
+                                            type instanceof BigIntPrimitiveType ||
                                             type instanceof CpfPrimitiveType ||
                                             type instanceof CnpjPrimitiveType ||
                                             type instanceof UuidPrimitiveType ||
@@ -737,6 +797,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
             ip,
             name: parsed.name,
             version: 1,
+            files: [],
         };
     }
 
@@ -784,6 +845,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
             ip,
             name: parsed.name,
             version: 2,
+            files: [],
         };
     }
 
@@ -792,7 +854,6 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
         const parsed = decode(
             {
                 DeviceInfo: {
-                    browserUserAgent: "string?",
                     id: "string?",
                     language: "string?",
                     platform: "json?",
@@ -821,10 +882,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
             deviceInfo: {
                 id: deviceId,
                 language: deviceInfo.language || null,
-                platform: {
-                    ...(deviceInfo.platform ?? {}),
-                    browserUserAgent: deviceInfo.browserUserAgent || null,
-                },
+                platform: parsed.platform ? { ...parsed.platform } : {},
                 timezone: deviceInfo.timezone || null,
                 type: deviceInfo.type || "api",
                 version: deviceInfo.version || null,
@@ -835,6 +893,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
             ip,
             name: parsed.name,
             version: 3,
+            files: [],
         };
     }
 

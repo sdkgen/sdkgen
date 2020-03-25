@@ -43,6 +43,7 @@ export function apiTestWrapper<T extends BaseApiConfig<any>>(api: T): T {
                 ip: ctx.request && ctx.request.ip ? ctx.request.ip : "0.0.0.0",
                 name: functionName,
                 version: 0,
+                files: ctx.request && ctx.request.files ? ctx.request.files : [],
             };
 
             let reply = await api.hook.onRequestStart(ctx);
