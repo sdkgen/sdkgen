@@ -1,5 +1,5 @@
 import { AstRoot } from "@sdkgen/parser";
-import { generateClass, generateEnum, generateErrorClass, generateTypeName, generateJsonAddRepresentation, mangle } from "./helpers";
+import { generateClass, generateEnum, generateErrorClass, generateJsonAddRepresentation, generateKotlinTypeName, mangle } from "./helpers";
 
 interface Options {}
 
@@ -111,9 +111,9 @@ class ApiClient(
         .map(op => {
             let opImpl = "";
             let args = op.args
-                .map(arg => `${mangle(arg.name)}: ${generateTypeName(arg.type)}`)
-                .concat([`timeoutMillis: Long? = null`, `callback: ((response: Response<${generateTypeName(op.returnType)}>) -> Unit)? = null`]);
-            opImpl += `    fun ${mangle(op.prettyName)}(\n        ${args.join(",\n        ")}\n    ): Deferred<Response<out ${generateTypeName(
+                .map(arg => `${mangle(arg.name)}: ${generateKotlinTypeName(arg.type)}`)
+                .concat([`timeoutMillis: Long? = null`, `callback: ((response: Response<${generateKotlinTypeName(op.returnType)}>) -> Unit)? = null`]);
+            opImpl += `    fun ${mangle(op.prettyName)}(\n        ${args.join(",\n        ")}\n    ): Deferred<Response<out ${generateKotlinTypeName(
                 op.returnType,
             )}>> = sdkgenIOScope.async {\n`;
 
@@ -128,7 +128,7 @@ class ApiClient(
             opImpl += `\n`;
             opImpl += `        val call = makeRequest(\"${op.prettyName}\", bodyArgs, timeoutMillis)\n`;
             opImpl += `        val data = if (call.result?.get("result") != null)\n`;
-            opImpl += `            gson.fromJson<${generateTypeName(op.returnType)}>(call.result?.get("result")!!)\n`;
+            opImpl += `            gson.fromJson<${generateKotlinTypeName(op.returnType)}>(call.result?.get("result")!!)\n`;
             opImpl += `        else null\n`;
             opImpl += `\n`;
             opImpl += `        val error = if (call.error != null) {\n`;
@@ -140,7 +140,7 @@ class ApiClient(
             opImpl += `            gson.fromJson(call.error, errorType.type())\n`;
             opImpl += `        } else null\n`;
             opImpl += `\n`;
-            opImpl += `        val response: Response<${generateTypeName(op.returnType)}> = Response(error, data)\n`;
+            opImpl += `        val response: Response<${generateKotlinTypeName(op.returnType)}> = Response(error, data)\n`;
             opImpl += `        callback?.invoke(response)\n`;
             opImpl += `        return@async response\n`;
             opImpl += `    }\n`;
