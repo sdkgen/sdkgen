@@ -275,11 +275,16 @@ export function decode(typeTable: TypeTable, path: string, type: TypeDescription
             throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
         }
 
-        return new Date(
-            parseInt(value.split("-")[0], 10),
-            parseInt(value.split("-")[1], 10) - 1,
-            parseInt(value.split("-")[2], 10),
-        );
+        const day = parseInt(value.split("-")[2], 10);
+        const month = parseInt(value.split("-")[1], 10) - 1;
+        const year = parseInt(value.split("-")[0], 10);
+        const date = new Date(year, month, day);
+
+        if (date.getFullYear() !== year || date.getMonth() !== month || date.getDate() !== day) {
+            throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
+        }
+
+        return date;
     } else if (type === "datetime") {
         if (
             typeof value !== "string" ||
