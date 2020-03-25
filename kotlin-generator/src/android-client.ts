@@ -94,8 +94,7 @@ class ApiClient(
     if (errorTypeEnumEntries.length > 0) {
         code += `
     enum class ErrorType {
-        ${errorTypeEnumEntries.join(",\n        ")},
-        Error;
+        ${errorTypeEnumEntries.join(",\n        ")};
 
         fun type(): Class<out ApiClient.Error> {
             return when (this) {
@@ -135,7 +134,7 @@ class ApiClient(
             opImpl += `            val errorType = try {\n`;
             opImpl += `                ErrorType.valueOf(call.error?.get("type")?.asString ?: "")\n`;
             opImpl += `            } catch (e: Exception) {\n`;
-            opImpl += `                ErrorType.Error\n`;
+            opImpl += `                ErrorType.Fatal\n`;
             opImpl += `            }\n\n`;
             opImpl += `            gson.fromJson(call.error, errorType.type())\n`;
             opImpl += `        } else null\n`;
