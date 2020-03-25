@@ -275,6 +275,10 @@ export function decode(typeTable: TypeTable, path: string, type: TypeDescription
             throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
         }
 
+        if (parseInt(value.split("-")[2], 10) > 31 || parseInt(value.split("-")[1], 10) - 1 > 11) {
+            throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
+        }
+
         return new Date(
             parseInt(value.split("-")[0], 10),
             parseInt(value.split("-")[1], 10) - 1,
