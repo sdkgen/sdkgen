@@ -352,6 +352,31 @@ describe(Parser, () => {
         );
     });
 
+    test("handles descriptions inside structs", () => {
+        expectParses(
+            `
+                type Foo {
+                    @description foobar
+                    x: int
+                    y: string
+                }
+            `,
+            {
+                errors: ["Fatal"],
+                functionTable: {},
+                typeTable: {
+                    Foo: {
+                        x: "int",
+                        y: "string",
+                    },
+                },
+                annotations: {
+                    "type.Foo.x": [{ type: "description", value: "foobar" }],
+                },
+            },
+        );
+    });
+
     test("handles rest annotations", () => {
         expectParses(
             `
