@@ -581,6 +581,48 @@ describe(Parser, () => {
             },
         );
 
+        expectParses(
+            `
+                type Kind enum {
+                    first
+                    second
+                    third
+                }
+
+                @rest GET /things/{kind}
+                fn countThings(kind: Kind): uint
+            `,
+            {
+                errors: ["Fatal"],
+                functionTable: {
+                    countThings: {
+                        args: {
+                            kind: "Kind",
+                        },
+                        ret: "uint",
+                    },
+                },
+                typeTable: {
+                    Kind: ["first", "second", "third"],
+                },
+                annotations: {
+                    "fn.countThings": [
+                        {
+                            type: "rest",
+                            value: {
+                                method: "GET",
+                                path: "/things/{kind}",
+                                pathVariables: ["kind"],
+                                queryVariables: [],
+                                headers: [],
+                                bodyVariable: null,
+                            },
+                        },
+                    ],
+                },
+            },
+        );
+
         expectDoesntParse(
             `
                 @rest HEAD /foo
