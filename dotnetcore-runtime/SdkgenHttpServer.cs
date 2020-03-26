@@ -79,6 +79,7 @@ namespace Sdkgen.Runtime
     {
         BaseApi Api;
         bool DynamicCorsOrigin = true;
+        public bool Introspection = true;
         IHeaderDictionary Headers = new HeaderDictionary();
         Func<Task<Boolean>> OnHealthCheck = () => Task.FromResult<Boolean>(true);
         Action<Context, SdkgenException>? OnRequestError = null;
@@ -90,8 +91,12 @@ namespace Sdkgen.Runtime
         {
             var host = new WebHostBuilder()
                 .UseKestrel()
+                .UseContentRoot("sdkgen.runtime.static")
+                .UseWebRoot("")
                 .Configure(app =>
                 {
+                    app.UseDefaultFiles();
+                    app.UseStaticFiles();
                     app.Run(httpContext => handleRequest(httpContext));
                 })
                 .UseUrls($"http://localhost:{port}")
@@ -101,6 +106,12 @@ namespace Sdkgen.Runtime
 
         async public Task handleRequest(HttpContext httpContext)
         {
+            if (Introspection && httpContext.Request.Path == "/ast.json" && httpContext.Request.Method.ToUpperInvariant() == "GET")
+            {
+                await httpContext.Response.WriteAsync(Api.GetAstJson());
+                return;
+            }
+
             Context? context = null;
             JsonDocument? bodyDocument = null;
             var stopWatch = new Stopwatch();

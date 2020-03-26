@@ -247,6 +247,13 @@ jobs:
       with:
         name: version
     - uses: actions/setup-dotnet@v1
+    - uses: actions/setup-node@v1
+    - run: npm install
+      working-directory: ./playground
+    - run: npm run build
+      working-directory: ./playground
+      env:
+        NODE_ENV: production
     - run: dotnet pack -c:Release -p:PackageVersion=$(echo \"${{ github.ref }}\" | cut -d'/' -f3)
       working-directory: ./dotnetcore-runtime
     - run: dotnet nuget push bin/**/*.nupkg -k $NUGET_TOKEN -s https://api.nuget.org/v3/index.json
