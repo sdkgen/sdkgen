@@ -66,7 +66,7 @@ describe("Encode/Decode", () => {
             encode({}, "", "date", "hello world");
         }).toThrow();
         expect(() => {
-            encode({}, "", "date", "2020-02-30");
+            decode({}, "", "date", "2020-02-30");
         }).toThrow();
     });
 
