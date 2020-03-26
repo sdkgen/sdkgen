@@ -53,6 +53,14 @@ export function astToJson(ast: AstRoot): AstJson {
         const obj: any = (typeTable[name] = {});
         for (const field of fields) {
             obj[field.name] = field.type.name;
+
+            for (const ann of field.annotations) {
+                if (ann instanceof DescriptionAnnotation) {
+                    const target = `type.${name}.${field.name}`;
+                    const list = (annotations[target] = annotations[target] || []);
+                    list.push({ type: "description", value: ann.text });
+                }
+            }
         }
     }
 
@@ -118,7 +126,7 @@ export function jsonToAst(json: AstJson) {
     const typeDefinition: TypeDefinition[] = [];
     const errors: string[] = json.errors || [];
 
-    function processType(description: TypeDescription): Type {
+    function processType(description: TypeDescription, typeName?: string): Type {
         if (typeof description === "string") {
             const primitiveClass = primitiveToAstClass.get(description);
             if (primitiveClass) {
@@ -133,13 +141,25 @@ export function jsonToAst(json: AstJson) {
         } else if (Array.isArray(description)) {
             return new EnumType(description.map(v => new EnumValue(v)));
         } else {
-            const fields = Object.keys(description).map(fieldName => new Field(fieldName, processType(description[fieldName])));
+            const fields: Field[] = [];
+            for (const fieldName of Object.keys(description)) {
+                const field = new Field(fieldName, processType(description[fieldName]));
+                if (typeName) {
+                    const target = `type.${typeName}.${fieldName}`;
+                    for (const annotationJson of json.annotations[target] || []) {
+                        if (annotationJson.type === "description") {
+                            field.annotations.push(new DescriptionAnnotation(annotationJson.value));
+                        }
+                    }
+                }
+                fields.push(field);
+            }
             return new StructType(fields, []);
         }
     }
 
     for (const typeName in json.typeTable) {
-        const type = processType(json.typeTable[typeName]);
+        const type = processType(json.typeTable[typeName], typeName);
         if (typeName === "ErrorType" && type instanceof EnumType) {
             errors.push(...type.values.map(v => v.value));
             continue;
