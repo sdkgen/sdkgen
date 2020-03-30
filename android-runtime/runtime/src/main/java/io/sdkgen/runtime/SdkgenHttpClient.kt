@@ -6,8 +6,7 @@ import android.graphics.Point
 import android.os.Build
 import android.provider.Settings
 import android.view.WindowManager
-import com.google.gson.Gson
-import com.google.gson.JsonObject
+import com.google.gson.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -135,11 +134,7 @@ open class SdkgenHttpClient(
 
             try {
                 addProperty("version", applicationContext.packageManager.getPackageInfo(applicationContext.packageName, 0).versionName)
-            } catch (e: Exception) {
-                addProperty("version", null)
-            }
-
-           
+            } catch (e: Exception) { }
         }
     }
 

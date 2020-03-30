@@ -33,7 +33,16 @@ export function generateEnum(type: EnumType) {
 
 export function generateClass(type: StructType) {
     return `data class ${type.name}(\n${type.fields
-        .map(field => `        val ${mangle(field.name)}: ${generateKotlinTypeName(field.type)}`)
+        .map(field => {
+            let fieldDesc = ''; 
+            if (field.type.constructor === DatePrimitiveType) {
+                fieldDesc += '        @JsonAdapter(DateAdapter::class)\n';
+            } else if (field.type.constructor === DateTimePrimitiveType) {
+                fieldDesc += '        @JsonAdapter(DateTimeAdapter::class)\n';    
+            } 
+            fieldDesc += `        val ${mangle(field.name)}: ${generateKotlinTypeName(field.type)}`;
+            return fieldDesc;
+        })
         .join(",\n")}\n    )\n`;
 }
 
@@ -120,9 +129,9 @@ export function generateJsonAddRepresentation(type: Type, fieldName: string): st
         case OptionalType:
             return generateJsonAddRepresentation((type as OptionalType).base, fieldName);
         case DatePrimitiveType:
-            return `addProperty(\"${fieldName}\", SimpleDateFormat(\"yyyy-MM-dd\", Locale.US).format(${mangle(fieldName)}))`;
+            return `addProperty(\"${fieldName}\", DateAdapter.sdf.format(${mangle(fieldName)}))`;
         case DateTimePrimitiveType:
-            return `addProperty(\"${fieldName}\", SimpleDateFormat(\"yyyy-MM-dd'T'HH:mm:ss.SSS\", Locale.US).format(${mangle(fieldName)}))`;
+            return `addProperty(\"${fieldName}\", DateTimeAdapter.sdf.format(${mangle(fieldName)}))`;
         case ArrayType:
         case StructType:
         case EnumType:

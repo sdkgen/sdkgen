@@ -8,6 +8,9 @@ export function generateAndroidClientSource(ast: AstRoot, options: Options) {
 import android.util.Base64
 import com.google.gson.*
 import com.google.gson.reflect.TypeToken
+import com.google.gson.annotations.JsonAdapter
+import com.google.gson.stream.JsonReader
+import com.google.gson.stream.JsonWriter
 import io.sdkgen.runtime.SdkgenHttpClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
@@ -48,28 +51,75 @@ class ApiClient(
         }
     }
 
-    private class CalendarDeserializer : JsonDeserializer<Calendar> {
-        @Throws(JsonParseException::class)
-        override fun deserialize(
-            element: JsonElement,
-            arg1: Type?,
-            arg2: JsonDeserializationContext?
-        ): Calendar {
-            val date = element.asString
-            val formatter = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US)
+    private class DateTimeAdapter: TypeAdapter<Calendar>() {
+        companion object {
+            val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US).apply { 
+                this.timeZone = TimeZone.getTimeZone("UTC")
+            }
+        }
+        
+        override fun write(out: JsonWriter?, value: Calendar?) {
+            out?.let {
+                if (value == null) {
+                    it.nullValue()
+                    return
+                }
 
-            formatter.timeZone = TimeZone.getTimeZone("UTC")
+                val dateTimeString = sdf.format(value)
+                it.value(dateTimeString)
+            }
+        }
 
-            try {
-                return Calendar.getInstance().apply { time = formatter.parse(date)!! }
-            } catch (e: Exception) {
-                throw JsonIOException(e.message)
+        override fun read(reader: JsonReader?): Calendar? {
+            reader?.let {
+                val dateTimeString = it.nextString()
+
+                try {
+                    return Calendar.getInstance().apply { time = sdf.parse(dateTimeString)!! }
+                } catch (e: Exception) {
+                    throw JsonIOException(e.message)
+                }
+            } ?: run { 
+                return null
+            }
+        }
+    }
+
+    private class DateAdapter: TypeAdapter<Calendar>() {
+        companion object {
+            val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US).apply {
+                this.timeZone = TimeZone.getTimeZone("UTC")
+            }
+        }
+
+        override fun write(out: JsonWriter?, value: Calendar?) {
+            out?.let {
+                if (value == null) {
+                    it.nullValue()
+                    return
+                }
+
+                val dateTimeString = sdf.format(value)
+                it.value(dateTimeString)
+            }
+        }
+
+        override fun read(reader: JsonReader?): Calendar? {
+            reader?.let {
+                val dateTimeString = it.nextString()
+
+                try {
+                    return Calendar.getInstance().apply { time = sdf.parse(dateTimeString)!! }
+                } catch (e: Exception) {
+                    throw JsonIOException(e.message)
+                }
+            } ?: run {
+                return null
             }
         }
     }
 
     private val gson = GsonBuilder()
-        .registerTypeAdapter(object : TypeToken<Calendar>() {}.type, CalendarDeserializer())
         .registerTypeAdapter(object : TypeToken<ByteArray>() {}.type, ByteArrayDeserializer())
         .create()\n\n`;
 

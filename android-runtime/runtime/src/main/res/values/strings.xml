@@ -1,7 +1,7 @@
 <resources>
-    <string name="sdkgen_error_call_timeout">Conexão excedeu o tempo de espera.</string>
-    <string name="sdkgen_error_call_failed_without_message">Chamada falhou sem mensagem de erro!</string>
-    <string name="sdkgen_error_unknown">Ocorreu um erro desconhecido na conexão.</string>
-    <string name="sdkgen_error_serialization">Erro de serialização</string>
-    <string name="sdkgen_error_call_code">Erro Fatal (%1$s) - Tente novamente</string>
+    <string name="sdkgen_error_call_timeout">Connection exceeded the timeout limit.</string>
+    <string name="sdkgen_error_call_failed_without_message">The call failed withou an error message!</string>
+    <string name="sdkgen_error_unknown">An unknown connection error ocurred.</string>
+    <string name="sdkgen_error_serialization">Serialization error</string>
+    <string name="sdkgen_error_call_code">Fata Error (%1$s) - Try again later</string>
 </resources>
