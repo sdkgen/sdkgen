@@ -127,7 +127,7 @@ open class SdkgenHttpClient(
             try {
                 addProperty("version", applicationContext.packageManager.getPackageInfo(applicationContext.packageName, 0).versionName)
             } catch (e: Exception) {
-                addProperty("version", "unknown")
+                addProperty("version", null)
             }
 
             add("screen", JsonObject().apply {
