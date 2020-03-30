@@ -119,6 +119,14 @@ open class SdkgenHttpClient(
                 addProperty("sdkVersion", Build.VERSION.SDK_INT)
                 addProperty("brand", Build.BRAND)
                 addProperty("model", Build.MODEL)
+                add("screen", JsonObject().apply {
+                    val manager = applicationContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager
+                    val display = manager.defaultDisplay
+                    val size = Point()
+                    display.getSize(size)
+                    addProperty("width", size.x)
+                    addProperty("height", size.y)
+                })
             })
 
             addProperty("timezone", Calendar.getInstance().timeZone.displayName)
@@ -130,14 +138,7 @@ open class SdkgenHttpClient(
                 addProperty("version", null)
             }
 
-            add("screen", JsonObject().apply {
-                val manager = applicationContext.getSystemService(Context.WINDOW_SERVICE) as WindowManager
-                val display = manager.defaultDisplay
-                val size = Point()
-                display.getSize(size)
-                addProperty("width", size.x)
-                addProperty("height", size.y)
-            })
+           
         }
     }
 
