@@ -1,5 +1,5 @@
 import { AstRoot, astToJson, OptionalType, VoidPrimitiveType } from "@sdkgen/parser";
-import { decodeType, encodeType, generateEnum, generateStruct, generateTypeName, ident } from "./helpers";
+import { capitalize, decodeType, encodeType, generateEnum, generateStruct, generateTypeName, ident } from "./helpers";
 
 interface Options {}
 
@@ -19,7 +19,7 @@ namespace SdkgenGenerated
     for (const op of ast.operations) {
         const returnTypeAngle = op.returnType instanceof VoidPrimitiveType ? "" : `<${generateTypeName(op.returnType)}>`;
         code += `
-        virtual public Task${returnTypeAngle} ${op.name}(${[
+        public virtual Task${returnTypeAngle} ${capitalize(op.name)}(${[
             "Context ctx",
             ...op.args.map(arg => `${generateTypeName(arg.type)} ${ident(arg.name)}`),
         ].join(", ")})
@@ -61,9 +61,7 @@ namespace SdkgenGenerated
                         resultWriter_.WriteNullValue();`;
         } else {
             code += `
-                        ${generateTypeName(op.returnType)} result_ = await ${op.name}(${["context_", ...op.args.map(arg => ident(arg.name))].join(
-                ", ",
-            )});
+                        var result_ = await ${op.name}(${["context_", ...op.args.map(arg => ident(arg.name))].join(", ")});
                         ${encodeType(op.returnType, `result_`, `"${op.name}().ret"`).replace(/\n/g, "\n                        ")}`;
         }
 
