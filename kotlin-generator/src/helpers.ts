@@ -34,12 +34,12 @@ export function generateEnum(type: EnumType) {
 export function generateClass(type: StructType) {
     return `data class ${type.name}(\n${type.fields
         .map(field => {
-            let fieldDesc = ''; 
+            let fieldDesc = "";
             if (field.type.constructor === DatePrimitiveType) {
-                fieldDesc += '        @JsonAdapter(DateAdapter::class)\n';
+                fieldDesc += "        @JsonAdapter(DateAdapter::class)\n";
             } else if (field.type.constructor === DateTimePrimitiveType) {
-                fieldDesc += '        @JsonAdapter(DateTimeAdapter::class)\n';    
-            } 
+                fieldDesc += "        @JsonAdapter(DateTimeAdapter::class)\n";
+            }
             fieldDesc += `        val ${mangle(field.name)}: ${generateKotlinTypeName(field.type)}`;
             return fieldDesc;
         })
