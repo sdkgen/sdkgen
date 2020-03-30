@@ -25,6 +25,8 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         registry-url: https://registry.npmjs.org
+    - run: npm install
+      working-directory: ./parser
     - run: |
         npm install -g json && json -I -f package.json -e '
           this.version = "'$(cat ../version/version.txt)'";
@@ -34,8 +36,6 @@ jobs:
             if (this.dependencies[pkg].startsWith("file:../"))
               this.dependencies[pkg] = this.version;
         '
-      working-directory: ./parser
-    - run: npm install
       working-directory: ./parser
     - run: npm run build
       working-directory: ./parser
@@ -55,6 +55,8 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         registry-url: https://registry.npmjs.org
+    - run: npm install
+      working-directory: ./browser-runtime
     - run: |
         npm install -g json && json -I -f package.json -e '
           this.version = "'$(cat ../version/version.txt)'";
@@ -64,8 +66,6 @@ jobs:
             if (this.dependencies[pkg].startsWith("file:../"))
               this.dependencies[pkg] = this.version;
         '
-      working-directory: ./browser-runtime
-    - run: npm install
       working-directory: ./browser-runtime
     - run: npm run build
       working-directory: ./browser-runtime
@@ -109,6 +109,8 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         registry-url: https://registry.npmjs.org
+    - run: npm install
+      working-directory: ./typescript-generator
     - run: |
         npm install -g json && json -I -f package.json -e '
           this.version = "'$(cat ../version/version.txt)'";
@@ -118,8 +120,6 @@ jobs:
             if (this.dependencies[pkg].startsWith("file:../"))
               this.dependencies[pkg] = this.version;
         '
-      working-directory: ./typescript-generator
-    - run: npm install
       working-directory: ./typescript-generator
     - run: npm run build
       working-directory: ./typescript-generator
@@ -139,6 +139,8 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         registry-url: https://registry.npmjs.org
+    - run: npm install
+      working-directory: ./csharp-generator
     - run: |
         npm install -g json && json -I -f package.json -e '
           this.version = "'$(cat ../version/version.txt)'";
@@ -148,8 +150,6 @@ jobs:
             if (this.dependencies[pkg].startsWith("file:../"))
               this.dependencies[pkg] = this.version;
         '
-      working-directory: ./csharp-generator
-    - run: npm install
       working-directory: ./csharp-generator
     - run: npm run build
       working-directory: ./csharp-generator
@@ -199,6 +199,8 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         registry-url: https://registry.npmjs.org
+    - run: npm install
+      working-directory: ./dart-generator
     - run: |
         npm install -g json && json -I -f package.json -e '
           this.version = "'$(cat ../version/version.txt)'";
@@ -208,8 +210,6 @@ jobs:
             if (this.dependencies[pkg].startsWith("file:../"))
               this.dependencies[pkg] = this.version;
         '
-      working-directory: ./dart-generator
-    - run: npm install
       working-directory: ./dart-generator
     - run: npm run build
       working-directory: ./dart-generator
@@ -229,6 +229,8 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         registry-url: https://registry.npmjs.org
+    - run: npm install
+      working-directory: ./cli
     - run: |
         npm install -g json && json -I -f package.json -e '
           this.version = "'$(cat ../version/version.txt)'";
@@ -238,8 +240,6 @@ jobs:
             if (this.dependencies[pkg].startsWith("file:../"))
               this.dependencies[pkg] = this.version;
         '
-      working-directory: ./cli
-    - run: npm install
       working-directory: ./cli
     - run: npm run build
       working-directory: ./cli
@@ -259,6 +259,8 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         registry-url: https://registry.npmjs.org
+    - run: npm install
+      working-directory: ./playground
     - run: |
         npm install -g json && json -I -f package.json -e '
           this.version = "'$(cat ../version/version.txt)'";
@@ -268,8 +270,6 @@ jobs:
             if (this.dependencies[pkg].startsWith("file:../"))
               this.dependencies[pkg] = this.version;
         '
-      working-directory: ./playground
-    - run: npm install
       working-directory: ./playground
     - run: npm run build
       working-directory: ./playground
@@ -291,6 +291,8 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         registry-url: https://registry.npmjs.org
+    - run: npm install
+      working-directory: ./node-runtime
     - run: |
         npm install -g json && json -I -f package.json -e '
           this.version = "'$(cat ../version/version.txt)'";
@@ -300,8 +302,6 @@ jobs:
             if (this.dependencies[pkg].startsWith("file:../"))
               this.dependencies[pkg] = this.version;
         '
-      working-directory: ./node-runtime
-    - run: npm install
       working-directory: ./node-runtime
     - run: npm run build
       working-directory: ./node-runtime
@@ -319,6 +319,13 @@ jobs:
       with:
         name: version
     - uses: actions/setup-dotnet@v1
+    - uses: actions/setup-node@v1
+    - run: npm install
+      working-directory: ./playground
+    - run: npm run build
+      working-directory: ./playground
+      env:
+        NODE_ENV: production
     - run: dotnet pack -c:Release -p:PackageVersion=$(cat ../version/version.txt)
       working-directory: ./dotnetcore-runtime
     - run: dotnet nuget push bin/**/*.nupkg -k $NUGET_TOKEN -s https://api.nuget.org/v3/index.json

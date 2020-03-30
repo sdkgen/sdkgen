@@ -1,7 +1,8 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
-    <RootNamespace>sdkgen_runtime</RootNamespace>
+    <RootNamespace>Sdkgen.Runtime</RootNamespace>
+    <AssemblyName>Sdkgen.Runtime</AssemblyName>
     <LangVersion>8.0</LangVersion>
     <Nullable>enable</Nullable>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -12,6 +13,12 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
     <PackageReference Include="System.Text.Json" Version="4.7.1" />
+    <Content Include="../playground/dist/**/*">
+      <Pack>true</Pack>
+      <PackagePath>contentFiles/any/any/sdkgen.runtime.static/playground/</PackagePath>
+      <PackageCopyToOutput>true</PackageCopyToOutput>
+    </Content>
   </ItemGroup>
 </Project>

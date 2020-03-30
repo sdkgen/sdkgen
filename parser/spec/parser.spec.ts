@@ -352,6 +352,31 @@ describe(Parser, () => {
         );
     });
 
+    test("handles descriptions inside structs", () => {
+        expectParses(
+            `
+                type Foo {
+                    @description foobar
+                    x: int
+                    y: string
+                }
+            `,
+            {
+                errors: ["Fatal"],
+                functionTable: {},
+                typeTable: {
+                    Foo: {
+                        x: "int",
+                        y: "string",
+                    },
+                },
+                annotations: {
+                    "type.Foo.x": [{ type: "description", value: "foobar" }],
+                },
+            },
+        );
+    });
+
     test("handles rest annotations", () => {
         expectParses(
             `
@@ -549,6 +574,48 @@ describe(Parser, () => {
                                 queryVariables: [],
                                 headers: [],
                                 bodyVariable: "user",
+                            },
+                        },
+                    ],
+                },
+            },
+        );
+
+        expectParses(
+            `
+                type Kind enum {
+                    first
+                    second
+                    third
+                }
+
+                @rest GET /things/{kind}
+                fn countThings(kind: Kind): uint
+            `,
+            {
+                errors: ["Fatal"],
+                functionTable: {
+                    countThings: {
+                        args: {
+                            kind: "Kind",
+                        },
+                        ret: "uint",
+                    },
+                },
+                typeTable: {
+                    Kind: ["first", "second", "third"],
+                },
+                annotations: {
+                    "fn.countThings": [
+                        {
+                            type: "rest",
+                            value: {
+                                method: "GET",
+                                path: "/things/{kind}",
+                                pathVariables: ["kind"],
+                                queryVariables: [],
+                                headers: [],
+                                bodyVariable: null,
                             },
                         },
                     ],
