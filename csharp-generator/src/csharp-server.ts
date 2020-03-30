@@ -57,11 +57,11 @@ namespace SdkgenGenerated
         }
         if (op.returnType instanceof VoidPrimitiveType) {
             code += `
-                        await ${op.name}(${["context_", ...op.args.map(arg => ident(arg.name))].join(", ")});
+                        await ${capitalize(op.name)}(${["context_", ...op.args.map(arg => ident(arg.name))].join(", ")});
                         resultWriter_.WriteNullValue();`;
         } else {
             code += `
-                        var result_ = await ${op.name}(${["context_", ...op.args.map(arg => ident(arg.name))].join(", ")});
+                        var result_ = await ${capitalize(op.name)}(${["context_", ...op.args.map(arg => ident(arg.name))].join(", ")});
                         ${encodeType(op.returnType, `result_`, `"${op.name}().ret"`).replace(/\n/g, "\n                        ")}`;
         }
 
