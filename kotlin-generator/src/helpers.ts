@@ -32,7 +32,9 @@ export function generateEnum(type: EnumType) {
 }
 
 export function generateClass(type: StructType) {
-    return `data class ${type.name}(\n${type.fields.map(field => `        val ${mangle(field.name)}: ${generateKotlinTypeName(field.type)}`).join(",\n")}\n    )\n`;
+    return `data class ${type.name}(\n${type.fields
+        .map(field => `        val ${mangle(field.name)}: ${generateKotlinTypeName(field.type)}`)
+        .join(",\n")}\n    )\n`;
 }
 
 export function generateErrorClass(error: string) {

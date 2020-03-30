@@ -111,7 +111,10 @@ class ApiClient(
             let opImpl = "";
             let args = op.args
                 .map(arg => `${mangle(arg.name)}: ${generateKotlinTypeName(arg.type)}`)
-                .concat([`timeoutMillis: Long? = null`, `callback: ((response: Response<${generateKotlinTypeName(op.returnType)}>) -> Unit)? = null`]);
+                .concat([
+                    `timeoutMillis: Long? = null`,
+                    `callback: ((response: Response<${generateKotlinTypeName(op.returnType)}>) -> Unit)? = null`,
+                ]);
             opImpl += `    fun ${mangle(op.prettyName)}(\n        ${args.join(",\n        ")}\n    ): Deferred<Response<out ${generateKotlinTypeName(
                 op.returnType,
             )}>> = sdkgenIOScope.async {\n`;
