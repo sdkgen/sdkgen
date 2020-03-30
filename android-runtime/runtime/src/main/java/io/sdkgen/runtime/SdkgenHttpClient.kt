@@ -113,6 +113,7 @@ open class SdkgenHttpClient(
                 addProperty("id", pref.getString("deviceId", null))
             }
 
+            addProperty("fingerprint", Settings.Secure.getString(applicationContext.contentResolver, Settings.Secure.ANDROID_ID))
             addProperty("language", language())
             add("platform", JsonObject().apply {
                 addProperty("version", Build.VERSION.RELEASE)
@@ -154,7 +155,6 @@ open class SdkgenHttpClient(
                 addProperty("requestId", callId())
                 addProperty("name", functionName)
                 add("args", bodyArgs ?: JsonObject())
-                add("extra", JsonObject().apply { addProperty("fingerprint", Settings.Secure.getString(applicationContext.contentResolver, Settings.Secure.ANDROID_ID)) })
                 add("deviceInfo", makeDeviceObj())
             }
 
