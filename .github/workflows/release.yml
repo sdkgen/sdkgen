@@ -287,3 +287,19 @@ jobs:
       working-directory: ./dotnetcore-runtime
       env:
         NUGET_TOKEN: ${{ secrets.NUGET_TOKEN }}
+
+  android-runtime: 
+    runs-on: ubuntu-latest
+    steps: 
+    - run: "sed -i -e "s/versionName \"1.0\"/versionName \"${{ github.ref }}\"/g" build.gradle"
+      working-directory: ./android-runtime/runtime
+    - run: "sed -i -e "s/versionCode 1/versionCode $(date +%s)/g" build.gradle"
+      working-directory: ./android-runtime/runtime
+    - uses: Raul6469/android-gradle-action@2.0.0
+      with: 
+        args: "./gradlew install bintrayUpload"
+      env: 
+        BINTRAY_USER: ${{ sectrets.BINTRAY_USER }}
+        BINTRAY_API_KEY: ${{ sectrets.BINTRAY_API_KEY }}
+
+
