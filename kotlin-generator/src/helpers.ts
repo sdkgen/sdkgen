@@ -98,7 +98,7 @@ export function generateKotlinTypeName(type: Type): string {
             return "Unit";
 
         case JsonPrimitiveType:
-            return "JsonObject";
+            return "JsonElement";
 
         case OptionalType:
             return generateKotlinTypeName((type as OptionalType).base) + "?";
