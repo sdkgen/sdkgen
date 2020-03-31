@@ -210,6 +210,6 @@ jobs:
     runs-on: ubuntu-latest
     steps: 
     - uses: actions/checkout@v2
-    - uses: xdtianyu/actions-android-ci@master
+    - uses: giorgosneokleous93/docker-multicommand-android@v1.0.0
       with: 
-        args: "./android-runtime/gradlew test install"
+        command1: "./android-runtime/gradlew test install"
