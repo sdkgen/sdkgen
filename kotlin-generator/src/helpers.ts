@@ -31,15 +31,25 @@ export function generateEnum(type: EnumType) {
     return `enum class ${type.name} { ${type.values.map(x => mangle(x.value)).join(", ")} }\n`;
 }
 
+export function getAnnotation(type: Type): string {
+    switch (type.constructor) {
+        case DatePrimitiveType: 
+            return '        @JsonAdapter(DateAdapter::class)\n';
+        case DateTimePrimitiveType: 
+            return '        @JsonAdapter(DateTimeAdapter::class)\n';
+        case ArrayType:
+            return getAnnotation((type as ArrayType).base);
+        case OptionalType: 
+            return getAnnotation((type as OptionalType).base);
+        default: 
+            return '';
+    }
+}
+
 export function generateClass(type: StructType) {
     return `data class ${type.name}(\n${type.fields
         .map(field => {
-            let fieldDesc = "";
-            if (field.type.constructor === DatePrimitiveType) {
-                fieldDesc += "        @JsonAdapter(DateAdapter::class)\n";
-            } else if (field.type.constructor === DateTimePrimitiveType) {
-                fieldDesc += "        @JsonAdapter(DateTimeAdapter::class)\n";
-            }
+            let fieldDesc = getAnnotation(field.type);
             fieldDesc += `        val ${mangle(field.name)}: ${generateKotlinTypeName(field.type)}`;
             return fieldDesc;
         })
