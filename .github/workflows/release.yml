@@ -242,16 +242,16 @@ jobs:
   android-runtime: 
     runs-on: ubuntu-latest
     steps: 
+    - run: sed -i -e "s/versionName \"1.0\"/versionName $(echo \"${{ github.ref }}\" | cut -d'/' -f3)/g" build.gradle
+      working-directory: ./android-runtime/runtime
+    - run: sed -i -e "s/versionCode 1/versionCode $(date +%s)/g" build.gradle
+      working-directory: ./android-runtime/runtime
     - uses: Raul6469/android-gradle-action@2.0.0
       with: 
         args: "./android-runtime/gradlew test install bintrayUpload"
       env: 
         BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
         BINTRAY_API_KEY: ${{ secrets.BINTRAY_API_KEY }}
-    - run: sed -i -e "s/versionName \"1.0\"/versionName $(echo \"${{ github.ref }}\" | cut -d'/' -f3)/g" build.gradle
-      working-directory: ./android-runtime/runtime
-    - run: sed -i -e "s/versionCode 1/versionCode $(date +%s)/g" build.gradle
-      working-directory: ./android-runtime/runtime
         
   node-runtime:
     needs: [parser, typescript-generator, kotlin-generator, dart-generator, playground]
