@@ -239,6 +239,20 @@ jobs:
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
+  android-runtime: 
+    runs-on: ubuntu-latest
+    steps: 
+    - uses: Raul6469/android-gradle-action@2.0.0
+      with: 
+        args: "./gradlew install bintrayUpload"
+      env: 
+        BINTRAY_USER: ${{ sectrets.BINTRAY_USER }}
+        BINTRAY_API_KEY: ${{ sectrets.BINTRAY_API_KEY }}
+    - run: "sed -i -e "s/versionName \"1.0\"/versionName \"${{ github.ref }}\"/g" build.gradle"
+      working-directory: ./android-runtime/runtime
+    - run: "sed -i -e "s/versionCode 1/versionCode $(date +%s)/g" build.gradle"
+      working-directory: ./android-runtime/runtime
+        
   node-runtime:
     needs: [parser, typescript-generator, kotlin-generator, dart-generator, playground]
     runs-on: ubuntu-latest
@@ -287,19 +301,3 @@ jobs:
       working-directory: ./dotnetcore-runtime
       env:
         NUGET_TOKEN: ${{ secrets.NUGET_TOKEN }}
-
-  android-runtime: 
-    runs-on: ubuntu-latest
-    steps: 
-    - uses: Raul6469/android-gradle-action@2.0.0
-      with: 
-        args: "./gradlew install bintrayUpload"
-    - run: "sed -i -e "s/versionName \"1.0\"/versionName \"${{ github.ref }}\"/g" build.gradle"
-      working-directory: ./android-runtime/runtime
-    - run: "sed -i -e "s/versionCode 1/versionCode $(date +%s)/g" build.gradle"
-      working-directory: ./android-runtime/runtime
-      env: 
-        BINTRAY_USER: ${{ sectrets.BINTRAY_USER }}
-        BINTRAY_API_KEY: ${{ sectrets.BINTRAY_API_KEY }}
-
-
