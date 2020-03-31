@@ -39,7 +39,8 @@ namespace Sdkgen.Runtime
         public string? Timezone;
         public string Type;
         public string? Version;
-        public ContextDeviceInfo(string? id, string? language, Dictionary<string, JsonElement> platform, string? timezone, string? type, string? version)
+        public string? Fingerprint;
+        public ContextDeviceInfo(string? id, string? language, Dictionary<string, JsonElement> platform, string? timezone, string? type, string? version, string? fingerprint)
         {
             Id = id ?? Helper.randomBytes(16);
             Language = language;
@@ -47,6 +48,7 @@ namespace Sdkgen.Runtime
             Timezone = timezone;
             Type = type ?? "api";
             Version = version;
+            Fingerprint = fingerprint;
         }
     }
 

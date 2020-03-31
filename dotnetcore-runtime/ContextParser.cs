@@ -9,12 +9,12 @@ namespace Sdkgen.Runtime
         {
             if (json_.ValueKind != JsonValueKind.Object)
             {
-                throw new SdkgenException("Fatal", string.Format("'{0}' must be an object", path_));
+                throw new SdkgenException("Fatal", $"'{path_}' must be an object");
             }
             JsonElement argsJson_;
             if (!json_.TryGetProperty("args", out argsJson_) || argsJson_.ValueKind != JsonValueKind.Object)
             {
-                throw new SdkgenException("Fatal", string.Format("'{0}.args' must be an object", path_));
+                throw new SdkgenException("Fatal", $"'{path_}.args' must be an object");
             }
             var args = new Dictionary<string, JsonElement>();
             foreach (var property in argsJson_.EnumerateObject())
@@ -26,11 +26,11 @@ namespace Sdkgen.Runtime
             ContextDeviceInfo deviceInfo;
             if (json_.TryGetProperty("deviceInfo", out deviceInfoJson_))
             {
-                deviceInfo = DecodeContextDeviceInfo(deviceInfoJson_, string.Format("{0}.deviceInfo", path_));
+                deviceInfo = DecodeContextDeviceInfo(deviceInfoJson_, $"{path_}.deviceInfo");
             }
             else
             {
-                deviceInfo = new ContextDeviceInfo(null, null, new Dictionary<string, JsonElement>(), null, null, null);
+                deviceInfo = new ContextDeviceInfo(null, null, new Dictionary<string, JsonElement>(), null, null, null, null);
             }
 
             JsonElement extraJson_;
@@ -39,7 +39,7 @@ namespace Sdkgen.Runtime
             {
                 if (argsJson_.ValueKind != JsonValueKind.Object)
                 {
-                    throw new SdkgenException("Fatal", string.Format("'{0}.extra' must be set to an object", path_));
+                    throw new SdkgenException("Fatal", $"'{path_}.extra' must be set to an object");
 
                 }
                 foreach (var property in extraJson_.EnumerateObject())
@@ -51,12 +51,12 @@ namespace Sdkgen.Runtime
             JsonElement nameJson_;
             if (!json_.TryGetProperty("name", out nameJson_))
             {
-                throw new SdkgenException("Fatal", string.Format("'{0}.name' must be set to a value of type string", path_));
+                throw new SdkgenException("Fatal", $"'{path_}.name' must be set to a value of type string");
             }
             string name;
             if (nameJson_.ValueKind != JsonValueKind.String)
             {
-                throw new SdkgenException("Fatal", string.Format("'{0}' must be set to a value of type string", string.Format("{0}.name", path_)));
+                throw new SdkgenException("Fatal", $"'{path_}.name' must be set to a value of type string");
             }
             name = nameJson_.GetString();
 
@@ -74,7 +74,7 @@ namespace Sdkgen.Runtime
             {
                 if (requestIdJson_.ValueKind != JsonValueKind.String)
                 {
-                    throw new SdkgenException("Fatal", string.Format("'{0}' must be set to a value of type string", string.Format("{0}.requestId", path_)));
+                    throw new SdkgenException("Fatal", $"'{path_}.requestId' must be set to a value of type string");
                 }
                 requestId = requestIdJson_.GetString();
             }
@@ -85,7 +85,7 @@ namespace Sdkgen.Runtime
         {
             if (json_.ValueKind != JsonValueKind.Object)
             {
-                throw new SdkgenException("Fatal", string.Format("'{0}' must be an object", path_));
+                throw new SdkgenException("Fatal", $"'{path_}' must be an object");
             }
 
             JsonElement idJson_;
@@ -102,7 +102,7 @@ namespace Sdkgen.Runtime
             {
                 if (idJson_.ValueKind != JsonValueKind.String)
                 {
-                    throw new SdkgenException("Fatal", string.Format("'{0}' must be set to a value of type string", string.Format("{0}.id", path_)));
+                    throw new SdkgenException("Fatal", $"'{path_}.id' must be set to a value of type string");
                 }
                 id = idJson_.GetString();
             }
@@ -121,7 +121,7 @@ namespace Sdkgen.Runtime
             {
                 if (languageJson_.ValueKind != JsonValueKind.String)
                 {
-                    throw new SdkgenException("Fatal", string.Format("'{0}' must be set to a value of type string", string.Format("{0}.language", path_)));
+                    throw new SdkgenException("Fatal", $"'{path_}.language' must be set to a value of type string");
                 }
                 language = languageJson_.GetString();
             }
@@ -133,7 +133,7 @@ namespace Sdkgen.Runtime
             }
             if (platformJson_.ValueKind != JsonValueKind.Undefined && platformJson_.ValueKind != JsonValueKind.Null && platformJson_.ValueKind != JsonValueKind.Object)
             {
-                throw new SdkgenException("Fatal", string.Format("'{0}.platform' must be set to an object", path_));
+                throw new SdkgenException("Fatal", $"'{path_}.platform' must be set to an object");
             }
             var platform = new Dictionary<string, JsonElement>();
             if (platformJson_.ValueKind == JsonValueKind.Object)
@@ -158,7 +158,7 @@ namespace Sdkgen.Runtime
             {
                 if (timezoneJson_.ValueKind != JsonValueKind.String)
                 {
-                    throw new SdkgenException("Fatal", string.Format("'{0}' must be set to a value of type string", string.Format("{0}.timezone", path_)));
+                    throw new SdkgenException("Fatal", $"'{path_}.timezone' must be set to a value of type string");
                 }
                 timezone = timezoneJson_.GetString();
             }
@@ -177,7 +177,7 @@ namespace Sdkgen.Runtime
             {
                 if (typeJson_.ValueKind != JsonValueKind.String)
                 {
-                    throw new SdkgenException("Fatal", string.Format("'{0}' must be set to a value of type string", string.Format("{0}.type", path_)));
+                    throw new SdkgenException("Fatal", $"'{path_}.type' must be set to a value of type string");
                 }
                 type = typeJson_.GetString();
             }
@@ -196,11 +196,31 @@ namespace Sdkgen.Runtime
             {
                 if (versionJson_.ValueKind != JsonValueKind.String)
                 {
-                    throw new SdkgenException("Fatal", string.Format("'{0}' must be set to a value of type string", string.Format("{0}.version", path_)));
+                    throw new SdkgenException("Fatal", $"'{path_}.version' must be set to a value of type string");
                 }
                 version = versionJson_.GetString();
             }
-            return new ContextDeviceInfo(id, language, platform, timezone, type, version);
+
+            JsonElement fingerprintJson_;
+            if (!json_.TryGetProperty("fingerprint", out fingerprintJson_))
+            {
+                fingerprintJson_ = new JsonElement();
+            }
+            string? fingerprint;
+            if (fingerprintJson_.ValueKind == JsonValueKind.Null || fingerprintJson_.ValueKind == JsonValueKind.Undefined)
+            {
+                fingerprint = null;
+            }
+            else
+            {
+                if (fingerprintJson_.ValueKind != JsonValueKind.String)
+                {
+                    throw new SdkgenException("Fatal", $"'{path_}.fingerprint' must be set to a value of type string");
+                }
+                fingerprint = fingerprintJson_.GetString();
+            }
+
+            return new ContextDeviceInfo(id, language, platform, timezone, type, version, fingerprint);
         }
 
 

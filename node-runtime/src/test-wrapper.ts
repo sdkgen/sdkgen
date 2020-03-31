@@ -36,6 +36,7 @@ export function apiTestWrapper<T extends BaseApiConfig<any>>(api: T): T {
                                       ? ctx.request.deviceInfo.type
                                       : "test",
                               version: null,
+                              fingerprint: null,
                           },
                 extra: {},
                 headers: {},
