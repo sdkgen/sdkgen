@@ -33,16 +33,16 @@ export function generateEnum(type: EnumType) {
 
 export function getAnnotation(type: Type): string {
     switch (type.constructor) {
-        case DatePrimitiveType: 
-            return '        @JsonAdapter(DateAdapter::class)\n';
-        case DateTimePrimitiveType: 
-            return '        @JsonAdapter(DateTimeAdapter::class)\n';
+        case DatePrimitiveType:
+            return "        @JsonAdapter(DateAdapter::class)\n";
+        case DateTimePrimitiveType:
+            return "        @JsonAdapter(DateTimeAdapter::class)\n";
         case ArrayType:
             return getAnnotation((type as ArrayType).base);
-        case OptionalType: 
+        case OptionalType:
             return getAnnotation((type as OptionalType).base);
-        default: 
-            return '';
+        default:
+            return "";
     }
 }
 
