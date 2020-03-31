@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Point
 import android.os.Build
 import android.provider.Settings
+import android.util.Log
 import android.view.WindowManager
 import com.google.gson.*
 import okhttp3.MediaType.Companion.toMediaType
@@ -153,6 +154,8 @@ open class SdkgenHttpClient(
                 add("deviceInfo", makeDeviceObj())
             }
 
+            Log.d("tag body", body.toString())
+
             val request = Request.Builder()
                 .url("$baseUrl${if (baseUrl.last() == '/') "" else "/"}$functionName")
                 .post(body.toString().toRequestBody("application/json; charset=utf-8".toMediaType()))
@@ -164,7 +167,7 @@ open class SdkgenHttpClient(
             try {
                 val response = call.execute()
 
-                if (response.code in 501..599) {
+                if (response.code in 500..599) {
                     continuation.resume(
                         InternalResponse(
                             JsonObject().apply {
@@ -198,6 +201,8 @@ open class SdkgenHttpClient(
                 }
 
                 if (response.code != 200) {
+                    Log.i("tag", response.code.toString())
+                    Log.i("tag", responseBody?.toString() ?: "responseBOdy is null")
                     val jsonError = responseBody.getAsJsonObject("error")
                     continuation.resume(InternalResponse(jsonError, null))
                 } else {

@@ -129,9 +129,9 @@ export function generateJsonAddRepresentation(type: Type, fieldName: string): st
         case OptionalType:
             return generateJsonAddRepresentation((type as OptionalType).base, fieldName);
         case DatePrimitiveType:
-            return `addProperty(\"${fieldName}\", DateAdapter.sdf.format(${mangle(fieldName)}))`;
+            return `addProperty(\"${fieldName}\", ${mangle(fieldName)}?.let { DateAdapter.sdf.format(it.time)}) `;
         case DateTimePrimitiveType:
-            return `addProperty(\"${fieldName}\", DateTimeAdapter.sdf.format(${mangle(fieldName)}))`;
+            return `addProperty(\"${fieldName}\", ${mangle(fieldName)}?.let { DateTimeAdapter.sdf.format(it.time)})`;
         case ArrayType:
         case StructType:
         case EnumType:

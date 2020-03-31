@@ -4,7 +4,9 @@ import { generateClass, generateEnum, generateErrorClass, generateJsonAddReprese
 interface Options {}
 
 export function generateAndroidClientSource(ast: AstRoot, options: Options) {
-    let code = `import android.content.Context
+    let code = `@file:Suppress("UNNECESSARY_SAFE_CALL")
+
+import android.content.Context
 import android.util.Base64
 import com.google.gson.*
 import com.google.gson.reflect.TypeToken
@@ -15,7 +17,6 @@ import io.sdkgen.runtime.SdkgenHttpClient
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.async
 import java.lang.reflect.Type
 import java.text.SimpleDateFormat
@@ -27,7 +28,6 @@ inline fun <reified T> Gson.fromJson(json: String) =
 inline fun <reified T> Gson.fromJson(json: JsonElement) =
     fromJson<T>(json, object : TypeToken<T>() {}.type)
 
-@ExperimentalCoroutinesApi
 @Suppress("DeferredIsResult", "unused")
 class ApiClient(
     baseUrl: String,
@@ -65,7 +65,7 @@ class ApiClient(
                     return
                 }
 
-                val dateTimeString = sdf.format(value)
+                val dateTimeString = sdf.format(value.time)
                 it.value(dateTimeString)
             }
         }
@@ -99,7 +99,7 @@ class ApiClient(
                     return
                 }
 
-                val dateTimeString = sdf.format(value)
+                val dateTimeString = sdf.format(value.time)
                 it.value(dateTimeString)
             }
         }
@@ -107,7 +107,7 @@ class ApiClient(
         override fun read(reader: JsonReader?): Calendar? {
             reader?.let {
                 val dateTimeString = it.nextString()
-
+                
                 try {
                     return Calendar.getInstance().apply { time = sdf.parse(dateTimeString)!! }
                 } catch (e: Exception) {
