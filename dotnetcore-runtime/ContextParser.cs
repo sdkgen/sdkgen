@@ -30,7 +30,7 @@ namespace Sdkgen.Runtime
             }
             else
             {
-                deviceInfo = new ContextDeviceInfo(null, null, new Dictionary<string, JsonElement>(), null, null, null);
+                deviceInfo = new ContextDeviceInfo(null, null, new Dictionary<string, JsonElement>(), null, null, null, null);
             }
 
             JsonElement extraJson_;
@@ -200,7 +200,27 @@ namespace Sdkgen.Runtime
                 }
                 version = versionJson_.GetString();
             }
-            return new ContextDeviceInfo(id, language, platform, timezone, type, version);
+
+            JsonElement fingerprintJson_;
+            if (!json_.TryGetProperty("fingerprint", out fingerprintJson_))
+            {
+                fingerprintJson_ = new JsonElement();
+            }
+            string? fingerprint;
+            if (fingerprintJson_.ValueKind == JsonValueKind.Null || fingerprintJson_.ValueKind == JsonValueKind.Undefined)
+            {
+                fingerprint = null;
+            }
+            else
+            {
+                if (fingerprintJson_.ValueKind != JsonValueKind.String)
+                {
+                    throw new SdkgenException("Fatal", string.Format("'{0}' must be set to a value of type string", string.Format("{0}.fingerprint", path_)));
+                }
+                fingerprint = fingerprintJson_.GetString();
+            }
+
+            return new ContextDeviceInfo(id, language, platform, timezone, type, version, fingerprint);
         }
 
 
