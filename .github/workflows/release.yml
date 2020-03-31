@@ -248,7 +248,7 @@ jobs:
       env: 
         BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
         BINTRAY_API_KEY: ${{ secrets.BINTRAY_API_KEY }}
-    - run: sed -i -e "s/versionName \"1.0\"/versionName \"${{ github.ref }}\"/g" build.gradle
+    - run: sed -i -e "s/versionName \"1.0\"/versionName \"$(echo \"${{ github.ref }}\" | cut -d'/' -f3)\"/g" build.gradle
       working-directory: ./android-runtime/runtime
     - run: sed -i -e "s/versionCode 1/versionCode $(date +%s)/g" build.gradle
       working-directory: ./android-runtime/runtime
