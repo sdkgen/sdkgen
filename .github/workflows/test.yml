@@ -205,3 +205,10 @@ jobs:
       working-directory: ./kotlin-generator
     - run: npm test
       working-directory: ./kotlin-generator
+
+  android-runtime: 
+    runs-on: ubuntu-latest
+    steps: 
+    - uses: Raul6469/android-gradle-action@2.0.0
+      with: 
+        args: "./android-runtime/gradlew test install"

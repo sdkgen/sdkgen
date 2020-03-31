@@ -103,7 +103,14 @@ jobs:
     steps: 
     - uses: Raul6469/android-gradle-action@2.0.0
       with: 
-        args: "./android-runtime/gradlew test install"
+        args: "./android-runtime/gradlew install bintrayUpload"
+      env: 
+        BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
+        BINTRAY_API_KEY: ${{ secrets.BINTRAY_API_KEY }}
+    - run: sed -i -e "s/versionName \"1.0\"/versionName $(cat ../version/version.txt)/g" build.gradle
+      working-directory: ./android-runtime/runtime
+    - run: sed -i -e "s/versionCode 1/versionCode $(date +%s)/g" build.gradle
+      working-directory: ./android-runtime/runtime
 
   typescript-generator:
     needs: [parser, _version]
