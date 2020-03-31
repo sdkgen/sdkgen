@@ -13,11 +13,17 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.InterruptedIOException
+import java.lang.reflect.Type
 import java.net.SocketTimeoutException
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.coroutines.resume
 import kotlin.coroutines.suspendCoroutine
+import android.util.Base64
+import com.google.gson.stream.JsonReader
+import com.google.gson.stream.JsonWriter
+import java.text.SimpleDateFormat
+
 
 @Suppress("unused")
 open class SdkgenHttpClient(
@@ -25,6 +31,90 @@ open class SdkgenHttpClient(
     private val applicationContext: Context,
     private val defaultTimeoutMillis: Long = 10000L
 ) {
+
+    class ByteArrayDeserializer : JsonDeserializer<ByteArray> {
+        @Throws(JsonParseException::class)
+        override fun deserialize(
+            element: JsonElement,
+            arg1: Type?,
+            arg2: JsonDeserializationContext?
+        ): ByteArray {
+            try {
+                return Base64.decode(element.asString, Base64.DEFAULT)
+            } catch (e: Exception) {
+                throw JsonIOException(e.message)
+            }
+        }
+    }
+
+    class DateTimeAdapter: TypeAdapter<Calendar>() {
+        companion object {
+            val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US).apply {
+                this.timeZone = TimeZone.getTimeZone("UTC")
+            }
+        }
+
+        override fun write(out: JsonWriter?, value: Calendar?) {
+            out?.let {
+                if (value == null) {
+                    it.nullValue()
+                    return
+                }
+
+                val dateTimeString = sdf.format(value.time)
+                it.value(dateTimeString)
+            }
+        }
+
+        override fun read(reader: JsonReader?): Calendar? {
+            reader?.let {
+                val dateTimeString = it.nextString()
+
+                try {
+                    return Calendar.getInstance().apply { time = sdf.parse(dateTimeString)!! }
+                } catch (e: Exception) {
+                    throw JsonIOException(e.message)
+                }
+            } ?: run {
+                return null
+            }
+        }
+    }
+
+    class DateAdapter: TypeAdapter<Calendar>() {
+        companion object {
+            val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US).apply {
+                this.timeZone = TimeZone.getTimeZone("UTC")
+            }
+        }
+
+        override fun write(out: JsonWriter?, value: Calendar?) {
+            out?.let {
+                if (value == null) {
+                    it.nullValue()
+                    return
+                }
+
+                val dateTimeString = sdf.format(value.time)
+                it.value(dateTimeString)
+            }
+        }
+
+        override fun read(reader: JsonReader?): Calendar? {
+            reader?.let {
+                val dateTimeString = it.nextString()
+
+                try {
+                    return Calendar.getInstance().apply { time = sdf.parse(dateTimeString)!! }
+                } catch (e: Exception) {
+                    throw JsonIOException(e.message)
+                }
+            } ?: run {
+                return null
+            }
+        }
+    }
+
     data class InternalResponse(val error: JsonObject?, val result: JsonObject?)
 
     private val random = Random()
