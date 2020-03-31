@@ -109,7 +109,7 @@ jobs:
       working-directory: ./android-runtime/runtime
     - run: sed -i -e "s/versionCode 1/versionCode $(date +%s)/g" build.gradle
       working-directory: ./android-runtime/runtime
-    - uses: Raul6469/android-gradle-action@2.0.0
+    - uses: xdtianyu/actions-android-ci@master
       with: 
         args: "./android-runtime/gradlew test install bintrayUpload"
       env: 
