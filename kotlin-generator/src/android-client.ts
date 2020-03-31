@@ -29,9 +29,8 @@ class ApiClient(
     baseUrl: String,
     applicationContext: Context,
     defaultTimeoutMillis: Long = 10000L
-) : SdkgenHttpClient(baseUrl, applicationContext, defaultTimeoutMillis) {`;
-
-    code += `
+) : SdkgenHttpClient(baseUrl, applicationContext, defaultTimeoutMillis) {
+    
     private val gson = GsonBuilder()
         .registerTypeAdapter(object : TypeToken<ByteArray>() {}.type, ByteArrayDeserializer())
         .create()\n\n`;
