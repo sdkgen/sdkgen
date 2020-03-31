@@ -244,7 +244,7 @@ jobs:
     steps: 
     - uses: Raul6469/android-gradle-action@2.0.0
       with: 
-        args: "./android-runtime/gradlew install bintrayUpload"
+        args: "./android-runtime/gradlew test install bintrayUpload"
       env: 
         BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
         BINTRAY_API_KEY: ${{ secrets.BINTRAY_API_KEY }}
