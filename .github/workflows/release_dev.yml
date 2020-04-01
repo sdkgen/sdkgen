@@ -109,12 +109,14 @@ jobs:
       working-directory: ./android-runtime/runtime
     - run: sed -i -e "s/versionCode 1/versionCode $(date +%s)/g" build.gradle
       working-directory: ./android-runtime/runtime
-    - uses: xdtianyu/actions-android-ci@master
+    - uses: giorgosneokleous93/docker-multicommand-android@v1.0.0
       with: 
-        args: "./android-runtime/gradlew test install bintrayUpload"
+        workingdir: "./android-runtime/"
+        command1: "./gradlew test install bintrayUpload"
       env: 
         BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
         BINTRAY_API_KEY: ${{ secrets.BINTRAY_API_KEY }}
+
   typescript-generator:
     needs: [parser, _version]
     runs-on: ubuntu-latest
