@@ -21,9 +21,14 @@ if (System.getenv('BINTRAY_USER') == null
 
 // Bintray
 bintray {
-    if (System.getenv('BINTRAY_USER') == null || file("local.properties").exists()) {
-        user = properties.getProperty("bintray.user") ?: System.getenv('BINTRAY_USER')
-        key = properties.getProperty("bintray.apikey") ?: System.getenv('BINTRAY_API_KEY')
+    if (file("local.properties").exists()
+            && properties.hasProperty("bintray.user")
+            && properties.hasProperty("bintray.apikey")) {
+        user = properties.getProperty("bintray.user")
+        key = properties.getProperty("bintray.apikey")
+    } else if (System.getenv('BINTRAY_USER') != null && System.getenv('BINTRAY_API_KEY') != null ) {
+        user = System.getenv('BINTRAY_USER')
+        key = System.getenv('BINTRAY_API_KEY')
     } else {
         user = ''
         key = ''
