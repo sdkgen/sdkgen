@@ -13,7 +13,8 @@ artifacts {
 }
 
 
-if (System.getenv('BINTRAY_USER') == null) {
+if (System.getenv('BINTRAY_USER') == null
+        && file("local.properties").exists()) {
     Properties properties = new Properties()
     properties.load(new FileInputStream("local.properties"))
 }
