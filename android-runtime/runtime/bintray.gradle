@@ -12,8 +12,11 @@ artifacts {
     archives sourcesJar
 }
 
-Properties properties = new Properties()
-properties.load( new FileInputStream("local.properties"))
+
+if (Sytem.getevn('BINTRAY_USER') == null) {
+    Properties properties = new Properties()
+    properties.load(new FileInputStream("local.properties"))
+}
 
 // Bintray
 bintray {
