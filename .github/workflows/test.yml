@@ -213,4 +213,4 @@ jobs:
     - uses: giorgosneokleous93/docker-multicommand-android@v1.0.0
       with: 
         workingdir: "./android-runtime/"
-        command1: "./gradlew test install"
+        command1: "./gradlew test assembleRelease"
