@@ -105,7 +105,7 @@ jobs:
     - uses: actions/download-artifact@v1
       with:
         name: version
-    - run: sed -i -e "s/versionName \"1.0\"/versionName $(cat ../version/version.txt)/g" build.gradle
+    - run: sed -i -e "s/versionName \"1.0\"/versionName \"$(cat ../../version/version.txt)\"/g" build.gradle
       working-directory: ./android-runtime/runtime
     - run: sed -i -e "s/versionCode 1/versionCode $(date +%s)/g" build.gradle
       working-directory: ./android-runtime/runtime
