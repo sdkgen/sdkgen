@@ -28,7 +28,7 @@ import {
 } from "@sdkgen/parser";
 
 export function generateEnum(type: EnumType) {
-    let enumDesc = '@Parcelize \n';
+    let enumDesc = "@Parcelize \n";
     enumDesc += `   enum class ${type.name} : Parcelable { ${type.values.map(x => mangle(x.value)).join(", ")} }\n`;
     return enumDesc;
 }
@@ -49,11 +49,13 @@ export function getAnnotation(type: Type): string {
 }
 
 export function generateClass(type: StructType) {
-    let classDesc = '@Parcelize\n' 
+    let classDesc = "@Parcelize\n";
     classDesc += `    data class ${type.name}(\n${type.fields
         .map(field => {
             let fieldDesc = getAnnotation(field.type);
-            fieldDesc += `        var ${mangle(field.name)}: ${generateKotlinTypeName(field.type)} ${field.type.constructor === OptionalType ? '= null' : ''}`;
+            fieldDesc += `        var ${mangle(field.name)}: ${generateKotlinTypeName(field.type)} ${
+                field.type.constructor === OptionalType ? "= null" : ""
+            }`;
             return fieldDesc;
         })
         .join(",\n")}\n    ) : Parcelable\n`;
