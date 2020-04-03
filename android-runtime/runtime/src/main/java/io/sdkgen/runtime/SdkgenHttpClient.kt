@@ -119,7 +119,7 @@ open class SdkgenHttpClient(
     private val random = Random()
     private val hexArray = "0123456789abcdef".toCharArray()
     private val gson = Gson()
-    val logging : HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
+    private val logging : HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
         this.level = HttpLoggingInterceptor.Level.BODY
         this.redactHeader("Authorization")
         this.redactHeader("Cookie")
