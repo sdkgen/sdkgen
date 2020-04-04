@@ -1,5 +1,3 @@
-package io.sdkgen.runtime
-
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Point
@@ -9,6 +7,7 @@ import android.view.WindowManager
 import com.google.gson.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.io.InterruptedIOException
@@ -28,8 +27,11 @@ import java.text.SimpleDateFormat
 open class SdkgenHttpClient(
     private val baseUrl: String,
     private val applicationContext: Context,
-    private val defaultTimeoutMillis: Long = 10000L
+    private val defaultTimeoutMillis: Long = 10000L,
+    private val loggingType: LoggingType
 ) {
+
+    enum class LoggingType { Debug, Error, Info }
 
     class ByteArrayDeserializer : JsonDeserializer<ByteArray> {
         @Throws(JsonParseException::class)
@@ -120,16 +122,14 @@ open class SdkgenHttpClient(
     private val hexArray = "0123456789abcdef".toCharArray()
     private val gson = Gson()
     private val logging : HttpLoggingInterceptor = HttpLoggingInterceptor().apply {
-        this.level = HttpLoggingInterceptor.Level.BODY
-        this.redactHeader("Authorization")
-        this.redactHeader("Cookie")
+        level = HttpLoggingInterceptor.Level.BODY
     }
     private val httpClient = OkHttpClient.Builder().apply {
-        this.addInterceptor(logging)
-        this.connectTimeout(5, TimeUnit.MINUTES)
-        this.readTimeout(5, TimeUnit.MINUTES)
-        this.callTimeout(5, TimeUnit.MINUTES)
-        this.writeTimeout(5, TimeUnit.MINUTES)
+        if(loggingType == LoggingType.Debug) this.addInterceptor(logging)
+        connectTimeout(5, TimeUnit.MINUTES)
+        readTimeout(5, TimeUnit.MINUTES)
+        callTimeout(5, TimeUnit.MINUTES)
+        writeTimeout(5, TimeUnit.MINUTES)
     }.build()
 
     private fun callId(): String {

@@ -28,8 +28,9 @@ inline fun <reified T> Gson.fromJson(json: JsonElement) =
 class ApiClient(
     baseUrl: String,
     applicationContext: Context,
-    defaultTimeoutMillis: Long = 10000L
-) : SdkgenHttpClient(baseUrl, applicationContext, defaultTimeoutMillis) {
+    defaultTimeoutMillis: Long = 10000L,
+    loggingType: LoggingType
+) : SdkgenHttpClient(baseUrl, applicationContext, defaultTimeoutMillis, loggingType) {
     
     private val gson = GsonBuilder()
         .registerTypeAdapter(object : TypeToken<ByteArray>() {}.type, ByteArrayDeserializer())
