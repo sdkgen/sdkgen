@@ -53,8 +53,8 @@ export function generateClass(type: StructType) {
     classDesc += `    data class ${type.name}(\n${type.fields
         .map(field => {
             let fieldDesc = getAnnotation(field.type);
-            fieldDesc += `        var ${mangle(field.name)}: ${generateKotlinTypeName(field.type)} ${
-                field.type.constructor === OptionalType ? "= null" : ""
+            fieldDesc += `        var ${mangle(field.name)}: ${generateKotlinTypeName(field.type)}${
+                field.type.constructor === OptionalType ? " = null" : ""
             }`;
             return fieldDesc;
         })
