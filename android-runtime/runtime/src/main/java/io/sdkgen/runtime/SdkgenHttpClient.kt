@@ -2,6 +2,7 @@ package io.sdkgen.runtime
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Point
 import android.os.Build
 import android.provider.Settings
@@ -193,13 +194,25 @@ open class SdkgenHttpClient(
         return bcp47Tag.toString()
     }
 
+    private fun deviceId(prefs: SharedPreferences): String? {
+        return if (prefs.contains("deviceId")) {
+            prefs.getString("deviceId", null)
+        } else {
+            val bytes = ByteArray(16)
+            random.nextBytes(bytes)
+            val deviceId = bytesToHex(bytes)
+            prefs.edit().putString("deviceId", deviceId).apply()
+            deviceId
+        }
+    }
+
     @SuppressLint("HardwareIds")
     private fun makeDeviceObj(): JsonObject {
         return JsonObject().apply {
             val pref = applicationContext.getSharedPreferences("api", Context.MODE_PRIVATE)
 
-            if (pref.contains("deviceId")) {
-                addProperty("id", pref.getString("deviceId", null))
+            deviceId(pref)?.let { deviceId ->
+                addProperty("id", deviceId)
             }
 
             addProperty("fingerprint", Settings.Secure.getString(applicationContext.contentResolver, Settings.Secure.ANDROID_ID))
