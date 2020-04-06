@@ -27,7 +27,7 @@ inline fun <reified T> Gson.fromJson(json: JsonElement) =
     fromJson<T>(json, object : TypeToken<T>() {}.type)
 
 @Suppress("DeferredIsResult", "unused")
-open class ApiClient(
+class ApiClient(
     baseUrl: String,
     applicationContext: Context,
     defaultTimeoutMillis: Long = 10000L
