@@ -6,6 +6,8 @@ interface Options {}
 export function generateAndroidClientSource(ast: AstRoot, options: Options) {
     let code = `@file:Suppress("UNNECESSARY_SAFE_CALL")
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 import android.content.Context
 import android.util.Base64
 import com.google.gson.*
