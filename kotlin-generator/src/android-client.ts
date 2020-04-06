@@ -50,6 +50,11 @@ open class ApiClient(
     }
 
     const errorTypeEnumEntries: string[] = [];
+    
+    const connectionError = 'Connection'
+    errorTypeEnumEntries.push(connectionError)
+    code += `    ${generateErrorClass(connectionError)}`;
+    
     for (const error of ast.errors) {
         code += `    ${generateErrorClass(error)}`;
         errorTypeEnumEntries.push(error);
