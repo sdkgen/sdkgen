@@ -194,7 +194,9 @@ open class SdkgenHttpClient(
         return bcp47Tag.toString()
     }
 
-    private fun deviceId(prefs: SharedPreferences): String? {
+    protected fun getDeviceId(): String {
+        val prefs = applicationContext.getSharedPreferences("api", Context.MODE_PRIVATE)
+
         return if (prefs.contains("deviceId")) {
             prefs.getString("deviceId", null)
         } else {
@@ -209,12 +211,7 @@ open class SdkgenHttpClient(
     @SuppressLint("HardwareIds")
     private fun makeDeviceObj(): JsonObject {
         return JsonObject().apply {
-            val pref = applicationContext.getSharedPreferences("api", Context.MODE_PRIVATE)
-
-            deviceId(pref)?.let { deviceId ->
-                addProperty("id", deviceId)
-            }
-
+            addProperty("id", getDeviceId())    
             addProperty("fingerprint", Settings.Secure.getString(applicationContext.contentResolver, Settings.Secure.ANDROID_ID))
             addProperty("language", language())
             add("platform", JsonObject().apply {
