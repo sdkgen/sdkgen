@@ -240,7 +240,7 @@ jobs:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
   cli:
-    needs: [parser, typescript-generator, dart-generator, kotlin-generator, _version]
+    needs: [parser, typescript-generator, dart-generator, csharp-generator, kotlin-generator, _version]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
