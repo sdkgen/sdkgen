@@ -10,8 +10,8 @@ export const simpleStringTypes = [
 	"cnpj",
 	"cpf",
 	"email",
+	"html",
 	"phone",
-	"safehtml",
 	"url",
 	"xml",
 ];

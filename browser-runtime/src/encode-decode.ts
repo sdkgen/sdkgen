@@ -1,6 +1,6 @@
 import { TypeDescription, TypeTable } from "./ast";
 
-const simpleStringTypes = ["string", "email", "phone", "xml"];
+const simpleStringTypes = ["string", "email", "phone", "html", "xml"];
 const simpleTypes = ["json", "bool", "url", "int", "uint", "float", "money", "hex", "uuid", "base64", "void", ...simpleStringTypes];
 
 function simpleEncodeDecode(path: string, type: string, value: any) {

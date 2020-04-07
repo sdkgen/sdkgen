@@ -12,6 +12,7 @@ import {
     EnumType,
     FloatPrimitiveType,
     HexPrimitiveType,
+    HtmlPrimitiveType,
     IntPrimitiveType,
     JsonPrimitiveType,
     MoneyPrimitiveType,
@@ -93,6 +94,7 @@ export function generateKotlinTypeName(type: Type): string {
         case CpfPrimitiveType:
         case CnpjPrimitiveType:
         case EmailPrimitiveType:
+        case HtmlPrimitiveType:
         case UrlPrimitiveType:
         case UuidPrimitiveType:
         case HexPrimitiveType:
@@ -131,6 +133,7 @@ export function generateJsonAddRepresentation(type: Type, fieldName: string): st
         case CpfPrimitiveType:
         case CnpjPrimitiveType:
         case EmailPrimitiveType:
+        case HtmlPrimitiveType:
         case UrlPrimitiveType:
         case UuidPrimitiveType:
         case HexPrimitiveType:

@@ -12,6 +12,7 @@ import {
     EnumType,
     FloatPrimitiveType,
     HexPrimitiveType,
+    HtmlPrimitiveType,
     IntPrimitiveType,
     MoneyPrimitiveType,
     OptionalType,
@@ -92,6 +93,7 @@ function checkClientToServer(path: string, issues: string[], t1: Type, t2: Type)
         (t1 instanceof CpfPrimitiveType && t2 instanceof StringPrimitiveType) ||
         (t1 instanceof CnpjPrimitiveType && t2 instanceof StringPrimitiveType) ||
         (t1 instanceof HexPrimitiveType && t2 instanceof StringPrimitiveType) ||
+        (t1 instanceof HtmlPrimitiveType && t2 instanceof StringPrimitiveType) ||
         (t1 instanceof Base64PrimitiveType && t2 instanceof StringPrimitiveType) ||
         (t1 instanceof BytesPrimitiveType && t2 instanceof StringPrimitiveType) ||
         (t1 instanceof BytesPrimitiveType && t2 instanceof Base64PrimitiveType) ||
@@ -182,6 +184,7 @@ function checkServerToClient(path: string, issues: string[], t1: Type, t2: Type)
         (t1 instanceof StringPrimitiveType && t2 instanceof CpfPrimitiveType) ||
         (t1 instanceof StringPrimitiveType && t2 instanceof CnpjPrimitiveType) ||
         (t1 instanceof StringPrimitiveType && t2 instanceof HexPrimitiveType) ||
+        (t1 instanceof StringPrimitiveType && t2 instanceof HtmlPrimitiveType) ||
         (t1 instanceof StringPrimitiveType && t2 instanceof Base64PrimitiveType) ||
         (t1 instanceof StringPrimitiveType && t2 instanceof BytesPrimitiveType) ||
         (t1 instanceof Base64PrimitiveType && t2 instanceof BytesPrimitiveType) ||

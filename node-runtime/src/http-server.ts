@@ -12,6 +12,7 @@ import {
     DateTimePrimitiveType,
     FloatPrimitiveType,
     HexPrimitiveType,
+    HtmlPrimitiveType,
     IntPrimitiveType,
     jsonToAst,
     MoneyPrimitiveType,
@@ -354,6 +355,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
                                             type instanceof BigIntPrimitiveType ||
                                             type instanceof CpfPrimitiveType ||
                                             type instanceof CnpjPrimitiveType ||
+                                            type instanceof HtmlPrimitiveType ||
                                             type instanceof UuidPrimitiveType ||
                                             type instanceof HexPrimitiveType ||
                                             type instanceof Base64PrimitiveType
@@ -468,11 +470,16 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
                                             type instanceof BigIntPrimitiveType ||
                                             type instanceof CpfPrimitiveType ||
                                             type instanceof CnpjPrimitiveType ||
+                                            type instanceof HtmlPrimitiveType ||
                                             type instanceof UuidPrimitiveType ||
                                             type instanceof HexPrimitiveType ||
                                             type instanceof Base64PrimitiveType
                                         ) {
                                             res.setHeader("content-type", "text/plain");
+                                            res.write(`${reply.result}`);
+                                            res.end();
+                                        } else if (type instanceof HtmlPrimitiveType) {
+                                            res.setHeader("content-type", "text/html");
                                             res.write(`${reply.result}`);
                                             res.end();
                                         } else if (type instanceof BytesPrimitiveType) {

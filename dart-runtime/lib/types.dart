@@ -40,6 +40,7 @@ const simpleStringTypes = [
   "cnpj",
   "cpf",
   "email",
+  "html",
   "phone",
   "url",
   "xml",

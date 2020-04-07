@@ -12,6 +12,7 @@ import {
     EnumType,
     FloatPrimitiveType,
     HexPrimitiveType,
+    HtmlPrimitiveType,
     IntPrimitiveType,
     JsonPrimitiveType,
     MoneyPrimitiveType,
@@ -111,6 +112,7 @@ const reservedWords = [
 
 const typesWithNativeNullable: any[] = [
     StringPrimitiveType,
+    HtmlPrimitiveType,
     CpfPrimitiveType,
     CnpjPrimitiveType,
     BytesPrimitiveType,
@@ -299,6 +301,18 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
                 if (${jsonElementVar}.ValueKind != JsonValueKind.String)
                 {
                     throw new FatalException($"'{${path}}' must be a string.");
+                }
+                ${targetVar} = ${jsonElementVar}.GetString();
+            `
+                .replace(/\n                /g, "\n")
+                .trim();
+        }
+        case HtmlPrimitiveType: {
+            // TODO: validate HTML
+            return `
+                if (${jsonElementVar}.ValueKind != JsonValueKind.String)
+                {
+                    throw new FatalException($"'{${path}}' must be a valid HTML string.");
                 }
                 ${targetVar} = ${jsonElementVar}.GetString();
             `
@@ -566,6 +580,7 @@ export function encodeType(type: Type, valueVar: string, path: string, suffix = 
         case CpfPrimitiveType:
         case CnpjPrimitiveType:
         case EmailPrimitiveType:
+        case HtmlPrimitiveType:
         case UrlPrimitiveType:
         case UuidPrimitiveType:
         case Base64PrimitiveType:
@@ -648,6 +663,7 @@ export function generateTypeName(type: Type): string {
         case CpfPrimitiveType:
         case CnpjPrimitiveType:
         case EmailPrimitiveType:
+        case HtmlPrimitiveType:
         case UrlPrimitiveType:
         case UuidPrimitiveType:
         case HexPrimitiveType:
