@@ -13,7 +13,6 @@ import {
     Field,
     FloatPrimitiveType,
     HexPrimitiveType,
-    HtmlPrimitiveType,
     IntPrimitiveType,
     MoneyPrimitiveType,
     Operation,
@@ -45,7 +44,6 @@ const REST_ENCODABLE_TYPES: Function[] = [
     CnpjPrimitiveType,
     UuidPrimitiveType,
     HexPrimitiveType,
-    HtmlPrimitiveType,
     Base64PrimitiveType,
     EnumType,
 ];

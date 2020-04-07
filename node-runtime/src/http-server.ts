@@ -355,7 +355,6 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
                                             type instanceof BigIntPrimitiveType ||
                                             type instanceof CpfPrimitiveType ||
                                             type instanceof CnpjPrimitiveType ||
-                                            type instanceof HtmlPrimitiveType ||
                                             type instanceof UuidPrimitiveType ||
                                             type instanceof HexPrimitiveType ||
                                             type instanceof Base64PrimitiveType
