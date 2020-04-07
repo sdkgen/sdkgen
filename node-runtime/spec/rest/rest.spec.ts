@@ -49,7 +49,6 @@ api.fn.uploadFile = async (ctx: Context, args: {}) => {
     );
 };
 
-
 api.fn.getHtml = async (ctx: Context, args: {}) => {
     return "<h1>Hello world!</h1>";
 };
