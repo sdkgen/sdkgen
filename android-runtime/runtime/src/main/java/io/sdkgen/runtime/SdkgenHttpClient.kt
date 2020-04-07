@@ -196,15 +196,7 @@ open class SdkgenHttpClient(
 
     protected fun getDeviceId() {
         val prefs = applicationContext.getSharedPreferences("api", Context.MODE_PRIVATE)
-        if (prefs.contains("deviceId")) {
-            prefs.getString("deviceId", null)
-        } else {
-            val bytes = ByteArray(16)
-            random.nextBytes(bytes)
-            val deviceId = bytesToHex(bytes)
-            prefs.edit().putString("deviceId", deviceId).apply()
-            deviceId
-        }
+        return deviceId(prefs)
     }
 
     private fun deviceId(prefs: SharedPreferences): String? {
