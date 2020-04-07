@@ -27,3 +27,6 @@ type File {
 
 @rest POST /upload
 fn uploadFile(): File[]
+
+@rest GET /html
+fn getHtml(): html

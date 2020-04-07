@@ -12,6 +12,7 @@ import {
     EnumType,
     FloatPrimitiveType,
     HexPrimitiveType,
+    HtmlPrimitiveType,
     IntPrimitiveType,
     JsonPrimitiveType,
     MoneyPrimitiveType,
@@ -94,6 +95,7 @@ export function generateTypeName(type: Type): string {
         case CpfPrimitiveType:
         case CnpjPrimitiveType:
         case EmailPrimitiveType:
+        case HtmlPrimitiveType:
         case UrlPrimitiveType:
         case UuidPrimitiveType:
         case HexPrimitiveType:

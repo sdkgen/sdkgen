@@ -42,6 +42,7 @@ export class Lexer {
         "cpf",
         "cnpj",
         "email",
+        "html",
         "url",
         "uuid",
         "hex",

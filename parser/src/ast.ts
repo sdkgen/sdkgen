@@ -88,6 +88,9 @@ export class UuidPrimitiveType extends PrimitiveType {
 export class HexPrimitiveType extends PrimitiveType {
     name = "hex";
 }
+export class HtmlPrimitiveType extends PrimitiveType {
+    name = "html";
+}
 export class Base64PrimitiveType extends PrimitiveType {
     name = "base64";
 }

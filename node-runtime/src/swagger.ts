@@ -11,6 +11,7 @@ import {
     EnumType,
     FloatPrimitiveType,
     HexPrimitiveType,
+    HtmlPrimitiveType,
     IntPrimitiveType,
     MoneyPrimitiveType,
     OptionalType,
@@ -198,12 +199,17 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
                                                   bodyType instanceof MoneyPrimitiveType ||
                                                   bodyType instanceof CpfPrimitiveType ||
                                                   bodyType instanceof CnpjPrimitiveType ||
+                                                  bodyType instanceof HtmlPrimitiveType ||
                                                   bodyType instanceof UuidPrimitiveType ||
                                                   bodyType instanceof HexPrimitiveType ||
                                                   bodyType instanceof BytesPrimitiveType ||
                                                   bodyType instanceof Base64PrimitiveType
                                                   ? {
-                                                        "text/plain": { schema: typeToSchema(definitions, bodyType) },
+                                                        [bodyType instanceof HtmlPrimitiveType
+                                                            ? "text/html"
+                                                            : "text/plain"]: {
+                                                            schema: typeToSchema(definitions, bodyType),
+                                                        },
                                                     }
                                                   : {};
                                           })(),
@@ -331,6 +337,7 @@ function typeToSchema(definitions: any, type: Type): any {
         type instanceof StringPrimitiveType ||
         type instanceof UuidPrimitiveType ||
         type instanceof HexPrimitiveType ||
+        type instanceof HtmlPrimitiveType ||
         type instanceof Base64PrimitiveType
     ) {
         return {

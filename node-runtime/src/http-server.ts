@@ -12,6 +12,7 @@ import {
     DateTimePrimitiveType,
     FloatPrimitiveType,
     HexPrimitiveType,
+    HtmlPrimitiveType,
     IntPrimitiveType,
     jsonToAst,
     MoneyPrimitiveType,
@@ -473,6 +474,10 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
                                             type instanceof Base64PrimitiveType
                                         ) {
                                             res.setHeader("content-type", "text/plain");
+                                            res.write(`${reply.result}`);
+                                            res.end();
+                                        } else if (type instanceof HtmlPrimitiveType) {
+                                            res.setHeader("content-type", "text/html");
                                             res.write(`${reply.result}`);
                                             res.end();
                                         } else if (type instanceof BytesPrimitiveType) {
