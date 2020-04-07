@@ -2,7 +2,6 @@ package io.sdkgen.runtime
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.content.SharedPreferences
 import android.graphics.Point
 import android.os.Build
 import android.provider.Settings
@@ -196,9 +195,8 @@ open class SdkgenHttpClient(
 
     protected fun getDeviceId(): String {
         val prefs = applicationContext.getSharedPreferences("api", Context.MODE_PRIVATE)
-
         return if (prefs.contains("deviceId")) {
-            prefs.getString("deviceId", null)
+            prefs.getString("deviceId", "") ?: ""
         } else {
             val bytes = ByteArray(16)
             random.nextBytes(bytes)
