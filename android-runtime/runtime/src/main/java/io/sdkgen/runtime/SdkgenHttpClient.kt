@@ -194,7 +194,7 @@ open class SdkgenHttpClient(
         return bcp47Tag.toString()
     }
 
-    protected fun getDeviceId() {
+    protected fun getDeviceId(): String? {
         val prefs = applicationContext.getSharedPreferences("api", Context.MODE_PRIVATE)
         return deviceId(prefs)
     }
