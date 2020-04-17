@@ -18,6 +18,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.async
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.launch
 import java.util.*
 
 inline fun <reified T> Gson.fromJson(json: String) =
@@ -74,7 +76,8 @@ class ApiClient(
     }\n\n`;
     }
 
-    code += `    private val sdkgenIOScope = CoroutineScope(IO)\n\n`;
+    code += `    private val sdkgenIOScope = CoroutineScope(IO)\n`;
+    code += `    private val uiScope = CoroutineScope(Main)\n\n`;
     code += ast.operations
         .map(op => {
             let opImpl = "";
@@ -98,26 +101,33 @@ class ApiClient(
 
             opImpl += `\n`;
             opImpl += `        val call = makeRequest(\"${op.prettyName}\", bodyArgs, timeoutMillis)\n`;
-            opImpl += `        val data = if (call.result?.get("result") != null)\n`;
-            opImpl += `            gson.fromJson<${generateKotlinTypeName(op.returnType)}>(call.result?.get("result")!!)\n`;
-            opImpl += `        else null\n`;
-            opImpl += `\n`;
-            opImpl += `        val error = if (call.error != null) {\n`;
-            opImpl += `            val errorType = try {\n`;
-            opImpl += `                ErrorType.valueOf(call.error?.get("type")?.asString ?: "")\n`;
-            opImpl += `            } catch (e: Exception) {\n`;
-            opImpl += `                ErrorType.Fatal\n`;
-            opImpl += `            }\n\n`;
-            opImpl += `            gson.fromJson(call.error, errorType.type())\n`;
-            opImpl += `        } else null\n`;
-            opImpl += `\n`;
-            opImpl += `        val response: Response<${generateKotlinTypeName(op.returnType)}> = Response(error, data)\n`;
-            opImpl += `        callback?.invoke(response)\n`;
+            opImpl += `        val response: Response<${generateKotlinTypeName(op.returnType)}> = handleCallResponse(call)\n`;
+            opImpl += `        uiScope.launch { callback?.invoke(response) } \n`;
             opImpl += `        return@async response\n`;
             opImpl += `    }\n`;
             return opImpl;
         })
         .join("\n");
+
+    code += `
+    private inline fun <reified T> handleCallResponse(callResponse: InternalResponse): Response<T> {
+        val data = if (callResponse.result?.get("result") != null)
+            gson.fromJson<T>(callResponse.result?.get("result")!!)
+        else null
+
+        val error = if (callResponse.error != null) {
+            val errorType = try {
+                ErrorType.valueOf(callResponse.error?.get("type")?.asString ?: "")
+            } catch (e: Exception) {
+                ErrorType.Fatal
+            }
+
+            gson.fromJson(callResponse.error, errorType.type())
+        } else null
+
+        return Response(error, data)
+    }
+    `;
 
     code += `}\n`;
 
