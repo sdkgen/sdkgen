@@ -124,6 +124,8 @@ encode(Map<String, Object> typeTable, String path, Object type, Object value) {
               .toUtc()
               .toIso8601String()
               .replaceAll("Z", "");
+        case "void":
+          return null;
         default:
           if (simpleTypes.contains(type)) {
             return simpleEncodeDecode(typeTable, path, type, value);
@@ -207,6 +209,8 @@ decode(Map<String, Object> typeTable, String path, Object type, Object value) {
                 "Invalid Type at '$path', expected ${jsonEncode(type)}, got ${jsonEncode(value)}");
           }
           return DateTime.parse("${value}Z").toLocal();
+        case "void":
+          return null;
         default:
           if (simpleTypes.contains(type)) {
             return simpleEncodeDecode(typeTable, path, type, value);
