@@ -65,7 +65,7 @@ export class SdkgenHttpClient {
 
         const encodedRet = await new Promise<any>((resolve, reject) => {
             const req = new XMLHttpRequest();
-            req.open("POST", this.baseUrl + "/" + name);
+            req.open("POST", this.baseUrl + "/" + functionName);
 
             req.onreadystatechange = () => {
                 if (req.readyState !== 4) return;
@@ -74,7 +74,7 @@ export class SdkgenHttpClient {
                     try {
                         if (response.error) {
                             reject(response.error);
-                            this.errorHook(response.error, name, args);
+                            this.errorHook(response.error, functionName, args);
                         } else {
                             resolve(response.result);
                         }
@@ -82,13 +82,13 @@ export class SdkgenHttpClient {
                         console.error(e);
                         const err = { type: "Fatal", message: e.toString() };
                         reject(err);
-                        this.errorHook(err, name, args);
+                        this.errorHook(err, functionName, args);
                     }
                 } catch (e) {
                     console.error(e);
                     const err = { type: "Fatal", message: `Falha de conexão com o servidor` };
                     reject(err);
-                    this.errorHook(err, name, args);
+                    this.errorHook(err, functionName, args);
                 }
             };
             req.send(JSON.stringify(request));
@@ -99,7 +99,7 @@ export class SdkgenHttpClient {
         });
 
         const ret = decode(this.astJson.typeTable, `${functionName}.ret`, func.ret, encodedRet);
-        this.successHook(ret, name, args);
+        this.successHook(ret, functionName, args);
         return ret;
     }
 }
