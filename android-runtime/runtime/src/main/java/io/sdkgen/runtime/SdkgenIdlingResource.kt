@@ -27,13 +27,13 @@ private class SimpleCountingIdlingResource(private val resourceName: String) : I
         }
 
         if (counterVal < 0) {
-            throw IllegalArgumentException("Counter has been corrupted!")
+            throw IllegalArgumentException("Idling resource counter < 0")
         }
     }
 }
 
 object SdkgenIdlingResource {
-    private const val resource = "io.sdkgen.sdkgen-idling-resource"
+    private const val resource = "io.sdkgen.runtime-idling-resource"
     private val countingIdlingResource = SimpleCountingIdlingResource(resource)
 
     fun increment() = countingIdlingResource.increment()
