@@ -21,8 +21,8 @@ import kotlin.coroutines.suspendCoroutine
 import android.util.Base64
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
+import okhttp3.Response
 import java.text.SimpleDateFormat
-
 
 @Suppress("unused")
 open class SdkgenHttpClient(
@@ -242,6 +242,7 @@ open class SdkgenHttpClient(
         bodyArgs: JsonObject?,
         timeoutMillis: Long? = null
     ): InternalResponse = suspendCoroutine { continuation ->
+        SdkgenIdlingResource.increment()
         try {
             val body = JsonObject().apply {
                 addProperty("version", 3)
@@ -259,10 +260,11 @@ open class SdkgenHttpClient(
             val call = httpClient.newCall(request)
             call.timeout().timeout(timeoutMillis ?: defaultTimeoutMillis, TimeUnit.MILLISECONDS)
 
+            var response: Response? = null
             try {
-                val response = call.execute()
-
+                response = call.execute()
                 if (response.code in 501..599) {
+                    SdkgenIdlingResource.decrement()
                     continuation.resume(
                         InternalResponse(
                             JsonObject().apply {
@@ -281,7 +283,7 @@ open class SdkgenHttpClient(
                     gson.fromJson(stringBody, JsonObject::class.java)
                 } catch (e: Exception) {
                     e.printStackTrace()
-
+                    SdkgenIdlingResource.decrement()
                     continuation.resume(
                         InternalResponse(
                             JsonObject().apply {
@@ -297,15 +299,15 @@ open class SdkgenHttpClient(
 
                 if (response.code != 200) {
                     val jsonError = responseBody.getAsJsonObject("error")
+                    SdkgenIdlingResource.decrement()
                     continuation.resume(InternalResponse(jsonError, null))
                 } else {
+                    SdkgenIdlingResource.decrement()
                     continuation.resume(InternalResponse(null, responseBody))
                 }
-
-                response.close()
             } catch (e: Exception) {
                 e.printStackTrace()
-
+                SdkgenIdlingResource.decrement()
                 continuation.resume(
                     InternalResponse(
                         JsonObject().apply {
@@ -320,10 +322,12 @@ open class SdkgenHttpClient(
                         null
                     )
                 )
+            } finally {
+                response?.close()
             }
         } catch (e: Exception) {
             e.printStackTrace()
-
+            SdkgenIdlingResource.decrement()
             continuation.resume(
                 InternalResponse(
                     JsonObject().apply {
