@@ -21,6 +21,7 @@ import kotlin.coroutines.suspendCoroutine
 import android.util.Base64
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
+import okhttp3.Response
 import java.text.SimpleDateFormat
 
 @Suppress("unused")
@@ -259,8 +260,9 @@ open class SdkgenHttpClient(
             val call = httpClient.newCall(request)
             call.timeout().timeout(timeoutMillis ?: defaultTimeoutMillis, TimeUnit.MILLISECONDS)
 
+            var response: Response? = null
             try {
-                val response = call.execute()
+                response = call.execute()
                 if (response.code in 501..599) {
                     SdkgenIdlingResource.decrement()
                     continuation.resume(
@@ -303,8 +305,6 @@ open class SdkgenHttpClient(
                     SdkgenIdlingResource.decrement()
                     continuation.resume(InternalResponse(null, responseBody))
                 }
-
-                response.close()
             } catch (e: Exception) {
                 e.printStackTrace()
                 SdkgenIdlingResource.decrement()
@@ -322,6 +322,8 @@ open class SdkgenHttpClient(
                         null
                     )
                 )
+            } finally {
+                response?.close()
             }
         } catch (e: Exception) {
             e.printStackTrace()
