@@ -68,6 +68,10 @@ export class SdkgenHttpClient {
                             resolve(response.result);
                         }
                     } catch (error) {
+                        if (`${error}`.includes("SyntaxError")) {
+                            console.error(data);
+                        }
+
                         reject({ message: `${error}`, type: "Fatal" });
                     }
                 });
