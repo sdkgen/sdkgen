@@ -61,8 +61,10 @@ export function generateErrorClass(error: string) {
 }
 
 export function cast(value: string, type: Type): string {
-    if (type instanceof ArrayType) {
-        return `(${value} as List).map((e) => ${cast("e", (type as ArrayType).base)}).toList()`;
+    if (type instanceof OptionalType) {
+        return cast(value, (type as OptionalType).base);
+    } else if (type instanceof ArrayType) {
+        return `(${value} as List)?.map((e) => ${cast("e", (type as ArrayType).base)})?.toList()`;
     } else if (type instanceof VoidPrimitiveType) {
         return value;
     } else if (type instanceof FloatPrimitiveType || type instanceof MoneyPrimitiveType) {
