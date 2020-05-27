@@ -12,20 +12,20 @@ artifacts {
     archives sourcesJar
 }
 
-
+Properties credentials
 if (System.getenv('BINTRAY_USER') == null
-        && file("local.properties").exists()) {
-    Properties properties = new Properties()
-    properties.load(new FileInputStream("local.properties"))
+        && project.rootProject.file('credentials.properties').exists()) {
+    credentials = new Properties()
+    credentials.load(new FileInputStream(project.rootProject.file('credentials.properties')))
 }
 
 // Bintray
 bintray {
-    if (file("local.properties").exists()
-            && properties.hasProperty("bintray.user")
-            && properties.hasProperty("bintray.apikey")) {
-        user = properties.getProperty("bintray.user")
-        key = properties.getProperty("bintray.apikey")
+    if (credentials != null
+            && credentials['bintray.user'] != null
+            && credentials['bintray.apikey'] != null) {
+        user = credentials['bintray.user']
+        key = credentials['bintray.apikey']
     } else if (System.getenv('BINTRAY_USER') != null && System.getenv('BINTRAY_API_KEY') != null ) {
         user = System.getenv('BINTRAY_USER')
         key = System.getenv('BINTRAY_API_KEY')
@@ -43,6 +43,7 @@ bintray {
         vcsUrl = 'https://github.com/sdkgen/sdkgen.git'
         licenses = ["Apache-2.0"]
         publish = true
+        override = false
         publicDownloadNumbers = true
     }
 }
