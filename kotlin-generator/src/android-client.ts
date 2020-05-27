@@ -76,8 +76,7 @@ class ApiClient(
     }\n\n`;
     }
 
-    code += `    private val sdkgenIOScope = CoroutineScope(IO)\n`;
-    code += `    private val uiScope = CoroutineScope(Main)\n\n`;
+    code += `    private val sdkgenIOScope = CoroutineScope(IO)\n\n`;
     code += ast.operations
         .map(op => {
             let opImpl = "";
@@ -102,7 +101,7 @@ class ApiClient(
             opImpl += `\n`;
             opImpl += `        val call = makeRequest(\"${op.prettyName}\", bodyArgs, timeoutMillis)\n`;
             opImpl += `        val response: Response<${generateKotlinTypeName(op.returnType)}> = handleCallResponse(call)\n`;
-            opImpl += `        uiScope.launch { callback?.invoke(response) } \n`;
+            opImpl += `        withContext(Dispatchers.Main) { callback?.invoke(response) } \n`;
             opImpl += `        return@async response\n`;
             opImpl += `    }\n`;
             return opImpl;
