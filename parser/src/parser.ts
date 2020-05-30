@@ -19,6 +19,7 @@ import {
     TypeDefinition,
     TypeReference,
     VoidPrimitiveType,
+    DeprecatedAnnotation,
 } from "./ast";
 import { Lexer } from "./lexer";
 import { parseRestAnnotation } from "./restparser";
@@ -207,6 +208,8 @@ export class Parser {
                     } catch (error) {
                         throw new ParserError(`${error.message} at ${this.token.location}`);
                     }
+                case "deprecated":
+                    this.annotations.push(new DeprecatedAnnotation().at(this.token));
                     break;
                 default:
                     throw new ParserError(`Unknown annotation '${words[0]}' at ${this.token.location}`);
@@ -288,6 +291,10 @@ export class Parser {
                     throw new ParserError(`Argument '${annotation.argName}' not found, at ${annotation.location}`);
                 }
                 arg.annotations.push(new DescriptionAnnotation(annotation.text).atLocation(annotation.location));
+            }
+
+            if (annotation instanceof DeprecatedAnnotation) {
+                this.warnings.push(`WARNING: The function is deprecated at ${openingToken.location}. Use a function without @deprecated annonation.`);
             }
         }
         annotations = annotations.filter(ann => !(ann instanceof ArgDescriptionAnnotation));

@@ -377,6 +377,34 @@ describe(Parser, () => {
         );
     });
 
+    test("handles functions with deprecated annotations", () => {
+        expectParses(
+            `
+                @deprecated
+                fn doIt(foo: int, bar: float): string
+            `,
+            {
+                errors: ["Fatal"],
+                functionTable: {
+                    doIt: {
+                        args: {
+                            foo: "int",
+                            bar: "float",
+                        },
+                        ret: "string",
+                    },
+                },
+                typeTable: {},
+                annotations: {
+                    "fn.doIt": [
+                        { type: "deprecated", value: "" },
+                    ],
+                },
+            },
+            ["WARNING: The function is deprecated at -:3:11. Use a function without @deprecated annonation."]
+        );
+    });
+
     test("handles rest annotations", () => {
         expectParses(
             `

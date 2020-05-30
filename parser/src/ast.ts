@@ -200,6 +200,12 @@ export class ArgDescriptionAnnotation extends Annotation {
     }
 }
 
+export class DeprecatedAnnotation extends Annotation {
+    constructor() {
+        super();
+    }
+}
+
 export class RestAnnotation extends Annotation {
     constructor(
         public method: string,
