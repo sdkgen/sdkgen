@@ -1,4 +1,5 @@
 apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'maven-publish'
 
 group = 'io.sdkgen'
 
@@ -33,6 +34,8 @@ install {
                     developerConnection 'https://github.com/sdkgen/sdkgen.git'
                     url 'https://github.com/sdkgen/sdkgen'
                 }
+
+                dependencies {}
             }
         }
     }
