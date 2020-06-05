@@ -14,12 +14,8 @@ import com.google.gson.*
 import com.google.gson.reflect.TypeToken
 import com.google.gson.annotations.JsonAdapter
 import io.sdkgen.runtime.SdkgenHttpClient
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.async
-import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.launch
 import java.util.*
 
 inline fun <reified T> Gson.fromJson(json: String) =
@@ -31,7 +27,7 @@ inline fun <reified T> Gson.fromJson(json: JsonElement) =
 @Suppress("DeferredIsResult", "unused")
 class ApiClient(
     baseUrl: String,
-    applicationContext: Context,
+    val applicationContext: Context,
     defaultTimeoutMillis: Long = 10000L
 ) : SdkgenHttpClient(baseUrl, applicationContext, defaultTimeoutMillis) {
     
@@ -110,23 +106,26 @@ class ApiClient(
 
     code += `
     private inline fun <reified T> handleCallResponse(callResponse: InternalResponse): Response<T> {
-        val data = if (callResponse.result?.get("result") != null)
-            gson.fromJson<T>(callResponse.result?.get("result")!!)
-        else null
+        try {
+            val data = if (callResponse.result?.get("result") != null)
+                gson.fromJson<T>(callResponse.result?.get("result")!!)
+            else null
 
-        val error = if (callResponse.error != null) {
-            val errorType = try {
-                ErrorType.valueOf(callResponse.error?.get("type")?.asString ?: "")
-            } catch (e: Exception) {
-                ErrorType.Fatal
-            }
+            val error = if (callResponse.error != null) {
+                val errorType = try {
+                    ErrorType.valueOf(callResponse.error?.get("type")?.asString ?: "")
+                } catch (e: Exception) {
+                    ErrorType.Fatal
+                }
 
-            gson.fromJson(callResponse.error, errorType.type())
-        } else null
+                gson.fromJson(callResponse.error, errorType.type())
+            } else null
 
-        return Response(error, data)
-    }
-    `;
+            return Response(error, data)
+        } catch(e: Exception) {
+            return Response(Fatal(applicationContext.getString(io.sdkgen.runtime.R.string.sdkgen_error_serialization)), null)
+        }
+    }\n`;
 
     code += `}\n`;
 
