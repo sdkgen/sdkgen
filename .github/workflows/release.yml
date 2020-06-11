@@ -243,7 +243,7 @@ jobs:
     runs-on: ubuntu-latest
     steps: 
     - uses: actions/checkout@v2
-    - run: sed -i -e "s/versionName \"1.0\"/versionName $(echo \"${{ github.ref }}\" | cut -d'/' -f3)/g" build.gradle
+    - run: sed -i -e "s/versionName \"1.0\"/versionName \"$(echo \"${{ github.ref }}\" | cut -d'/' -f3)\"/g" build.gradle
       working-directory: ./android-runtime/runtime
     - run: sed -i -e "s/version = '1.0.0'/version = '$(cat ../../version/version.txt)'/g" bintray.gradle
       working-directory: ./android-runtime/runtime
