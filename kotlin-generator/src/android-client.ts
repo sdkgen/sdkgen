@@ -13,6 +13,7 @@ import android.util.Base64
 import com.google.gson.*
 import com.google.gson.reflect.TypeToken
 import com.google.gson.annotations.JsonAdapter
+import com.google.gson.annotations.SerializedName
 import io.sdkgen.runtime.SdkgenHttpClient
 import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO

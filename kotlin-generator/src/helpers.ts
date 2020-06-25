@@ -54,6 +54,9 @@ export function generateClass(type: StructType) {
     classDesc += `    data class ${type.name}(\n${type.fields
         .map(field => {
             let fieldDesc = getAnnotation(field.type);
+            if (field.name !== mangle(field.name)) {
+                fieldDesc += `        @SerializedName("${field.name}")\n`;
+            }
             fieldDesc += `        var ${mangle(field.name)}: ${generateKotlinTypeName(field.type)}${
                 field.type.constructor === OptionalType ? " = null" : ""
             }`;
