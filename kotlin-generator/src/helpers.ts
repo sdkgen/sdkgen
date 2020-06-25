@@ -54,8 +54,6 @@ export function getAnnotation(type: Type, fieldName?: string): string {
         case OptionalType:
             fieldAnnotation += getAnnotation((type as OptionalType).base);
             break;
-        default:
-            fieldAnnotation += "";
     }
 
     return fieldAnnotation;
