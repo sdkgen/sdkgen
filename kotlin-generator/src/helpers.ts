@@ -34,29 +34,38 @@ export function generateEnum(type: EnumType) {
     return enumDesc;
 }
 
-export function getAnnotation(type: Type): string {
+export function getAnnotation(type: Type, fieldName?: string): string {
+    let fieldAnnotation = "";
+
+    if (fieldName && fieldName !== mangle(fieldName)) {
+        fieldAnnotation += `        @SerializedName("${fieldName}")\n`;
+    }
+
     switch (type.constructor) {
         case DatePrimitiveType:
-            return "        @JsonAdapter(DateAdapter::class)\n";
+            fieldAnnotation += "        @JsonAdapter(DateAdapter::class)\n";
+            break;
         case DateTimePrimitiveType:
-            return "        @JsonAdapter(DateTimeAdapter::class)\n";
+            fieldAnnotation += "        @JsonAdapter(DateTimeAdapter::class)\n";
+            break;
         case ArrayType:
-            return getAnnotation((type as ArrayType).base);
+            fieldAnnotation += getAnnotation((type as ArrayType).base);
+            break;
         case OptionalType:
-            return getAnnotation((type as OptionalType).base);
+            fieldAnnotation += getAnnotation((type as OptionalType).base);
+            break;
         default:
-            return "";
+            fieldAnnotation += "";
     }
+
+    return fieldAnnotation;
 }
 
 export function generateClass(type: StructType) {
     let classDesc = "@Parcelize\n";
     classDesc += `    data class ${type.name}(\n${type.fields
         .map(field => {
-            let fieldDesc = getAnnotation(field.type);
-            if (field.name !== mangle(field.name)) {
-                fieldDesc += `        @SerializedName("${field.name}")\n`;
-            }
+            let fieldDesc = getAnnotation(field.type, field.name);
             fieldDesc += `        var ${mangle(field.name)}: ${generateKotlinTypeName(field.type)}${
                 field.type.constructor === OptionalType ? " = null" : ""
             }`;
