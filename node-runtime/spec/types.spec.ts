@@ -85,5 +85,10 @@ describe("Encode/Decode", () => {
         expect(() => {
             encode({}, "", "datetime", "2020-11-10T15:34:50.999$01:00");
         }).toThrow();
+        expect(() => {
+          decode({}, "", "datetime", "2020-11-10T15:34:50.999$01:00");
+        }).toThrow();
+        expect(decode({}, "", "datetime", "2020-11-10T15:34:50Z").getTime()).toBe(new Date("2020-11-10T15:34:50Z").getTime());
+        expect(decode({}, "", "datetime", "2020-11-10T15:34:50.000").getTime()).toBe(new Date("2020-11-10T15:34:50Z").getTime());
     });
 });
