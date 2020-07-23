@@ -221,7 +221,7 @@ export function decode(typeTable: TypeTable, path: string, type: TypeDescription
         if (typeof value !== "string" || !value.match(/^[0-9]{4}-[01][0-9]-[0123][0-9]T[012][0-9]:[0123456][0-9]:[0123456][0-9](\.[0-9]{1,6})?Z?$/)) {
             throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
         }
-        return new Date(value + "Z");
+        return new Date(`${value.endsWith("Z") ? value : value.concat("Z")}`);
     } else {
         const resolved = typeTable[type];
         if (resolved) {
