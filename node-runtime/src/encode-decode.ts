@@ -295,7 +295,7 @@ export function decode(typeTable: TypeTable, path: string, type: TypeDescription
             throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
         }
 
-        return new Date(`${value}Z`);
+        return new Date(`${value.endsWith("Z") ? value : value.concat("Z")}`);
     } else {
         const resolved = typeTable[type];
 
