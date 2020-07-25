@@ -3,7 +3,6 @@ import * as parser from "@sdkgen/parser";
 
 describe("helpers.ts", () => {
     test("generateTypescriptInterface", () => {
-
         const structType = new parser.StructType(
             [
                 new parser.Field("int", new parser.IntPrimitiveType()),
@@ -14,14 +13,10 @@ describe("helpers.ts", () => {
                 new parser.Field("uuid", new parser.UuidPrimitiveType()),
                 new parser.Field("void", new parser.VoidPrimitiveType()),
                 new parser.Field("json", new parser.JsonPrimitiveType()),
-                new parser.Field("optionalStrArray", new parser.OptionalType(
-                    new parser.ArrayType(
-                        new parser.StringPrimitiveType()
-                    )
-                )),
+                new parser.Field("optionalStrArray", new parser.OptionalType(new parser.ArrayType(new parser.StringPrimitiveType()))),
             ],
-            []
-        )
+            [],
+        );
         structType.name = "awesomeInterface";
 
         expect(generateTypescriptInterface(structType)).toBe(`export interface awesomeInterface {
@@ -35,8 +30,7 @@ describe("helpers.ts", () => {
     json: any
     optionalStrArray: string[] | null
 }
-`
-        );
+`);
     });
 
     test("generateTypescriptTypeName: IntPrimitiveType", () => {
@@ -111,20 +105,15 @@ describe("helpers.ts", () => {
 
     test("generateTypescriptTypeName: StructType", () => {
         const structType = new parser.StructType(
-            [
-                new parser.Field("int", new parser.IntPrimitiveType()),
-                new parser.Field("bigint", new parser.BigIntPrimitiveType()),
-            ],
-            []
-        )
+            [new parser.Field("int", new parser.IntPrimitiveType()), new parser.Field("bigint", new parser.BigIntPrimitiveType())],
+            [],
+        );
         structType.name = "simpleInterface";
         expect(generateTypescriptTypeName(structType)).toBe(structType.name);
     });
 
     test("generateTypescriptTypeName: EnumType", () => {
-        const enumType = new parser.EnumType(
-            [new parser.EnumValue("value1")],
-        );
+        const enumType = new parser.EnumType([new parser.EnumValue("value1")]);
 
         enumType.name = "simpleEnum";
 
@@ -132,7 +121,7 @@ describe("helpers.ts", () => {
     });
 
     test("generateTypescriptTypeName: TypeReference", () => {
-        const enumType = new parser.TypeReference("typeRef")
+        const enumType = new parser.TypeReference("typeRef");
         enumType.type = new parser.HexPrimitiveType();
 
         expect(generateTypescriptTypeName(enumType)).toBe("string");
@@ -145,6 +134,6 @@ describe("helpers.ts", () => {
 
         const newUnknownType = new UnknownType();
 
-        expect(() => generateTypescriptTypeName(newUnknownType)).toThrowError(`BUG: generateTypescriptTypeName with ${newUnknownType.name}`)
-    })
-})
+        expect(() => generateTypescriptTypeName(newUnknownType)).toThrowError(`BUG: generateTypescriptTypeName with ${newUnknownType.name}`);
+    });
+});
