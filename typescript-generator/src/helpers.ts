@@ -85,7 +85,7 @@ export function generateTypescriptTypeName(type: Type): string {
             return "number";
 
         case BigIntPrimitiveType:
-            return "BigInt";
+            return "bigint";
 
         case DatePrimitiveType:
         case DateTimePrimitiveType:
