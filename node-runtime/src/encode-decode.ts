@@ -163,9 +163,10 @@ export function encode(typeTable: TypeTable, path: string, type: TypeDescription
 
         return value.toString("base64");
     } else if (type === "bigint") {
-        if (!(value instanceof BigInt)) {
+        if (!(typeof value === "bigint")) {
             throw new Error(`Invalid type at '${path}', expected ${type}, got ${JSON.stringify(value)}`);
         }
+
         return value.toString();
     } else if (type === "cpf") {
         if (typeof value !== "string" || !CPF.isValid(value)) {
