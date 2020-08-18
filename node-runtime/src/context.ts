@@ -14,6 +14,7 @@ export interface ContextRequest {
         timezone: string | null;
         type: string;
         version: string | null;
+        fingerprint: string | null;
     };
     extra: {
         [name: string]: any;

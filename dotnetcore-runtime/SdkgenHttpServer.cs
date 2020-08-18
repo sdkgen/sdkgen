@@ -39,7 +39,8 @@ namespace Sdkgen.Runtime
         public string? Timezone;
         public string Type;
         public string? Version;
-        public ContextDeviceInfo(string? id, string? language, Dictionary<string, JsonElement> platform, string? timezone, string? type, string? version)
+        public string? Fingerprint;
+        public ContextDeviceInfo(string? id, string? language, Dictionary<string, JsonElement> platform, string? timezone, string? type, string? version, string? fingerprint)
         {
             Id = id ?? Helper.randomBytes(16);
             Language = language;
@@ -47,6 +48,7 @@ namespace Sdkgen.Runtime
             Timezone = timezone;
             Type = type ?? "api";
             Version = version;
+            Fingerprint = fingerprint;
         }
     }
 
@@ -79,6 +81,7 @@ namespace Sdkgen.Runtime
     {
         BaseApi Api;
         bool DynamicCorsOrigin = true;
+        public bool Introspection = true;
         IHeaderDictionary Headers = new HeaderDictionary();
         Func<Task<Boolean>> OnHealthCheck = () => Task.FromResult<Boolean>(true);
         Action<Context, SdkgenException>? OnRequestError = null;
@@ -90,8 +93,12 @@ namespace Sdkgen.Runtime
         {
             var host = new WebHostBuilder()
                 .UseKestrel()
+                .UseContentRoot("sdkgen.runtime.static")
+                .UseWebRoot("")
                 .Configure(app =>
                 {
+                    app.UseDefaultFiles();
+                    app.UseStaticFiles();
                     app.Run(httpContext => handleRequest(httpContext));
                 })
                 .UseUrls($"http://localhost:{port}")
@@ -101,6 +108,12 @@ namespace Sdkgen.Runtime
 
         async public Task handleRequest(HttpContext httpContext)
         {
+            if (Introspection && httpContext.Request.Path == "/ast.json" && httpContext.Request.Method.ToUpperInvariant() == "GET")
+            {
+                await httpContext.Response.WriteAsync(Api.GetAstJson());
+                return;
+            }
+
             Context? context = null;
             JsonDocument? bodyDocument = null;
             var stopWatch = new Stopwatch();

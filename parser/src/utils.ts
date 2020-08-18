@@ -10,6 +10,7 @@ import {
     EmailPrimitiveType,
     FloatPrimitiveType,
     HexPrimitiveType,
+    HtmlPrimitiveType,
     IntPrimitiveType,
     JsonPrimitiveType,
     MoneyPrimitiveType,
@@ -35,6 +36,7 @@ primitiveToAstClass.set("money", MoneyPrimitiveType);
 primitiveToAstClass.set("cpf", CpfPrimitiveType);
 primitiveToAstClass.set("cnpj", CnpjPrimitiveType);
 primitiveToAstClass.set("email", EmailPrimitiveType);
+primitiveToAstClass.set("html", HtmlPrimitiveType);
 primitiveToAstClass.set("url", UrlPrimitiveType);
 primitiveToAstClass.set("uuid", UuidPrimitiveType);
 primitiveToAstClass.set("hex", HexPrimitiveType);

@@ -12,6 +12,7 @@ import {
     EnumType,
     FloatPrimitiveType,
     HexPrimitiveType,
+    HtmlPrimitiveType,
     IntPrimitiveType,
     JsonPrimitiveType,
     MoneyPrimitiveType,
@@ -84,7 +85,7 @@ export function generateTypescriptTypeName(type: Type): string {
             return "number";
 
         case BigIntPrimitiveType:
-            return "BigInt";
+            return "bigint";
 
         case DatePrimitiveType:
         case DateTimePrimitiveType:
@@ -100,6 +101,7 @@ export function generateTypescriptTypeName(type: Type): string {
         case CpfPrimitiveType:
         case CnpjPrimitiveType:
         case EmailPrimitiveType:
+        case HtmlPrimitiveType:
         case UrlPrimitiveType:
         case UuidPrimitiveType:
         case HexPrimitiveType:

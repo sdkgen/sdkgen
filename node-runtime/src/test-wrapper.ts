@@ -36,13 +36,14 @@ export function apiTestWrapper<T extends BaseApiConfig<any>>(api: T): T {
                                       ? ctx.request.deviceInfo.type
                                       : "test",
                               version: null,
+                              fingerprint: null,
                           },
-                extra: {},
-                headers: {},
+                extra: ctx.request && ctx.request.extra ? ctx.request.extra : {},
+                headers: ctx.request && ctx.request.headers ? ctx.request.headers : {},
                 id: randomBytes(16).toString("hex"),
                 ip: ctx.request && ctx.request.ip ? ctx.request.ip : "0.0.0.0",
                 name: functionName,
-                version: 0,
+                version: 3,
                 files: ctx.request && ctx.request.files ? ctx.request.files : [],
             };
 

@@ -75,7 +75,7 @@ module.exports = {
 
 	output: {
 		pathinfo: false,
-		publicPath: "/playground",
+		publicPath: "/playground/",
 		filename: shouldBuildForProduction ? "prod.[name].[hash].js" : "dev.[name].js",
 		chunkFilename: shouldBuildForProduction ? `prod.chunk.${hash}.js` : `dev.chunk.${hash}.js`,
 		path: resolver("dist"),

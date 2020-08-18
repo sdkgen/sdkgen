@@ -11,6 +11,8 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         registry-url: https://registry.npmjs.org
+    - run: npm install
+      working-directory: ./parser
     - run: |
         npm install -g json && json -I -f package.json -e '
           this.version = "${{ github.ref }}".replace("refs/tags/", "");
@@ -20,8 +22,6 @@ jobs:
             if (this.dependencies[pkg].startsWith("file:../"))
               this.dependencies[pkg] = this.version;
         '
-      working-directory: ./parser
-    - run: npm install
       working-directory: ./parser
     - run: npm run build
       working-directory: ./parser
@@ -37,6 +37,8 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         registry-url: https://registry.npmjs.org
+    - run: npm install
+      working-directory: ./browser-runtime
     - run: |
         npm install -g json && json -I -f package.json -e '
           this.version = "${{ github.ref }}".replace("refs/tags/", "");
@@ -46,8 +48,6 @@ jobs:
             if (this.dependencies[pkg].startsWith("file:../"))
               this.dependencies[pkg] = this.version;
         '
-      working-directory: ./browser-runtime
-    - run: npm install
       working-directory: ./browser-runtime
     - run: npm run build
       working-directory: ./browser-runtime
@@ -84,6 +84,8 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         registry-url: https://registry.npmjs.org
+    - run: npm install
+      working-directory: ./typescript-generator
     - run: |
         npm install -g json && json -I -f package.json -e '
           this.version = "${{ github.ref }}".replace("refs/tags/", "");
@@ -93,8 +95,6 @@ jobs:
             if (this.dependencies[pkg].startsWith("file:../"))
               this.dependencies[pkg] = this.version;
         '
-      working-directory: ./typescript-generator
-    - run: npm install
       working-directory: ./typescript-generator
     - run: npm run build
       working-directory: ./typescript-generator
@@ -111,6 +111,8 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         registry-url: https://registry.npmjs.org
+    - run: npm install
+      working-directory: ./csharp-generator
     - run: |
         npm install -g json && json -I -f package.json -e '
           this.version = "${{ github.ref }}".replace("refs/tags/", "");
@@ -121,8 +123,6 @@ jobs:
               this.dependencies[pkg] = this.version;
         '
       working-directory: ./csharp-generator
-    - run: npm install
-      working-directory: ./csharp-generator
     - run: npm run build
       working-directory: ./csharp-generator
     - run: npm publish
@@ -130,7 +130,7 @@ jobs:
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
-  dart-generator:
+  kotlin-generator:
     needs: [parser]
     runs-on: ubuntu-latest
     steps:
@@ -147,8 +147,35 @@ jobs:
             if (this.dependencies[pkg].startsWith("file:../"))
               this.dependencies[pkg] = this.version;
         '
-      working-directory: ./dart-generator
+      working-directory: ./kotlin-generator
     - run: npm install
+      working-directory: ./kotlin-generator
+    - run: npm run build
+      working-directory: ./kotlin-generator
+    - run: npm publish
+      working-directory: ./kotlin-generator
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+
+  dart-generator:
+    needs: [parser]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v1
+      with:
+        registry-url: https://registry.npmjs.org
+    - run: npm install
+      working-directory: ./dart-generator
+    - run: |
+        npm install -g json && json -I -f package.json -e '
+          this.version = "${{ github.ref }}".replace("refs/tags/", "");
+          this.main = "dist/src/index.js";
+          this.types = "dist/src/index.d.ts";
+          for (const pkg in this.dependencies)
+            if (this.dependencies[pkg].startsWith("file:../"))
+              this.dependencies[pkg] = this.version;
+        '
       working-directory: ./dart-generator
     - run: npm run build
       working-directory: ./dart-generator
@@ -165,6 +192,8 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         registry-url: https://registry.npmjs.org
+    - run: npm install
+      working-directory: ./cli
     - run: |
         npm install -g json && json -I -f package.json -e '
           this.version = "${{ github.ref }}".replace("refs/tags/", "");
@@ -174,8 +203,6 @@ jobs:
             if (this.dependencies[pkg].startsWith("file:../"))
               this.dependencies[pkg] = this.version;
         '
-      working-directory: ./cli
-    - run: npm install
       working-directory: ./cli
     - run: npm run build
       working-directory: ./cli
@@ -191,6 +218,8 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         registry-url: https://registry.npmjs.org
+    - run: npm install
+      working-directory: ./playground
     - run: |
         npm install -g json && json -I -f package.json -e '
           this.version = "${{ github.ref }}".replace("refs/tags/", "");
@@ -200,8 +229,6 @@ jobs:
             if (this.dependencies[pkg].startsWith("file:../"))
               this.dependencies[pkg] = this.version;
         '
-      working-directory: ./playground
-    - run: npm install
       working-directory: ./playground
     - run: npm run build
       working-directory: ./playground
@@ -212,14 +239,34 @@ jobs:
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
+  android-runtime: 
+    runs-on: ubuntu-latest
+    steps: 
+    - uses: actions/checkout@v2
+    - run: sed -i -e "s/versionName \"1.0\"/versionName \"$(echo ${{ github.ref }} | cut -d'/' -f3)\"/g" build.gradle
+      working-directory: ./android-runtime/runtime
+    - run: sed -i -e "s/version = '1.0.0'/version = '$(cat ../../version/version.txt)'/g" bintray.gradle
+      working-directory: ./android-runtime/runtime
+    - run: sed -i -e "s/versionCode 1/versionCode $(date +%s)/g" build.gradle
+      working-directory: ./android-runtime/runtime
+    - uses: giorgosneokleous93/docker-multicommand-android@v1.0.0
+      with: 
+        workingdir: "./android-runtime/"
+        command1: "./gradlew test install bintrayUpload"
+      env: 
+        BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
+        BINTRAY_API_KEY: ${{ secrets.BINTRAY_API_KEY }}
+        
   node-runtime:
-    needs: [parser, typescript-generator, dart-generator, playground]
+    needs: [parser, typescript-generator, kotlin-generator, dart-generator, playground]
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
       with:
         registry-url: https://registry.npmjs.org
+    - run: npm install
+      working-directory: ./node-runtime
     - run: |
         npm install -g json && json -I -f package.json -e '
           this.version = "${{ github.ref }}".replace("refs/tags/", "");
@@ -229,8 +276,6 @@ jobs:
             if (this.dependencies[pkg].startsWith("file:../"))
               this.dependencies[pkg] = this.version;
         '
-      working-directory: ./node-runtime
-    - run: npm install
       working-directory: ./node-runtime
     - run: npm run build
       working-directory: ./node-runtime
@@ -243,10 +288,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - uses: actions/download-artifact@v1
-      with:
-        name: version
     - uses: actions/setup-dotnet@v1
+    - uses: actions/setup-node@v1
+    - run: npm install
+      working-directory: ./playground
+    - run: npm run build
+      working-directory: ./playground
+      env:
+        NODE_ENV: production
     - run: dotnet pack -c:Release -p:PackageVersion=$(echo \"${{ github.ref }}\" | cut -d'/' -f3)
       working-directory: ./dotnetcore-runtime
     - run: dotnet nuget push bin/**/*.nupkg -k $NUGET_TOKEN -s https://api.nuget.org/v3/index.json

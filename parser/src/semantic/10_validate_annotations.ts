@@ -8,6 +8,7 @@ import {
     DatePrimitiveType,
     DateTimePrimitiveType,
     DescriptionAnnotation,
+    EnumType,
     EnumValue,
     Field,
     FloatPrimitiveType,
@@ -19,7 +20,9 @@ import {
     RestAnnotation,
     StringPrimitiveType,
     ThrowsAnnotation,
+    Type,
     TypeDefinition,
+    TypeReference,
     UIntPrimitiveType,
     UuidPrimitiveType,
     VoidPrimitiveType,
@@ -42,7 +45,12 @@ const REST_ENCODABLE_TYPES: Function[] = [
     UuidPrimitiveType,
     HexPrimitiveType,
     Base64PrimitiveType,
+    EnumType,
 ];
+
+function extractRealType(type: Type): Type {
+    return type instanceof TypeReference ? extractRealType(type.type) : type;
+}
 
 export class ValidateAnnotationsVisitor extends Visitor {
     visit(node: AstNode) {
@@ -96,7 +104,7 @@ export class ValidateAnnotationsVisitor extends Visitor {
 
                         const baseType = arg.type instanceof OptionalType ? arg.type.base : arg.type;
 
-                        if (!REST_ENCODABLE_TYPES.includes(baseType.constructor)) {
+                        if (!REST_ENCODABLE_TYPES.includes(extractRealType(baseType).constructor)) {
                             throw new SemanticError(
                                 `Argument '${name}' can't have type '${arg.type.name}' for rest annotation at ${annotation.location}`,
                             );

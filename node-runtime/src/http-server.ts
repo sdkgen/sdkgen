@@ -12,6 +12,7 @@ import {
     DateTimePrimitiveType,
     FloatPrimitiveType,
     HexPrimitiveType,
+    HtmlPrimitiveType,
     IntPrimitiveType,
     jsonToAst,
     MoneyPrimitiveType,
@@ -422,6 +423,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
                                     language: null,
                                     timezone: null,
                                     version: null,
+                                    fingerprint: null,
                                 },
                                 extra: {},
                                 args,
@@ -472,6 +474,10 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
                                             type instanceof Base64PrimitiveType
                                         ) {
                                             res.setHeader("content-type", "text/plain");
+                                            res.write(`${reply.result}`);
+                                            res.end();
+                                        } else if (type instanceof HtmlPrimitiveType) {
+                                            res.setHeader("content-type", "text/html");
                                             res.write(`${reply.result}`);
                                             res.end();
                                         } else if (type instanceof BytesPrimitiveType) {
@@ -769,6 +775,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
                         timezone: "string?",
                         type: "string?",
                         version: "string?",
+                        fingerprint: "string?",
                     },
                     id: "string",
                     name: "string",
@@ -790,6 +797,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
                 timezone: parsed.device.timezone,
                 type: parsed.device.type || parsed.device.platform || "",
                 version: parsed.device.version,
+                fingerprint: parsed.device.fingerprint,
             },
             extra: {},
             headers: req.headers,
@@ -817,6 +825,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
                     partnerId: "string?",
                     requestId: "string?",
                     sessionId: "string?",
+                    deviceFingerprint: "string?",
                 },
             },
             "root",
@@ -835,6 +844,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
                 timezone: null,
                 type: parsed.info.type,
                 version: "",
+                fingerprint: parsed.deviceFingerprint,
             },
             extra: {
                 partnerId: parsed.partnerId,
@@ -860,6 +870,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
                     timezone: "string?",
                     type: "string?",
                     version: "string?",
+                    fingerprint: "string?",
                 },
                 Request: {
                     args: "json",
@@ -881,11 +892,12 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
             args: parsed.args,
             deviceInfo: {
                 id: deviceId,
-                language: deviceInfo.language || null,
+                language: deviceInfo.language,
                 platform: parsed.platform ? { ...parsed.platform } : {},
-                timezone: deviceInfo.timezone || null,
+                timezone: deviceInfo.timezone,
                 type: deviceInfo.type || "api",
-                version: deviceInfo.version || null,
+                version: deviceInfo.version,
+                fingerprint: deviceInfo.fingerprint,
             },
             extra: parsed.extra ? { ...parsed.extra } : {},
             headers: req.headers,
@@ -897,9 +909,14 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
         };
     }
 
-    private makeResponseError(err: { message: string; type: string }) {
+    private makeResponseError(err: any): { message: string; type: string } {
         return {
-            message: err.message || err.toString(),
+            message:
+                err.message || err instanceof Error
+                    ? err.toString()
+                    : typeof err === "object"
+                    ? JSON.stringify(err)
+                    : `${err}`,
             type: err.type || "Fatal",
         };
     }

@@ -32,7 +32,10 @@ export class SdkgenHttpClient {
             args: encode(this.astJson.typeTable, `${functionName}.args`, func.args, args),
             deviceInfo: ctx && ctx.request ? ctx.request.deviceInfo : { id: hostname(), type: "node" },
             extra: {
-                ...this.extra,
+                ...[...this.extra.entries()].reduce<{ [key: string]: unknown }>(
+                    (obj, [key, value]) => ((obj[key] = value), obj),
+                    {},
+                ),
                 ...(ctx && ctx.request ? ctx.request.extra : {}),
             },
             name: functionName,
@@ -65,11 +68,18 @@ export class SdkgenHttpClient {
                             resolve(response.result);
                         }
                     } catch (error) {
+                        if (`${error}`.includes("SyntaxError")) {
+                            console.error(data);
+                        }
+
                         reject({ message: `${error}`, type: "Fatal" });
                     }
                 });
                 res.on("error", error => {
                     reject({ message: `${error}`, type: "Fatal" });
+                });
+                res.on("aborted", () => {
+                    reject({ message: "Request aborted", type: "Fatal" });
                 });
             });
 

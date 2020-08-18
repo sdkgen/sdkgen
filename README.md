@@ -1,7 +1,7 @@
 # sdkgen
 
 [![test status badge](https://github.com/sdkgen/sdkgen/workflows/test/badge.svg?branch=master)](https://github.com/sdkgen/sdkgen/actions)
-[![gitter badge](https://img.shields.io/gitter/room/sdkgen/community)](https://gitter.im/sdkgen/community)
+[![telegram badge](https://img.shields.io/badge/telegram-sdkgen-179CDE)](https://t.me/sdkgen)
 
 # Getting Started
 

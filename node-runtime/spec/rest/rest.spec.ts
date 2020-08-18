@@ -49,6 +49,10 @@ api.fn.uploadFile = async (ctx: Context, args: {}) => {
     );
 };
 
+api.fn.getHtml = async (ctx: Context, args: {}) => {
+    return "<h1>Hello world!</h1>";
+};
+
 writeFileSync(
     `${__dirname}/nodeClient.ts`,
     generateNodeClientSource(ast, {}).replace("@sdkgen/node-runtime", "../../src"),
@@ -254,6 +258,14 @@ describe("Rest API", () => {
             statusCode: 200,
             resultHeaders: {
                 "content-type": "application/json",
+            },
+        },
+        {
+            method: "GET",
+            path: "/html",
+            result: "<h1>Hello world!</h1>",
+            resultHeaders: {
+                "content-type": "text/html",
             },
         },
         (() => {
