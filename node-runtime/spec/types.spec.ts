@@ -95,4 +95,19 @@ describe("Encode/Decode", () => {
             new Date("2020-11-10T15:34:50Z").getTime(),
         );
     });
+
+    test("Process BigInt", async () => {
+        expect(encode({}, "", "bigint", BigInt(10))).toBe("10");
+        expect(() => {
+            encode({}, "", "bigint", 10);
+        }).toThrow();
+        expect(() => {
+            encode({}, "", "bigint", "10");
+        }).toThrow();
+        expect(decode({}, "", "bigint", 10)).toBe(BigInt(10));
+        expect(decode({}, "", "bigint", "10")).toBe(BigInt(10));
+        expect(() => {
+            decode({}, "", "bigint", "hello world");
+        }).toThrow();
+    });
 });
