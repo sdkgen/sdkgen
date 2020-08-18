@@ -20,6 +20,17 @@ const simpleTypes = [
     ...simpleStringTypes,
 ];
 
+declare global {
+    interface BigInt {
+        toJSON(): string;
+    }
+}
+
+// eslint-disable-next-line no-extend-native
+BigInt.prototype.toJSON = function toJSON() {
+    return this.toString();
+};
+
 function simpleEncodeDecode(path: string, type: string, value: any) {
     if (type === "json") {
         if (value === null || value === undefined) {
