@@ -45,19 +45,24 @@ ${ast.operations
     code += `var _typeTable = {\n`;
 
     for (const type of ast.structTypes) {
-        code += `  "${type.name}": StructTypeDescription(${type.name}, {\n`;
+        code += `  "${type.name}": StructTypeDescription(\n`;
+        code += `    ${type.name},\n`;
+        code += `    {\n`;
         for (const field of type.fields) {
-            code += `    "${field.name}": "${field.type.name}",\n`;
+            code += `      "${field.name}": "${field.type.name}",\n`;
         }
-        code += `  }, (Map fields) => ${type.name}()\n`;
+        code += `    },\n`;
+        code += `    (Map fields) => ${type.name}(\n`;
         for (const field of type.fields) {
-            code += `    ..${field.name} = ${cast(`fields["${field.name}"]`, field.type)}\n`;
+            code += `      ${field.name}: ${cast(`fields["${field.name}"]`, field.type)},\n`;
         }
-        code += `  , (${type.name} obj) => ({\n`;
+        code += `    ),\n`;
+        code += `    (${type.name} obj) => ({\n`;
         for (const field of type.fields) {
-            code += `    "${field.name}": obj.${field.name},\n`;
+            code += `      "${field.name}": obj.${field.name},\n`;
         }
-        code += "  })),\n";
+        code += `    }),\n`;
+        code += `  ),\n`;
     }
 
     for (const type of ast.enumTypes) {
