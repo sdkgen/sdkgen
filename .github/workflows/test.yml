@@ -130,8 +130,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        # TODO: Enable 13.x. See #1.
-        node-version: [10.x, 12.x]
+        node-version: [10.x, 12.x, 13.x]]
     steps:
     - uses: actions/checkout@v2
     - uses: actions/setup-node@v1
