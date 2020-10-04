@@ -1,3 +1,5 @@
+import { safeLocalStorage } from './safeLocalStorage';
+
 const BOOKMARK_LOCALSTORAGE_KEY = "bookmarked_endpoints";
 
 export function persistEndpointBookmarkStatus(name: string, status: boolean) {
@@ -12,7 +14,7 @@ export function persistEndpointBookmarkStatus(name: string, status: boolean) {
 }
 
 export function getLocalStorageBookmarks(): string[] {
-	const content = localStorage.getItem(BOOKMARK_LOCALSTORAGE_KEY);
+	const content = safeLocalStorage.getItem(BOOKMARK_LOCALSTORAGE_KEY);
 	if (content) {
 		return JSON.parse(content);
 	} else {
@@ -21,5 +23,5 @@ export function getLocalStorageBookmarks(): string[] {
 }
 
 export function setLocalStorageBookmarks(names: string[]) {
-	localStorage.setItem(BOOKMARK_LOCALSTORAGE_KEY, JSON.stringify(names));
+	safeLocalStorage.setItem(BOOKMARK_LOCALSTORAGE_KEY, JSON.stringify(names));
 }
