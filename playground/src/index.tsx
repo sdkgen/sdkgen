@@ -7,7 +7,7 @@ import { App } from "./containers/app";
 import { Routes } from "./containers/routes";
 import { rootStore } from "./stores";
 
-setupConfiguration("enterprise");
+setupConfiguration();
 
 render(
 	<App>
