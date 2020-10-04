@@ -9,7 +9,7 @@ export function persistEndpointBookmarkStatus(name: string, status: boolean) {
 		setLocalStorageBookmarks([...currentBookmaked, name]);
 	} else {
 		// unbookmark
-		setLocalStorageBookmarks(currentBookmaked.filter(n => n !== name));
+		setLocalStorageBookmarks(currentBookmaked.filter((n) => n !== name));
 	}
 }
 
