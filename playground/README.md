@@ -4,7 +4,7 @@ The default web playground for sdkgen APIs, allowing easy interaction with deplo
 
 # How to use
 
-just open a web browser on https://yourApiEndpoint.com/playground
+Just open a web browser on https://yourApiEndpoint.com/playground
 
 # Features
 
@@ -29,7 +29,7 @@ npm run dev
 ```
 a local version of the playground will be avaliable on http://localhost:4545/playground/ 
 
-by the default the playground will make requests to http://localhost:8000/, it's recomended to run an local sdkgen server alongside the playground dev server, here is an example of [very simple sdkgen server](https://github.com/kevinoliveira/sdkgen-helloworld) that you can use to develop.
+by default the playground will make requests to http://localhost:8000/, it's recomended to run an local sdkgen server alongside the playground dev server, here is an example of [very simple sdkgen server](https://github.com/kevinoliveira/sdkgen-helloworld) that you can use to develop.
  
 
 ## Checking for type errors
