@@ -1,4 +1,4 @@
-import { getLocalStorageBookmarks } from 'helpers/localStorage/bookmarkedEndpoints';
+import { getLocalStorageBookmarks } from "helpers/localStorage/bookmarkedEndpoints";
 import { ModelAnotations, requestModel } from "helpers/requestModel";
 import { observable } from "mobx";
 import { ArgsType, AstJson, TypeDescription, TypeTable } from "resources/types/ast";
@@ -134,7 +134,7 @@ export class RequestsStore {
 		const functionAnnotations = AST.annotations[`fn.${functionName}`] || [];
 
 		const regex = RegExp(`fn.${functionName}\\.[^\.]*`);
-		const argsKeys = Object.keys(AST.annotations).filter((target) => regex.test(target));
+		const argsKeys = Object.keys(AST.annotations).filter(target => regex.test(target));
 
 		const argsAnnotations = argsKeys.reduce((acc, argKey) => {
 			// breaks 'fn.getBalance.bankCode' into ["fn", "getBalance", "bankCode"]
@@ -154,12 +154,11 @@ export class RequestsStore {
 	};
 
 	private createBookmarkedEndpointIndex = (): Record<string, boolean | undefined> => {
-		return getLocalStorageBookmarks().reduce((acc, name) => ({ ...acc, [name]: true }), {})
-	}
-
+		return getLocalStorageBookmarks().reduce((acc, name) => ({ ...acc, [name]: true }), {});
+	};
 
 	public createModels = (AST: AstJson) => {
-		console.log("createModels")
+		console.log("createModels");
 		const { endpointUrl, deviceId } = this.rootStore.configStore;
 
 		const FNs = Object.entries(AST.functionTable);
@@ -175,7 +174,7 @@ export class RequestsStore {
 					baseUrl: endpointUrl,
 					deviceId: deviceId!,
 					annotations,
-					bookmarked: Boolean(bookmarkedEndpointsIndex[fName])
+					bookmarked: Boolean(bookmarkedEndpointsIndex[fName]),
 				}),
 			};
 		}, {});

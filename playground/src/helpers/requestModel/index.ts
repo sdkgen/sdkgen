@@ -43,10 +43,9 @@ export class requestModel {
 	@observable
 	public bookmarked: boolean;
 
-
 	public async toogleBookmark() {
 		this.bookmarked = !this.bookmarked;
-		persistEndpointBookmarkStatus(this.name, this.bookmarked)
+		persistEndpointBookmarkStatus(this.name, this.bookmarked);
 	}
 
 	public async call(args: any, callBack?: (status: RequestStatus) => void) {
