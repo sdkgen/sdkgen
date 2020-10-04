@@ -48,9 +48,8 @@ function Content(props: ContentProps) {
 			<div className={s.responseWrapper}>
 				<ReactJson
 					src={
-						model.response !== undefined && model.response !== null
-							? model.response
-							: {}
+						model.response === undefined ?
+							{} : { response: model.response }
 					}
 					name={false}
 				/>
