@@ -1,6 +1,6 @@
 import { observable } from "mobx";
 import { RootStore } from ".";
-import { safeLocalStorage } from 'helpers/localStorage/safeLocalStorage';
+import { safeLocalStorage } from "helpers/localStorage/safeLocalStorage";
 
 const endpointUrlFallback =
 	process.env.NODE_ENV === "development"

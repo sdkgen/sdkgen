@@ -1,4 +1,4 @@
-import { safeLocalStorage } from './safeLocalStorage';
+import { safeLocalStorage } from "./safeLocalStorage";
 
 const BOOKMARK_LOCALSTORAGE_KEY = "bookmarked_endpoints";
 
