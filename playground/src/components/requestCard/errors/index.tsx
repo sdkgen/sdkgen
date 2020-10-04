@@ -7,7 +7,7 @@ interface Props {
 
 export function Errors(props: Props) {
 	return props.error ? (
-		<pre>{props.error}</pre>
+		<pre className={s.pre}>{props.error}</pre>
 	) : (
 		<div className={s.empty}>There is no errors</div>
 	);
