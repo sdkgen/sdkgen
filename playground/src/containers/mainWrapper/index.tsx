@@ -1,14 +1,9 @@
-// import RootStore from "stores";
 import { MainHeader } from "components/header";
 import * as React from "react";
 import s from "./mainWrapper.scss";
 
-interface Props {}
+interface Props { }
 function MainWrapper(props: React.PropsWithChildren<Props>) {
-	// const { authStore } = React.useContext(RootStore);
-
-	// const { logout, user } = authStore;
-
 	return (
 		<div className={s.mainWrapper}>
 			<div className={s.top}>

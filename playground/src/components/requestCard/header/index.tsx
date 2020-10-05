@@ -19,7 +19,6 @@ export default function Header(props: HeaderProps) {
 		fetching: s.orange,
 		error: s.red,
 		sucess: s.green,
-		// timeout: s.purple,
 	};
 	const accentColorClass = colors[model.status];
 
@@ -30,7 +29,6 @@ export default function Header(props: HeaderProps) {
 					<div>{model.name}</div>
 					<FontAwesomeIcon
 						size="xs"
-						//@ts-ignore
 						icon={faLink}
 						className={s.hrefIcon}
 					/>
@@ -39,14 +37,12 @@ export default function Header(props: HeaderProps) {
 					{model.status !== "notFetched" ? (
 						<FontAwesomeIcon
 							size="xs"
-							//@ts-ignore
 							icon={faCircle}
 							className={classNames(s.statusCircle, accentColorClass)}
 						/>
 					) : null}
 					<FontAwesomeIcon
 						size="xs"
-						//@ts-ignore
 						icon={faChevronDown}
 						className={s.icon}
 					/>
@@ -60,14 +56,12 @@ export default function Header(props: HeaderProps) {
 				<div>{model.name}</div>
 				<FontAwesomeIcon
 					size="xs"
-					//@ts-ignore
 					icon={faLink}
 					className={s.hrefIcon}
 				/>
 			</div>
 			<FontAwesomeIcon
 				size="xs"
-				//@ts-ignore
 				icon={faChevronUp}
 				className={s.icon}
 			/>

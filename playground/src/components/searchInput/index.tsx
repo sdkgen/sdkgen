@@ -1,5 +1,4 @@
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as React from "react";
 import s from "./searchInput.scss";
@@ -19,7 +18,6 @@ export function SearchInput(props: Props) {
 			/>
 			<button type="submit" className={s.searchButton}>
 				<FontAwesomeIcon
-					//@ts-ignore
 					icon={faSearch}
 					size="xs"
 				/>

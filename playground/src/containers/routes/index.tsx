@@ -1,5 +1,4 @@
 import loadable, { Options } from "@loadable/component";
-// import Rootstore from "stores";
 import { PageLoading } from "components/loading";
 import { MainWrapper } from "containers/mainWrapper";
 import { createBrowserHistory } from "history";
