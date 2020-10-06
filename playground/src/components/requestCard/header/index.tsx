@@ -20,7 +20,6 @@ function Header(props: HeaderProps) {
 		fetching: s.orange,
 		error: s.red,
 		sucess: s.green,
-		// timeout: s.purple,
 	};
 	const accentColorClass = colors[model.status];
 
@@ -36,7 +35,6 @@ function Header(props: HeaderProps) {
 					<div>
 						<FontAwesomeIcon
 							size="xs"
-							//@ts-ignore
 							icon={faCircle}
 							className={classNames(s.statusCircle, accentColorClass)}
 						/>
@@ -47,7 +45,6 @@ function Header(props: HeaderProps) {
 					<FontAwesomeIcon onClick={onClickBookmark} size="xs" icon={faBookmark} className={classNames(s.bookmarkIcon, model.bookmarked && s.bookmarked)} />
 					<FontAwesomeIcon
 						size="xs"
-						//@ts-ignore
 						icon={faChevronDown}
 						className={s.icon}
 					/>
@@ -61,7 +58,6 @@ function Header(props: HeaderProps) {
 				<div>
 					<FontAwesomeIcon
 						size="xs"
-						//@ts-ignore
 						icon={faCircle}
 						className={classNames(s.statusCircle, accentColorClass)}
 					/>
@@ -72,7 +68,6 @@ function Header(props: HeaderProps) {
 				<FontAwesomeIcon onClick={onClickBookmark} size="xs" icon={faBookmark} className={classNames(s.bookmarkIcon, model.bookmarked && s.bookmarked)} />
 				<FontAwesomeIcon
 					size="xs"
-					//@ts-ignore
 					icon={faChevronUp}
 					className={s.icon}
 				/>

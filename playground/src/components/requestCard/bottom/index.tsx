@@ -1,3 +1,4 @@
+import { IconProp } from '@fortawesome/fontawesome-svg-core';
 import { faPause, faPlay, faRedo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
@@ -12,27 +13,24 @@ interface BottomProps {
 export default function Bottom(props: BottomProps) {
 	const icons: Record<
 		RequestStatus,
-		any // bad library types
+		IconProp
 	> = {
 		notFetched: faPlay,
 		fetching: faPause,
 		error: faRedo,
 		sucess: faRedo,
-		// timeout: faRedo,
 	};
 	const labels: Record<RequestStatus, string> = {
 		notFetched: "Make Request",
 		fetching: "Fetching",
 		error: "Error, Retry?",
 		sucess: "Success, Retry?",
-		// timeout: "Time out, Retry?",
 	};
 	const colors: Record<RequestStatus, string> = {
 		notFetched: s.blue,
 		fetching: s.orange,
 		error: s.red,
 		sucess: s.green,
-		// timeout: s.purple,
 	};
 	const selectedIcon = icons[props.status];
 	const selectedLabel = labels[props.status];

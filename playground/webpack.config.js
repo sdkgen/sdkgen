@@ -15,7 +15,7 @@ const devServerHost = "localhost";
 
 const port = 4545;
 const defaultServerPort = 8000;
-const title = "Anapatrix";
+const title = "sdkgen playground";
 const rootDir = __dirname;
 
 // LOADERS
@@ -24,11 +24,10 @@ const cssLoader = (modules = false) => ({
 	options: {
 		modules: modules
 			? {
-					localIdentName: "[path].[name].[local]",
-			  }
+				localIdentName: "[path].[name].[local]",
+			}
 			: false,
 		importLoaders: 1,
-		// minimize: shouldBuildForProduction,
 	},
 });
 
@@ -48,8 +47,6 @@ const sassLoader = rootDir => ({
 
 const styleLoader = "style-loader";
 
-// MANIFEST
-// const manifestBase = rootDir => require(path.resolve(rootDir, "public/manifest.json"));
 
 //HELPER
 
@@ -57,7 +54,6 @@ function resolver(desiredPath) {
 	return path.join(__dirname, desiredPath);
 }
 
-// console.log("KEVIN", rootDir, __dirname);
 /**
  * @type webpack.Configuration
  */
@@ -194,9 +190,6 @@ module.exports = {
 			"process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV || "development"),
 			"process.env.SERVER_PORT": JSON.stringify(process.env.SERVER_PORT || defaultServerPort),
 			"process.env.ENVIRONMENT": JSON.stringify(process.env.ENVIRONMENT || "BROWSER"),
-			"process.env.CI_COMMIT_REF_NAME": JSON.stringify(
-				process.env.CI_COMMIT_REF_NAME || "non-master-branch-name",
-			),
 		}),
 		new HtmlWebpackPlugin({
 			title,
@@ -210,7 +203,7 @@ module.exports = {
 			fileName: "manifest.json",
 			seed: resolver("src/public/manifest.json"),
 			generate: (seed, files) => {
-				const manifestFiles = files.reduce(function(manifest, file) {
+				const manifestFiles = files.reduce(function (manifest, file) {
 					manifest[file.name] = file.path;
 					return manifest;
 				}, seed);
@@ -225,45 +218,39 @@ module.exports = {
 		}),
 		...(shouldBuildForProduction
 			? [
-					new webpack.HashedModuleIdsPlugin(),
+				new webpack.HashedModuleIdsPlugin(),
 
-					new webpack.optimize.OccurrenceOrderPlugin(),
-					new ImageMinPlugin({
-						gifsicle: {
-							interlaced: true,
-						},
-						optipng: {
-							enable: true,
-							optimizationLevel: 7,
-						},
-						pngquant: {
-							quality: "65-90",
-							speed: 4,
-						},
-						mozjpeg: {
-							progressive: true,
-							quality: 65,
-						},
-					}),
-					new OfflinePlugin({
-						ServiceWorker: {
-							events: true,
-							minify: false,
-						},
-					}),
-			  ]
+				new webpack.optimize.OccurrenceOrderPlugin(),
+				new ImageMinPlugin({
+					gifsicle: {
+						interlaced: true,
+					},
+					optipng: {
+						enable: true,
+						optimizationLevel: 7,
+					},
+					pngquant: {
+						quality: "65-90",
+						speed: 4,
+					},
+					mozjpeg: {
+						progressive: true,
+						quality: 65,
+					},
+				}),
+				new OfflinePlugin({
+					ServiceWorker: {
+						events: true,
+						minify: false,
+					},
+				}),
+			]
 			: []),
 	],
 
 	node: {
 		fs: "empty",
 	},
-
-	externals: [
-		{
-			["../xlsx.js"]: "var _XLSX",
-		},
-	],
 
 	optimization: {
 		minimize: shouldBuildForProduction,
