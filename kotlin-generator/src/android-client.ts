@@ -124,7 +124,7 @@ class ApiClient(
 
             return Response(error, data, callResponse.stats)
         } catch(e: Exception) {
-            return Response(Fatal(applicationContext.getString(io.sdkgen.runtime.R.string.sdkgen_error_serialization)), null)
+            return Response(Fatal(applicationContext.getString(io.sdkgen.runtime.R.string.sdkgen_error_serialization)), null, callResponse.stats)
         }
     }\n`;
 
