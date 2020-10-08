@@ -1,3 +1,4 @@
+import { getLocalStorageBookmarks } from "helpers/localStorage/bookmarkedEndpoints";
 import { ModelAnotations, requestModel } from "helpers/requestModel";
 import { observable } from "mobx";
 import { ArgsType, AstJson, TypeDescription, TypeTable } from "resources/types/ast";
@@ -152,10 +153,16 @@ export class RequestsStore {
 		return annotations;
 	};
 
+	private createBookmarkedEndpointIndex = (): Record<string, boolean | undefined> => {
+		return getLocalStorageBookmarks().reduce((acc, name) => ({ ...acc, [name]: true }), {});
+	};
+
 	public createModels = (AST: AstJson) => {
+		console.log("createModels");
 		const { endpointUrl, deviceId } = this.rootStore.configStore;
 
 		const FNs = Object.entries(AST.functionTable);
+		const bookmarkedEndpointsIndex = this.createBookmarkedEndpointIndex();
 		this.api = FNs.reduce((acc, [fName, fStruct]) => {
 			const argsMock = this.createMockBasedOnTypes(fStruct.args, AST.typeTable);
 			const annotations = this.getAnotations(AST, fName);
@@ -167,6 +174,7 @@ export class RequestsStore {
 					baseUrl: endpointUrl,
 					deviceId: deviceId!,
 					annotations,
+					bookmarked: Boolean(bookmarkedEndpointsIndex[fName]),
 				}),
 			};
 		}, {});

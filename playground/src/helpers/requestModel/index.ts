@@ -1,5 +1,6 @@
 import { observable } from "mobx";
 import { AnnotationJson } from "resources/types/ast";
+import { persistEndpointBookmarkStatus } from "helpers/localStorage/bookmarkedEndpoints";
 
 export type RequestStatus = "notFetched" | "sucess" | "fetching" | "error";
 
@@ -17,6 +18,7 @@ interface ConstructorArgument {
 	baseUrl: string;
 	deviceId: string;
 	annotations: ModelAnotations;
+	bookmarked: boolean;
 }
 
 export class requestModel {
@@ -37,6 +39,14 @@ export class requestModel {
 
 	@observable
 	public status: RequestStatus;
+
+	@observable
+	public bookmarked: boolean;
+
+	public async toogleBookmark() {
+		this.bookmarked = !this.bookmarked;
+		persistEndpointBookmarkStatus(this.name, this.bookmarked);
+	}
 
 	public async call(args: any, callBack?: (status: RequestStatus) => void) {
 		this.args = args;
@@ -97,6 +107,7 @@ export class requestModel {
 		this.deviceId = config.deviceId;
 		this.baseUrl = config.baseUrl;
 		this.annotations = config.annotations;
+		this.bookmarked = config.bookmarked;
 		this.loading = false;
 		this.response = undefined;
 		this.error = undefined;

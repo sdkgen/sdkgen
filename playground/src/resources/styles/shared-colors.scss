@@ -15,6 +15,10 @@ $blue-dark-1: darken($blue, 5%);
 
 $red: #ec2c81;
 $red-dark-1: darken($red, 5%);
+$red-light-1: lighten($red, 5%);
+$red-light-2: lighten($red, 10%);
+$red-light-3: lighten($red, 15%);
+$red-light-4: lighten($red, 20%);
 
 $orange: #ff9800;
 $orange-dark-1: darken($orange, 5%);

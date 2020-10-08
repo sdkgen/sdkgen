@@ -14,12 +14,37 @@
 	}
 }
 
+.bookmarkIcon {
+	margin-right: 10px;
+	color: $c3;
+	transition: all 0.1s ease-out;
+
+	&.bookmarked {
+		color: $red;
+		&:hover {
+			color: $red-light-4;
+		}
+	}
+	&:hover {
+		color: $red;
+	}
+}
+
+.hrefIcon {
+	margin-right: 10px;
+	color: $c3;
+	// margin: 5px;
+	&:hover {
+		color: $c8;
+	}
+}
+
 .statusCircle {
 	margin-right: 10px;
 	transition: all 0.2s ease-out;
 
-	&.blue {
-		color: $blue;
+	&.gray {
+		color: $c3;
 	}
 
 	&.green {
@@ -53,14 +78,5 @@
 	.callName {
 		display: flex;
 		align-items: center;
-
-		.hrefIcon {
-			margin-left: 10px;
-			color: $c3;
-			margin: 5px;
-			&:hover {
-				color: $c8;
-			}
-		}
 	}
 }

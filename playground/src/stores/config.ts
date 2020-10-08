@@ -1,5 +1,6 @@
 import { observable } from "mobx";
 import { RootStore } from ".";
+import { safeLocalStorage } from "helpers/localStorage/safeLocalStorage";
 
 const endpointUrlFallback =
 	process.env.NODE_ENV === "development"
@@ -40,13 +41,13 @@ export class ConfigStore {
 
 	private syncWithLocalStorage = (override: boolean) => {
 		if (!override) {
-			this.deviceId = localStorage.getItem("deviceId") || randomBytesHex(16);
+			this.deviceId = safeLocalStorage.getItem("deviceId") || randomBytesHex(16);
 			this.endpointUrl =
-				(this.canChangeEndpoint && localStorage.getItem("endpointUrl")) ||
+				(this.canChangeEndpoint && safeLocalStorage.getItem("endpointUrl")) ||
 				endpointUrlFallback;
 		} else {
-			if (this.deviceId) localStorage.setItem("deviceId", this.deviceId);
-			if (this.endpointUrl) localStorage.setItem("endpointUrl", this.endpointUrl);
+			if (this.deviceId) safeLocalStorage.setItem("deviceId", this.deviceId);
+			if (this.endpointUrl) safeLocalStorage.setItem("endpointUrl", this.endpointUrl);
 		}
 	};
 }
