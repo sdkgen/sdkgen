@@ -42,7 +42,7 @@ class ApiClient(
     }
 
     code += `    open class Error(val message: String? = null)\n`;
-    code += `    data class Response<T>(val error: Error?, val data: T?, val stats: CallStats)\n\n`;
+    code += `    data class Response<T>(val error: Error?, val data: T?, val stats: CallStats?)\n\n`;
 
     for (const type of ast.structTypes) {
         code += `    ${generateClass(type)}\n`;
