@@ -42,7 +42,7 @@ class ApiClient(
     }
 
     code += `    open class Error(val message: String? = null)\n`;
-    code += `    data class Response<T>(val error: Error?, val data: T?)\n\n`;
+    code += `    data class Response<T>(val error: Error?, val data: T?, val stats: CallStats)\n\n`;
 
     for (const type of ast.structTypes) {
         code += `    ${generateClass(type)}\n`;
@@ -122,7 +122,7 @@ class ApiClient(
                 gson.fromJson(callResponse.error, errorType.type())
             } else null
 
-            return Response(error, data)
+            return Response(error, data, callResponse.stats)
         } catch(e: Exception) {
             return Response(Fatal(applicationContext.getString(io.sdkgen.runtime.R.string.sdkgen_error_serialization)), null)
         }

@@ -114,7 +114,8 @@ open class SdkgenHttpClient(
         }
     }
 
-    data class InternalResponse(val error: JsonObject?, val result: JsonObject?)
+    data class CallStats(val durationMillis: Long)
+    data class InternalResponse(val error: JsonObject?, val result: JsonObject?, val stats: CallStats?)
 
     private val random = Random()
     private val hexArray = "0123456789abcdef".toCharArray()
@@ -262,7 +263,9 @@ open class SdkgenHttpClient(
 
             var response: Response? = null
             try {
+                val initTime = System.currentTimeMillis()
                 response = call.execute()
+                val duration = System.currentTimeMillis() - initTime
                 if (response.code in 501..599) {
                     SdkgenIdlingResource.decrement()
                     continuation.resume(
@@ -271,7 +274,8 @@ open class SdkgenHttpClient(
                                 addProperty("type", "Fatal")
                                 addProperty("message", applicationContext.getString(R.string.sdkgen_error_call_code, response.code.toString()))
                             },
-                            null
+                            null,
+                            CallStats(duration)
                         )
                     )
 
@@ -290,7 +294,8 @@ open class SdkgenHttpClient(
                                 addProperty("type", "Fatal")
                                 addProperty("message", applicationContext.getString(R.string.sdkgen_error_serialization))
                             },
-                            null
+                            null,
+                            CallStats(duration)
                         )
                     )
 
@@ -300,10 +305,10 @@ open class SdkgenHttpClient(
                 if (response.code != 200) {
                     val jsonError = responseBody.getAsJsonObject("error")
                     SdkgenIdlingResource.decrement()
-                    continuation.resume(InternalResponse(jsonError, null))
+                    continuation.resume(InternalResponse(jsonError, null, CallStats(duration)))
                 } else {
                     SdkgenIdlingResource.decrement()
-                    continuation.resume(InternalResponse(null, responseBody))
+                    continuation.resume(InternalResponse(null, responseBody, CallStats(duration)))
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -319,6 +324,7 @@ open class SdkgenHttpClient(
                                 addProperty("message", applicationContext.getString(R.string.sdkgen_error_call_failed_without_message))
                             }
                         },
+                        null,
                         null
                     )
                 )
@@ -334,7 +340,8 @@ open class SdkgenHttpClient(
                         addProperty("type", "Fatal")
                         addProperty("message", applicationContext.getString(R.string.sdkgen_error_unknown))
                     },
-                    null
+                    null,
+                     null
                 )
             )
         }
