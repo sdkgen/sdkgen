@@ -6,7 +6,7 @@ export class SdkgenError extends Error {
     public toJSON() {
         return {
             message: this.message,
-            type: this.constructor.name,
+            type: this.type,
         };
     }
 }
