@@ -726,7 +726,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
 
                 if (allowedErrors.length > 0) {
                     if (!allowedErrors.includes(reply.error.type)) {
-                        reply.error.type = "Fatal";
+                        Object.defineProperty(reply.error, "type", { value: "Fatal" });
                     }
                 }
             }
