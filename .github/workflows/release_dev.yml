@@ -98,9 +98,9 @@ jobs:
         PUB_CACHE: ../pub-cache
         PUB_CREDENTIALS: ${{ secrets.PUB_CREDENTIALS }}
 
-  android-runtime: 
+  android-runtime:
     runs-on: ubuntu-latest
-    steps: 
+    steps:
     - uses: actions/checkout@v2
     - uses: actions/download-artifact@v1
       with:
@@ -112,10 +112,10 @@ jobs:
     - run: sed -i -e "s/versionCode 1/versionCode $(date +%s)/g" build.gradle
       working-directory: ./android-runtime/runtime
     - uses: giorgosneokleous93/docker-multicommand-android@v1.0.0
-      with: 
+      with:
         workingdir: "./android-runtime/"
         command1: "./gradlew test install bintrayUpload"
-      env: 
+      env:
         BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
         BINTRAY_API_KEY: ${{ secrets.BINTRAY_API_KEY }}
 
@@ -190,6 +190,8 @@ jobs:
     - uses: actions/setup-node@v1
       with:
         registry-url: https://registry.npmjs.org
+    - run: npm install
+      working-directory: ./kotlin-generator
     - run: |
         npm install -g json && json -I -f package.json -e '
           this.version = "'$(cat ../version/version.txt)'";
@@ -199,8 +201,6 @@ jobs:
             if (this.dependencies[pkg].startsWith("file:../"))
               this.dependencies[pkg] = this.version;
         '
-      working-directory: ./kotlin-generator
-    - run: npm install
       working-directory: ./kotlin-generator
     - run: npm run build
       working-directory: ./kotlin-generator
