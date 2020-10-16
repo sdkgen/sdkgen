@@ -20,256 +20,253 @@ const rootDir = __dirname;
 
 // LOADERS
 const cssLoader = (modules = false) => ({
-	loader: "css-loader",
-	options: {
-		modules: modules
-			? {
-				localIdentName: "[path].[name].[local]",
-			}
-			: false,
-		importLoaders: 1,
-	},
+  loader: "css-loader",
+  options: {
+    modules: modules
+      ? {
+          localIdentName: "[path].[name].[local]",
+        }
+      : false,
+    importLoaders: 1,
+  },
 });
 
 const postCssLoader = {
-	loader: "postcss-loader",
-	options: {
-		postcssOptions: {
-			ident: "postcss",
-			plugins: [
-				require("postcss-preset-env"),
-			],
-		},
-	},
+  loader: "postcss-loader",
+  options: {
+    postcssOptions: {
+      ident: "postcss",
+      plugins: [require("postcss-preset-env")],
+    },
+  },
 };
 
 const sassLoader = rootDir => ({
-	loader: "sass-loader",
-	options: {
-		sassOptions: {
-			includePaths: [resolver("src/resources/styles")],
-		}
-	},
+  loader: "sass-loader",
+  options: {
+    sassOptions: {
+      includePaths: [resolver("src/resources/styles")],
+    },
+  },
 });
 
 const styleLoader = "style-loader";
 
-
 //HELPER
 
 function resolver(desiredPath) {
-	return path.join(__dirname, desiredPath);
+  return path.join(__dirname, desiredPath);
 }
 
 /**
  * @type webpack.Configuration
  */
 module.exports = {
-	mode: shouldBuildForProduction ? "production" : "development",
+  mode: shouldBuildForProduction ? "production" : "development",
 
-	target: "web",
+  target: "web",
 
-	entry: {
-		main: resolver("src/index"),
-		vendor: ["react", "react-dom"],
-	},
+  entry: {
+    main: resolver("src/index"),
+    vendor: ["react", "react-dom"],
+  },
 
-	context: rootDir,
+  context: rootDir,
 
-	output: {
-		pathinfo: false,
-		publicPath: "/playground/",
-		filename: shouldBuildForProduction ? "prod.[name].[hash].js" : "dev.[name].js",
-		chunkFilename: shouldBuildForProduction ? `prod.chunk.${hash}.js` : `dev.chunk.${hash}.js`,
-		path: resolver("dist"),
-	},
+  output: {
+    pathinfo: false,
+    publicPath: "/playground/",
+    filename: shouldBuildForProduction ? "prod.[name].[hash].js" : "dev.[name].js",
+    chunkFilename: shouldBuildForProduction ? `prod.chunk.${hash}.js` : `dev.chunk.${hash}.js`,
+    path: resolver("dist"),
+  },
 
-	devtool: shouldBuildForProduction ? undefined : "inline-module-source-map",
+  devtool: shouldBuildForProduction ? undefined : "inline-module-source-map",
 
-	resolve: {
-		extensions: [".tsx", ".ts", ".js", ".jsx"],
-		alias: {
-			assets: resolver("src/assets"),
-			components: resolver("src/components"),
-			configuration: resolver("src/configuration"),
-			containers: resolver("src/containers"),
-			helpers: resolver("src/helpers"),
-			resources: resolver("src/resources"),
-			pages: resolver("src/pages"),
-			public: resolver("src/public"),
-			stores: resolver("src/stores"),
-			styles: resolver("src/styles"),
-			types: resolver("src/types"),
-			services: resolver("src/services"),
-		},
-	},
+  resolve: {
+    extensions: [".tsx", ".ts", ".js", ".jsx"],
+    alias: {
+      assets: resolver("src/assets"),
+      components: resolver("src/components"),
+      configuration: resolver("src/configuration"),
+      containers: resolver("src/containers"),
+      helpers: resolver("src/helpers"),
+      resources: resolver("src/resources"),
+      pages: resolver("src/pages"),
+      public: resolver("src/public"),
+      stores: resolver("src/stores"),
+      styles: resolver("src/styles"),
+      types: resolver("src/types"),
+      services: resolver("src/services"),
+    },
+  },
 
-	module: {
-		rules: [
-			{
-				test: /\*.html$/,
-				use: [
-					{
-						loader: "html-loader",
-						options: {
-							interpolate: true,
-							minimize: true,
-						},
-					},
-				],
-			},
-			{
-				test: /react-icons.*\.js$/,
-				loader: "ts-loader",
-				options: {
-					transpileOnly: true,
-				},
-			},
-			{
-				test: /\.tsx?$/,
-				use: [
-					...(shouldBuildForProduction ? [] : ["cache-loader"]),
-					{
-						loader: "ts-loader",
-						options: {
-							transpileOnly: true,
-							experimentalWatchApi: true,
-						},
-					},
-				],
-			},
-			{
-				test: /\.css/,
-				use: [styleLoader, cssLoader(false), postCssLoader],
-			},
-			{
-				test: /\.scss$/,
-				resolve: {
-					extensions: [".scss", ".sass"],
-				},
-				use: [styleLoader, cssLoader(true), postCssLoader, sassLoader(rootDir)],
-			},
-			{
-				test: /\.woff(2)?(\?v=[0-9].[0-9].[0-9])?$/,
-				use: [
-					{
-						loader: "url-loader",
-						options: {
-							mimetype: "application/font-woff",
-						},
-					},
-				],
-			},
-			{
-				test: /\.(ttf|otf|eot)(\?v=[0-9].[0-9].[0-9])?$/,
-				loader: [
-					{
-						loader: "file-loader",
-						options: {
-							name: "[name].[hash].[ext]",
-						},
-					},
-				],
-			},
-			{
-				test: /\.(jpe?g|png|gif|svg)$/i,
-				use: [
-					{
-						loader: "file-loader",
-						options: {
-							hash: "sha512",
-							digest: "hex",
-							name: "[name].[hash].[ext]",
-						},
-					},
-				],
-			},
-		],
-	},
+  module: {
+    rules: [
+      {
+        test: /\*.html$/,
+        use: [
+          {
+            loader: "html-loader",
+            options: {
+              interpolate: true,
+              minimize: true,
+            },
+          },
+        ],
+      },
+      {
+        test: /react-icons.*\.js$/,
+        loader: "ts-loader",
+        options: {
+          transpileOnly: true,
+        },
+      },
+      {
+        test: /\.tsx?$/,
+        use: [
+          ...(shouldBuildForProduction ? [] : ["cache-loader"]),
+          {
+            loader: "ts-loader",
+            options: {
+              transpileOnly: true,
+              experimentalWatchApi: true,
+            },
+          },
+        ],
+      },
+      {
+        test: /\.css/,
+        use: [styleLoader, cssLoader(false), postCssLoader],
+      },
+      {
+        test: /\.scss$/,
+        resolve: {
+          extensions: [".scss", ".sass"],
+        },
+        use: [styleLoader, cssLoader(true), postCssLoader, sassLoader(rootDir)],
+      },
+      {
+        test: /\.woff(2)?(\?v=[0-9].[0-9].[0-9])?$/,
+        use: [
+          {
+            loader: "url-loader",
+            options: {
+              mimetype: "application/font-woff",
+            },
+          },
+        ],
+      },
+      {
+        test: /\.(ttf|otf|eot)(\?v=[0-9].[0-9].[0-9])?$/,
+        loader: [
+          {
+            loader: "file-loader",
+            options: {
+              name: "[name].[hash].[ext]",
+            },
+          },
+        ],
+      },
+      {
+        test: /\.(jpe?g|png|gif|svg)$/i,
+        use: [
+          {
+            loader: "file-loader",
+            options: {
+              hash: "sha512",
+              digest: "hex",
+              name: "[name].[hash].[ext]",
+            },
+          },
+        ],
+      },
+    ],
+  },
 
-	plugins: [
-		new ForkTsCheckerWebpackPlugin({
-			tsconfig: resolver("tsconfig.json"),
-			tslint: resolver("tslint.json"),
-		}),
-		new webpack.ExtendedAPIPlugin(),
-		new webpack.DefinePlugin({
-			"process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV || "development"),
-			"process.env.SERVER_PORT": JSON.stringify(process.env.SERVER_PORT || defaultServerPort),
-			"process.env.ENVIRONMENT": JSON.stringify(process.env.ENVIRONMENT || "BROWSER"),
-		}),
-		new HtmlWebpackPlugin({
-			title,
-			filename: "index.html",
-			template: resolver("src/public/index.html"),
-		}),
-		new FaviconsWebpackPlugin({
-			logo: resolver("src/public/favicon.png"),
-		}),
-		new ManifestPlugin({
-			fileName: "manifest.json",
-			seed: resolver("src/public/manifest.json"),
-			generate: (seed, files) => {
-				const manifestFiles = files.reduce(function (manifest, file) {
-					manifest[file.name] = file.path;
-					return manifest;
-				}, seed);
-				return {
-					files: manifestFiles,
-				};
-			},
-		}),
-		new MonacoWebpackPlugin({
-			// available options are documented at https://github.com/Microsoft/monaco-editor-webpack-plugin#options
-			languages: ["json"],
-		}),
-		...(shouldBuildForProduction
-			? [
-				new webpack.HashedModuleIdsPlugin(),
+  plugins: [
+    new ForkTsCheckerWebpackPlugin({
+      tsconfig: resolver("tsconfig.json"),
+      tslint: resolver("tslint.json"),
+    }),
+    new webpack.ExtendedAPIPlugin(),
+    new webpack.DefinePlugin({
+      "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV || "development"),
+      "process.env.SERVER_PORT": JSON.stringify(process.env.SERVER_PORT || defaultServerPort),
+      "process.env.ENVIRONMENT": JSON.stringify(process.env.ENVIRONMENT || "BROWSER"),
+    }),
+    new HtmlWebpackPlugin({
+      title,
+      filename: "index.html",
+      template: resolver("src/public/index.html"),
+    }),
+    new FaviconsWebpackPlugin({
+      logo: resolver("src/public/favicon.png"),
+    }),
+    new ManifestPlugin({
+      fileName: "manifest.json",
+      seed: resolver("src/public/manifest.json"),
+      generate: (seed, files) => {
+        const manifestFiles = files.reduce(function (manifest, file) {
+          manifest[file.name] = file.path;
+          return manifest;
+        }, seed);
+        return {
+          files: manifestFiles,
+        };
+      },
+    }),
+    new MonacoWebpackPlugin({
+      // available options are documented at https://github.com/Microsoft/monaco-editor-webpack-plugin#options
+      languages: ["json"],
+    }),
+    ...(shouldBuildForProduction
+      ? [
+          new webpack.HashedModuleIdsPlugin(),
 
-				new webpack.optimize.OccurrenceOrderPlugin(),
-				new ImageMinPlugin({
-					gifsicle: {
-						interlaced: true,
-					},
-					optipng: {
-						enable: true,
-						optimizationLevel: 7,
-					},
-					pngquant: {
-						quality: "65-90",
-						speed: 4,
-					},
-					mozjpeg: {
-						progressive: true,
-						quality: 65,
-					},
-				}),
-				new OfflinePlugin({
-					ServiceWorker: {
-						events: true,
-						minify: false,
-					},
-				}),
-			]
-			: []),
-	],
+          new webpack.optimize.OccurrenceOrderPlugin(),
+          new ImageMinPlugin({
+            gifsicle: {
+              interlaced: true,
+            },
+            optipng: {
+              enable: true,
+              optimizationLevel: 7,
+            },
+            pngquant: {
+              quality: "65-90",
+              speed: 4,
+            },
+            mozjpeg: {
+              progressive: true,
+              quality: 65,
+            },
+          }),
+          new OfflinePlugin({
+            ServiceWorker: {
+              events: true,
+              minify: false,
+            },
+          }),
+        ]
+      : []),
+  ],
 
-	node: {
-		fs: "empty",
-	},
+  node: {
+    fs: "empty",
+  },
 
-	optimization: {
-		minimize: shouldBuildForProduction,
-		splitChunks: {
-			chunks: "all",
-		},
-	},
+  optimization: {
+    minimize: shouldBuildForProduction,
+    splitChunks: {
+      chunks: "all",
+    },
+  },
 
-	devServer: {
-		inline: true,
-		port,
-		host: devServerHost,
-		historyApiFallback: true,
-	},
+  devServer: {
+    inline: true,
+    port,
+    host: devServerHost,
+    historyApiFallback: true,
+  },
 };

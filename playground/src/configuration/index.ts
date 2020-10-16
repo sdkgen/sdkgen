@@ -5,13 +5,13 @@ import { setupServiceWorker } from "./serviceWorker";
 const isProductionBuild = process.env.NODE_ENV === "production";
 
 export interface ConfigEnvs {
-	isProductionBuild: boolean;
+  isProductionBuild: boolean;
 }
 
 export function setupConfiguration() {
-	const configEnvs: ConfigEnvs = {
-		isProductionBuild,
-	};
-	setupPolyfills();
-	setupServiceWorker(configEnvs);
+  const configEnvs: ConfigEnvs = {
+    isProductionBuild,
+  };
+  setupPolyfills();
+  setupServiceWorker(configEnvs);
 }

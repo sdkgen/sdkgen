@@ -4,9 +4,9 @@ import { ConfigStore } from "./config";
 import { RequestsStore } from "./requests";
 
 export class RootStore {
-	public routerStore = new RouterStore();
-	public configStore = new ConfigStore(this);
-	public requestsStore = new RequestsStore(this);
+  public routerStore = new RouterStore();
+  public configStore = new ConfigStore(this);
+  public requestsStore = new RequestsStore(this);
 }
 
 export const rootStore = new RootStore();

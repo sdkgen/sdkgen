@@ -10,10 +10,10 @@ import { rootStore } from "./stores";
 setupConfiguration();
 
 render(
-	<App>
-		<MobxProvider {...rootStore}>
-			<Routes />
-		</MobxProvider>
-	</App>,
-	document.getElementById("app"),
+  <App>
+    <MobxProvider {...rootStore}>
+      <Routes />
+    </MobxProvider>
+  </App>,
+  document.getElementById("app"),
 );

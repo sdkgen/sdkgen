@@ -1,38 +1,38 @@
 @import "main";
 $width: 800px;
 .mainWrapper {
-	height: 100%;
-	width: 100%;
-	background-color: $white;
+  height: 100%;
+  width: 100%;
+  background-color: $white;
 
-	@include lato;
+  @include lato;
 
-	.top {
-		display: flex;
-		justify-content: center;
-		background-color: $topGray;
+  .top {
+    display: flex;
+    justify-content: center;
+    background-color: $topGray;
 
-		width: 100%;
-		border-bottom: 1px solid $lightgray;
+    width: 100%;
+    border-bottom: 1px solid $lightgray;
 
-		.constraint {
-			width: $width;
-			max-width: $width;
-		}
-	}
+    .constraint {
+      width: $width;
+      max-width: $width;
+    }
+  }
 
-	.content {
-		display: flex;
-		justify-content: center;
-		background-color: $white;
+  .content {
+    display: flex;
+    justify-content: center;
+    background-color: $white;
 
-		.constraint {
-			width: $width;
-			max-width: $width;
+    .constraint {
+      width: $width;
+      max-width: $width;
 
-			.wrapper {
-				margin: 5px;
-			}
-		}
-	}
+      .wrapper {
+        margin: 5px;
+      }
+    }
+  }
 }
