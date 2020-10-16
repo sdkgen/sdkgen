@@ -10,23 +10,23 @@ interface BottomProps {
   onClick: (status: RequestStatus) => void;
   status: RequestStatus;
 }
-export default function Bottom(props: BottomProps) {
+export default function Bottom(props: BottomProps): JSX.Element {
   const icons: Record<RequestStatus, IconProp> = {
-    notFetched: faPlay,
-    fetching: faPause,
     error: faRedo,
+    fetching: faPause,
+    notFetched: faPlay,
     sucess: faRedo,
   };
   const labels: Record<RequestStatus, string> = {
-    notFetched: "Make Request",
-    fetching: "Fetching",
     error: "Error, Retry?",
+    fetching: "Fetching",
+    notFetched: "Make Request",
     sucess: "Success, Retry?",
   };
   const colors: Record<RequestStatus, string> = {
-    notFetched: s.blue,
-    fetching: s.orange,
     error: s.red,
+    fetching: s.orange,
+    notFetched: s.blue,
     sucess: s.green,
   };
   const selectedIcon = icons[props.status];

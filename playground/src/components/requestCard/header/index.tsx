@@ -11,24 +11,24 @@ interface HeaderProps {
   model: requestModel;
   closeCard?: () => void;
 }
-export default observer(Header);
+
 function Header(props: HeaderProps) {
   const { open, closeCard, model } = props;
 
   const colors: Record<RequestStatus, string> = {
-    notFetched: s.gray,
-    fetching: s.orange,
     error: s.red,
+    fetching: s.orange,
+    notFetched: s.gray,
     sucess: s.green,
   };
   const accentColorClass = colors[model.status];
 
-  const onClickBookmark = (event: React.MouseEvent<SVGSVGElement, MouseEvent>) => {
+  function onClickBookmark(event: React.MouseEvent<SVGSVGElement, MouseEvent>) {
     event.stopPropagation();
     model.toogleBookmark();
-  };
+  }
 
-  if (!open)
+  if (!open) {
     return (
       <>
         <div className={s.callName}>
@@ -48,6 +48,7 @@ function Header(props: HeaderProps) {
         </div>
       </>
     );
+  }
 
   return (
     <div role="button" className={s.header} onClick={closeCard}>
@@ -69,3 +70,5 @@ function Header(props: HeaderProps) {
     </div>
   );
 }
+
+export default observer(Header);

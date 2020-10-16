@@ -1,9 +1,7 @@
 import { AstRoot, astToJson } from "@sdkgen/parser";
 import { generateTypescriptEnum, generateTypescriptErrorClass, generateTypescriptInterface, generateTypescriptTypeName } from "./helpers";
 
-interface Options {}
-
-export function generateNodeServerSource(ast: AstRoot, options: Options) {
+export function generateNodeServerSource(ast: AstRoot): string {
   let code = "";
 
   code += `import { BaseApiConfig, Context, SdkgenError } from "@sdkgen/node-runtime";
@@ -45,8 +43,8 @@ export function generateNodeServerSource(ast: AstRoot, options: Options) {
     }
 
     astJson = ${JSON.stringify(astToJson(ast), null, 4)
-      .replace(/"(\w+)":/g, "$1:")
-      .replace(/\n/g, "\n    ")}
+      .replace(/"(?<key>\w+)":/gu, "$<key>:")
+      .replace(/\n/gu, "\n    ")}
 }
 
 export const api = new ApiConfig<{}>();

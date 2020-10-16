@@ -1,4 +1,5 @@
-// sass imports
+/* eslint-disable camelcase */
+// Sass imports
 declare module "*.scss" {
   const styles: { [key: string]: string };
   export default styles;

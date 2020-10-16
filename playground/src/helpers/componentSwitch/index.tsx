@@ -1,8 +1,7 @@
 import * as React from "react";
 
-export function componentSwitch<Options>(
+export function componentSwitch<Options extends string>(
   choice: Options,
-  //@ts-ignore
   components: Record<Options | "default", React.ReactNode | undefined>,
 ): React.ReactNode {
   const hasDefault = components.default !== undefined;
@@ -12,7 +11,7 @@ export function componentSwitch<Options>(
     return components[choice];
   } else if (hasDefault) {
     return components.default;
-  } else {
-    return null;
   }
+
+  return null;
 }

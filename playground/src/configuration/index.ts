@@ -8,10 +8,11 @@ export interface ConfigEnvs {
   isProductionBuild: boolean;
 }
 
-export function setupConfiguration() {
+export function setupConfiguration(): void {
   const configEnvs: ConfigEnvs = {
     isProductionBuild,
   };
+
   setupPolyfills();
   setupServiceWorker(configEnvs);
 }

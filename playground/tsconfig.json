@@ -38,6 +38,6 @@
       "types/*": ["types/*"]
     }
   },
-  "include": ["src/", "_tests_"],
+  "include": ["src/", "_tests_", "index.d.ts"],
   "exclude": ["node_modules", "!node_modules/@types", "**/__tests__/*", "dist"]
 }

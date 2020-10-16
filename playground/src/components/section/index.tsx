@@ -1,5 +1,5 @@
-import * as React from "react";
 import classnames from "classnames";
+import * as React from "react";
 import s from "./section.scss";
 
 interface TitleProps {
@@ -7,7 +7,7 @@ interface TitleProps {
   featured?: boolean;
 }
 
-export function Section(props: React.PropsWithChildren<TitleProps>) {
+export function Section(props: React.PropsWithChildren<TitleProps>): JSX.Element {
   const { title, featured, children } = props;
 
   return (
