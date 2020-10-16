@@ -62,15 +62,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        flutter-version: [1.12.x, 1.13.x, 1.14.x]
-        flutter-channel: [stable, beta]
-        exclude:
-          - flutter-version: 1.12.x
-            flutter-channel: beta
-          - flutter-version: 1.13.x
-            flutter-channel: stable
-          - flutter-version: 1.14.x
-            flutter-channel: stable
+        flutter-version: [1.12.x, 1.17.x, 1.20.x, 1.22.x]
+        flutter-channel: [stable]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v1
