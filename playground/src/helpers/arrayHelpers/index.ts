@@ -1,4 +1,4 @@
-export function sample<T>(array: T[]) {
-	const length = array == null ? 0 : array.length;
-	return length ? array[Math.floor(Math.random() * length)] : undefined;
+export function sample<T>(array: T[] | null) {
+	const length = array === null ? 0 : array.length;
+	return length && array ? array[Math.floor(Math.random() * length)] : undefined;
 }

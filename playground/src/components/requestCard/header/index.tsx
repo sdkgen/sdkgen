@@ -53,7 +53,7 @@ function Header(props: HeaderProps) {
 		);
 
 	return (
-		<div className={s.header} onClick={closeCard}>
+		<div role="button" className={s.header} onClick={closeCard}>
 			<div className={s.callName}>
 				<div>
 					<FontAwesomeIcon

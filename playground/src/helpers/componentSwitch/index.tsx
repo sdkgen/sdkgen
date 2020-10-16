@@ -7,7 +7,7 @@ export function componentSwitch<Options>(
 ): React.ReactNode {
 
 	const hasDefault = components.default !== undefined;
-	const hasChoice = components[choice] !== undefined;
+	const hasChoice = choice in components;
 
 	if (hasChoice) {
 		return components[choice];

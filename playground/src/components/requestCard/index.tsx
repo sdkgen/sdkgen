@@ -20,7 +20,7 @@ function Card(props: CardProps) {
 
 	if (!open)
 		return (
-			<div className={s.closedCard} onClick={() => setOpen(true)}>
+			<div role="button" className={s.closedCard} onClick={() => setOpen(true)}>
 				<Header open={false} model={props.model} />
 			</div>
 		);
