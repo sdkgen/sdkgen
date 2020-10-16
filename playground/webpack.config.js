@@ -34,14 +34,21 @@ const cssLoader = (modules = false) => ({
 const postCssLoader = {
 	loader: "postcss-loader",
 	options: {
-		ident: "postcss",
+		postcssOptions: {
+			ident: "postcss",
+			plugins: [
+				require("postcss-preset-env"),
+			],
+		},
 	},
 };
 
 const sassLoader = rootDir => ({
 	loader: "sass-loader",
 	options: {
-		includePaths: [resolver("src/resources/styles")],
+		sassOptions: {
+			includePaths: [resolver("src/resources/styles")],
+		}
 	},
 });
 
