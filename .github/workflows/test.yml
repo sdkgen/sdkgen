@@ -75,11 +75,11 @@ jobs:
           channel: ${{ matrix.flutter-channel }}
       - run: flutter pub get
         working-directory: ./dart-runtime
-      - run: flutter analyze
+      - run: if [ "${{ matrix.flutter-version }}" == "1.22.x" ]; then flutter analyze; fi
         working-directory: ./dart-runtime
-      - run: flutter format . --set-exit-if-changed
+      - run: if [ "${{ matrix.flutter-version }}" == "1.22.x" ]; then flutter format . --set-exit-if-changed; fi
         working-directory: ./dart-runtime
-      - run: flutter pub pub publish --dry-run
+      - run: if [ "${{ matrix.flutter-version }}" == "1.22.x" ]; then flutter pub pub publish --dry-run; fi
         working-directory: ./dart-runtime
 
   node-runtime:
