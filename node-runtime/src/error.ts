@@ -1,12 +1,12 @@
 export class SdkgenError extends Error {
-    get type() {
-        return this.constructor.name;
-    }
+  get type() {
+    return this.constructor.name;
+  }
 
-    public toJSON() {
-        return {
-            message: this.message,
-            type: this.type,
-        };
-    }
+  public toJSON() {
+    return {
+      message: this.message,
+      type: this.type,
+    };
+  }
 }

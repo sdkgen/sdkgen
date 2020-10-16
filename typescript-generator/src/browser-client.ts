@@ -4,44 +4,44 @@ import { generateTypescriptEnum, generateTypescriptErrorClass, generateTypescrip
 interface Options {}
 
 export function generateBrowserClientSource(ast: AstRoot, options: Options) {
-    let code = "";
+  let code = "";
 
-    code += `import { SdkgenError, SdkgenHttpClient } from "@sdkgen/browser-runtime";
+  code += `import { SdkgenError, SdkgenHttpClient } from "@sdkgen/browser-runtime";
 
 `;
 
-    for (const type of ast.enumTypes) {
-        code += generateTypescriptEnum(type);
-        code += "\n";
-    }
+  for (const type of ast.enumTypes) {
+    code += generateTypescriptEnum(type);
+    code += "\n";
+  }
 
-    for (const type of ast.structTypes) {
-        code += generateTypescriptInterface(type);
-        code += "\n";
-    }
+  for (const type of ast.structTypes) {
+    code += generateTypescriptInterface(type);
+    code += "\n";
+  }
 
-    for (const error of ast.errors) {
-        code += generateTypescriptErrorClass(error);
-        code += "\n";
-    }
+  for (const error of ast.errors) {
+    code += generateTypescriptErrorClass(error);
+    code += "\n";
+  }
 
-    code += `export class ApiClient extends SdkgenHttpClient {
+  code += `export class ApiClient extends SdkgenHttpClient {
     constructor(baseUrl: string) {
         super(baseUrl, astJson, errClasses);
     }
 ${ast.operations
-    .map(
-        op => `
+  .map(
+    op => `
     ${op.prettyName}(args${op.args.length === 0 ? "?" : ""}: {${op.args
-            .map(arg => `${arg.name}${arg.type.name.endsWith("?") ? "?" : ""}: ${generateTypescriptTypeName(arg.type)}`)
-            .join(", ")}}): Promise<${generateTypescriptTypeName(op.returnType)}> { return this.makeRequest("${op.prettyName}", args || {}); }`,
-    )
-    .join("")}
+      .map(arg => `${arg.name}${arg.type.name.endsWith("?") ? "?" : ""}: ${generateTypescriptTypeName(arg.type)}`)
+      .join(", ")}}): Promise<${generateTypescriptTypeName(op.returnType)}> { return this.makeRequest("${op.prettyName}", args || {}); }`,
+  )
+  .join("")}
 }\n\n`;
 
-    code += `const errClasses = {\n${ast.errors.map(err => `    ${err}`).join(",\n")}\n};\n\n`;
+  code += `const errClasses = {\n${ast.errors.map(err => `    ${err}`).join(",\n")}\n};\n\n`;
 
-    code += `const astJson = ${JSON.stringify(astToJson(ast), null, 4).replace(/"(\w+)":/g, "$1:")};\n`;
+  code += `const astJson = ${JSON.stringify(astToJson(ast), null, 4).replace(/"(\w+)":/g, "$1:")};\n`;
 
-    return code;
+  return code;
 }

@@ -9,10 +9,10 @@ const mainOptions = commandLineArgs(mainDefinitions, { stopAtFirstUnknown: true 
 const argv = mainOptions._unknown || [];
 
 switch (mainOptions.command) {
-    case "compatibility":
-        compatibilityCmd(argv);
-        break;
-    default:
-        buildCmd(process.argv);
-        break;
+  case "compatibility":
+    compatibilityCmd(argv);
+    break;
+  default:
+    buildCmd(process.argv);
+    break;
 }

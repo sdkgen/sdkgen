@@ -13,17 +13,17 @@ import { ValidateAnnotationsVisitor } from "./10_validate_annotations";
 export class SemanticError extends Error {}
 
 export function analyse(root: AstRoot) {
-    root.errors.push("Fatal");
-    root.errors = [...new Set(root.errors)];
+  root.errors.push("Fatal");
+  root.errors = [...new Set(root.errors)];
 
-    new CheckMultipleDeclarationVisitor(root).process();
-    new MatchTypeDefinitionsVisitor(root).process();
-    new CheckNoRecursiveTypesVisitor(root).process();
-    new CheckDontReturnSecretVisitor(root).process();
-    new CheckNamingForGettersReturningBoolVisitor(root).process();
-    new GiveStructAndEnumNamesVisitor(root).process();
-    new CheckEmptyStructOrEnumVisitor(root).process();
-    new CollectStructAndEnumTypesVisitor(root).process();
-    new ApplyStructSpreadsVisitor(root).process();
-    new ValidateAnnotationsVisitor(root).process();
+  new CheckMultipleDeclarationVisitor(root).process();
+  new MatchTypeDefinitionsVisitor(root).process();
+  new CheckNoRecursiveTypesVisitor(root).process();
+  new CheckDontReturnSecretVisitor(root).process();
+  new CheckNamingForGettersReturningBoolVisitor(root).process();
+  new GiveStructAndEnumNamesVisitor(root).process();
+  new CheckEmptyStructOrEnumVisitor(root).process();
+  new CollectStructAndEnumTypesVisitor(root).process();
+  new ApplyStructSpreadsVisitor(root).process();
+  new ValidateAnnotationsVisitor(root).process();
 }

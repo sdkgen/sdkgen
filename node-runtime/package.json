@@ -7,6 +7,8 @@
     "test": "TZ=UTC jest --passWithNoTests",
     "eslint:fix": "eslint --fix '**/*.{t,j}s'",
     "eslint:check": "eslint '**/*.{t,j}s'",
+    "prettier:fix": "prettier --write '**/*.{t,j}s'",
+    "prettier:check": "prettier --check '**/*.{t,j}s'",
     "build": "tsc"
   },
   "repository": {
