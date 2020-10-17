@@ -2,7 +2,9 @@ import { Token, TokenLocation } from "./token";
 
 export class AstRoot {
   structTypes: StructType[] = [];
+
   enumTypes: EnumType[] = [];
+
   warnings: string[] = [];
 
   constructor(public typeDefinitions: TypeDefinition[] = [], public operations: Operation[] = [], public errors: string[] = []) {}
@@ -29,8 +31,9 @@ export abstract class AstNode {
 export abstract class Type extends AstNode {
   abstract get name(): string;
 
-  toJSON() {
+  toJSON(): any {
     const json: any = { ...this };
+
     delete json.name;
     return json;
   }
@@ -105,8 +108,9 @@ export class OptionalType extends Type {
   constructor(public base: Type) {
     super();
   }
-  get name() {
-    return this.base.name + "?";
+
+  get name(): string {
+    return `${this.base.name}?`;
   }
 }
 
@@ -114,13 +118,15 @@ export class ArrayType extends Type {
   constructor(public base: Type) {
     super();
   }
-  get name() {
-    return this.base.name + "[]";
+
+  get name(): string {
+    return `${this.base.name}[]`;
   }
 }
 
 export class EnumValue extends AstNode {
   annotations: Annotation[] = [];
+
   constructor(public value: string) {
     super();
   }
@@ -128,6 +134,7 @@ export class EnumValue extends AstNode {
 
 export class EnumType extends Type {
   name!: string;
+
   constructor(public values: EnumValue[]) {
     super();
   }
@@ -135,6 +142,7 @@ export class EnumType extends Type {
 
 export class StructType extends Type {
   name!: string;
+
   constructor(public fields: Field[], public spreads: TypeReference[]) {
     super();
   }
@@ -142,6 +150,7 @@ export class StructType extends Type {
 
 export class TypeDefinition extends AstNode {
   annotations: Annotation[] = [];
+
   constructor(public name: string, public type: Type) {
     super();
   }
@@ -149,6 +158,7 @@ export class TypeDefinition extends AstNode {
 
 export class TypeReference extends Type {
   type!: Type;
+
   constructor(public name: string) {
     super();
   }
@@ -156,6 +166,7 @@ export class TypeReference extends Type {
 
 export class Field extends AstNode {
   annotations: Annotation[] = [];
+
   constructor(public name: string, public type: Type, public secret = false) {
     super();
   }
@@ -163,18 +174,19 @@ export class Field extends AstNode {
 
 export abstract class Operation extends AstNode {
   annotations: Annotation[] = [];
+
   constructor(public name: string, public args: Field[], public returnType: Type) {
     super();
   }
 
-  get prettyName() {
+  get prettyName(): string {
     return this.name;
   }
 }
 
 export class GetOperation extends Operation {
-  get prettyName() {
-    return this.returnType instanceof BoolPrimitiveType ? this.name : "get" + this.name[0].toUpperCase() + this.name.slice(1);
+  get prettyName(): string {
+    return this.returnType instanceof BoolPrimitiveType ? this.name : `get${this.name[0].toUpperCase()}${this.name.slice(1)}`;
   }
 }
 

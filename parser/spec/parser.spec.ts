@@ -2,6 +2,21 @@ import { AstJson, astToJson, jsonToAst } from "../src/json";
 import { Lexer } from "../src/lexer";
 import { Parser } from "../src/parser";
 
+function expectParses(source: string, json: AstJson, warnings: string[] = []) {
+  const parser = new Parser(new Lexer(source));
+  const ast = parser.parse();
+
+  expect(ast.warnings).toEqual(warnings);
+  expect(astToJson(ast)).toEqual(json);
+  expect(astToJson(ast)).toEqual(astToJson(jsonToAst(astToJson(ast))));
+}
+
+function expectDoesntParse(source: string, message: string) {
+  const parser = new Parser(new Lexer(source));
+
+  expect(() => parser.parse()).toThrowError(message);
+}
+
 describe(Parser, () => {
   for (const p of Lexer.PRIMITIVES) {
     test(`handles primitive type '${p}'`, () => {
@@ -12,6 +27,7 @@ describe(Parser, () => {
                     }
                 `,
         {
+          annotations: {},
           errors: ["Fatal"],
           functionTable: {},
           typeTable: {
@@ -19,7 +35,6 @@ describe(Parser, () => {
               foo: p,
             },
           },
-          annotations: {},
         },
       );
     });
@@ -32,6 +47,7 @@ describe(Parser, () => {
                     fn getBaz(): ${p}[]
                 `,
         {
+          annotations: {},
           errors: ["Fatal"],
           functionTable: {
             [p === "bool" ? "isFoo" : "getFoo"]: {
@@ -48,7 +64,6 @@ describe(Parser, () => {
             },
           },
           typeTable: {},
-          annotations: {},
         },
         ["Keyword 'get' is deprecated at -:2:21. Use 'fn' instead.", "Keyword 'get' is deprecated at -:3:21. Use 'fn' instead."],
       );
@@ -64,6 +79,7 @@ describe(Parser, () => {
                 }
                 `,
         {
+          annotations: {},
           errors: ["Fatal"],
           functionTable: {},
           typeTable: {
@@ -71,7 +87,6 @@ describe(Parser, () => {
               [kw]: "int",
             },
           },
-          annotations: {},
         },
       );
     });
@@ -88,6 +103,7 @@ describe(Parser, () => {
                 }
             `,
       {
+        annotations: {},
         errors: ["Fatal"],
         functionTable: {},
         typeTable: {
@@ -98,7 +114,6 @@ describe(Parser, () => {
             ddddd: "uint[][][]??[]???[][]",
           },
         },
-        annotations: {},
       },
     );
   });
@@ -116,6 +131,7 @@ describe(Parser, () => {
                 type Other enum { aa bb }
             `,
       {
+        annotations: {},
         errors: ["Fatal"],
         functionTable: {},
         typeTable: {
@@ -126,7 +142,6 @@ describe(Parser, () => {
           FooStatus: ["c", "a", "zzz"],
           Other: ["aa", "bb"],
         },
-        annotations: {},
       },
     );
   });
@@ -139,10 +154,10 @@ describe(Parser, () => {
                 error FooBar
             `,
       {
+        annotations: {},
         errors: ["Foo", "Bar", "FooBar", "Fatal"],
         functionTable: {},
         typeTable: {},
-        annotations: {},
       },
     );
   });
@@ -161,6 +176,7 @@ describe(Parser, () => {
                 fn getBaz(): Baz
             `,
       {
+        annotations: {},
         errors: ["Foo", "Bar", "Fatal"],
         functionTable: {
           getBaz: {
@@ -174,7 +190,6 @@ describe(Parser, () => {
             b: "int",
           },
         },
-        annotations: {},
       },
     );
   });
@@ -241,6 +256,7 @@ describe(Parser, () => {
                 }
             `,
       {
+        annotations: {},
         errors: ["Fatal"],
         functionTable: {},
         typeTable: {
@@ -252,7 +268,6 @@ describe(Parser, () => {
             bb: "int",
           },
         },
-        annotations: {},
       },
     );
   });
@@ -267,12 +282,13 @@ describe(Parser, () => {
                 function doIt(foo: int, bar: Bar): string
             `,
       {
+        annotations: {},
         errors: ["Fatal"],
         functionTable: {
           doIt: {
             args: {
-              foo: "int",
               bar: "Bar",
+              foo: "int",
             },
             ret: "string",
           },
@@ -282,7 +298,6 @@ describe(Parser, () => {
             aa: "string",
           },
         },
-        annotations: {},
       },
       ["Keyword 'function' is deprecated at -:6:17. Use 'fn' instead."],
     );
@@ -298,17 +313,6 @@ describe(Parser, () => {
                 fn doIt(foo: int, bar: float): string
             `,
       {
-        errors: ["Fatal"],
-        functionTable: {
-          doIt: {
-            args: {
-              foo: "int",
-              bar: "float",
-            },
-            ret: "string",
-          },
-        },
-        typeTable: {},
         annotations: {
           "fn.doIt": [
             { type: "description", value: "does it" },
@@ -316,6 +320,17 @@ describe(Parser, () => {
           ],
           "fn.doIt.bar": [{ type: "description", value: "Represents the number of things" }],
         },
+        errors: ["Fatal"],
+        functionTable: {
+          doIt: {
+            args: {
+              bar: "float",
+              foo: "int",
+            },
+            ret: "string",
+          },
+        },
+        typeTable: {},
       },
     );
 
@@ -330,6 +345,12 @@ describe(Parser, () => {
                 fn doIt2(): int
             `,
       {
+        annotations: {
+          "fn.doIt": [
+            { type: "throws", value: "NotFound" },
+            { type: "throws", value: "InvalidArgument" },
+          ],
+        },
         errors: ["NotFound", "InvalidArgument", "Fatal"],
         functionTable: {
           doIt: {
@@ -342,12 +363,6 @@ describe(Parser, () => {
           },
         },
         typeTable: {},
-        annotations: {
-          "fn.doIt": [
-            { type: "throws", value: "NotFound" },
-            { type: "throws", value: "InvalidArgument" },
-          ],
-        },
       },
     );
   });
@@ -362,6 +377,9 @@ describe(Parser, () => {
                 }
             `,
       {
+        annotations: {
+          "type.Foo.x": [{ type: "description", value: "foobar" }],
+        },
         errors: ["Fatal"],
         functionTable: {},
         typeTable: {
@@ -369,9 +387,6 @@ describe(Parser, () => {
             x: "int",
             y: "string",
           },
-        },
-        annotations: {
-          "type.Foo.x": [{ type: "description", value: "foobar" }],
         },
       },
     );
@@ -390,16 +405,57 @@ describe(Parser, () => {
                 fn userCount(since: date?, until: date?): uint
             `,
       {
+        annotations: {
+          "fn.foo": [
+            {
+              type: "rest",
+              value: {
+                bodyVariable: null,
+                headers: [],
+                method: "GET",
+                path: "/foo",
+                pathVariables: [],
+                queryVariables: [],
+              },
+            },
+          ],
+          "fn.name": [
+            {
+              type: "rest",
+              value: {
+                bodyVariable: null,
+                headers: [],
+                method: "GET",
+                path: "/users/{id}/name",
+                pathVariables: ["id"],
+                queryVariables: [],
+              },
+            },
+          ],
+          "fn.userCount": [
+            {
+              type: "rest",
+              value: {
+                bodyVariable: null,
+                headers: [],
+                method: "GET",
+                path: "/users/count",
+                pathVariables: [],
+                queryVariables: ["since", "until"],
+              },
+            },
+          ],
+        },
         errors: ["Fatal"],
         functionTable: {
+          foo: {
+            args: {},
+            ret: "string",
+          },
           name: {
             args: {
               id: "string",
             },
-            ret: "string",
-          },
-          foo: {
-            args: {},
             ret: "string",
           },
           userCount: {
@@ -411,47 +467,6 @@ describe(Parser, () => {
           },
         },
         typeTable: {},
-        annotations: {
-          "fn.name": [
-            {
-              type: "rest",
-              value: {
-                method: "GET",
-                path: "/users/{id}/name",
-                pathVariables: ["id"],
-                queryVariables: [],
-                headers: [],
-                bodyVariable: null,
-              },
-            },
-          ],
-          "fn.foo": [
-            {
-              type: "rest",
-              value: {
-                method: "GET",
-                path: "/foo",
-                pathVariables: [],
-                queryVariables: [],
-                headers: [],
-                bodyVariable: null,
-              },
-            },
-          ],
-          "fn.userCount": [
-            {
-              type: "rest",
-              value: {
-                method: "GET",
-                path: "/users/count",
-                pathVariables: [],
-                queryVariables: ["since", "until"],
-                headers: [],
-                bodyVariable: null,
-              },
-            },
-          ],
-        },
       },
     );
 
@@ -461,34 +476,34 @@ describe(Parser, () => {
                 fn getMessages(token: base64, chatId: uuid, since: datetime?, until: datetime?): string[]
             `,
       {
+        annotations: {
+          "fn.getMessages": [
+            {
+              type: "rest",
+              value: {
+                bodyVariable: null,
+                headers: [["x-token", "token"]],
+                method: "GET",
+                path: "/chats/{chatId}/messages",
+                pathVariables: ["chatId"],
+                queryVariables: ["since", "until"],
+              },
+            },
+          ],
+        },
         errors: ["Fatal"],
         functionTable: {
           getMessages: {
             args: {
-              token: "base64",
               chatId: "uuid",
               since: "datetime?",
+              token: "base64",
               until: "datetime?",
             },
             ret: "string[]",
           },
         },
         typeTable: {},
-        annotations: {
-          "fn.getMessages": [
-            {
-              type: "rest",
-              value: {
-                method: "GET",
-                path: "/chats/{chatId}/messages",
-                pathVariables: ["chatId"],
-                queryVariables: ["since", "until"],
-                headers: [["x-token", "token"]],
-                bodyVariable: null,
-              },
-            },
-          ],
-        },
       },
     );
 
@@ -498,37 +513,37 @@ describe(Parser, () => {
                 fn getPosts(userAgent: string, lang: string, token: base64): uuid
             `,
       {
-        errors: ["Fatal"],
-        functionTable: {
-          getPosts: {
-            args: {
-              userAgent: "string",
-              lang: "string",
-              token: "base64",
-            },
-            ret: "uuid",
-          },
-        },
-        typeTable: {},
         annotations: {
           "fn.getPosts": [
             {
               type: "rest",
               value: {
-                method: "GET",
-                path: "/posts",
-                pathVariables: [],
-                queryVariables: [],
+                bodyVariable: null,
                 headers: [
                   ["user-agent", "userAgent"],
                   ["accept-language", "lang"],
                   ["x-token", "token"],
                 ],
-                bodyVariable: null,
+                method: "GET",
+                path: "/posts",
+                pathVariables: [],
+                queryVariables: [],
               },
             },
           ],
         },
+        errors: ["Fatal"],
+        functionTable: {
+          getPosts: {
+            args: {
+              lang: "string",
+              token: "base64",
+              userAgent: "string",
+            },
+            ret: "uuid",
+          },
+        },
+        typeTable: {},
       },
     );
 
@@ -546,6 +561,21 @@ describe(Parser, () => {
                 fn createNewUser(user: NewUser): User
             `,
       {
+        annotations: {
+          "fn.createNewUser": [
+            {
+              type: "rest",
+              value: {
+                bodyVariable: "user",
+                headers: [],
+                method: "POST",
+                path: "/users",
+                pathVariables: [],
+                queryVariables: [],
+              },
+            },
+          ],
+        },
         errors: ["Fatal"],
         functionTable: {
           createNewUser: {
@@ -563,21 +593,6 @@ describe(Parser, () => {
             id: "uuid",
           },
         },
-        annotations: {
-          "fn.createNewUser": [
-            {
-              type: "rest",
-              value: {
-                method: "POST",
-                path: "/users",
-                pathVariables: [],
-                queryVariables: [],
-                headers: [],
-                bodyVariable: "user",
-              },
-            },
-          ],
-        },
       },
     );
 
@@ -591,8 +606,23 @@ describe(Parser, () => {
 
                 @rest GET /things/{kind}
                 fn countThings(kind: Kind): uint
-            `,
+                `,
       {
+        annotations: {
+          "fn.countThings": [
+            {
+              type: "rest",
+              value: {
+                bodyVariable: null,
+                headers: [],
+                method: "GET",
+                path: "/things/{kind}",
+                pathVariables: ["kind"],
+                queryVariables: [],
+              },
+            },
+          ],
+        },
         errors: ["Fatal"],
         functionTable: {
           countThings: {
@@ -604,21 +634,6 @@ describe(Parser, () => {
         },
         typeTable: {
           Kind: ["first", "second", "third"],
-        },
-        annotations: {
-          "fn.countThings": [
-            {
-              type: "rest",
-              value: {
-                method: "GET",
-                path: "/things/{kind}",
-                pathVariables: ["kind"],
-                queryVariables: [],
-                headers: [],
-                bodyVariable: null,
-              },
-            },
-          ],
         },
       },
     );
@@ -696,17 +711,3 @@ describe(Parser, () => {
     );
   });
 });
-
-function expectParses(source: string, json: AstJson, warnings: string[] = []) {
-  const parser = new Parser(new Lexer(source));
-  const ast = parser.parse();
-
-  expect(ast.warnings).toEqual(warnings);
-  expect(astToJson(ast)).toEqual(json);
-  expect(astToJson(ast)).toEqual(astToJson(jsonToAst(astToJson(ast))));
-}
-
-function expectDoesntParse(source: string, message: string) {
-  const parser = new Parser(new Lexer(source));
-  expect(() => parser.parse()).toThrowError(message);
-}

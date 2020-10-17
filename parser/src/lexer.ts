@@ -55,10 +55,15 @@ export class Lexer {
   public static readonly KEYWORDS = new Set([...Lexer.PRIMITIVES, "error", "enum", "type", "import", "get", "function", "fn", "true", "false"]);
 
   private startPos = 0;
+
   private startLine = 1;
+
   private startColumn = 1;
+
   private pos = 0;
+
   private line = 1;
+
   private column = 1;
 
   constructor(private readonly source: string, public readonly filename: string = "-") {}
@@ -95,7 +100,7 @@ export class Lexer {
       case "/":
         switch (this.nextChar()) {
           case "/":
-            while (true) {
+            for (;;) {
               switch (this.nextChar()) {
                 case "\0":
                   return null;
@@ -104,21 +109,30 @@ export class Lexer {
                   this.column = 1;
                   this.line++;
                   return this.nextToken();
+                default:
+                  break;
               }
             }
+
           case "*":
-            outerWhile: while (true) {
+            // eslint-disable-next-line no-labels
+            outerWhile: for (;;) {
               switch (this.nextChar()) {
                 case "\0":
+                  // eslint-disable-next-line no-labels
                   break outerWhile;
                 case "\n":
                   this.column = 0;
                   this.line++;
                   break;
                 case "*":
-                  while (this.nextChar() === "*") {}
+                  while (this.nextChar() === "*") {
+                    //
+                  }
+
                   switch (this.currentChar()) {
                     case "\0":
+                      // eslint-disable-next-line no-labels
                       break outerWhile;
                     case "\n":
                       this.column = 0;
@@ -127,10 +141,22 @@ export class Lexer {
                     case "/":
                       this.nextChar();
                       return this.nextToken();
+                    default:
+                      break;
                   }
+
+                  break;
+
+                default:
+                  break;
               }
             }
+
+            break;
+          default:
+            break;
         }
+
         break;
       case "{":
         this.nextChar();
@@ -175,7 +201,11 @@ export class Lexer {
             token = new ArraySymbolToken();
             break;
           }
+
+          default:
+            break;
         }
+
         break;
       case ".":
         switch (this.nextChar()) {
@@ -186,30 +216,50 @@ export class Lexer {
                 token = new SpreadSymbolToken();
                 break;
               }
+
+              default:
+                break;
             }
+
+            break;
           }
+
+          default:
+            break;
         }
+
         break;
-      case "@":
+      case "@": {
         let body = "\\";
         let pos = this.startPos + 1;
+
         while (body[body.length - 1] === "\\") {
           body = body.slice(0, body.length - 1).trim();
-          while (!["\0", "\n"].includes(this.nextChar())) {}
-          body = (body + " " + this.source.substring(pos, this.pos).trim()).trim();
+          while (!["\0", "\n"].includes(this.nextChar())) {
+            //
+          }
+
+          body = `${body} ${this.source.substring(pos, this.pos).trim()}`.trim();
           pos = this.pos + 1;
         }
+
         token = new AnnotationToken(body.trim());
         break;
+      }
+
       case '"': {
         const chars = [];
-        outerLoop: while (true) {
+
+        // eslint-disable-next-line no-labels
+        outerLoop: for (;;) {
           switch (this.nextChar()) {
             case "\0":
+              // eslint-disable-next-line no-labels
               break outerLoop;
             case "\\":
               switch (this.nextChar()) {
                 case "\0":
+                  // eslint-disable-next-line no-labels
                   break outerLoop;
                 case "n":
                   chars.push("\n");
@@ -221,20 +271,28 @@ export class Lexer {
                   chars.push(this.currentChar());
                   break;
               }
+
               break;
             case '"':
               this.nextChar();
               token = new StringLiteralToken(chars.join(""));
+              // eslint-disable-next-line no-labels
               break outerLoop;
             default:
               chars.push(this.currentChar());
               break;
           }
         }
+
+        break;
       }
+
       default: {
-        if (this.currentChar().match(/[a-zA-Z_]/)) {
-          while (this.nextChar().match(/[a-zA-Z0-9_]/)) {}
+        if (this.currentChar().match(/[a-zA-Z_]/u)) {
+          while (this.nextChar().match(/[a-zA-Z0-9_]/u)) {
+            //
+          }
+
           const ident = this.source.substring(this.startPos, this.pos);
 
           switch (ident) {
@@ -277,12 +335,12 @@ export class Lexer {
       token.location.line = this.startLine;
       token.location.column = this.startColumn;
       return token;
+    }
+
+    if (this.currentChar() === "\0") {
+      throw new LexerError(`Unexpected end of file at ${this.filename}`);
     } else {
-      if (this.currentChar() === "\0") {
-        throw new LexerError(`Unexpected end of file at ${this.filename}`);
-      } else {
-        throw new LexerError(`Unexpected character ${JSON.stringify(this.currentChar())} at ${this.filename}:${this.line}:${this.column}`);
-      }
+      throw new LexerError(`Unexpected character ${JSON.stringify(this.currentChar())} at ${this.filename}:${this.line}:${this.column}`);
     }
   }
 }

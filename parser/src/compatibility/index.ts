@@ -26,8 +26,10 @@ import {
   XmlPrimitiveType,
 } from "../ast";
 
-// 1 -> Old version
-// 2 -> New version
+/*
+ * 1 -> Old version
+ * 2 -> New version
+ */
 
 function checkClientToServer(path: string, issues: string[], t1: Type, t2: Type) {
   if (t1 instanceof TypeReference) {
@@ -63,7 +65,8 @@ function checkClientToServer(path: string, issues: string[], t1: Type, t2: Type)
 
   if (t1 instanceof StructType && t2 instanceof StructType) {
     for (const field2 of t2.fields) {
-      const field1 = t1.fields.find(field1 => field1.name === field2.name);
+      const field1 = t1.fields.find(x => x.name === field2.name);
+
       if (!field1) {
         if (field2.type instanceof OptionalType) {
           continue;
@@ -72,8 +75,10 @@ function checkClientToServer(path: string, issues: string[], t1: Type, t2: Type)
           continue;
         }
       }
+
       checkClientToServer(`${path}.${field1.name}`, issues, field1.type, field2.type);
     }
+
     return;
   }
 
@@ -110,6 +115,7 @@ function checkClientToServer(path: string, issues: string[], t1: Type, t2: Type)
         issues.push(`The enum at ${path} used to accept the value "${value.value}" that doesn't exist now. Clients that send it will fail.`);
       }
     }
+
     return;
   }
 
@@ -154,7 +160,8 @@ function checkServerToClient(path: string, issues: string[], t1: Type, t2: Type)
 
   if (t1 instanceof StructType && t2 instanceof StructType) {
     for (const field1 of t1.fields) {
-      const field2 = t2.fields.find(field2 => field2.name === field1.name);
+      const field2 = t2.fields.find(x => x.name === field1.name);
+
       if (!field2) {
         if (field1.type instanceof OptionalType) {
           continue;
@@ -163,8 +170,10 @@ function checkServerToClient(path: string, issues: string[], t1: Type, t2: Type)
           continue;
         }
       }
+
       checkServerToClient(`${path}.${field1.name}`, issues, field1.type, field2.type);
     }
+
     return;
   }
 
@@ -201,6 +210,7 @@ function checkServerToClient(path: string, issues: string[], t1: Type, t2: Type)
         issues.push(`The enum at ${path} now has the value "${value.value}" that didn't exist before. Client will crash if it receives it`);
       }
     }
+
     return;
   }
 
@@ -211,18 +221,21 @@ function checkServerToClient(path: string, issues: string[], t1: Type, t2: Type)
   issues.push(`${path} was ${t1.name} and now it is ${t2.name}. They are not compatible.`);
 }
 
-export function compatibilityIssues(ast1: AstRoot, ast2: AstRoot) {
+export function compatibilityIssues(ast1: AstRoot, ast2: AstRoot): string[] {
   const issues: string[] = [];
 
   for (const op1 of ast1.operations) {
-    const op2 = ast2.operations.find(op2 => op2.prettyName === op1.prettyName);
+    const op2 = ast2.operations.find(x => x.prettyName === op1.prettyName);
+
     if (!op2) {
       issues.push(`function ${op1.prettyName} used to exist, but it's now missing. Add it back.`);
       continue;
     }
+
     checkServerToClient(`${op1.prettyName}.ret`, issues, op1.returnType, op2.returnType);
     for (const arg2 of op2.args) {
-      const arg1 = op1.args.find(arg1 => arg1.name === arg2.name);
+      const arg1 = op1.args.find(x => x.name === arg2.name);
+
       if (!arg1) {
         if (arg2.type instanceof OptionalType) {
           continue;
@@ -231,6 +244,7 @@ export function compatibilityIssues(ast1: AstRoot, ast2: AstRoot) {
           continue;
         }
       }
+
       checkClientToServer(`${op1.prettyName}.args.${arg1.name}`, issues, arg1.type, arg2.type);
     }
   }

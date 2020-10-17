@@ -70,19 +70,19 @@ export function buildCmd(argv: string[]) {
 
   switch (options.target) {
     case "typescript_nodeserver": {
-      writeFileSync(options.output, generateNodeServerSource(ast, {}));
+      writeFileSync(options.output, generateNodeServerSource(ast));
       break;
     }
     case "typescript_nodeclient": {
-      writeFileSync(options.output, generateNodeClientSource(ast, {}));
+      writeFileSync(options.output, generateNodeClientSource(ast));
       break;
     }
     case "typescript_web": {
-      writeFileSync(options.output, generateBrowserClientSource(ast, {}));
+      writeFileSync(options.output, generateBrowserClientSource(ast));
       break;
     }
     case "typescript_interfaces": {
-      writeFileSync(options.output, generateTypescriptInterfaces(ast, {}));
+      writeFileSync(options.output, generateTypescriptInterfaces(ast));
       break;
     }
     case "flutter": {

@@ -122,6 +122,8 @@ jobs:
         working-directory: ./parser
       - run: npm run prettier:check
         working-directory: ./parser
+      - run: npm run eslint:check
+        working-directory: ./parser
       - run: npm run build
         working-directory: ./parser
       - run: npm test
@@ -141,6 +143,8 @@ jobs:
         working-directory: ./playground
       - run: npm run prettier:check
         working-directory: ./playground
+      - run: npm run eslint:check
+        working-directory: ./playground
       - run: npm run build
         working-directory: ./playground
 
@@ -157,6 +161,8 @@ jobs:
       - run: npm install
         working-directory: ./typescript-generator
       - run: npm run prettier:check
+        working-directory: ./typescript-generator
+      - run: npm run eslint:check
         working-directory: ./typescript-generator
       - run: npm run build
         working-directory: ./typescript-generator
