@@ -60,7 +60,7 @@ export function astToJson(ast: AstRoot): AstJson {
         if (ann instanceof DescriptionAnnotation) {
           const target = `type.${name}.${field.name}`;
 
-          annotations[target] = [];
+          annotations[target] ||= [];
           const list = annotations[target];
 
           list.push({ type: "description", value: ann.text });
@@ -84,7 +84,7 @@ export function astToJson(ast: AstRoot): AstJson {
         if (ann instanceof DescriptionAnnotation) {
           const target = `fn.${op.prettyName}.${arg.name}`;
 
-          annotations[target] = [];
+          annotations[target] ||= [];
           const list = annotations[target];
 
           list.push({ type: "description", value: ann.text });
@@ -99,7 +99,7 @@ export function astToJson(ast: AstRoot): AstJson {
     for (const ann of op.annotations) {
       const target = `fn.${op.prettyName}`;
 
-      annotations[target] = [];
+      annotations[target] ||= [];
       const list = annotations[target];
 
       if (ann instanceof DescriptionAnnotation) {

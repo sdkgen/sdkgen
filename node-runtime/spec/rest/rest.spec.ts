@@ -8,7 +8,7 @@ import { Context, SdkgenHttpServer } from "../../src";
 
 const ast = new Parser(`${__dirname}/api.sdkgen`).parse();
 
-writeFileSync(`${__dirname}/api.ts`, generateNodeServerSource(ast, {}).replace("@sdkgen/node-runtime", "../../src"));
+writeFileSync(`${__dirname}/api.ts`, generateNodeServerSource(ast).replace("@sdkgen/node-runtime", "../../src"));
 const { api } = require(`${__dirname}/api.ts`);
 
 unlinkSync(`${__dirname}/api.ts`);
@@ -56,7 +56,7 @@ api.fn.getHtml = async (ctx: Context, args: {}) => {
   return "<h1>Hello world!</h1>";
 };
 
-writeFileSync(`${__dirname}/nodeClient.ts`, generateNodeClientSource(ast, {}).replace("@sdkgen/node-runtime", "../../src"));
+writeFileSync(`${__dirname}/nodeClient.ts`, generateNodeClientSource(ast).replace("@sdkgen/node-runtime", "../../src"));
 const { ApiClient: NodeApiClient } = require(`${__dirname}/nodeClient.ts`);
 
 unlinkSync(`${__dirname}/nodeClient.ts`);
