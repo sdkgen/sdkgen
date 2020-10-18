@@ -1,3 +1,4 @@
+/* eslint-disable no-process-exit */
 import { generateCSharpServerSource } from "@sdkgen/csharp-generator";
 import { generateDartClientSource } from "@sdkgen/dart-generator";
 import { generateAndroidClientSource } from "@sdkgen/kotlin-generator";
@@ -13,13 +14,13 @@ import commandLineUsage from "command-line-usage";
 import { writeFileSync } from "fs";
 
 const optionDefinitions = [
-  { name: "source", defaultOption: true, description: "Specifies the source file" },
-  { name: "output", alias: "o", description: "Specifies the output file" },
-  { name: "target", alias: "t", description: "Specifies the target platform and language" },
-  { name: "help", alias: "h", type: Boolean, description: "Display this usage guide." },
+  { defaultOption: true, description: "Specifies the source file", name: "source" },
+  { alias: "o", description: "Specifies the output file", name: "output" },
+  { alias: "t", description: "Specifies the target platform and language", name: "target" },
+  { alias: "h", description: "Display this usage guide.", name: "help", type: Boolean },
 ];
 
-export function buildCmd(argv: string[]) {
+export function buildCmd(argv: string[]): void {
   const options: {
     source?: string;
     output?: string;
@@ -32,8 +33,8 @@ export function buildCmd(argv: string[]) {
     console.log(
       commandLineUsage([
         {
-          header: "Typical Example",
           content: "sdkgen src/api.sdkgen -o src/api.ts -t typescript_nodeserver",
+          header: "Typical Example",
         },
         {
           header: "Options",
@@ -73,30 +74,37 @@ export function buildCmd(argv: string[]) {
       writeFileSync(options.output, generateNodeServerSource(ast));
       break;
     }
+
     case "typescript_nodeclient": {
       writeFileSync(options.output, generateNodeClientSource(ast));
       break;
     }
+
     case "typescript_web": {
       writeFileSync(options.output, generateBrowserClientSource(ast));
       break;
     }
+
     case "typescript_interfaces": {
       writeFileSync(options.output, generateTypescriptInterfaces(ast));
       break;
     }
+
     case "flutter": {
-      writeFileSync(options.output, generateDartClientSource(ast, {}));
+      writeFileSync(options.output, generateDartClientSource(ast));
       break;
     }
+
     case "csharp_server": {
-      writeFileSync(options.output, generateCSharpServerSource(ast, {}));
+      writeFileSync(options.output, generateCSharpServerSource(ast));
       break;
     }
+
     case "kotlin_android": {
-      writeFileSync(options.output, generateAndroidClientSource(ast, {}));
+      writeFileSync(options.output, generateAndroidClientSource(ast));
       break;
     }
+
     default: {
       console.error(`Error: Unknown target '${options.target}'`);
       process.exit(1);

@@ -1,9 +1,7 @@
 import { AstRoot } from "@sdkgen/parser";
 import { generateClass, generateEnum, generateErrorClass, generateJsonAddRepresentation, generateKotlinTypeName, mangle } from "./helpers";
 
-interface Options {}
-
-export function generateAndroidClientSource(ast: AstRoot, options: Options) {
+export function generateAndroidClientSource(ast: AstRoot): string {
   let code = `@file:Suppress("UNNECESSARY_SAFE_CALL")
 
 import android.os.Parcelable
@@ -31,7 +29,7 @@ class ApiClient(
     val applicationContext: Context,
     defaultTimeoutMillis: Long = 10000L
 ) : SdkgenHttpClient(baseUrl, applicationContext, defaultTimeoutMillis) {
-    
+
     private val gson = GsonBuilder()
         .registerTypeAdapter(object : TypeToken<ByteArray>() {}.type, ByteArrayDeserializer())
         .create()\n\n`;
@@ -51,6 +49,7 @@ class ApiClient(
   const errorTypeEnumEntries: string[] = [];
 
   const connectionError = "Connection";
+
   errorTypeEnumEntries.push(connectionError);
   code += `    ${generateErrorClass(connectionError)}`;
 
@@ -77,9 +76,10 @@ class ApiClient(
   code += ast.operations
     .map(op => {
       let opImpl = "";
-      let args = op.args
+      const args = op.args
         .map(arg => `${mangle(arg.name)}: ${generateKotlinTypeName(arg.type)}`)
         .concat([`timeoutMillis: Long? = null`, `callback: ((response: Response<${generateKotlinTypeName(op.returnType)}>) -> Unit)? = null`]);
+
       opImpl += `    fun ${mangle(op.prettyName)}(\n        ${args.join(",\n        ")}\n    ): Deferred<Response<out ${generateKotlinTypeName(
         op.returnType,
       )}>> = sdkgenIOScope.async {\n`;
@@ -93,7 +93,7 @@ class ApiClient(
       }
 
       opImpl += `\n`;
-      opImpl += `        val call = makeRequest(\"${op.prettyName}\", bodyArgs, timeoutMillis)\n`;
+      opImpl += `        val call = makeRequest("${op.prettyName}", bodyArgs, timeoutMillis)\n`;
       opImpl += `        val response: Response<${generateKotlinTypeName(op.returnType)}> = handleCallResponse(call)\n`;
       opImpl += `        withContext(Dispatchers.Main) { callback?.invoke(response) } \n`;
       opImpl += `        return@async response\n`;

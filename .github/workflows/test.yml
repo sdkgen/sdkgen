@@ -15,6 +15,8 @@ jobs:
         working-directory: ./browser-runtime
       - run: npm run prettier:check
         working-directory: ./browser-runtime
+      - run: npm run eslint:check
+        working-directory: ./browser-runtime
       - run: npm run build
         working-directory: ./browser-runtime
       - run: npm test
@@ -34,6 +36,8 @@ jobs:
         working-directory: ./cli
       - run: npm run prettier:check
         working-directory: ./cli
+      - run: npm run eslint:check
+        working-directory: ./cli
       - run: npm run build
         working-directory: ./cli
       - run: npm test
@@ -52,6 +56,8 @@ jobs:
       - run: npm install
         working-directory: ./dart-generator
       - run: npm run prettier:check
+        working-directory: ./dart-generator
+      - run: npm run eslint:check
         working-directory: ./dart-generator
       - run: npm run build
         working-directory: ./dart-generator
@@ -185,6 +191,8 @@ jobs:
         working-directory: ./csharp-generator
       - run: npm run prettier:check
         working-directory: ./csharp-generator
+      - run: npm run eslint:check
+        working-directory: ./csharp-generator
       - run: npm run build
         working-directory: ./csharp-generator
       - run: npm test
@@ -216,6 +224,8 @@ jobs:
       - run: npm install
         working-directory: ./kotlin-generator
       - run: npm run prettier:check
+        working-directory: ./kotlin-generator
+      - run: npm run eslint:check
         working-directory: ./kotlin-generator
       - run: npm run build
         working-directory: ./kotlin-generator

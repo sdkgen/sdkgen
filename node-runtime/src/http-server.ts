@@ -83,7 +83,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
 
         try {
           res.setHeader("Content-Type", "application/octet-stream");
-          res.write(generateFn(this.ast, {}));
+          res.write(generateFn(this.ast));
         } catch (e) {
           console.error(e);
           res.statusCode = 500;
