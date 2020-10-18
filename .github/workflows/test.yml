@@ -1,5 +1,5 @@
 name: test
-on: [push, pull_request]
+on: [push]
 jobs:
   browser-runtime:
     runs-on: ubuntu-latest
@@ -62,15 +62,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        flutter-version: [1.12.x, 1.13.x, 1.14.x]
-        flutter-channel: [stable, beta]
-        exclude:
-          - flutter-version: 1.12.x
-            flutter-channel: beta
-          - flutter-version: 1.13.x
-            flutter-channel: stable
-          - flutter-version: 1.14.x
-            flutter-channel: stable
+        flutter-version: [1.12.x, 1.17.x, 1.20.x, 1.22.x]
+        flutter-channel: [stable]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v1
@@ -82,11 +75,11 @@ jobs:
           channel: ${{ matrix.flutter-channel }}
       - run: flutter pub get
         working-directory: ./dart-runtime
-      - run: flutter analyze
+      - run: if [ "${{ matrix.flutter-version }}" == "1.22.x" ]; then flutter analyze; fi
         working-directory: ./dart-runtime
-      - run: flutter format . --set-exit-if-changed
+      - run: if [ "${{ matrix.flutter-version }}" == "1.22.x" ]; then flutter format . --set-exit-if-changed; fi
         working-directory: ./dart-runtime
-      - run: flutter pub pub publish --dry-run
+      - run: if [ "${{ matrix.flutter-version }}" == "1.22.x" ]; then flutter pub pub publish --dry-run; fi
         working-directory: ./dart-runtime
 
   node-runtime:
