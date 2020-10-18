@@ -35,7 +35,6 @@
       }
     ],
     "@typescript-eslint/brace-style": "error",
-    "@typescript-eslint/camelcase": "warn",
     "@typescript-eslint/consistent-type-definitions": [
       "error",
       "interface"
@@ -49,9 +48,11 @@
     ],
     "@typescript-eslint/interface-name-prefix": "off",
     "@typescript-eslint/member-delimiter-style": "off",
+    "@typescript-eslint/no-empty-interface": "off",
     "@typescript-eslint/no-unnecessary-qualifier": "error",
     "@typescript-eslint/no-unnecessary-type-arguments": "error",
     "@typescript-eslint/no-unused-expressions": "error",
+    "@typescript-eslint/no-use-before-define": "error",
     "@typescript-eslint/no-useless-constructor": "error",
     "@typescript-eslint/prefer-for-of": "error",
     "@typescript-eslint/promise-function-async": "error",
@@ -134,7 +135,6 @@
     "no-throw-literal": "error",
     "no-undef-init": "error",
     "no-unmodified-loop-condition": "error",
-    "no-use-before-define": "error",
     "no-useless-call": "error",
     "no-useless-concat": "error",
     "no-void": "error",

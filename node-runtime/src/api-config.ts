@@ -1,7 +1,7 @@
 import { AstJson } from "@sdkgen/parser";
 import { Context, ContextReply } from "./context";
 
-export abstract class BaseApiConfig<ExtraContextT = {}> {
+export abstract class BaseApiConfig<ExtraContextT = unknown> {
   astJson!: AstJson;
 
   fn: {

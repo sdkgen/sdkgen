@@ -21,7 +21,7 @@ export class SdkgenHttpClient {
     this.baseUrl = new URL(baseUrl);
   }
 
-  async makeRequest(ctx: Context | null, functionName: string, args: unknown) {
+  async makeRequest(ctx: Context | null, functionName: string, args: unknown): Promise<any> {
     const func = this.astJson.functionTable[functionName];
 
     if (!func) {
@@ -32,7 +32,7 @@ export class SdkgenHttpClient {
       args: encode(this.astJson.typeTable, `${functionName}.args`, func.args, args),
       deviceInfo: ctx && ctx.request ? ctx.request.deviceInfo : { id: hostname(), type: "node" },
       extra: {
-        ...[...this.extra.entries()].reduce<{ [key: string]: unknown }>((obj, [key, value]) => ((obj[key] = value), obj), {}),
+        ...this.extra,
         ...(ctx && ctx.request ? ctx.request.extra : {}),
       },
       name: functionName,

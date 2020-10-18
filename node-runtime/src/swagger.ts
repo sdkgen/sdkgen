@@ -259,16 +259,19 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
               operationId: op.name,
               parameters: [
                 ...ann.pathVariables.map(name => ({
+                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                   arg: op.args.find(arg => arg.name === name)!,
                   location: "path",
                   name,
                 })),
                 ...ann.queryVariables.map(name => ({
+                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                   arg: op.args.find(arg => arg.name === name)!,
                   location: "query",
                   name,
                 })),
                 ...[...ann.headers.entries()].map(([header, name]) => ({
+                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                   arg: op.args.find(arg => arg.name === name)!,
                   location: "header",
                   name: header,
@@ -288,7 +291,7 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
                 ? {
                     content: {
                       ...(() => {
-                        const bodyType = op.args.find(arg => arg.name === ann.bodyVariable)!.type;
+                        const bodyType = op.args.find(arg => arg.name === ann.bodyVariable)?.type;
 
                         return bodyType instanceof BoolPrimitiveType ||
                           bodyType instanceof IntPrimitiveType ||
@@ -313,9 +316,11 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
                           : {};
                       })(),
                       "application/json": {
+                        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                         schema: typeToSchema(definitions, op.args.find(arg => arg.name === ann.bodyVariable)!.type),
                       },
                     },
+                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                     required: !(op.args.find(arg => arg.name === ann.bodyVariable)!.type instanceof OptionalType),
                   }
                 : undefined,
