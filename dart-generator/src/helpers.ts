@@ -28,21 +28,15 @@ import {
   XmlPrimitiveType,
 } from "@sdkgen/parser";
 
-export function generateEnum(type: EnumType) {
+export function generateEnum(type: EnumType): string {
   return `enum ${type.name} {\n  ${type.values.map(x => x.value).join(",\n  ")}\n}\n`;
 }
 
-export function generateClass(type: StructType) {
-  return `class ${type.name} {\n  ${type.fields
-    .map((field: any) => `${generateTypeName(field.type)} ${field.name};`)
-    .join("\n  ")}\n\n${generateConstructor(type)}}\n`;
-}
-
-///Generate the class constructor with the tag [@required] for non nullable types
+// Generate the class constructor with the tag [@required] for non nullable types
 function generateConstructor(type: StructType): string {
   const doubleSpace = "  ";
   const fourSpaces = "    ";
-  var str = `${doubleSpace}${type.name}({\n`;
+  let str = `${doubleSpace}${type.name}({\n`;
 
   type.fields.forEach((field: any) => {
     if (field.type instanceof OptionalType) {
@@ -50,28 +44,15 @@ function generateConstructor(type: StructType): string {
     } else {
       str = str.concat(`${fourSpaces}@required `);
     }
+
     str = str.concat(`this.${field.name},\n`);
   });
   str = str.concat(`${doubleSpace}});\n`);
   return str;
 }
 
-export function generateErrorClass(error: string) {
+export function generateErrorClass(error: string): string {
   return `class ${error} extends SdkgenError {\n  ${error}(msg) : super(msg);\n}\n`;
-}
-
-export function cast(value: string, type: Type): string {
-  if (type instanceof OptionalType) {
-    return cast(value, (type as OptionalType).base);
-  } else if (type instanceof ArrayType) {
-    return `(${value} as List)?.map((e) => ${cast("e", (type as ArrayType).base)})?.toList()`;
-  } else if (type instanceof VoidPrimitiveType) {
-    return value;
-  } else if (type instanceof FloatPrimitiveType || type instanceof MoneyPrimitiveType) {
-    return `(${value} as num)?.toDouble()`;
-  } else {
-    return `${value} as ${generateTypeName(type)}`;
-  }
 }
 
 export function generateTypeName(type: Type): string {
@@ -121,4 +102,24 @@ export function generateTypeName(type: Type): string {
     default:
       throw new Error(`BUG: generateTypeName with ${type.constructor.name}`);
   }
+}
+
+export function cast(value: string, type: Type): string {
+  if (type instanceof OptionalType) {
+    return cast(value, (type as OptionalType).base);
+  } else if (type instanceof ArrayType) {
+    return `(${value} as List)?.map((e) => ${cast("e", (type as ArrayType).base)})?.toList()`;
+  } else if (type instanceof VoidPrimitiveType) {
+    return value;
+  } else if (type instanceof FloatPrimitiveType || type instanceof MoneyPrimitiveType) {
+    return `(${value} as num)?.toDouble()`;
+  }
+
+  return `${value} as ${generateTypeName(type)}`;
+}
+
+export function generateClass(type: StructType): string {
+  return `class ${type.name} {\n  ${type.fields
+    .map((field: any) => `${generateTypeName(field.type)} ${field.name};`)
+    .join("\n  ")}\n\n${generateConstructor(type)}}\n`;
 }

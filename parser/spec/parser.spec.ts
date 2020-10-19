@@ -2,16 +2,32 @@ import { AstJson, astToJson, jsonToAst } from "../src/json";
 import { Lexer } from "../src/lexer";
 import { Parser } from "../src/parser";
 
+function expectParses(source: string, json: AstJson, warnings: string[] = []) {
+  const parser = new Parser(new Lexer(source));
+  const ast = parser.parse();
+
+  expect(ast.warnings).toEqual(warnings);
+  expect(astToJson(ast)).toEqual(json);
+  expect(astToJson(ast)).toEqual(astToJson(jsonToAst(astToJson(ast))));
+}
+
+function expectDoesntParse(source: string, message: string) {
+  const parser = new Parser(new Lexer(source));
+
+  expect(() => parser.parse()).toThrowError(message);
+}
+
 describe(Parser, () => {
   for (const p of Lexer.PRIMITIVES) {
     test(`handles primitive type '${p}'`, () => {
       expectParses(
         `
-                    type Foo {
-                        foo: ${p}
-                    }
-                `,
+          type Foo {
+            foo: ${p}
+          }
+        `,
         {
+          annotations: {},
           errors: ["Fatal"],
           functionTable: {},
           typeTable: {
@@ -19,7 +35,6 @@ describe(Parser, () => {
               foo: p,
             },
           },
-          annotations: {},
         },
       );
     });
@@ -27,11 +42,12 @@ describe(Parser, () => {
     test(`handles simple get operations for primitive type '${p}'`, () => {
       expectParses(
         `
-                    get ${p === "bool" ? "isFoo" : "foo"}(): ${p}
-                    get bar(): ${p}?
-                    fn getBaz(): ${p}[]
-                `,
+          get ${p === "bool" ? "isFoo" : "foo"}(): ${p}
+          get bar(): ${p}?
+          fn getBaz(): ${p}[]
+        `,
         {
+          annotations: {},
           errors: ["Fatal"],
           functionTable: {
             [p === "bool" ? "isFoo" : "getFoo"]: {
@@ -48,9 +64,8 @@ describe(Parser, () => {
             },
           },
           typeTable: {},
-          annotations: {},
         },
-        ["Keyword 'get' is deprecated at -:2:21. Use 'fn' instead.", "Keyword 'get' is deprecated at -:3:21. Use 'fn' instead."],
+        ["Keyword 'get' is deprecated at -:2:11. Use 'fn' instead.", "Keyword 'get' is deprecated at -:3:11. Use 'fn' instead."],
       );
     });
   }
@@ -59,11 +74,12 @@ describe(Parser, () => {
     test(`handles '${kw}' on the name of a field`, () => {
       expectParses(
         `
-                type Foo {
-                    ${kw}: int
-                }
-                `,
+          type Foo {
+            ${kw}: int
+          }
+        `,
         {
+          annotations: {},
           errors: ["Fatal"],
           functionTable: {},
           typeTable: {
@@ -71,7 +87,6 @@ describe(Parser, () => {
               [kw]: "int",
             },
           },
-          annotations: {},
         },
       );
     });
@@ -80,14 +95,15 @@ describe(Parser, () => {
   test("handles arrays and optionals", () => {
     expectParses(
       `
-                type Foo {
-                    aa: string[]
-                    bbb: int?[]??
-                    cccc: int[][][]
-                    ddddd: uint[][][]??[]???[][]
-                }
-            `,
+        type Foo {
+          aa: string[]
+          bbb: int?[]??
+          cccc: int[][][]
+          ddddd: uint[][][]??[]???[][]
+        }
+      `,
       {
+        annotations: {},
         errors: ["Fatal"],
         functionTable: {},
         typeTable: {
@@ -98,7 +114,6 @@ describe(Parser, () => {
             ddddd: "uint[][][]??[]???[][]",
           },
         },
-        annotations: {},
       },
     );
   });
@@ -106,16 +121,17 @@ describe(Parser, () => {
   test("handles enums", () => {
     expectParses(
       `
-                type Foo {
-                    a: int
-                    status: enum {
-                        c a zzz
-                    }
-                }
+        type Foo {
+          a: int
+          status: enum {
+            c a zzz
+          }
+        }
 
-                type Other enum { aa bb }
-            `,
+        type Other enum { aa bb }
+      `,
       {
+        annotations: {},
         errors: ["Fatal"],
         functionTable: {},
         typeTable: {
@@ -126,7 +142,6 @@ describe(Parser, () => {
           FooStatus: ["c", "a", "zzz"],
           Other: ["aa", "bb"],
         },
-        annotations: {},
       },
     );
   });
@@ -134,15 +149,15 @@ describe(Parser, () => {
   test("handles errors", () => {
     expectParses(
       `
-                error Foo
-                error Bar
-                error FooBar
-            `,
+        error Foo
+        error Bar
+        error FooBar
+      `,
       {
+        annotations: {},
         errors: ["Foo", "Bar", "FooBar", "Fatal"],
         functionTable: {},
         typeTable: {},
-        annotations: {},
       },
     );
   });
@@ -150,17 +165,18 @@ describe(Parser, () => {
   test("handles combinations of all part", () => {
     expectParses(
       `
-                error Foo
-                error Bar
+        error Foo
+        error Bar
 
-                type Baz {
-                    a: string?
-                    b: int
-                }
+        type Baz {
+          a: string?
+          b: int
+        }
 
-                fn getBaz(): Baz
-            `,
+        fn getBaz(): Baz
+      `,
       {
+        annotations: {},
         errors: ["Foo", "Bar", "Fatal"],
         functionTable: {
           getBaz: {
@@ -174,7 +190,6 @@ describe(Parser, () => {
             b: "int",
           },
         },
-        annotations: {},
       },
     );
   });
@@ -182,17 +197,17 @@ describe(Parser, () => {
   test("fails when struct or enum is empty", () => {
     expectDoesntParse(
       `
-                type Baz {
-                }
-            `,
+        type Baz {
+        }
+      `,
       "empty",
     );
 
     expectDoesntParse(
       `
-                type Baaz enum {
-                }
-            `,
+        type Baaz enum {
+        }
+      `,
       "empty",
     );
   });
@@ -200,30 +215,30 @@ describe(Parser, () => {
   test("fails when field happens twice", () => {
     expectDoesntParse(
       `
-                type Baz {
-                    a: int
-                    b: bool
-                    a: int
-                }
-            `,
+        type Baz {
+          a: int
+          b: bool
+          a: int
+        }
+      `,
       "redeclare",
     );
 
     expectDoesntParse(
       `
-                type Baz {
-                    b: int
-                    xx: bool
-                    xx: int
-                }
-            `,
+        type Baz {
+          b: int
+          xx: bool
+          xx: int
+        }
+      `,
       "redeclare",
     );
 
     expectDoesntParse(
       `
-                fn foo(a: string, a: int)
-            `,
+        fn foo(a: string, a: int)
+      `,
       "redeclare",
     );
   });
@@ -231,16 +246,17 @@ describe(Parser, () => {
   test("handles spreads in structs", () => {
     expectParses(
       `
-                type Bar {
-                    aa: string
-                }
+        type Bar {
+          aa: string
+        }
 
-                type Foo {
-                    ...Bar
-                    bb: int
-                }
-            `,
+        type Foo {
+          ...Bar
+          bb: int
+        }
+      `,
       {
+        annotations: {},
         errors: ["Fatal"],
         functionTable: {},
         typeTable: {
@@ -252,7 +268,6 @@ describe(Parser, () => {
             bb: "int",
           },
         },
-        annotations: {},
       },
     );
   });
@@ -260,19 +275,20 @@ describe(Parser, () => {
   test("handles functions with arguments", () => {
     expectParses(
       `
-                type Bar {
-                    aa: string
-                }
+        type Bar {
+          aa: string
+        }
 
-                function doIt(foo: int, bar: Bar): string
-            `,
+        function doIt(foo: int, bar: Bar): string
+      `,
       {
+        annotations: {},
         errors: ["Fatal"],
         functionTable: {
           doIt: {
             args: {
-              foo: "int",
               bar: "Bar",
+              foo: "int",
             },
             ret: "string",
           },
@@ -282,33 +298,21 @@ describe(Parser, () => {
             aa: "string",
           },
         },
-        annotations: {},
       },
-      ["Keyword 'function' is deprecated at -:6:17. Use 'fn' instead."],
+      ["Keyword 'function' is deprecated at -:6:9. Use 'fn' instead."],
     );
   });
 
   test("handles functions with annotations", () => {
     expectParses(
       `
-                @description does it
-                @description and does another \\
-                            thing too
-                @arg bar Represents the number of things
-                fn doIt(foo: int, bar: float): string
-            `,
+        @description does it
+        @description and does another \\
+                     thing too
+        @arg bar Represents the number of things
+        fn doIt(foo: int, bar: float): string
+      `,
       {
-        errors: ["Fatal"],
-        functionTable: {
-          doIt: {
-            args: {
-              foo: "int",
-              bar: "float",
-            },
-            ret: "string",
-          },
-        },
-        typeTable: {},
         annotations: {
           "fn.doIt": [
             { type: "description", value: "does it" },
@@ -316,20 +320,37 @@ describe(Parser, () => {
           ],
           "fn.doIt.bar": [{ type: "description", value: "Represents the number of things" }],
         },
+        errors: ["Fatal"],
+        functionTable: {
+          doIt: {
+            args: {
+              bar: "float",
+              foo: "int",
+            },
+            ret: "string",
+          },
+        },
+        typeTable: {},
       },
     );
 
     expectParses(
       `
-                error NotFound
-                error InvalidArgument
+        error NotFound
+        error InvalidArgument
 
-                @throws NotFound
-                @throws InvalidArgument
-                fn doIt(): string
-                fn doIt2(): int
-            `,
+        @throws NotFound
+        @throws InvalidArgument
+        fn doIt(): string
+        fn doIt2(): int
+      `,
       {
+        annotations: {
+          "fn.doIt": [
+            { type: "throws", value: "NotFound" },
+            { type: "throws", value: "InvalidArgument" },
+          ],
+        },
         errors: ["NotFound", "InvalidArgument", "Fatal"],
         functionTable: {
           doIt: {
@@ -342,12 +363,6 @@ describe(Parser, () => {
           },
         },
         typeTable: {},
-        annotations: {
-          "fn.doIt": [
-            { type: "throws", value: "NotFound" },
-            { type: "throws", value: "InvalidArgument" },
-          ],
-        },
       },
     );
   });
@@ -355,13 +370,16 @@ describe(Parser, () => {
   test("handles descriptions inside structs", () => {
     expectParses(
       `
-                type Foo {
-                    @description foobar
-                    x: int
-                    y: string
-                }
-            `,
+        type Foo {
+          @description foobar
+          x: int
+          y: string
+        }
+      `,
       {
+        annotations: {
+          "type.Foo.x": [{ type: "description", value: "foobar" }],
+        },
         errors: ["Fatal"],
         functionTable: {},
         typeTable: {
@@ -370,9 +388,6 @@ describe(Parser, () => {
             y: "string",
           },
         },
-        annotations: {
-          "type.Foo.x": [{ type: "description", value: "foobar" }],
-        },
       },
     );
   });
@@ -380,26 +395,67 @@ describe(Parser, () => {
   test("handles rest annotations", () => {
     expectParses(
       `
-                @rest GET /foo
-                fn foo(): string
+        @rest GET /foo
+        fn foo(): string
 
-                @rest GET /users/{id}/name
-                fn name(id: string): string
+        @rest GET /users/{id}/name
+        fn name(id: string): string
 
-                @rest GET /users/count?{since}&{until}
-                fn userCount(since: date?, until: date?): uint
-            `,
+        @rest GET /users/count?{since}&{until}
+        fn userCount(since: date?, until: date?): uint
+      `,
       {
+        annotations: {
+          "fn.foo": [
+            {
+              type: "rest",
+              value: {
+                bodyVariable: null,
+                headers: [],
+                method: "GET",
+                path: "/foo",
+                pathVariables: [],
+                queryVariables: [],
+              },
+            },
+          ],
+          "fn.name": [
+            {
+              type: "rest",
+              value: {
+                bodyVariable: null,
+                headers: [],
+                method: "GET",
+                path: "/users/{id}/name",
+                pathVariables: ["id"],
+                queryVariables: [],
+              },
+            },
+          ],
+          "fn.userCount": [
+            {
+              type: "rest",
+              value: {
+                bodyVariable: null,
+                headers: [],
+                method: "GET",
+                path: "/users/count",
+                pathVariables: [],
+                queryVariables: ["since", "until"],
+              },
+            },
+          ],
+        },
         errors: ["Fatal"],
         functionTable: {
+          foo: {
+            args: {},
+            ret: "string",
+          },
           name: {
             args: {
               id: "string",
             },
-            ret: "string",
-          },
-          foo: {
-            args: {},
             ret: "string",
           },
           userCount: {
@@ -411,141 +467,115 @@ describe(Parser, () => {
           },
         },
         typeTable: {},
-        annotations: {
-          "fn.name": [
-            {
-              type: "rest",
-              value: {
-                method: "GET",
-                path: "/users/{id}/name",
-                pathVariables: ["id"],
-                queryVariables: [],
-                headers: [],
-                bodyVariable: null,
-              },
-            },
-          ],
-          "fn.foo": [
-            {
-              type: "rest",
-              value: {
-                method: "GET",
-                path: "/foo",
-                pathVariables: [],
-                queryVariables: [],
-                headers: [],
-                bodyVariable: null,
-              },
-            },
-          ],
-          "fn.userCount": [
-            {
-              type: "rest",
-              value: {
-                method: "GET",
-                path: "/users/count",
-                pathVariables: [],
-                queryVariables: ["since", "until"],
-                headers: [],
-                bodyVariable: null,
-              },
-            },
-          ],
-        },
       },
     );
 
     expectParses(
       `
-                @rest GET /chats/{chatId}/messages?{since}&{until} [header x-token: {token}]
-                fn getMessages(token: base64, chatId: uuid, since: datetime?, until: datetime?): string[]
-            `,
+        @rest GET /chats/{chatId}/messages?{since}&{until} [header x-token: {token}]
+        fn getMessages(token: base64, chatId: uuid, since: datetime?, until: datetime?): string[]
+      `,
       {
+        annotations: {
+          "fn.getMessages": [
+            {
+              type: "rest",
+              value: {
+                bodyVariable: null,
+                headers: [["x-token", "token"]],
+                method: "GET",
+                path: "/chats/{chatId}/messages",
+                pathVariables: ["chatId"],
+                queryVariables: ["since", "until"],
+              },
+            },
+          ],
+        },
         errors: ["Fatal"],
         functionTable: {
           getMessages: {
             args: {
-              token: "base64",
               chatId: "uuid",
               since: "datetime?",
+              token: "base64",
               until: "datetime?",
             },
             ret: "string[]",
           },
         },
         typeTable: {},
-        annotations: {
-          "fn.getMessages": [
-            {
-              type: "rest",
-              value: {
-                method: "GET",
-                path: "/chats/{chatId}/messages",
-                pathVariables: ["chatId"],
-                queryVariables: ["since", "until"],
-                headers: [["x-token", "token"]],
-                bodyVariable: null,
-              },
-            },
-          ],
-        },
       },
     );
 
     expectParses(
       `
-                @rest GET /posts [header user-agent: {userAgent}] [header accept-language: {lang}] [header x-token: {token}]
-                fn getPosts(userAgent: string, lang: string, token: base64): uuid
-            `,
+        @rest GET /posts [header user-agent: {userAgent}] [header accept-language: {lang}] [header x-token: {token}]
+        fn getPosts(userAgent: string, lang: string, token: base64): uuid
+      `,
       {
-        errors: ["Fatal"],
-        functionTable: {
-          getPosts: {
-            args: {
-              userAgent: "string",
-              lang: "string",
-              token: "base64",
-            },
-            ret: "uuid",
-          },
-        },
-        typeTable: {},
         annotations: {
           "fn.getPosts": [
             {
               type: "rest",
               value: {
-                method: "GET",
-                path: "/posts",
-                pathVariables: [],
-                queryVariables: [],
+                bodyVariable: null,
                 headers: [
                   ["user-agent", "userAgent"],
                   ["accept-language", "lang"],
                   ["x-token", "token"],
                 ],
-                bodyVariable: null,
+                method: "GET",
+                path: "/posts",
+                pathVariables: [],
+                queryVariables: [],
               },
             },
           ],
         },
+        errors: ["Fatal"],
+        functionTable: {
+          getPosts: {
+            args: {
+              lang: "string",
+              token: "base64",
+              userAgent: "string",
+            },
+            ret: "uuid",
+          },
+        },
+        typeTable: {},
       },
     );
 
     expectParses(
       `
-                type NewUser {
-                    name: string
-                }
+        type NewUser {
+            name: string
+        }
 
-                type User {
-                    id: uuid
-                }
+        type User {
+            id: uuid
+        }
 
-                @rest POST /users [body {user}]
-                fn createNewUser(user: NewUser): User
-            `,
+        @rest POST /users [body {user}]
+        fn createNewUser(user: NewUser): User
+      `,
       {
+        annotations: {
+          "fn.createNewUser": [
+            {
+              type: "rest",
+              value: {
+                bodyVariable: "user",
+                headers: [],
+                method: "POST",
+                path: "/users",
+                pathVariables: [],
+                queryVariables: [],
+              },
+            },
+          ],
+        },
         errors: ["Fatal"],
         functionTable: {
           createNewUser: {
@@ -563,36 +593,36 @@ describe(Parser, () => {
             id: "uuid",
           },
         },
-        annotations: {
-          "fn.createNewUser": [
-            {
-              type: "rest",
-              value: {
-                method: "POST",
-                path: "/users",
-                pathVariables: [],
-                queryVariables: [],
-                headers: [],
-                bodyVariable: "user",
-              },
-            },
-          ],
-        },
       },
     );
 
     expectParses(
       `
-                type Kind enum {
-                    first
-                    second
-                    third
-                }
+        type Kind enum {
+            first
+            second
+            third
+        }
 
-                @rest GET /things/{kind}
-                fn countThings(kind: Kind): uint
-            `,
+        @rest GET /things/{kind}
+        fn countThings(kind: Kind): uint
+      `,
       {
+        annotations: {
+          "fn.countThings": [
+            {
+              type: "rest",
+              value: {
+                bodyVariable: null,
+                headers: [],
+                method: "GET",
+                path: "/things/{kind}",
+                pathVariables: ["kind"],
+                queryVariables: [],
+              },
+            },
+          ],
+        },
         errors: ["Fatal"],
         functionTable: {
           countThings: {
@@ -605,108 +635,104 @@ describe(Parser, () => {
         typeTable: {
           Kind: ["first", "second", "third"],
         },
-        annotations: {
-          "fn.countThings": [
-            {
-              type: "rest",
-              value: {
-                method: "GET",
-                path: "/things/{kind}",
-                pathVariables: ["kind"],
-                queryVariables: [],
-                headers: [],
-                bodyVariable: null,
-              },
-            },
-          ],
-        },
       },
     );
 
     expectDoesntParse(
       `
-                @rest HEAD /foo
-                fn foo(): string
-            `,
+        @rest HEAD /foo
+        fn foo(): string
+      `,
       "Unsupported method 'HEAD'",
     );
 
     expectDoesntParse(
       `
-                @rest GET /foo/{id}
-                fn foo(): string
-            `,
+        @rest GET /foo/{id}
+        fn foo(): string
+      `,
       "Argument 'id' not found",
     );
 
     expectDoesntParse(
       `
-                @rest GET /foo?{id}
-                fn foo(): string
-            `,
+        @rest GET /foo?{id}
+        fn foo(): string
+      `,
       "Argument 'id' not found",
     );
 
     expectDoesntParse(
       `
-                @rest GET aaa
-                fn foo(): string
-            `,
+        @rest GET aaa
+        fn foo(): string
+      `,
       "Invalid path",
     );
 
     expectDoesntParse(
       `
-                @rest GET /aaa?oug
-                fn foo(): string
-            `,
+        @rest GET /aaa?oug
+        fn foo(): string
+      `,
       "Invalid querystring on path",
     );
 
     expectDoesntParse(
       `
-                @rest GET /aaa/{arg}
-                fn foo(arg: string?): string
-            `,
+        @rest GET /aaa/{arg}
+        fn foo(arg: string?): string
+      `,
       "path argument 'arg' can't be nullable",
     );
 
     expectDoesntParse(
       `
-                @rest GET /aaa/{arg}
-                fn foo(arg: string[]): string
-            `,
+        @rest GET /aaa/{arg}
+        fn foo(arg: string[]): string
+      `,
       "Argument 'arg' can't have type 'string[]' for rest annotation",
     );
 
     expectDoesntParse(
       `
-                @rest GET /aaa
-                fn foo(arg: string): string
-            `,
+        @rest GET /aaa
+        fn foo(arg: string): string
+      `,
       "is missing",
     );
 
     expectDoesntParse(
       `
-                @rest GET /aaa
-                fn foo(): void
-            `,
+        @rest GET /aaa
+        fn foo(): void
+      `,
       "GET rest endpoint must return something",
     );
   });
+
+  test("handles functions with @hidden", () => {
+    expectParses(
+      `
+        @hidden
+        fn doIt(foo: int, bar: float): string
+      `,
+      {
+        annotations: {
+          "fn.doIt": [{ type: "hidden", value: null }],
+        },
+        errors: ["Fatal"],
+        functionTable: {
+          doIt: {
+            args: {
+              bar: "float",
+              foo: "int",
+            },
+            ret: "string",
+          },
+        },
+        typeTable: {},
+      },
+    );
+  });
 });
-
-function expectParses(source: string, json: AstJson, warnings: string[] = []) {
-  const parser = new Parser(new Lexer(source));
-  const ast = parser.parse();
-
-  expect(ast.warnings).toEqual(warnings);
-  expect(astToJson(ast)).toEqual(json);
-  expect(astToJson(ast)).toEqual(astToJson(jsonToAst(astToJson(ast))));
-}
-
-function expectDoesntParse(source: string, message: string) {
-  const parser = new Parser(new Lexer(source));
-  expect(() => parser.parse()).toThrowError(message);
-}

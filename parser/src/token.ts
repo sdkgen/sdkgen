@@ -1,9 +1,11 @@
 export class TokenLocation {
   public filename = "?";
+
   public line = 0;
+
   public column = 0;
 
-  toString() {
+  toString(): string {
     return `${this.filename}:${this.line}:${this.column}`;
   }
 }
@@ -19,8 +21,9 @@ export class Token {
     return this;
   }
 
-  toString() {
+  toString(): string {
     const name = (this.constructor as any).name.replace("Token", "");
+
     return this.value === "" ? name : `${name}(${JSON.stringify(this.value)})`;
   }
 }
@@ -41,55 +44,55 @@ export class SpreadSymbolToken extends Token {}
 export class AnnotationToken extends Token {}
 
 export class ImportKeywordToken extends Token {
-  maybeAsIdentifier() {
+  maybeAsIdentifier(): IdentifierToken {
     return new IdentifierToken("import");
   }
 }
 
 export class TypeKeywordToken extends Token {
-  maybeAsIdentifier() {
+  maybeAsIdentifier(): IdentifierToken {
     return new IdentifierToken("type");
   }
 }
 
 export class EnumKeywordToken extends Token {
-  maybeAsIdentifier() {
+  maybeAsIdentifier(): IdentifierToken {
     return new IdentifierToken("enum");
   }
 }
 
 export class GetKeywordToken extends Token {
-  maybeAsIdentifier() {
+  maybeAsIdentifier(): IdentifierToken {
     return new IdentifierToken("get");
   }
 }
 
 export class FunctionKeywordToken extends Token {
-  maybeAsIdentifier() {
+  maybeAsIdentifier(): IdentifierToken {
     return new IdentifierToken(this.value);
   }
 }
 
 export class ErrorKeywordToken extends Token {
-  maybeAsIdentifier() {
+  maybeAsIdentifier(): IdentifierToken {
     return new IdentifierToken("error");
   }
 }
 
 export class TrueKeywordToken extends Token {
-  maybeAsIdentifier() {
+  maybeAsIdentifier(): IdentifierToken {
     return new IdentifierToken("true");
   }
 }
 
 export class FalseKeywordToken extends Token {
-  maybeAsIdentifier() {
+  maybeAsIdentifier(): IdentifierToken {
     return new IdentifierToken("false");
   }
 }
 
 export class PrimitiveTypeToken extends Token {
-  maybeAsIdentifier() {
+  maybeAsIdentifier(): IdentifierToken {
     return new IdentifierToken(this.value);
   }
 }

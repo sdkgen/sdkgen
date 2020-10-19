@@ -1,9 +1,7 @@
 import { AstRoot, astToJson, OptionalType, VoidPrimitiveType } from "@sdkgen/parser";
 import { capitalize, decodeType, encodeType, generateEnum, generateStruct, generateTypeName, ident } from "./helpers";
 
-interface Options {}
-
-export function generateCSharpServerSource(ast: AstRoot, options: Options) {
+export function generateCSharpServerSource(ast: AstRoot): string {
   let code = `using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -16,8 +14,10 @@ namespace SdkgenGenerated
 {
     public abstract class Api : BaseApi
     {`;
+
   for (const op of ast.operations) {
     const returnTypeAngle = op.returnType instanceof VoidPrimitiveType ? "" : `<${generateTypeName(op.returnType)}>`;
+
     code += `
         public virtual Task${returnTypeAngle} ${capitalize(op.name)}(${[
       "Context ctx",
@@ -28,6 +28,7 @@ namespace SdkgenGenerated
         }
 `;
   }
+
   code += `
         public async Task ExecuteFunction(Context context_, Utf8JsonWriter resultWriter_)
         {
@@ -51,10 +52,11 @@ namespace SdkgenGenerated
                         }
                         ${generateTypeName(arg.type)} ${ident(arg.name)};
                         ${decodeType(arg.type, `${arg.name}Json_`, `"${op.name}().args.${arg.name}"`, ident(arg.name)).replace(
-                          /\n/g,
+                          /\n/gu,
                           "\n                        ",
                         )}`;
     }
+
     if (op.returnType instanceof VoidPrimitiveType) {
       code += `
                         await ${capitalize(op.name)}(${["context_", ...op.args.map(arg => ident(arg.name))].join(", ")});
@@ -62,7 +64,7 @@ namespace SdkgenGenerated
     } else {
       code += `
                         var result_ = await ${capitalize(op.name)}(${["context_", ...op.args.map(arg => ident(arg.name))].join(", ")});
-                        ${encodeType(op.returnType, `result_`, `"${op.name}().ret"`).replace(/\n/g, "\n                        ")}`;
+                        ${encodeType(op.returnType, `result_`, `"${op.name}().ret"`).replace(/\n/gu, "\n                        ")}`;
     }
 
     code += `
@@ -88,7 +90,7 @@ namespace SdkgenGenerated
   }
 
   code += `
-        public string GetAstJson() => @"${JSON.stringify(astToJson(ast), null, 4).replace(/"/g, '""').replace(/\n/g, "\n        ")}";
+        public string GetAstJson() => @"${JSON.stringify(astToJson(ast), null, 4).replace(/"/gu, '""').replace(/\n/gu, "\n        ")}";
     }
 `;
   for (const error of ast.errors) {

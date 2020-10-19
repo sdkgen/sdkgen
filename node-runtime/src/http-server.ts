@@ -41,7 +41,7 @@ import { Context, ContextReply, ContextRequest } from "./context";
 import { decode, encode } from "./encode-decode";
 import { setupSwagger } from "./swagger";
 
-export class SdkgenHttpServer<ExtraContextT = {}> {
+export class SdkgenHttpServer<ExtraContextT = unknown> {
   public httpServer: Server;
 
   private headers = new Map<string, string>();
@@ -83,7 +83,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
 
         try {
           res.setHeader("Content-Type", "application/octet-stream");
-          res.write(generateFn(this.ast, {}));
+          res.write(generateFn(this.ast));
         } catch (e) {
           console.error(e);
           res.statusCode = 500;
@@ -131,11 +131,11 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
     });
   }
 
-  ignoreUrlPrefix(urlPrefix: string) {
+  ignoreUrlPrefix(urlPrefix: string): void {
     this.ignoredUrlPrefix = urlPrefix;
   }
 
-  listen(port = 8000) {
+  listen(port = 8000): void {
     this.httpServer.listen(port, () => {
       const addr = this.httpServer.address();
       const addrString = addr === null ? "???" : typeof addr === "string" ? addr : `${addr.address}:${addr.port}`;
@@ -144,7 +144,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
     });
   }
 
-  close() {
+  async close(): Promise<void> {
     return promisify(this.httpServer.close.bind(this.httpServer))();
   }
 
@@ -154,7 +154,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
     this.addHeader("Access-Control-Max-Age", "86400");
   }
 
-  addHeader(header: string, value: string) {
+  addHeader(header: string, value: string): void {
     const cleanHeader = header.toLowerCase().trim();
     const existing = this.headers.get(cleanHeader);
 
@@ -167,7 +167,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
     }
   }
 
-  addHttpHandler(method: string, matcher: string | RegExp, handler: (req: IncomingMessage, res: ServerResponse, body: Buffer) => void) {
+  addHttpHandler(method: string, matcher: string | RegExp, handler: (req: IncomingMessage, res: ServerResponse, body: Buffer) => void): void {
     this.handlers.push({ handler, matcher, method });
   }
 
@@ -201,316 +201,325 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
 
   private attachRestHandlers() {
     function escapeRegExp(str: string) {
-      return str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+      return str.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&");
     }
 
     let hasSwagger = false;
 
     for (const op of this.ast.operations) {
       for (const ann of op.annotations) {
-        if (ann instanceof RestAnnotation) {
-          if (!hasSwagger) {
-            setupSwagger(this);
-            hasSwagger = true;
+        if (!(ann instanceof RestAnnotation)) {
+          continue;
+        }
+
+        if (!hasSwagger) {
+          setupSwagger(this);
+          hasSwagger = true;
+        }
+
+        const pathFragments = ann.path.split(/\{\w+\}/u);
+
+        let pathRegex = "^";
+
+        for (let i = 0; i < pathFragments.length; ++i) {
+          if (i > 0) {
+            pathRegex += "(.+?)";
           }
 
-          const pathFragments = ann.path.split(/\{\w+\}/u);
+          pathRegex += escapeRegExp(pathFragments[i]);
+        }
 
-          let pathRegex = "^";
+        pathRegex += "/?$";
 
-          for (let i = 0; i < pathFragments.length; ++i) {
-            if (i > 0) {
-              pathRegex += "(.+?)";
+        for (const header of ann.headers.keys()) {
+          this.addHeader("Access-Control-Allow-Headers", header);
+        }
+
+        this.addHttpHandler(ann.method, new RegExp(pathRegex, "u"), async (req, res, body) => {
+          try {
+            const args: any = {};
+            const files: ContextRequest["files"] = [];
+
+            const { pathname, query } = parseUrl(req.url || "");
+            const match = pathname?.match(pathRegex);
+
+            if (!match) {
+              res.statusCode = 404;
+              return;
             }
 
-            pathRegex += escapeRegExp(pathFragments[i]);
-          }
+            const simpleArgs = new Map<string, string | null>();
 
-          pathRegex += "/?$";
+            for (let i = 0; i < ann.pathVariables.length; ++i) {
+              const argName = ann.pathVariables[i];
+              const argValue = match[i + 1];
 
-          for (const header of ann.headers.keys()) {
-            this.addHeader("Access-Control-Allow-Headers", header);
-          }
+              simpleArgs.set(argName, argValue);
+            }
 
-          this.addHttpHandler(ann.method, new RegExp(pathRegex), async (req, res, body) => {
-            try {
-              const args: any = {};
-              const files: ContextRequest["files"] = [];
+            const parsedQuery = query ? parseQuerystring(query) : {};
 
-              const { pathname, query } = parseUrl(req.url || "");
-              const match = pathname?.match(pathRegex);
+            for (const argName of ann.queryVariables) {
+              const argValue = parsedQuery[argName] ?? null;
 
-              if (!match) {
-                res.statusCode = 404;
-                return;
-              }
+              simpleArgs.set(argName, Array.isArray(argValue) ? argValue.join("") : argValue);
+            }
 
-              const simpleArgs = new Map<string, string | null>();
+            for (const [headerName, argName] of ann.headers) {
+              const argValue = req.headers[headerName] ?? null;
 
-              for (let i = 0; i < ann.pathVariables.length; ++i) {
-                const argName = ann.pathVariables[i];
-                const argValue = match[i + 1];
+              simpleArgs.set(argName, Array.isArray(argValue) ? argValue.join("") : argValue);
+            }
 
-                simpleArgs.set(argName, argValue);
-              }
-
-              const parsedQuery = query ? parseQuerystring(query) : {};
+            if (!ann.bodyVariable && req.headers["content-type"]?.match(/^application\/x-www-form-urlencoded/iu)) {
+              const parsedBody = parseQuerystring(body.toString());
 
               for (const argName of ann.queryVariables) {
-                const argValue = parsedQuery[argName] ?? null;
+                const argValue = parsedBody[argName] ?? null;
 
                 simpleArgs.set(argName, Array.isArray(argValue) ? argValue.join("") : argValue);
               }
+            } else if (!ann.bodyVariable && req.headers["content-type"]?.match(/^multipart\/form-data/iu)) {
+              const busboy = new Busboy({ headers: req.headers });
+              const filePromises: Array<Promise<void>> = [];
 
-              for (const [headerName, argName] of ann.headers) {
-                const argValue = req.headers[headerName] ?? null;
-
-                simpleArgs.set(argName, Array.isArray(argValue) ? argValue.join("") : argValue);
-              }
-
-              if (!ann.bodyVariable && req.headers["content-type"]?.match(/^application\/x-www-form-urlencoded/iu)) {
-                const parsedQuery = parseQuerystring(body.toString());
-
-                for (const argName of ann.queryVariables) {
-                  const argValue = parsedQuery[argName] ?? null;
-
-                  simpleArgs.set(argName, Array.isArray(argValue) ? argValue.join("") : argValue);
+              busboy.on("field", (field, value) => {
+                if (ann.queryVariables.includes(field)) {
+                  simpleArgs.set(field, `${value}`);
                 }
-              } else if (!ann.bodyVariable && req.headers["content-type"]?.match(/^multipart\/form-data/iu)) {
-                const busboy = new Busboy({ headers: req.headers });
-                const filePromises: Array<Promise<void>> = [];
+              });
 
-                busboy.on("field", (field, value) => {
-                  if (ann.queryVariables.includes(field)) {
-                    simpleArgs.set(field, `${value}`);
-                  }
-                });
+              busboy.on("file", (field, file, name) => {
+                const fileName = randomBytes(32).toString("hex");
+                const writeStream = createWriteStream(fileName);
 
-                busboy.on("file", (field, file, name, encoding, mimetype) => {
-                  const fileName = randomBytes(32).toString("hex");
-                  const writeStream = createWriteStream(fileName);
+                filePromises.push(
+                  new Promise((resolve, reject) => {
+                    writeStream.on("error", reject);
 
-                  filePromises.push(
-                    new Promise((resolve, reject) => {
-                      writeStream.on("error", reject);
+                    writeStream.on("open", () => {
+                      files.push({ contents: createReadStream(fileName), name });
 
-                      writeStream.on("open", () => {
-                        files.push({ name, contents: createReadStream(fileName) });
-
-                        unlink(fileName, err => {
-                          if (err) {
-                            reject(err);
-                            writeStream.end();
-                          }
-                        });
-
-                        writeStream.on("close", resolve);
-                        file.pipe(writeStream);
+                      unlink(fileName, err => {
+                        if (err) {
+                          reject(err);
+                          writeStream.end();
+                        }
                       });
-                    }),
-                  );
-                });
 
-                await new Promise((resolve, reject) => {
-                  busboy.on("finish", resolve);
-                  busboy.on("error", reject);
-                  busboy.write(body);
-                });
+                      writeStream.on("close", resolve);
+                      file.pipe(writeStream);
+                    });
+                  }),
+                );
+              });
 
-                await Promise.all(filePromises);
-              } else if (ann.bodyVariable) {
-                const argName = ann.bodyVariable;
-                let { type } = op.args.find(arg => arg.name === argName)!;
+              await new Promise((resolve, reject) => {
+                busboy.on("finish", resolve);
+                busboy.on("error", reject);
+                busboy.write(body);
+              });
 
-                if (req.headers["content-type"] === "application/json") {
-                  args[argName] = JSON.parse(body.toString());
-                } else {
-                  let solved = false;
+              await Promise.all(filePromises);
+            } else if (ann.bodyVariable) {
+              const argName = ann.bodyVariable;
+              const arg = op.args.find(x => x.name === argName);
 
-                  if (type instanceof OptionalType) {
-                    if (body.length === 0) {
-                      args[argName] = null;
-                      solved = true;
-                    } else {
-                      type = type.base;
-                    }
-                  }
-
-                  if (!solved) {
-                    if (
-                      type instanceof BoolPrimitiveType ||
-                      type instanceof IntPrimitiveType ||
-                      type instanceof UIntPrimitiveType ||
-                      type instanceof FloatPrimitiveType ||
-                      type instanceof StringPrimitiveType ||
-                      type instanceof DatePrimitiveType ||
-                      type instanceof DateTimePrimitiveType ||
-                      type instanceof MoneyPrimitiveType ||
-                      type instanceof BigIntPrimitiveType ||
-                      type instanceof CpfPrimitiveType ||
-                      type instanceof CnpjPrimitiveType ||
-                      type instanceof UuidPrimitiveType ||
-                      type instanceof HexPrimitiveType ||
-                      type instanceof Base64PrimitiveType
-                    ) {
-                      simpleArgs.set(argName, body.toString());
-                    } else if (type instanceof BytesPrimitiveType) {
-                      args[argName] = body.toString("base64");
-                    } else {
-                      args[argName] = JSON.parse(body.toString());
-                    }
-                  }
-                }
-              }
-
-              for (const [argName, argValue] of simpleArgs) {
-                let { type } = op.args.find(arg => arg.name === argName)!;
+              if (req.headers["content-type"] === "application/json") {
+                args[argName] = JSON.parse(body.toString());
+              } else if (arg) {
+                let { type } = arg;
+                let solved = false;
 
                 if (type instanceof OptionalType) {
-                  if (argValue === null) {
+                  if (body.length === 0) {
                     args[argName] = null;
-                    continue;
+                    solved = true;
                   } else {
                     type = type.base;
                   }
-                } else if (argValue === null) {
-                  args[argName] = argValue;
-                  continue;
                 }
 
-                if (type instanceof BoolPrimitiveType) {
-                  if (argValue === "true") {
-                    args[argName] = true;
-                  } else if (argValue === "false") {
-                    args[argName] = false;
+                if (!solved) {
+                  if (
+                    type instanceof BoolPrimitiveType ||
+                    type instanceof IntPrimitiveType ||
+                    type instanceof UIntPrimitiveType ||
+                    type instanceof FloatPrimitiveType ||
+                    type instanceof StringPrimitiveType ||
+                    type instanceof DatePrimitiveType ||
+                    type instanceof DateTimePrimitiveType ||
+                    type instanceof MoneyPrimitiveType ||
+                    type instanceof BigIntPrimitiveType ||
+                    type instanceof CpfPrimitiveType ||
+                    type instanceof CnpjPrimitiveType ||
+                    type instanceof UuidPrimitiveType ||
+                    type instanceof HexPrimitiveType ||
+                    type instanceof Base64PrimitiveType
+                  ) {
+                    simpleArgs.set(argName, body.toString());
+                  } else if (type instanceof BytesPrimitiveType) {
+                    args[argName] = body.toString("base64");
                   } else {
-                    args[argName] = argValue;
+                    args[argName] = JSON.parse(body.toString());
                   }
-                } else if (type instanceof UIntPrimitiveType || type instanceof IntPrimitiveType || type instanceof MoneyPrimitiveType) {
-                  args[argName] = parseInt(argValue, 10);
-                } else if (type instanceof FloatPrimitiveType) {
-                  args[argName] = parseFloat(argValue);
+                }
+              }
+            }
+
+            for (const [argName, argValue] of simpleArgs) {
+              const arg = op.args.find(x => x.name === argName);
+
+              if (!arg) {
+                continue;
+              }
+
+              let { type } = arg;
+
+              if (type instanceof OptionalType) {
+                if (argValue === null) {
+                  args[argName] = null;
+                  continue;
+                } else {
+                  type = type.base;
+                }
+              } else if (argValue === null) {
+                args[argName] = argValue;
+                continue;
+              }
+
+              if (type instanceof BoolPrimitiveType) {
+                if (argValue === "true") {
+                  args[argName] = true;
+                } else if (argValue === "false") {
+                  args[argName] = false;
                 } else {
                   args[argName] = argValue;
                 }
+              } else if (type instanceof UIntPrimitiveType || type instanceof IntPrimitiveType || type instanceof MoneyPrimitiveType) {
+                args[argName] = parseInt(argValue, 10);
+              } else if (type instanceof FloatPrimitiveType) {
+                args[argName] = parseFloat(argValue);
+              } else {
+                args[argName] = argValue;
               }
+            }
 
-              const ip = getClientIp(req);
+            const ip = getClientIp(req);
 
-              if (!ip) {
-                throw new Error("Couldn't determine client IP");
-              }
+            if (!ip) {
+              throw new Error("Couldn't determine client IP");
+            }
 
-              const request: ContextRequest = {
-                name: op.name,
-                ip,
-                headers: req.headers,
+            const request: ContextRequest = {
+              args,
+              deviceInfo: {
+                fingerprint: null,
                 id: randomBytes(16).toString("hex"),
-                version: 3,
-                deviceInfo: {
-                  id: randomBytes(16).toString("hex"),
-                  type: "rest",
-                  platform: null,
-                  language: null,
-                  timezone: null,
-                  version: null,
-                  fingerprint: null,
-                },
-                extra: {},
-                args,
-                files,
-              };
+                language: null,
+                platform: null,
+                timezone: null,
+                type: "rest",
+                version: null,
+              },
+              extra: {},
+              files,
+              headers: req.headers,
+              id: randomBytes(16).toString("hex"),
+              ip,
+              name: op.name,
+              version: 3,
+            };
 
-              this.executeRequest(request, (ctx, reply) => {
-                try {
-                  if (reply.error) {
-                    res.statusCode = 400;
-                    res.setHeader("content-type", "application/json");
-                    res.write(JSON.stringify(this.makeResponseError(reply.error)));
-                    res.end();
-                    return;
+            this.executeRequest(request, (ctx, reply) => {
+              try {
+                if (reply.error) {
+                  res.statusCode = 400;
+                  res.setHeader("content-type", "application/json");
+                  res.write(JSON.stringify(this.makeResponseError(reply.error)));
+                  res.end();
+                  return;
+                }
+
+                if (req.headers.accept === "application/json") {
+                  res.setHeader("content-type", "application/json");
+                  res.write(JSON.stringify(reply.result));
+                  res.end();
+                } else {
+                  let type = op.returnType;
+
+                  if (type instanceof OptionalType) {
+                    if (reply.result === null) {
+                      res.statusCode = ann.method === "GET" ? 404 : 204;
+                      res.end();
+                      return;
+                    }
+
+                    type = type.base;
                   }
 
-                  if (req.headers.accept === "application/json") {
+                  if (
+                    type instanceof BoolPrimitiveType ||
+                    type instanceof IntPrimitiveType ||
+                    type instanceof UIntPrimitiveType ||
+                    type instanceof FloatPrimitiveType ||
+                    type instanceof StringPrimitiveType ||
+                    type instanceof DatePrimitiveType ||
+                    type instanceof DateTimePrimitiveType ||
+                    type instanceof MoneyPrimitiveType ||
+                    type instanceof BigIntPrimitiveType ||
+                    type instanceof CpfPrimitiveType ||
+                    type instanceof CnpjPrimitiveType ||
+                    type instanceof UuidPrimitiveType ||
+                    type instanceof HexPrimitiveType ||
+                    type instanceof Base64PrimitiveType
+                  ) {
+                    res.setHeader("content-type", "text/plain");
+                    res.write(`${reply.result}`);
+                    res.end();
+                  } else if (type instanceof HtmlPrimitiveType) {
+                    res.setHeader("content-type", "text/html");
+                    res.write(`${reply.result}`);
+                    res.end();
+                  } else if (type instanceof BytesPrimitiveType) {
+                    const buffer = Buffer.from(reply.result, "base64");
+
+                    FileType.fromBuffer(buffer)
+                      .then(fileType => {
+                        res.setHeader("content-type", fileType?.mime ?? "application/octet-stream");
+                      })
+                      .catch(err => {
+                        console.error(err);
+                        res.setHeader("content-type", "application/octet-stream");
+                      })
+                      .then(() => {
+                        res.write(buffer);
+                        res.end();
+                      });
+                  } else {
                     res.setHeader("content-type", "application/json");
                     res.write(JSON.stringify(reply.result));
                     res.end();
-                  } else {
-                    let type = op.returnType;
-
-                    if (type instanceof OptionalType) {
-                      if (reply.result === null) {
-                        res.statusCode = ann.method === "GET" ? 404 : 204;
-                        res.end();
-                        return;
-                      }
-
-                      type = type.base;
-                    }
-
-                    if (
-                      type instanceof BoolPrimitiveType ||
-                      type instanceof IntPrimitiveType ||
-                      type instanceof UIntPrimitiveType ||
-                      type instanceof FloatPrimitiveType ||
-                      type instanceof StringPrimitiveType ||
-                      type instanceof DatePrimitiveType ||
-                      type instanceof DateTimePrimitiveType ||
-                      type instanceof MoneyPrimitiveType ||
-                      type instanceof BigIntPrimitiveType ||
-                      type instanceof CpfPrimitiveType ||
-                      type instanceof CnpjPrimitiveType ||
-                      type instanceof UuidPrimitiveType ||
-                      type instanceof HexPrimitiveType ||
-                      type instanceof Base64PrimitiveType
-                    ) {
-                      res.setHeader("content-type", "text/plain");
-                      res.write(`${reply.result}`);
-                      res.end();
-                    } else if (type instanceof HtmlPrimitiveType) {
-                      res.setHeader("content-type", "text/html");
-                      res.write(`${reply.result}`);
-                      res.end();
-                    } else if (type instanceof BytesPrimitiveType) {
-                      const buffer = Buffer.from(reply.result, "base64");
-
-                      FileType.fromBuffer(buffer)
-                        .then(fileType => {
-                          res.setHeader("content-type", fileType?.mime ?? "application/octet-stream");
-                        })
-                        .catch(err => {
-                          console.error(err);
-                          res.setHeader("content-type", "application/octet-stream");
-                        })
-                        .then(() => {
-                          res.write(buffer);
-                          res.end();
-                        });
-                    } else {
-                      res.setHeader("content-type", "application/json");
-                      res.write(JSON.stringify(reply.result));
-                      res.end();
-                    }
                   }
-                } catch (error) {
-                  console.error(error);
-                  if (!res.headersSent) {
-                    res.statusCode = 500;
-                  }
-
-                  res.end();
                 }
-              });
-            } catch (error) {
-              console.error(error);
-              if (!res.headersSent) {
-                res.statusCode = 500;
-              }
+              } catch (error) {
+                console.error(error);
+                if (!res.headersSent) {
+                  res.statusCode = 500;
+                }
 
-              res.end();
+                res.end();
+              }
+            });
+          } catch (error) {
+            console.error(error);
+            if (!res.headersSent) {
+              res.statusCode = 500;
             }
-          });
-        }
+
+            res.end();
+          }
+        });
       }
     }
   }
@@ -736,13 +745,13 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
         Request: {
           args: "json",
           device: {
+            fingerprint: "string?",
             id: "string?",
             language: "string?",
             platform: "json?",
             timezone: "string?",
             type: "string?",
             version: "string?",
-            fingerprint: "string?",
           },
           id: "string",
           name: "string",
@@ -758,21 +767,21 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
     return {
       args: parsed.args,
       deviceInfo: {
+        fingerprint: parsed.device.fingerprint,
         id: deviceId,
         language: parsed.device.language,
         platform: parsed.device.platform,
         timezone: parsed.device.timezone,
         type: parsed.device.type || parsed.device.platform || "",
         version: parsed.device.version,
-        fingerprint: parsed.device.fingerprint,
       },
       extra: {},
+      files: [],
       headers: req.headers,
       id: `${deviceId}-${parsed.id}`,
       ip,
       name: parsed.name,
       version: 1,
-      files: [],
     };
   }
 
@@ -782,6 +791,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
       {
         Request: {
           args: "json",
+          deviceFingerprint: "string?",
           deviceId: "string",
           info: {
             browserUserAgent: "string?",
@@ -792,7 +802,6 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
           partnerId: "string?",
           requestId: "string?",
           sessionId: "string?",
-          deviceFingerprint: "string?",
         },
       },
       "root",
@@ -803,6 +812,7 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
     return {
       args: parsed.args,
       deviceInfo: {
+        fingerprint: parsed.deviceFingerprint,
         id: parsed.deviceId,
         language: parsed.info.language,
         platform: {
@@ -811,18 +821,17 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
         timezone: null,
         type: parsed.info.type,
         version: "",
-        fingerprint: parsed.deviceFingerprint,
       },
       extra: {
         partnerId: parsed.partnerId,
         sessionId: parsed.sessionId,
       },
+      files: [],
       headers: req.headers,
       id: `${parsed.deviceId}-${parsed.requestId || randomBytes(16).toString("hex")}`,
       ip,
       name: parsed.name,
       version: 2,
-      files: [],
     };
   }
 
@@ -831,13 +840,13 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
     const parsed = decode(
       {
         DeviceInfo: {
+          fingerprint: "string?",
           id: "string?",
           language: "string?",
           platform: "json?",
           timezone: "string?",
           type: "string?",
           version: "string?",
-          fingerprint: "string?",
         },
         Request: {
           args: "json",
@@ -858,21 +867,21 @@ export class SdkgenHttpServer<ExtraContextT = {}> {
     return {
       args: parsed.args,
       deviceInfo: {
+        fingerprint: deviceInfo.fingerprint,
         id: deviceId,
         language: deviceInfo.language,
         platform: parsed.platform ? { ...parsed.platform } : {},
         timezone: deviceInfo.timezone,
         type: deviceInfo.type || "api",
         version: deviceInfo.version,
-        fingerprint: deviceInfo.fingerprint,
       },
       extra: parsed.extra ? { ...parsed.extra } : {},
+      files: [],
       headers: req.headers,
       id: `${deviceId}-${parsed.requestId || randomBytes(16).toString("hex")}`,
       ip,
       name: parsed.name,
       version: 3,
-      files: [],
     };
   }
 

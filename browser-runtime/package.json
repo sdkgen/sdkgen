@@ -5,6 +5,8 @@
   "main": "src/index.ts",
   "scripts": {
     "test": "jest --passWithNoTests",
+    "eslint:fix": "eslint --fix '**/*.ts'",
+    "eslint:check": "eslint '**/*.ts'",
     "prettier:fix": "prettier --write '**/*.{t,j}s'",
     "prettier:check": "prettier --check '**/*.{t,j}s'",
     "build": "tsc"
@@ -25,6 +27,11 @@
   "devDependencies": {
     "@types/jest": "^26.0.14",
     "@types/node": "^14.11.9",
+    "@typescript-eslint/eslint-plugin": "^4.4.1",
+    "@typescript-eslint/parser": "^4.4.1",
+    "eslint": "^7.11.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-prettier": "^3.1.2",
     "jest": "^26.5.3",
     "prettier": "^2.1.2",
     "ts-jest": "^26.4.1",

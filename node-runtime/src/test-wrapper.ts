@@ -22,21 +22,21 @@ export function apiTestWrapper<T extends BaseApiConfig<any>>(api: T): T {
           ctx.request && ctx.request.deviceInfo
             ? ctx.request.deviceInfo
             : {
+                fingerprint: null,
                 id: randomBytes(16).toString("hex"),
                 language: null,
                 platform: null,
                 timezone: null,
                 type: ctx.request && ctx.request.deviceInfo && ctx.request.deviceInfo.type ? ctx.request.deviceInfo.type : "test",
                 version: null,
-                fingerprint: null,
               },
         extra: ctx.request && ctx.request.extra ? ctx.request.extra : {},
+        files: ctx.request && ctx.request.files ? ctx.request.files : [],
         headers: ctx.request && ctx.request.headers ? ctx.request.headers : {},
         id: randomBytes(16).toString("hex"),
         ip: ctx.request && ctx.request.ip ? ctx.request.ip : "0.0.0.0",
         name: functionName,
         version: 3,
-        files: ctx.request && ctx.request.files ? ctx.request.files : [],
       };
 
       let reply = await api.hook.onRequestStart(ctx);

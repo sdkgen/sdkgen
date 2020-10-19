@@ -12,7 +12,7 @@ interface TabInfo {
   label: string;
   key: TabKeys;
 }
-export default function Tabs(props: TabsProps) {
+export default function Tabs(props: TabsProps): JSX.Element {
   const tabs: TabInfo[] = [
     { key: "arguments", label: "Arguments" },
     { key: "response", label: "Response" },

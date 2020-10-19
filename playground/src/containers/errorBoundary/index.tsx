@@ -15,8 +15,8 @@ export default class ErrorBoundary extends React.Component<Props, State> {
     showError: false,
   };
 
-  public componentDidCatch(error: Error, _errorInfo: React.ErrorInfo) {
-    this.setState({ haveError: true, error });
+  public componentDidCatch(error: Error): void {
+    this.setState({ error, haveError: true });
   }
 
   private reloadPage = () => {
@@ -28,11 +28,11 @@ export default class ErrorBoundary extends React.Component<Props, State> {
     window.location.reload(true);
   };
 
-  private toogleErrorDisplay = () => {
+  private toogleErrorDisplay() {
     this.setState({ ...this.state, showError: !this.state.showError });
-  };
+  }
 
-  public render() {
+  public render(): React.ReactNode {
     const { haveError, error, showError } = this.state;
 
     if (haveError) {

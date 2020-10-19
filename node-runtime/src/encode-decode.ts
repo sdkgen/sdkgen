@@ -106,24 +106,24 @@ function simpleEncodeDecode(path: string, type: string, value: any) {
   throw new Error(`Unknown type '${type}' at '${path}'`);
 }
 
-export function encode(typeTable: TypeTable, path: string, type: TypeDescription, value: any): any {
+export function encode(typeTable: TypeTable, path: string, type: TypeDescription, value: unknown): any {
   if (typeof type === "string" && !type.endsWith("?") && type !== "void" && (value === null || value === undefined)) {
     throw new Error(`Invalid type at '${path}', cannot be null`);
   } else if (Array.isArray(type)) {
-    if (!type.includes(value)) {
+    if (typeof value !== "string" || !type.includes(value)) {
       throw new ParseError(path, type, value);
     }
 
     return value;
   } else if (typeof type === "object") {
-    if (typeof value !== "object" || value === undefined) {
+    if (typeof value !== "object" || value === undefined || value === null) {
       throw new ParseError(path, type, value);
     }
 
     const obj: any = {};
 
     for (const key of Object.keys(type)) {
-      obj[key] = encode(typeTable, `${path}.${key}`, type[key], value[key]);
+      obj[key] = encode(typeTable, `${path}.${key}`, type[key], (value as Record<string, unknown>)[key]);
     }
 
     return obj;
@@ -166,7 +166,7 @@ export function encode(typeTable: TypeTable, path: string, type: TypeDescription
 
     return CNPJ.strip(value);
   } else if (type === "date") {
-    if (!(value instanceof Date) && !(typeof value === "string" && value.match(/^[0-9]{4}-[01][0-9]-[0123][0-9]$/))) {
+    if (!(value instanceof Date) && !(typeof value === "string" && value.match(/^[0-9]{4}-[01][0-9]-[0123][0-9]$/u))) {
       throw new ParseError(path, type, value);
     }
 
@@ -176,7 +176,7 @@ export function encode(typeTable: TypeTable, path: string, type: TypeDescription
       !(value instanceof Date) &&
       !(
         typeof value === "string" &&
-        value.match(/^[0-9]{4}-[01][0-9]-[0123][0-9]T[012][0-9]:[0123456][0-9]:[0123456][0-9](?:\.[0-9]{1,6})?(?:Z|[+-][012][0-9]:[0123456][0-9])?$/)
+        value.match(/^[0-9]{4}-[01][0-9]-[0123][0-9]T[012][0-9]:[0123456][0-9]:[0123456][0-9](?:\.[0-9]{1,6})?(?:Z|[+-][012][0-9]:[0123456][0-9])?$/u)
       )
     ) {
       throw new ParseError(path, type, value);
@@ -194,11 +194,11 @@ export function encode(typeTable: TypeTable, path: string, type: TypeDescription
   }
 }
 
-export function decode(typeTable: TypeTable, path: string, type: TypeDescription, value: any): any {
+export function decode(typeTable: TypeTable, path: string, type: TypeDescription, value: unknown): any {
   if (typeof type === "string" && !type.endsWith("?") && type !== "void" && (value === null || value === undefined)) {
     throw new Error(`Invalid type at '${path}', cannot be null`);
   } else if (Array.isArray(type)) {
-    if (!type.includes(value)) {
+    if (typeof value !== "string" || !type.includes(value)) {
       throw new ParseError(path, type, value);
     }
 
@@ -211,7 +211,7 @@ export function decode(typeTable: TypeTable, path: string, type: TypeDescription
     const obj: any = {};
 
     for (const key of Object.keys(type)) {
-      obj[key] = decode(typeTable, `${path}.${key}`, type[key], value[key]);
+      obj[key] = decode(typeTable, `${path}.${key}`, type[key], (value as Record<string, unknown>)[key]);
     }
 
     return obj;
@@ -242,7 +242,7 @@ export function decode(typeTable: TypeTable, path: string, type: TypeDescription
 
     return buffer;
   } else if (type === "bigint") {
-    if (typeof value !== "number" && (typeof value !== "string" || !value.match(/^-?[0-9]+$/))) {
+    if (typeof value !== "number" && (typeof value !== "string" || !value.match(/^-?[0-9]+$/u))) {
       throw new ParseError(path, type, value);
     }
 

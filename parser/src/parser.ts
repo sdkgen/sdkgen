@@ -1,3 +1,4 @@
+/* eslint-disable no-loop-func */
 import { readFileSync } from "fs";
 import { dirname, resolve } from "path";
 import {
@@ -11,6 +12,7 @@ import {
   Field,
   FunctionOperation,
   GetOperation,
+  HiddenAnnotation,
   Operation,
   OptionalType,
   StructType,
@@ -72,14 +74,18 @@ interface MultiExpectMatcher {
 
 export class Parser {
   private readonly lexers: Lexer[];
+
   private token: Token | null = null;
+
   private annotations: Annotation[] = [];
+
   private warnings: string[] = [];
 
   constructor(source: Lexer | string) {
     if (!(source instanceof Lexer)) {
       source = new Lexer(readFileSync(source).toString(), source);
     }
+
     this.lexers = [source];
     this.nextToken();
   }
@@ -89,9 +95,9 @@ export class Parser {
       this.token = this.lexers[this.lexers.length - 1].nextToken();
       if (this.token) {
         return;
-      } else {
-        this.lexers.pop();
       }
+
+      this.lexers.pop();
     }
   }
 
@@ -112,10 +118,11 @@ export class Parser {
 
     if (tokenName in matcher) {
       return (matcher as any)[tokenName](this.token);
-    } else if ("IdentifierToken" in matcher) {
+    } else if (matcher.IdentifierToken) {
       const tokenAsIdent = this.token.maybeAsIdentifier();
+
       if (tokenAsIdent instanceof IdentifierToken) {
-        return matcher["IdentifierToken"]!(tokenAsIdent);
+        return matcher.IdentifierToken(tokenAsIdent);
       }
     }
 
@@ -127,7 +134,9 @@ export class Parser {
   }
 
   private expect(x: typeof IdentifierToken): IdentifierToken;
+
   private expect(x: typeof StringLiteralToken): StringLiteralToken;
+
   private expect(type: any): Token {
     if (this.token === null) {
       throw new ParserError(`Expected ${(type as any).name.replace("Token", "")}, but found end of file`);
@@ -136,50 +145,55 @@ export class Parser {
     } else {
       if (type === IdentifierToken) {
         const tokenAsIdent = this.token.maybeAsIdentifier();
+
         if (tokenAsIdent instanceof IdentifierToken) {
           return tokenAsIdent;
         }
       }
+
       throw new ParserError(`Expected ${(type as any).name.replace("Token", "")} at ${this.token.location}, but found ${this.token}`);
     }
   }
 
-  parse() {
+  parse(): AstRoot {
     const operations: Operation[] = [];
     const typeDefinition: TypeDefinition[] = [];
     const errors: string[] = [];
+
     this.warnings = [];
 
     while (this.token) {
       this.acceptAnnotations();
       this.multiExpect({
-        ImportKeywordToken: () => {
-          this.checkCannotHaveAnnotationsHere();
-          this.nextToken();
-          const path = this.expect(StringLiteralToken).value;
-          const resolvedPath = resolve(dirname(this.currentFileName!), path + ".sdkgen");
-          this.lexers.push(new Lexer(readFileSync(resolvedPath).toString(), resolvedPath));
-          this.nextToken();
-        },
-        TypeKeywordToken: () => {
-          typeDefinition.push(this.parseTypeDefinition());
-        },
-        GetKeywordToken: () => {
-          operations.push(this.parseOperation());
-        },
-        FunctionKeywordToken: () => {
-          operations.push(this.parseOperation());
-        },
         ErrorKeywordToken: () => {
           this.checkCannotHaveAnnotationsHere();
           this.nextToken();
           errors.push(this.expect(IdentifierToken).value);
           this.nextToken();
         },
+        FunctionKeywordToken: () => {
+          operations.push(this.parseOperation());
+        },
+        GetKeywordToken: () => {
+          operations.push(this.parseOperation());
+        },
+        ImportKeywordToken: () => {
+          this.checkCannotHaveAnnotationsHere();
+          this.nextToken();
+          const pathToken = this.expect(StringLiteralToken);
+          const resolvedPath = resolve(dirname(pathToken.location.filename), `${pathToken.value}.sdkgen`);
+
+          this.lexers.push(new Lexer(readFileSync(resolvedPath).toString(), resolvedPath));
+          this.nextToken();
+        },
+        TypeKeywordToken: () => {
+          typeDefinition.push(this.parseTypeDefinition());
+        },
       });
     }
 
     const ast = new AstRoot(typeDefinition, operations, errors);
+
     ast.warnings = this.warnings;
     analyse(ast);
     return ast;
@@ -189,6 +203,7 @@ export class Parser {
     while (this.token instanceof AnnotationToken) {
       const words = this.token.value.split(" ");
       const body = this.token.value.slice(words[0].length).trim();
+
       switch (words[0]) {
         case "description":
           this.annotations.push(new DescriptionAnnotation(body).at(this.token));
@@ -207,10 +222,20 @@ export class Parser {
           } catch (error) {
             throw new ParserError(`${error.message} at ${this.token.location}`);
           }
+
+          break;
+        case "hidden":
+          if (body !== "") {
+            throw new ParserError(`@hidden annotation doesn't take any argument`);
+          }
+
+          this.annotations.push(new HiddenAnnotation().at(this.token));
+
           break;
         default:
           throw new ParserError(`Unknown annotation '${words[0]}' at ${this.token.location}`);
       }
+
       this.nextToken();
     }
   }
@@ -223,34 +248,40 @@ export class Parser {
 
   private parseTypeDefinition(): TypeDefinition {
     const typeToken = this.expect(TypeKeywordToken);
+
     this.nextToken();
 
-    const name = this.expect(IdentifierToken).value;
-    if (!name[0].match(/[A-Z]/)) {
-      throw new ParserError(
-        `The custom type name must start with an uppercase letter, but found '${JSON.stringify(name)}' at ${this.token!.location}`,
-      );
+    const nameToken = this.expect(IdentifierToken);
+    const name = nameToken.value;
+
+    if (!name[0].match(/[A-Z]/u)) {
+      throw new ParserError(`The custom type name must start with an uppercase letter, but found '${JSON.stringify(name)}' at ${nameToken.location}`);
     }
+
     this.nextToken();
 
-    const annotations = this.annotations;
+    const { annotations } = this;
+
     this.annotations = [];
 
     const type = this.parseType();
     const definitions = new TypeDefinition(name, type).at(typeToken);
+
     definitions.annotations = annotations;
 
     return definitions;
   }
 
   private parseOperation(): Operation {
-    let annotations = this.annotations;
+    let { annotations } = this;
+
     this.annotations = [];
 
     const openingToken: GetKeywordToken | FunctionKeywordToken = this.multiExpect({
-      GetKeywordToken: token => token,
       FunctionKeywordToken: token => token,
+      GetKeywordToken: token => token,
     });
+
     this.nextToken();
 
     if (["get", "function"].includes(openingToken.maybeAsIdentifier().value)) {
@@ -258,6 +289,7 @@ export class Parser {
     }
 
     const name = this.expect(IdentifierToken).value;
+
     this.nextToken();
 
     this.expect(ParensOpenSymbolToken);
@@ -268,9 +300,11 @@ export class Parser {
 
     while (this.token && this.token.maybeAsIdentifier() instanceof IdentifierToken) {
       const field = this.parseField();
+
       if (argNames.has(field.name)) {
         throw new ParserError(`Cannot redeclare argument '${field.name}'`);
       }
+
       argNames.add(field.name);
       args.push(field);
 
@@ -283,19 +317,24 @@ export class Parser {
 
     for (const annotation of annotations) {
       if (annotation instanceof ArgDescriptionAnnotation) {
-        const arg = args.find(arg => arg.name === annotation.argName);
+        const arg = args.find(x => x.name === annotation.argName);
+
         if (!arg) {
           throw new ParserError(`Argument '${annotation.argName}' not found, at ${annotation.location}`);
         }
+
         arg.annotations.push(new DescriptionAnnotation(annotation.text).atLocation(annotation.location));
       }
     }
+
     annotations = annotations.filter(ann => !(ann instanceof ArgDescriptionAnnotation));
 
     const parensCloseToken = this.expect(ParensCloseSymbolToken);
+
     this.nextToken();
 
     let returnType = new VoidPrimitiveType().at(parensCloseToken);
+
     if (this.token instanceof ColonSymbolToken) {
       this.nextToken();
       returnType = this.parseType();
@@ -311,6 +350,7 @@ export class Parser {
   private parseEnum(): EnumType {
     this.checkCannotHaveAnnotationsHere();
     const enumToken = this.expect(EnumKeywordToken);
+
     this.nextToken();
 
     this.expect(CurlyOpenSymbolToken);
@@ -319,20 +359,22 @@ export class Parser {
     const enumType = new EnumType([]).at(enumToken);
 
     let finished = false;
+
     while (!finished) {
       this.acceptAnnotations();
       this.multiExpect({
-        IdentifierToken: token => {
-          const enumValue = new EnumValue(token.value).at(token);
-          enumValue.annotations = this.annotations;
-          this.annotations = [];
-          enumType.values.push(enumValue);
-          this.nextToken();
-        },
         CurlyCloseSymbolToken: () => {
           this.checkCannotHaveAnnotationsHere();
           this.nextToken();
           finished = true;
+        },
+        IdentifierToken: token => {
+          const enumValue = new EnumValue(token.value).at(token);
+
+          enumValue.annotations = this.annotations;
+          this.annotations = [];
+          enumType.values.push(enumValue);
+          this.nextToken();
         },
       });
     }
@@ -342,16 +384,19 @@ export class Parser {
 
   private parseField(): Field {
     const nameToken = this.expect(IdentifierToken);
+
     this.nextToken();
 
     this.expect(ColonSymbolToken);
     this.nextToken();
 
-    const annotations = this.annotations;
+    const { annotations } = this;
+
     this.annotations = [];
 
     const type = this.parseType();
     const field = new Field(nameToken.value, type).at(nameToken);
+
     field.annotations = annotations;
 
     while (this.token instanceof ExclamationMarkSymbolToken) {
@@ -363,6 +408,7 @@ export class Parser {
         default:
           throw new ParserError(`Unknown field mark !${this.token.value} at ${this.token.location}`);
       }
+
       this.nextToken();
     }
 
@@ -371,6 +417,7 @@ export class Parser {
 
   private parseStruct(): StructType {
     const openingToken = this.expect(CurlyOpenSymbolToken);
+
     this.nextToken();
 
     const fields: Field[] = [];
@@ -378,14 +425,22 @@ export class Parser {
     const fieldNames = new Set<string>();
 
     let finished = false;
+
     while (!finished) {
       this.acceptAnnotations();
       this.multiExpect({
+        CurlyCloseSymbolToken: () => {
+          this.checkCannotHaveAnnotationsHere();
+          this.nextToken();
+          finished = true;
+        },
         IdentifierToken: () => {
           const field = this.parseField();
+
           if (fieldNames.has(field.name)) {
             throw new ParserError(`Cannot redeclare field '${field.name}'`);
           }
+
           fieldNames.add(field.name);
           fields.push(field);
         },
@@ -393,16 +448,13 @@ export class Parser {
           this.checkCannotHaveAnnotationsHere();
           this.nextToken();
           const identToken = this.expect(IdentifierToken);
+
           this.nextToken();
-          if (!identToken.value[0].match(/[A-Z]/)) {
+          if (!identToken.value[0].match(/[A-Z]/u)) {
             throw new ParserError(`Expected a type but found '${JSON.stringify(identToken.value)}' at ${identToken.location}`);
           }
+
           spreads.push(new TypeReference(identToken.value).at(identToken));
-        },
-        CurlyCloseSymbolToken: () => {
-          this.checkCannotHaveAnnotationsHere();
-          this.nextToken();
-          finished = true;
         },
       });
     }
@@ -417,16 +469,21 @@ export class Parser {
       EnumKeywordToken: () => this.parseEnum(),
       IdentifierToken: token => {
         this.nextToken();
-        if (!token.value[0].match(/[A-Z]/)) {
+        if (!token.value[0].match(/[A-Z]/u)) {
           throw new ParserError(`Expected a type but found '${JSON.stringify(token.value)}' at ${token.location}`);
         }
+
         return new TypeReference(token.value).at(token);
       },
       PrimitiveTypeToken: token => {
         this.nextToken();
         const primitiveClass = primitiveToAstClass.get(token.value);
-        if (primitiveClass) return new primitiveClass().at(token);
-        else throw new ParserError(`BUG! Should handle primitive ${token.value}`);
+
+        if (primitiveClass) {
+          return new primitiveClass().at(token);
+        }
+
+        throw new ParserError(`BUG! Should handle primitive ${token.value}`);
       },
     });
 

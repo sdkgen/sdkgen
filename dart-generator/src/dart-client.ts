@@ -1,9 +1,7 @@
-import { AstRoot, VoidPrimitiveType } from "@sdkgen/parser";
+import { AstRoot, HiddenAnnotation, VoidPrimitiveType } from "@sdkgen/parser";
 import { cast, generateClass, generateEnum, generateErrorClass, generateTypeName } from "./helpers";
 
-interface Options {}
-
-export function generateDartClientSource(ast: AstRoot, options: Options) {
+export function generateDartClientSource(ast: AstRoot): string {
   let code = "";
 
   code += `import 'package:flutter/widgets.dart';
@@ -30,6 +28,7 @@ import 'package:sdkgen_runtime/http_client.dart';
   code += `class ApiClient extends SdkgenHttpClient {
   ApiClient(String baseUrl, [BuildContext context]) : super(baseUrl, context, _typeTable, _fnTable, _errTable);
 ${ast.operations
+  .filter(op => op.annotations.every(ann => !(ann instanceof HiddenAnnotation)))
   .map(
     op => `
   ${op.returnType instanceof VoidPrimitiveType ? "Future<void> " : `Future<${generateTypeName(op.returnType)}> `}${op.prettyName}(${
@@ -51,16 +50,19 @@ ${ast.operations
     for (const field of type.fields) {
       code += `      "${field.name}": "${field.type.name}",\n`;
     }
+
     code += `    },\n`;
     code += `    (Map fields) => ${type.name}(\n`;
     for (const field of type.fields) {
       code += `      ${field.name}: ${cast(`fields["${field.name}"]`, field.type)},\n`;
     }
+
     code += `    ),\n`;
     code += `    (${type.name} obj) => ({\n`;
     for (const field of type.fields) {
       code += `      "${field.name}": obj.${field.name},\n`;
     }
+
     code += `    }),\n`;
     code += `  ),\n`;
   }
@@ -79,14 +81,17 @@ ${ast.operations
     for (const arg of op.args) {
       code += `    "${arg.name}": "${arg.type.name}",\n`;
     }
+
     code += `  }),\n`;
   }
+
   code += `};\n\n`;
 
   code += `var _errTable = {\n`;
   for (const error of ast.errors) {
     code += `  "${error}": (msg) => ${error}(msg),\n`;
   }
+
   code += `};\n`;
 
   return code;

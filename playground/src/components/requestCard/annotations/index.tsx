@@ -5,7 +5,7 @@ interface Props {
   annotations: ModelAnotations;
 }
 
-export function Annotations(props: Props) {
+export function Annotations(props: Props): JSX.Element {
   const { args, func } = props.annotations;
 
   const isEmpty = func.length === 0 && Object.keys(args).length === 0;
@@ -20,12 +20,12 @@ export function Annotations(props: Props) {
   ));
 
   const funcSection =
-    funcAnnotations.length !== 0 ? (
+    funcAnnotations.length === 0 ? null : (
       <div className={s.section}>
         <div className={s.title}>Function</div>
         <div className={s.content}>{funcAnnotations}</div>
       </div>
-    ) : null;
+    );
 
   const argsAnnotations = Object.keys(args).reduce((acc, argName) => {
     const annotations = args[argName];
@@ -47,12 +47,12 @@ export function Annotations(props: Props) {
   }, []);
 
   const argsSection =
-    argsAnnotations.length !== 0 ? (
+    argsAnnotations.length === 0 ? null : (
       <div className={s.section}>
         <div className={s.title}>Arguments</div>
         <div className={s.content}>{argsAnnotations}</div>
       </div>
-    ) : null;
+    );
 
   return isEmpty ? (
     emptyMessage

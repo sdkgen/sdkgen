@@ -3,7 +3,7 @@ import commandLineArgs from "command-line-args";
 import { buildCmd } from "./build";
 import { compatibilityCmd } from "./compatibility";
 
-const mainDefinitions = [{ name: "command", defaultOption: true }];
+const mainDefinitions = [{ defaultOption: true, name: "command" }];
 
 const mainOptions = commandLineArgs(mainDefinitions, { stopAtFirstUnknown: true });
 const argv = mainOptions._unknown || [];

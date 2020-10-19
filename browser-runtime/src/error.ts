@@ -4,10 +4,10 @@ export abstract class SdkgenError extends Error {
     this.name = this.constructor.name;
   }
 
-  public toJSON() {
+  public toJSON(): { message: string; type: string } {
     return {
-      type: this.constructor.name,
       message: this.message,
+      type: this.constructor.name,
     };
   }
 }

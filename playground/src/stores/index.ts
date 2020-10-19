@@ -5,8 +5,15 @@ import { RequestsStore } from "./requests";
 
 export class RootStore {
   public routerStore = new RouterStore();
-  public configStore = new ConfigStore(this);
-  public requestsStore = new RequestsStore(this);
+
+  public configStore: ConfigStore;
+
+  public requestsStore: RequestsStore;
+
+  constructor() {
+    this.configStore = new ConfigStore(this);
+    this.requestsStore = new RequestsStore(this);
+  }
 }
 
 export const rootStore = new RootStore();

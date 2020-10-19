@@ -8,7 +8,7 @@ import { Context, SdkgenHttpServer } from "../../src";
 
 const ast = new Parser(`${__dirname}/api.sdkgen`).parse();
 
-writeFileSync(`${__dirname}/api.ts`, generateNodeServerSource(ast, {}).replace("@sdkgen/node-runtime", "../../src"));
+writeFileSync(`${__dirname}/api.ts`, generateNodeServerSource(ast).replace("@sdkgen/node-runtime", "../../src"));
 const { api } = require(`${__dirname}/api.ts`);
 
 unlinkSync(`${__dirname}/api.ts`);
@@ -18,7 +18,7 @@ api.fn.add = async (ctx: Context, { first, second }: { first: number; second: st
 };
 
 api.fn.maybe = async (ctx: Context, { bin }: { bin: string | null }) => {
-  return bin !== null ? Buffer.from(bin, "hex") : null;
+  return bin === null ? null : Buffer.from(bin, "hex");
 };
 
 api.fn.hex = async (ctx: Context, { bin }: { bin: Buffer }) => {
@@ -27,13 +27,13 @@ api.fn.hex = async (ctx: Context, { bin }: { bin: Buffer }) => {
 
 api.fn.obj = async (ctx: Context, { obj }: { obj: { val: number } }) => {
   if (obj.val === 0) {
-    throw "Value is zero ~ spec error";
+    throw new Error("Value is zero ~ spec error");
   }
 
   return obj;
 };
 
-function readAllStream(stream: Readable) {
+async function readAllStream(stream: Readable) {
   return new Promise((resolve, reject) => {
     const chunks: Buffer[] = [];
 
@@ -43,20 +43,20 @@ function readAllStream(stream: Readable) {
   });
 }
 
-api.fn.uploadFile = async (ctx: Context, args: {}) => {
+api.fn.uploadFile = async (ctx: Context) => {
   return Promise.all(
     ctx.request.files.map(async ({ name, contents }) => ({
-      name,
       data: await readAllStream(contents),
+      name,
     })),
   );
 };
 
-api.fn.getHtml = async (ctx: Context, args: {}) => {
+api.fn.getHtml = async () => {
   return "<h1>Hello world!</h1>";
 };
 
-writeFileSync(`${__dirname}/nodeClient.ts`, generateNodeClientSource(ast, {}).replace("@sdkgen/node-runtime", "../../src"));
+writeFileSync(`${__dirname}/nodeClient.ts`, generateNodeClientSource(ast).replace("@sdkgen/node-runtime", "../../src"));
 const { ApiClient: NodeApiClient } = require(`${__dirname}/nodeClient.ts`);
 
 unlinkSync(`${__dirname}/nodeClient.ts`);
@@ -83,104 +83,104 @@ describe("Rest API", () => {
     path: string;
     result: string;
     data?: string | Buffer;
-    headers?: object;
+    headers?: Record<string, string | string[]>;
     statusCode?: number;
-    resultHeaders?: object;
+    resultHeaders?: Record<string, string | string[]>;
   }> = [
     { method: "GET", path: "/add1/1/aa", result: "1aa" },
     { method: "GET", path: "/add1/1/aa/", result: "1aa" },
     {
-      method: "GET",
-      path: "/add1/1/aa",
-      result: '"1aa"',
       headers: {
         accept: "application/json",
       },
+      method: "GET",
+      path: "/add1/1/aa",
+      result: '"1aa"',
     },
     { method: "GET", path: "/add2&second=aa&first=1", result: "", statusCode: 404 },
     { method: "GET", path: "/add2?second=aa&first=1", result: "1aa" },
     { method: "GET", path: "/add2?first=1&second=aa", result: "1aa" },
     {
-      method: "GET",
-      path: "/add3?first=1",
-      result: "1aa",
       headers: {
         "x-second": "aa",
       },
-    },
-    {
       method: "GET",
       path: "/add3?first=1",
-      result: '"1aa"',
+      result: "1aa",
+    },
+    {
       headers: {
         accept: "application/json",
         "x-second": "aa",
       },
+      method: "GET",
+      path: "/add3?first=1",
+      result: '"1aa"',
     },
     {
-      method: "POST",
-      path: "/add4",
-      result: "1aa",
+      data: "1",
       headers: {
         "x-second": "aa",
       },
-      data: "1",
-    },
-    {
       method: "POST",
       path: "/add4",
-      result: '"1aa"',
+      result: "1aa",
+    },
+    {
+      data: "1",
       headers: {
         accept: "application/json",
         "x-second": "aa",
       },
-      data: "1",
+      method: "POST",
+      path: "/add4",
+      result: '"1aa"',
     },
     {
-      method: "POST",
-      path: "/add5",
-      result: "1aa",
-      headers: {
-        "x-first": "1",
-      },
       data: "aa",
-    },
-    {
+      headers: {
+        "x-first": "1",
+      },
       method: "POST",
       path: "/add5",
       result: "1aa",
+    },
+    {
+      data: '"aa"',
       headers: {
         "content-type": "application/json",
         "x-first": "1",
       },
-      data: '"aa"',
-    },
-    {
       method: "POST",
       path: "/add5",
-      result: '"1aa"',
+      result: "1aa",
+    },
+    {
+      data: '"aa"',
       headers: {
         accept: "application/json",
         "content-type": "application/json",
         "x-first": "1",
       },
-      data: '"aa"',
+      method: "POST",
+      path: "/add5",
+      result: '"1aa"',
     },
     { method: "POST", path: "/add6?second=aa&first=1", result: "1aa" },
     { method: "POST", path: "/add6?first=1&second=aa", result: "1aa" },
     {
-      method: "POST",
-      path: "/add6",
-      result: "1aa",
       data: "second=aa&first=1",
       headers: { "content-type": "application/x-www-form-urlencoded" },
-    },
-    {
       method: "POST",
       path: "/add6",
       result: "1aa",
+    },
+    {
       data: "first=1&second=aa",
       headers: { "content-type": "application/x-www-form-urlencoded" },
+      method: "POST",
+      path: "/add6",
+      result: "1aa",
     },
     {
       method: "GET",
@@ -205,12 +205,12 @@ describe("Rest API", () => {
       },
     },
     {
-      method: "GET",
-      path: "/maybe?bin=61",
-      result: '"YQ=="',
       headers: {
         accept: "application/json",
       },
+      method: "GET",
+      path: "/maybe?bin=61",
+      result: '"YQ=="',
     },
     {
       method: "POST",
@@ -219,47 +219,47 @@ describe("Rest API", () => {
       statusCode: 204,
     },
     {
+      data: "61",
       method: "POST",
       path: "/maybe",
       result: "a",
       resultHeaders: {
         "content-type": "application/octet-stream",
       },
-      data: "61",
     },
     {
+      data: "a",
       method: "POST",
       path: "/hex",
       result: "61",
-      data: "a",
     },
     {
+      data: `{"val":15}`,
       method: "POST",
       path: "/obj",
       result: `{"val":15}`,
-      data: `{"val":15}`,
       resultHeaders: {
         "content-type": "application/json",
       },
     },
     {
+      data: `{"val":0}`,
       method: "POST",
       path: "/obj",
-      result: `{"message":"Value is zero ~ spec error","type":"Fatal"}`,
-      data: `{"val":0}`,
-      statusCode: 400,
+      result: `{"message":"Error: Value is zero ~ spec error","type":"Fatal"}`,
       resultHeaders: {
         "content-type": "application/json",
       },
+      statusCode: 400,
     },
     {
       method: "POST",
       path: "/upload",
       result: `[]`,
-      statusCode: 200,
       resultHeaders: {
         "content-type": "application/json",
       },
+      statusCode: 200,
     },
     {
       method: "GET",
@@ -274,17 +274,17 @@ describe("Rest API", () => {
 
       form.append("file", Buffer.from("Hello"), "test.txt");
       return {
-        method: "POST" as const,
-        path: "/upload",
-        result: `[{"name":"test.txt","data":"SGVsbG8="}]`,
-        statusCode: 200,
-        resultHeaders: {
-          "content-type": "application/json",
-        },
         data: form.getBuffer(),
         headers: {
           ...form.getHeaders(),
         },
+        method: "POST" as const,
+        path: "/upload",
+        result: `[{"name":"test.txt","data":"SGVsbG8="}]`,
+        resultHeaders: {
+          "content-type": "application/json",
+        },
+        statusCode: 200,
       };
     })(),
   ];
@@ -292,11 +292,11 @@ describe("Rest API", () => {
   for (const { method, path, result, headers, data, statusCode, resultHeaders } of table) {
     test(`${method} ${path}${headers ? ` with headers ${JSON.stringify(headers)}` : ""}`, async () => {
       const response = await axios.request({
-        url: `http://localhost:8001${path}`,
-        method,
-        transformResponse: [data => data],
-        headers,
         data,
+        headers,
+        method,
+        transformResponse: [x => x],
+        url: `http://localhost:8001${path}`,
         validateStatus: () => true,
       });
 

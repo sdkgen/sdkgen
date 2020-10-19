@@ -1,12 +1,12 @@
-import * as React from "react";
-import { Section } from "components/section";
 import { RequestCard } from "components/requestCard";
 import { SearchInput } from "components/searchInput";
+import { Section } from "components/section";
+import { requestModel } from "helpers/requestModel";
 import { observer } from "mobx-react-lite";
+import * as React from "react";
 import RootStore from "stores";
 import { useDebounce } from "use-debounce";
 import s from "./home.scss";
-import { requestModel } from "helpers/requestModel";
 
 function Home() {
   const { requestsStore } = React.useContext(RootStore);
@@ -15,24 +15,29 @@ function Home() {
 
   const { api } = requestsStore;
 
-  const filterBySearch = (value: [string, requestModel], _index: number, _array: [string, requestModel][]): boolean => {
+  function filterBySearch(value: [string, requestModel]): boolean {
     const [fnName] = value;
+
     return fnName.toLocaleLowerCase().includes(searchStringDebounced.toLocaleLowerCase());
-  };
+  }
 
-  const filterBookmarked = (value: [string, requestModel], _index: number, _array: [string, requestModel][]): boolean => {
+  function filterBookmarked(value: [string, requestModel]): boolean {
     const [, model] = value;
+
     return model.bookmarked;
-  };
+  }
 
-  const renderCard = (value: [string, requestModel], _index: number, _array: [string, requestModel][]): JSX.Element => {
+  function renderCard(value: [string, requestModel]): JSX.Element {
     const [fnName, model] = value;
+
     return <RequestCard key={fnName} model={model} />;
-  };
+  }
 
-  const BookmarkedCards = Object.entries(api).filter(filterBySearch).filter(filterBookmarked).map(renderCard);
+  const list = Object.entries(api).filter(filterBySearch);
 
-  const AllCards = Object.entries(api).filter(filterBySearch).map(renderCard);
+  const BookmarkedCards = list.filter(filterBookmarked).map(renderCard);
+
+  const AllCards = list.map(renderCard);
 
   const hasBookmarks = BookmarkedCards.length > 0;
 

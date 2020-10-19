@@ -28,54 +28,6 @@ import {
   XmlPrimitiveType,
 } from "@sdkgen/parser";
 
-export function generateTypescriptInterface(type: StructType) {
-  return `export interface ${type.name} {
-${type.fields.map(field => `    ${field.name}: ${generateTypescriptTypeName(field.type)}`).join("\n")}
-}\n`;
-}
-
-export function generateTypescriptEnum(type: EnumType) {
-  return `export type ${type.name} = ${type.values.map(x => `"${x.value}"`).join(" | ")};\n`;
-}
-
-export function generateTypescriptErrorClass(name: string) {
-  return `export class ${name} extends SdkgenError {}\n`;
-}
-
-export function clearForLogging(path: string, type: Type): string {
-  switch (type.constructor) {
-    case TypeReference:
-      return clearForLogging(path, (type as TypeReference).type);
-
-    case OptionalType: {
-      const code = clearForLogging(path, (type as OptionalType).base);
-      if (code) return `if (${path} !== null && ${path} !== undefined) { ${code} }`;
-      else return "";
-    }
-
-    case ArrayType: {
-      const code = clearForLogging("el", (type as ArrayType).base);
-      if (code) return `for (const el of ${path}) { ${code} }`;
-      else return "";
-    }
-
-    case StructType:
-      const codes: string[] = [];
-      for (const field of (type as StructType).fields) {
-        if (field.secret) {
-          codes.push(`${path}.${field.name} = "<secret>";`);
-        } else {
-          const code = clearForLogging(`${path}.${field.name}`, field.type);
-          if (code) codes.push(code);
-        }
-      }
-      return codes.join(" ");
-
-    default:
-      return "";
-  }
-}
-
 export function generateTypescriptTypeName(type: Type): string {
   switch (type.constructor) {
     case IntPrimitiveType:
@@ -116,13 +68,17 @@ export function generateTypescriptTypeName(type: Type): string {
       return "any";
 
     case OptionalType:
-      return generateTypescriptTypeName((type as OptionalType).base) + " | null";
+      return `${generateTypescriptTypeName((type as OptionalType).base)} | null`;
 
     case ArrayType: {
-      const base = (type as ArrayType).base;
+      const { base } = type as ArrayType;
       const baseGen = generateTypescriptTypeName(base);
-      if (base instanceof OptionalType) return `(${baseGen})[]`;
-      else return `${baseGen}[]`;
+
+      if (base instanceof OptionalType) {
+        return `(${baseGen})[]`;
+      }
+
+      return `${baseGen}[]`;
     }
 
     case StructType:
@@ -134,5 +90,67 @@ export function generateTypescriptTypeName(type: Type): string {
 
     default:
       throw new Error(`BUG: generateTypescriptTypeName with ${type.constructor.name}`);
+  }
+}
+
+export function generateTypescriptInterface(type: StructType): string {
+  return `export interface ${type.name} {
+${type.fields.map(field => `    ${field.name}: ${generateTypescriptTypeName(field.type)}`).join("\n")}
+}\n`;
+}
+
+export function generateTypescriptEnum(type: EnumType): string {
+  return `export type ${type.name} = ${type.values.map(x => `"${x.value}"`).join(" | ")};\n`;
+}
+
+export function generateTypescriptErrorClass(name: string): string {
+  return `export class ${name} extends SdkgenError {}\n`;
+}
+
+export function clearForLogging(path: string, type: Type): string {
+  switch (type.constructor) {
+    case TypeReference:
+      return clearForLogging(path, (type as TypeReference).type);
+
+    case OptionalType: {
+      const code = clearForLogging(path, (type as OptionalType).base);
+
+      if (code) {
+        return `if (${path} !== null && ${path} !== undefined) { ${code} }`;
+      }
+
+      return "";
+    }
+
+    case ArrayType: {
+      const code = clearForLogging("el", (type as ArrayType).base);
+
+      if (code) {
+        return `for (const el of ${path}) { ${code} }`;
+      }
+
+      return "";
+    }
+
+    case StructType: {
+      const codes: string[] = [];
+
+      for (const field of (type as StructType).fields) {
+        if (field.secret) {
+          codes.push(`${path}.${field.name} = "<secret>";`);
+        } else {
+          const code = clearForLogging(`${path}.${field.name}`, field.type);
+
+          if (code) {
+            codes.push(code);
+          }
+        }
+      }
+
+      return codes.join(" ");
+    }
+
+    default:
+      return "";
   }
 }
