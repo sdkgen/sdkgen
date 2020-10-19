@@ -84,7 +84,7 @@ export class requestModel {
         this.response = res.result;
         this.status = "sucess";
         if (callBack) {
-          callBack("sucess");
+          callBack("success");
         }
       } else {
         this.status = "error";
