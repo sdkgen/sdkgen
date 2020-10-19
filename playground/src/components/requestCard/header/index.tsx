@@ -19,7 +19,7 @@ function Header(props: HeaderProps) {
     error: s.red,
     fetching: s.orange,
     notFetched: s.gray,
-    sucess: s.green,
+    success: s.green,
   };
   const accentColorClass = colors[model.status];
 

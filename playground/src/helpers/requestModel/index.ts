@@ -2,7 +2,7 @@ import { persistEndpointBookmarkStatus } from "helpers/localStorage/bookmarkedEn
 import { observable } from "mobx";
 import { AnnotationJson } from "resources/types/ast";
 
-export type RequestStatus = "notFetched" | "sucess" | "fetching" | "error";
+export type RequestStatus = "notFetched" | "success" | "fetching" | "error";
 
 export interface ModelAnotations {
   func: AnnotationJson[];
@@ -82,7 +82,7 @@ export class requestModel {
 
       if (res.ok) {
         this.response = res.result;
-        this.status = "sucess";
+        this.status = "success";
         if (callBack) {
           callBack("success");
         }

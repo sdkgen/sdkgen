@@ -15,19 +15,19 @@ export default function Bottom(props: BottomProps): JSX.Element {
     error: faRedo,
     fetching: faPause,
     notFetched: faPlay,
-    sucess: faRedo,
+    success: faRedo,
   };
   const labels: Record<RequestStatus, string> = {
     error: "Error, Retry?",
     fetching: "Fetching",
     notFetched: "Make Request",
-    sucess: "Success, Retry?",
+    success: "Success, Retry?",
   };
   const colors: Record<RequestStatus, string> = {
     error: s.red,
     fetching: s.orange,
     notFetched: s.blue,
-    sucess: s.green,
+    success: s.green,
   };
   const selectedIcon = icons[props.status];
   const selectedLabel = labels[props.status];

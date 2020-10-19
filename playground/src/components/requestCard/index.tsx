@@ -34,7 +34,7 @@ function Card(props: CardProps) {
         status={status}
         onClick={() => {
           props.model.reset();
-          props.model.call(jsonArgs, newStatus => (newStatus === "sucess" ? setActiveTab("response") : setActiveTab("error")));
+          props.model.call(jsonArgs, newStatus => (newStatus === "success" ? setActiveTab("response") : setActiveTab("error")));
         }}
       />
     </div>

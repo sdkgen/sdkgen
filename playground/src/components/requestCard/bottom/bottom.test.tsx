@@ -28,5 +28,5 @@ describe("<Bottom />", () => {
   testForStatus("notFetched", "Make Request", "play", "blue");
   testForStatus("fetching", "Fetching", "pause", "orange");
   testForStatus("error", "Error, Retry?", "redo", "red");
-  testForStatus("sucess", "Success, Retry?", "redo", "green");
+  testForStatus("success", "Success, Retry?", "redo", "green");
 });
