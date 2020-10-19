@@ -12,6 +12,7 @@ import {
   Field,
   FunctionOperation,
   GetOperation,
+  HiddenAnnotation,
   Operation,
   OptionalType,
   StructType,
@@ -221,6 +222,14 @@ export class Parser {
           } catch (error) {
             throw new ParserError(`${error.message} at ${this.token.location}`);
           }
+
+          break;
+        case "hidden":
+          if (body !== "") {
+            throw new ParserError(`@hidden annotation doesn't take any argument`);
+          }
+
+          this.annotations.push(new HiddenAnnotation().at(this.token));
 
           break;
         default:

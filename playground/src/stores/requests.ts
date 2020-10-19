@@ -153,6 +153,10 @@ export class RequestsStore {
       const argsMock = this.createMockBasedOnTypes(fStruct.args, AST.typeTable);
       const annotations = this.getAnotations(AST, fName);
 
+      if (annotations.func.some(ann => ann.type === "hidden")) {
+        return acc;
+      }
+
       return {
         ...acc,
         [fName]: new requestModel({

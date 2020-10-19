@@ -224,3 +224,5 @@ export class RestAnnotation extends Annotation {
     super();
   }
 }
+
+export class HiddenAnnotation extends Annotation {}

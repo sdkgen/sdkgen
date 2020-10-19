@@ -22,10 +22,10 @@ describe(Parser, () => {
     test(`handles primitive type '${p}'`, () => {
       expectParses(
         `
-                    type Foo {
-                        foo: ${p}
-                    }
-                `,
+          type Foo {
+            foo: ${p}
+          }
+        `,
         {
           annotations: {},
           errors: ["Fatal"],
@@ -42,10 +42,10 @@ describe(Parser, () => {
     test(`handles simple get operations for primitive type '${p}'`, () => {
       expectParses(
         `
-                    get ${p === "bool" ? "isFoo" : "foo"}(): ${p}
-                    get bar(): ${p}?
-                    fn getBaz(): ${p}[]
-                `,
+          get ${p === "bool" ? "isFoo" : "foo"}(): ${p}
+          get bar(): ${p}?
+          fn getBaz(): ${p}[]
+        `,
         {
           annotations: {},
           errors: ["Fatal"],
@@ -65,7 +65,7 @@ describe(Parser, () => {
           },
           typeTable: {},
         },
-        ["Keyword 'get' is deprecated at -:2:21. Use 'fn' instead.", "Keyword 'get' is deprecated at -:3:21. Use 'fn' instead."],
+        ["Keyword 'get' is deprecated at -:2:11. Use 'fn' instead.", "Keyword 'get' is deprecated at -:3:11. Use 'fn' instead."],
       );
     });
   }
@@ -74,10 +74,10 @@ describe(Parser, () => {
     test(`handles '${kw}' on the name of a field`, () => {
       expectParses(
         `
-                type Foo {
-                    ${kw}: int
-                }
-                `,
+          type Foo {
+            ${kw}: int
+          }
+        `,
         {
           annotations: {},
           errors: ["Fatal"],
@@ -95,13 +95,13 @@ describe(Parser, () => {
   test("handles arrays and optionals", () => {
     expectParses(
       `
-                type Foo {
-                    aa: string[]
-                    bbb: int?[]??
-                    cccc: int[][][]
-                    ddddd: uint[][][]??[]???[][]
-                }
-            `,
+        type Foo {
+          aa: string[]
+          bbb: int?[]??
+          cccc: int[][][]
+          ddddd: uint[][][]??[]???[][]
+        }
+      `,
       {
         annotations: {},
         errors: ["Fatal"],
@@ -121,15 +121,15 @@ describe(Parser, () => {
   test("handles enums", () => {
     expectParses(
       `
-                type Foo {
-                    a: int
-                    status: enum {
-                        c a zzz
-                    }
-                }
+        type Foo {
+          a: int
+          status: enum {
+            c a zzz
+          }
+        }
 
-                type Other enum { aa bb }
-            `,
+        type Other enum { aa bb }
+      `,
       {
         annotations: {},
         errors: ["Fatal"],
@@ -149,10 +149,10 @@ describe(Parser, () => {
   test("handles errors", () => {
     expectParses(
       `
-                error Foo
-                error Bar
-                error FooBar
-            `,
+        error Foo
+        error Bar
+        error FooBar
+      `,
       {
         annotations: {},
         errors: ["Foo", "Bar", "FooBar", "Fatal"],
@@ -165,16 +165,16 @@ describe(Parser, () => {
   test("handles combinations of all part", () => {
     expectParses(
       `
-                error Foo
-                error Bar
+        error Foo
+        error Bar
 
-                type Baz {
-                    a: string?
-                    b: int
-                }
+        type Baz {
+          a: string?
+          b: int
+        }
 
-                fn getBaz(): Baz
-            `,
+        fn getBaz(): Baz
+      `,
       {
         annotations: {},
         errors: ["Foo", "Bar", "Fatal"],
@@ -197,17 +197,17 @@ describe(Parser, () => {
   test("fails when struct or enum is empty", () => {
     expectDoesntParse(
       `
-                type Baz {
-                }
-            `,
+        type Baz {
+        }
+      `,
       "empty",
     );
 
     expectDoesntParse(
       `
-                type Baaz enum {
-                }
-            `,
+        type Baaz enum {
+        }
+      `,
       "empty",
     );
   });
@@ -215,30 +215,30 @@ describe(Parser, () => {
   test("fails when field happens twice", () => {
     expectDoesntParse(
       `
-                type Baz {
-                    a: int
-                    b: bool
-                    a: int
-                }
-            `,
+        type Baz {
+          a: int
+          b: bool
+          a: int
+        }
+      `,
       "redeclare",
     );
 
     expectDoesntParse(
       `
-                type Baz {
-                    b: int
-                    xx: bool
-                    xx: int
-                }
-            `,
+        type Baz {
+          b: int
+          xx: bool
+          xx: int
+        }
+      `,
       "redeclare",
     );
 
     expectDoesntParse(
       `
-                fn foo(a: string, a: int)
-            `,
+        fn foo(a: string, a: int)
+      `,
       "redeclare",
     );
   });
@@ -246,15 +246,15 @@ describe(Parser, () => {
   test("handles spreads in structs", () => {
     expectParses(
       `
-                type Bar {
-                    aa: string
-                }
+        type Bar {
+          aa: string
+        }
 
-                type Foo {
-                    ...Bar
-                    bb: int
-                }
-            `,
+        type Foo {
+          ...Bar
+          bb: int
+        }
+      `,
       {
         annotations: {},
         errors: ["Fatal"],
@@ -275,12 +275,12 @@ describe(Parser, () => {
   test("handles functions with arguments", () => {
     expectParses(
       `
-                type Bar {
-                    aa: string
-                }
+        type Bar {
+          aa: string
+        }
 
-                function doIt(foo: int, bar: Bar): string
-            `,
+        function doIt(foo: int, bar: Bar): string
+      `,
       {
         annotations: {},
         errors: ["Fatal"],
@@ -299,19 +299,19 @@ describe(Parser, () => {
           },
         },
       },
-      ["Keyword 'function' is deprecated at -:6:17. Use 'fn' instead."],
+      ["Keyword 'function' is deprecated at -:6:9. Use 'fn' instead."],
     );
   });
 
   test("handles functions with annotations", () => {
     expectParses(
       `
-                @description does it
-                @description and does another \\
-                            thing too
-                @arg bar Represents the number of things
-                fn doIt(foo: int, bar: float): string
-            `,
+        @description does it
+        @description and does another \\
+                     thing too
+        @arg bar Represents the number of things
+        fn doIt(foo: int, bar: float): string
+      `,
       {
         annotations: {
           "fn.doIt": [
@@ -336,14 +336,14 @@ describe(Parser, () => {
 
     expectParses(
       `
-                error NotFound
-                error InvalidArgument
+        error NotFound
+        error InvalidArgument
 
-                @throws NotFound
-                @throws InvalidArgument
-                fn doIt(): string
-                fn doIt2(): int
-            `,
+        @throws NotFound
+        @throws InvalidArgument
+        fn doIt(): string
+        fn doIt2(): int
+      `,
       {
         annotations: {
           "fn.doIt": [
@@ -370,12 +370,12 @@ describe(Parser, () => {
   test("handles descriptions inside structs", () => {
     expectParses(
       `
-                type Foo {
-                    @description foobar
-                    x: int
-                    y: string
-                }
-            `,
+        type Foo {
+          @description foobar
+          x: int
+          y: string
+        }
+      `,
       {
         annotations: {
           "type.Foo.x": [{ type: "description", value: "foobar" }],
@@ -395,15 +395,15 @@ describe(Parser, () => {
   test("handles rest annotations", () => {
     expectParses(
       `
-                @rest GET /foo
-                fn foo(): string
+        @rest GET /foo
+        fn foo(): string
 
-                @rest GET /users/{id}/name
-                fn name(id: string): string
+        @rest GET /users/{id}/name
+        fn name(id: string): string
 
-                @rest GET /users/count?{since}&{until}
-                fn userCount(since: date?, until: date?): uint
-            `,
+        @rest GET /users/count?{since}&{until}
+        fn userCount(since: date?, until: date?): uint
+      `,
       {
         annotations: {
           "fn.foo": [
@@ -472,9 +472,9 @@ describe(Parser, () => {
 
     expectParses(
       `
-                @rest GET /chats/{chatId}/messages?{since}&{until} [header x-token: {token}]
-                fn getMessages(token: base64, chatId: uuid, since: datetime?, until: datetime?): string[]
-            `,
+        @rest GET /chats/{chatId}/messages?{since}&{until} [header x-token: {token}]
+        fn getMessages(token: base64, chatId: uuid, since: datetime?, until: datetime?): string[]
+      `,
       {
         annotations: {
           "fn.getMessages": [
@@ -509,9 +509,9 @@ describe(Parser, () => {
 
     expectParses(
       `
-                @rest GET /posts [header user-agent: {userAgent}] [header accept-language: {lang}] [header x-token: {token}]
-                fn getPosts(userAgent: string, lang: string, token: base64): uuid
-            `,
+        @rest GET /posts [header user-agent: {userAgent}] [header accept-language: {lang}] [header x-token: {token}]
+        fn getPosts(userAgent: string, lang: string, token: base64): uuid
+      `,
       {
         annotations: {
           "fn.getPosts": [
@@ -549,17 +549,17 @@ describe(Parser, () => {
 
     expectParses(
       `
-                type NewUser {
-                    name: string
-                }
+        type NewUser {
+            name: string
+        }
 
-                type User {
-                    id: uuid
-                }
+        type User {
+            id: uuid
+        }
 
-                @rest POST /users [body {user}]
-                fn createNewUser(user: NewUser): User
-            `,
+        @rest POST /users [body {user}]
+        fn createNewUser(user: NewUser): User
+      `,
       {
         annotations: {
           "fn.createNewUser": [
@@ -598,15 +598,15 @@ describe(Parser, () => {
 
     expectParses(
       `
-                type Kind enum {
-                    first
-                    second
-                    third
-                }
+        type Kind enum {
+            first
+            second
+            third
+        }
 
-                @rest GET /things/{kind}
-                fn countThings(kind: Kind): uint
-                `,
+        @rest GET /things/{kind}
+        fn countThings(kind: Kind): uint
+      `,
       {
         annotations: {
           "fn.countThings": [
@@ -640,74 +640,99 @@ describe(Parser, () => {
 
     expectDoesntParse(
       `
-                @rest HEAD /foo
-                fn foo(): string
-            `,
+        @rest HEAD /foo
+        fn foo(): string
+      `,
       "Unsupported method 'HEAD'",
     );
 
     expectDoesntParse(
       `
-                @rest GET /foo/{id}
-                fn foo(): string
-            `,
+        @rest GET /foo/{id}
+        fn foo(): string
+      `,
       "Argument 'id' not found",
     );
 
     expectDoesntParse(
       `
-                @rest GET /foo?{id}
-                fn foo(): string
-            `,
+        @rest GET /foo?{id}
+        fn foo(): string
+      `,
       "Argument 'id' not found",
     );
 
     expectDoesntParse(
       `
-                @rest GET aaa
-                fn foo(): string
-            `,
+        @rest GET aaa
+        fn foo(): string
+      `,
       "Invalid path",
     );
 
     expectDoesntParse(
       `
-                @rest GET /aaa?oug
-                fn foo(): string
-            `,
+        @rest GET /aaa?oug
+        fn foo(): string
+      `,
       "Invalid querystring on path",
     );
 
     expectDoesntParse(
       `
-                @rest GET /aaa/{arg}
-                fn foo(arg: string?): string
-            `,
+        @rest GET /aaa/{arg}
+        fn foo(arg: string?): string
+      `,
       "path argument 'arg' can't be nullable",
     );
 
     expectDoesntParse(
       `
-                @rest GET /aaa/{arg}
-                fn foo(arg: string[]): string
-            `,
+        @rest GET /aaa/{arg}
+        fn foo(arg: string[]): string
+      `,
       "Argument 'arg' can't have type 'string[]' for rest annotation",
     );
 
     expectDoesntParse(
       `
-                @rest GET /aaa
-                fn foo(arg: string): string
-            `,
+        @rest GET /aaa
+        fn foo(arg: string): string
+      `,
       "is missing",
     );
 
     expectDoesntParse(
       `
-                @rest GET /aaa
-                fn foo(): void
-            `,
+        @rest GET /aaa
+        fn foo(): void
+      `,
       "GET rest endpoint must return something",
+    );
+  });
+
+  test("handles functions with @hidden", () => {
+    expectParses(
+      `
+        @hidden
+        fn doIt(foo: int, bar: float): string
+      `,
+      {
+        annotations: {
+          "fn.doIt": [{ type: "hidden", value: null }],
+        },
+        errors: ["Fatal"],
+        functionTable: {
+          doIt: {
+            args: {
+              bar: "float",
+              foo: "int",
+            },
+            ret: "string",
+          },
+        },
+        typeTable: {},
+      },
     );
   });
 });

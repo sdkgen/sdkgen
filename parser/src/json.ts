@@ -6,6 +6,7 @@ import {
   EnumValue,
   Field,
   FunctionOperation,
+  HiddenAnnotation,
   Operation,
   OptionalType,
   RestAnnotation,
@@ -96,6 +97,7 @@ export function astToJson(ast: AstRoot): AstJson {
       args,
       ret: op.returnType.name,
     };
+
     for (const ann of op.annotations) {
       const target = `fn.${op.prettyName}`;
 
@@ -122,6 +124,10 @@ export function astToJson(ast: AstRoot): AstJson {
             queryVariables: ann.queryVariables,
           },
         });
+      }
+
+      if (ann instanceof HiddenAnnotation) {
+        list.push({ type: "hidden", value: null });
       }
     }
   }
@@ -216,6 +222,8 @@ export function jsonToAst(json: AstJson): AstRoot {
         const { method, path, pathVariables, queryVariables, headers, bodyVariable } = annotationJson.value;
 
         op.annotations.push(new RestAnnotation(method, path, pathVariables, queryVariables, new Map(headers), bodyVariable));
+      } else if (annotationJson.type === "hidden") {
+        op.annotations.push(new HiddenAnnotation());
       }
     }
 

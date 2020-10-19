@@ -13,6 +13,7 @@ import {
   Field,
   FloatPrimitiveType,
   HexPrimitiveType,
+  HiddenAnnotation,
   IntPrimitiveType,
   MoneyPrimitiveType,
   Operation,
@@ -61,7 +62,7 @@ export class ValidateAnnotationsVisitor extends Visitor {
         if (annotation instanceof DescriptionAnnotation) {
           // Ok
         } else {
-          throw new SemanticError(`Cannot have this type of annotation at ${annotation.location}`);
+          throw new SemanticError(`Cannot have @${annotation.constructor.name.replace("Annotation", "").toLowerCase()} at ${annotation.location}`);
         }
       }
     } else if (node instanceof TypeDefinition) {
@@ -69,7 +70,7 @@ export class ValidateAnnotationsVisitor extends Visitor {
         if (annotation instanceof DescriptionAnnotation) {
           // Ok
         } else {
-          throw new SemanticError(`Cannot have this type of annotation at ${annotation.location}`);
+          throw new SemanticError(`Cannot have @${annotation.constructor.name.replace("Annotation", "").toLowerCase()} at ${annotation.location}`);
         }
       }
     } else if (node instanceof Field) {
@@ -77,7 +78,7 @@ export class ValidateAnnotationsVisitor extends Visitor {
         if (annotation instanceof DescriptionAnnotation) {
           // Ok
         } else {
-          throw new SemanticError(`Cannot have this type of annotation at ${annotation.location}`);
+          throw new SemanticError(`Cannot have @${annotation.constructor.name.replace("Annotation", "").toLowerCase()} at ${annotation.location}`);
         }
       }
     } else if (node instanceof Operation) {
@@ -122,8 +123,10 @@ export class ValidateAnnotationsVisitor extends Visitor {
           if (annotation.method === "GET" && node.returnType instanceof VoidPrimitiveType) {
             throw new SemanticError(`A GET rest endpoint must return something at ${annotation.location}`);
           }
+        } else if (annotation instanceof HiddenAnnotation) {
+          // Ok
         } else {
-          throw new SemanticError(`Cannot have this type of annotation at ${annotation.location}`);
+          throw new SemanticError(`Cannot have @${annotation.constructor.name.replace("Annotation", "").toLowerCase()} at ${annotation.location}`);
         }
       }
     }

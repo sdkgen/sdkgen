@@ -1,4 +1,4 @@
-import { AstRoot } from "@sdkgen/parser";
+import { AstRoot, HiddenAnnotation } from "@sdkgen/parser";
 import { generateClass, generateEnum, generateErrorClass, generateJsonAddRepresentation, generateKotlinTypeName, mangle } from "./helpers";
 
 export function generateAndroidClientSource(ast: AstRoot): string {
@@ -74,6 +74,7 @@ class ApiClient(
 
   code += `    private val sdkgenIOScope = CoroutineScope(IO)\n\n`;
   code += ast.operations
+    .filter(op => op.annotations.every(ann => !(ann instanceof HiddenAnnotation)))
     .map(op => {
       let opImpl = "";
       const args = op.args
