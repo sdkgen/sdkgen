@@ -61,7 +61,7 @@ encode(Map<String, Object> typeTable, String path, Object type, Object value) {
   if (type is EnumTypeDescription) {
     if (!type.enumValues.contains(value)) {
       throw SdkgenTypeException(
-          "Invalid Type at '$path', expected ${jsonEncode(type)}, got ${jsonEncode(value)}");
+          "Invalid Type at '$path', expected ${type.type}, got ${jsonEncode(value)}");
     }
     return type.stringValues[type.enumValues.indexOf(value)];
   } else if (type is StructTypeDescription) {
@@ -146,7 +146,7 @@ decode(Map<String, Object> typeTable, String path, Object type, Object value) {
   if (type is EnumTypeDescription) {
     if (!type.stringValues.contains(value)) {
       throw SdkgenTypeException(
-          "Invalid Type at '$path', expected ${jsonEncode(type)}, got ${jsonEncode(value)}");
+          "Invalid Type at '$path', expected ${type.type}, got ${jsonEncode(value)}");
     }
     return type.enumValues[type.stringValues.indexOf(value)];
   } else if (type is StructTypeDescription) {

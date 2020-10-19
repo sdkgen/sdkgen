@@ -75,6 +75,8 @@ jobs:
           channel: ${{ matrix.flutter-channel }}
       - run: flutter pub get
         working-directory: ./dart-runtime
+      - run: flutter test
+        working-directory: ./dart-runtime
       - run: if [ "${{ matrix.flutter-version }}" == "1.22.x" ]; then flutter analyze; fi
         working-directory: ./dart-runtime
       - run: if [ "${{ matrix.flutter-version }}" == "1.22.x" ]; then flutter format . --set-exit-if-changed; fi
