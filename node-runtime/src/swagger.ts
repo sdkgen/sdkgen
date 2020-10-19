@@ -31,7 +31,117 @@ import { SdkgenHttpServer } from "./http-server";
 
 const swaggerUiAssetPath = getSwaggerUiAssetPath();
 
-export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContextT>) {
+function objectFromEntries<T>(entries: Array<[string, T]>): { [key: string]: T } {
+  return Object.assign({}, ...Array.from(entries, ([k, v]) => ({ [k]: v })));
+}
+
+function typeToSchema(definitions: any, type: Type): any {
+  if (type instanceof EnumType) {
+    return {
+      enum: type.values.map(x => x.value),
+      type: "string",
+    };
+  } else if (type instanceof StructType) {
+    return {
+      properties: objectFromEntries(
+        type.fields.map(field => [
+          field.name,
+          {
+            description:
+              field.annotations
+                .filter(x => x instanceof DescriptionAnnotation)
+                .map(x => (x as DescriptionAnnotation).text)
+                .join(" ") || undefined,
+            ...typeToSchema(definitions, field.type),
+          },
+        ]),
+      ),
+      required: type.fields.filter(f => !(f.type instanceof OptionalType)).map(f => f.name),
+      type: "object",
+    };
+  } else if (
+    type instanceof StringPrimitiveType ||
+    type instanceof UuidPrimitiveType ||
+    type instanceof HexPrimitiveType ||
+    type instanceof HtmlPrimitiveType ||
+    type instanceof Base64PrimitiveType
+  ) {
+    return {
+      type: "string",
+    };
+  } else if (type instanceof UrlPrimitiveType) {
+    return {
+      format: "uri",
+      type: "string",
+    };
+  } else if (type instanceof DatePrimitiveType) {
+    return {
+      format: "date",
+      type: "string",
+    };
+  } else if (type instanceof DateTimePrimitiveType) {
+    return {
+      format: "date-time",
+      type: "string",
+    };
+  } else if (type instanceof CpfPrimitiveType) {
+    return {
+      type: "string",
+    };
+  } else if (type instanceof CnpjPrimitiveType) {
+    return {
+      type: "string",
+    };
+  } else if (type instanceof BoolPrimitiveType) {
+    return {
+      type: "boolean",
+    };
+  } else if (type instanceof BytesPrimitiveType) {
+    return {
+      format: "byte",
+      type: "string",
+    };
+  } else if (type instanceof IntPrimitiveType) {
+    return {
+      format: "int32",
+      type: "integer",
+    };
+  } else if (type instanceof UIntPrimitiveType) {
+    return {
+      format: "int32",
+      minimum: 0,
+      type: "integer",
+    };
+  } else if (type instanceof MoneyPrimitiveType) {
+    return {
+      format: "int64",
+      type: "integer",
+    };
+  } else if (type instanceof FloatPrimitiveType) {
+    return {
+      type: "number",
+    };
+  } else if (type instanceof OptionalType) {
+    return {
+      oneOf: [typeToSchema(definitions, type.base), { type: "null" }],
+    };
+  } else if (type instanceof ArrayType) {
+    return {
+      items: typeToSchema(definitions, type.base),
+      type: "array",
+    };
+  } else if (type instanceof TypeReference) {
+    if (!definitions[type.name]) {
+      definitions[type.name] = typeToSchema(definitions, type.type);
+    }
+
+    return { $ref: `#/definitions/${type.name}` };
+  }
+
+  throw new Error(`Unhandled type ${type.constructor.name}`);
+}
+
+export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContextT>): void {
   server.addHttpHandler("GET", "/swagger", (req, res) => {
     if (!server.introspection) {
       res.statusCode = 404;
@@ -146,46 +256,42 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
             }
 
             paths[ann.path][ann.method.toLowerCase()] = {
-              summary:
-                op.annotations
-                  .filter(x => x instanceof DescriptionAnnotation)
-                  .map(x => (x as DescriptionAnnotation).text)
-                  .join(" ") || undefined,
-              tags: ["REST Endpoints"],
               operationId: op.name,
               parameters: [
                 ...ann.pathVariables.map(name => ({
-                  name,
-                  location: "path",
+                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                   arg: op.args.find(arg => arg.name === name)!,
+                  location: "path",
+                  name,
                 })),
                 ...ann.queryVariables.map(name => ({
-                  name,
-                  location: "query",
+                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                   arg: op.args.find(arg => arg.name === name)!,
+                  location: "query",
+                  name,
                 })),
                 ...[...ann.headers.entries()].map(([header, name]) => ({
-                  name: header,
-                  location: "header",
+                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                   arg: op.args.find(arg => arg.name === name)!,
+                  location: "header",
+                  name: header,
                 })),
               ].map(({ name, location, arg }) => ({
-                name,
-                in: location,
-                required: !(arg.type instanceof OptionalType),
-                schema: typeToSchema(definitions, arg.type),
                 description:
                   arg.annotations
                     .filter(x => x instanceof DescriptionAnnotation)
                     .map(x => (x as DescriptionAnnotation).text)
                     .join(" ") || undefined,
+                in: location,
+                name,
+                required: !(arg.type instanceof OptionalType),
+                schema: typeToSchema(definitions, arg.type),
               })),
               requestBody: ann.bodyVariable
                 ? {
-                    required: !(op.args.find(arg => arg.name === ann.bodyVariable)!.type instanceof OptionalType),
                     content: {
                       ...(() => {
-                        const bodyType = op.args.find(arg => arg.name === ann.bodyVariable)!.type;
+                        const bodyType = op.args.find(arg => arg.name === ann.bodyVariable)?.type;
 
                         return bodyType instanceof BoolPrimitiveType ||
                           bodyType instanceof IntPrimitiveType ||
@@ -210,17 +316,21 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
                           : {};
                       })(),
                       "application/json": {
+                        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                         schema: typeToSchema(definitions, op.args.find(arg => arg.name === ann.bodyVariable)!.type),
                       },
                     },
+                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                    required: !(op.args.find(arg => arg.name === ann.bodyVariable)!.type instanceof OptionalType),
                   }
                 : undefined,
               responses: {
                 ...(op.returnType instanceof OptionalType || op.returnType instanceof VoidPrimitiveType
                   ? { [ann.method === "GET" ? "404" : "204"]: {} }
                   : {}),
-                ...(!(op.returnType instanceof VoidPrimitiveType)
-                  ? {
+                ...(op.returnType instanceof VoidPrimitiveType
+                  ? {}
+                  : {
                       200: {
                         content: {
                           ...(() => {
@@ -250,29 +360,34 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
                           },
                         },
                       },
-                    }
-                  : {}),
+                    }),
                 400: {
                   content: {
                     "application/json": {
                       schema: {
-                        type: "object",
-                        required: ["type", "message"],
                         properties: {
-                          type: {
-                            type: "string",
-                            enum: server.ast.errors,
-                          },
                           message: {
                             type: "string",
                           },
+                          type: {
+                            enum: server.ast.errors,
+                            type: "string",
+                          },
                         },
+                        required: ["type", "message"],
+                        type: "object",
                       },
                     },
                   },
                 },
                 500: {},
               },
+              summary:
+                op.annotations
+                  .filter(x => x instanceof DescriptionAnnotation)
+                  .map(x => (x as DescriptionAnnotation).text)
+                  .join(" ") || undefined,
+              tags: ["REST Endpoints"],
             };
           }
         }
@@ -280,13 +395,13 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
 
       res.write(
         JSON.stringify({
-          openapi: "3.0.3",
-          info: {},
-          schemes: ["https"],
           consumes: ["application/json"],
-          produces: ["application/json"],
-          paths,
           definitions,
+          info: {},
+          openapi: "3.0.3",
+          paths,
+          produces: ["application/json"],
+          schemes: ["https"],
         }),
       );
     } catch (error) {
@@ -296,114 +411,4 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
 
     res.end();
   });
-}
-
-function objectFromEntries<T>(entries: Array<[string, T]>): { [key: string]: T } {
-  return Object.assign({}, ...Array.from(entries, ([k, v]) => ({ [k]: v })));
-}
-
-function typeToSchema(definitions: any, type: Type): any {
-  if (type instanceof EnumType) {
-    return {
-      type: "string",
-      enum: type.values.map(x => x.value),
-    };
-  } else if (type instanceof StructType) {
-    return {
-      type: "object",
-      required: type.fields.filter(f => !(f.type instanceof OptionalType)).map(f => f.name),
-      properties: objectFromEntries(
-        type.fields.map(field => [
-          field.name,
-          {
-            description:
-              field.annotations
-                .filter(x => x instanceof DescriptionAnnotation)
-                .map(x => (x as DescriptionAnnotation).text)
-                .join(" ") || undefined,
-            ...typeToSchema(definitions, field.type),
-          },
-        ]),
-      ),
-    };
-  } else if (
-    type instanceof StringPrimitiveType ||
-    type instanceof UuidPrimitiveType ||
-    type instanceof HexPrimitiveType ||
-    type instanceof HtmlPrimitiveType ||
-    type instanceof Base64PrimitiveType
-  ) {
-    return {
-      type: "string",
-    };
-  } else if (type instanceof UrlPrimitiveType) {
-    return {
-      format: "uri",
-      type: "string",
-    };
-  } else if (type instanceof DatePrimitiveType) {
-    return {
-      format: "date",
-      type: "string",
-    };
-  } else if (type instanceof DateTimePrimitiveType) {
-    return {
-      format: "date-time",
-      type: "string",
-    };
-  } else if (type instanceof CpfPrimitiveType) {
-    return {
-      type: "string",
-    };
-  } else if (type instanceof CnpjPrimitiveType) {
-    return {
-      type: "string",
-    };
-  } else if (type instanceof BoolPrimitiveType) {
-    return {
-      type: "boolean",
-    };
-  } else if (type instanceof BytesPrimitiveType) {
-    return {
-      format: "byte",
-      type: "string",
-    };
-  } else if (type instanceof IntPrimitiveType) {
-    return {
-      type: "integer",
-      format: "int32",
-    };
-  } else if (type instanceof UIntPrimitiveType) {
-    return {
-      type: "integer",
-      format: "int32",
-      minimum: 0,
-    };
-  } else if (type instanceof MoneyPrimitiveType) {
-    return {
-      type: "integer",
-      format: "int64",
-    };
-  } else if (type instanceof FloatPrimitiveType) {
-    return {
-      type: "number",
-    };
-  } else if (type instanceof OptionalType) {
-    return {
-      oneOf: [typeToSchema(definitions, type.base), { type: "null" }],
-    };
-  } else if (type instanceof ArrayType) {
-    return {
-      type: "array",
-      items: typeToSchema(definitions, type.base),
-    };
-  } else if (type instanceof TypeReference) {
-    if (!definitions[type.name]) {
-      definitions[type.name] = typeToSchema(definitions, type.type);
-    }
-
-    return { $ref: `#/definitions/${type.name}` };
-  }
-
-  throw new Error(`Unhandled type ${type.constructor.name}`);
 }

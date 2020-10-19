@@ -12,7 +12,7 @@ import { ValidateAnnotationsVisitor } from "./10_validate_annotations";
 
 export class SemanticError extends Error {}
 
-export function analyse(root: AstRoot) {
+export function analyse(root: AstRoot): void {
   root.errors.push("Fatal");
   root.errors = [...new Set(root.errors)];
 

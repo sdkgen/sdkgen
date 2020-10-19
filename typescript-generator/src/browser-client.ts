@@ -1,9 +1,7 @@
 import { AstRoot, astToJson } from "@sdkgen/parser";
 import { generateTypescriptEnum, generateTypescriptErrorClass, generateTypescriptInterface, generateTypescriptTypeName } from "./helpers";
 
-interface Options {}
-
-export function generateBrowserClientSource(ast: AstRoot, options: Options) {
+export function generateBrowserClientSource(ast: AstRoot): string {
   let code = "";
 
   code += `import { SdkgenError, SdkgenHttpClient } from "@sdkgen/browser-runtime";
@@ -41,7 +39,7 @@ ${ast.operations
 
   code += `const errClasses = {\n${ast.errors.map(err => `    ${err}`).join(",\n")}\n};\n\n`;
 
-  code += `const astJson = ${JSON.stringify(astToJson(ast), null, 4).replace(/"(\w+)":/g, "$1:")};\n`;
+  code += `const astJson = ${JSON.stringify(astToJson(ast), null, 4).replace(/"(?<key>\w+)":/gu, "$<key>:")};\n`;
 
   return code;
 }

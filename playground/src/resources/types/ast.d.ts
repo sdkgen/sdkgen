@@ -1,10 +1,12 @@
+export type TypeDescription = string | string[] | { [name: string]: TypeDescription };
+
 export interface TypeTable {
   [name: string]: TypeDescription;
 }
 
-export type ArgsType = {
+export interface ArgsType {
   [arg: string]: TypeDescription;
-};
+}
 
 export interface FunctionTable {
   [name: string]: {
@@ -12,8 +14,6 @@ export interface FunctionTable {
     ret: TypeDescription;
   };
 }
-
-export type TypeDescription = string | string[] | { [name: string]: TypeDescription };
 
 interface AnnotationJson {
   type: string;

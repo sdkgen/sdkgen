@@ -16,12 +16,15 @@ interface ContentProps {
   model: requestModel;
 }
 
-export default observer(Content);
-
 function Content(props: ContentProps) {
   const { activeTab, args, setJsonArgs, model } = props;
 
-  const Content = componentSwitch<TabKeys>(activeTab, {
+  const content = componentSwitch<TabKeys>(activeTab, {
+    annotations: (
+      <div className={s.responseWrapper}>
+        <Annotations annotations={model.annotations} />
+      </div>
+    ),
     arguments: (
       <MonacoEditor
         height="250"
@@ -31,8 +34,8 @@ function Content(props: ContentProps) {
         options={{
           minimap: {
             enabled: false,
-            showSlider: "mouseover",
             renderCharacters: false,
+            showSlider: "mouseover",
           },
         }}
         onChange={v => {
@@ -44,21 +47,6 @@ function Content(props: ContentProps) {
         }}
       />
     ),
-    response: (
-      <div className={s.responseWrapper}>
-        <ReactJson src={model.response === undefined ? {} : { response: model.response }} name={false} />
-      </div>
-    ),
-    annotations: (
-      <div className={s.responseWrapper}>
-        <Annotations annotations={model.annotations} />
-      </div>
-    ),
-    error: (
-      <div className={s.responseWrapper}>
-        <Errors error={model.error} />
-      </div>
-    ),
     default: (
       <div className={s.responseWrapper}>
         <p>
@@ -67,7 +55,19 @@ function Content(props: ContentProps) {
         <p>... well, now you know.</p>
       </div>
     ),
+    error: (
+      <div className={s.responseWrapper}>
+        <Errors error={model.error} />
+      </div>
+    ),
+    response: (
+      <div className={s.responseWrapper}>
+        <ReactJson src={model.response === undefined ? {} : { response: model.response }} name={false} />
+      </div>
+    ),
   });
 
-  return <div className={s.content}>{Content}</div>;
+  return <div className={s.content}>{content}</div>;
 }
+
+export default observer(Content);

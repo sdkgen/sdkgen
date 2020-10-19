@@ -3,13 +3,18 @@ import { SemanticError } from "./analyser";
 import { Visitor } from "./visitor";
 
 export class ApplyStructSpreadsVisitor extends Visitor {
-  // Here we may visit the same struct multiple times
-  // We must make sure we only process each one once
+  /*
+   * Here we may visit the same struct multiple times
+   * We must make sure we only process each one once
+   */
   processed = new Set<StructType>();
 
-  visit(node: AstNode) {
+  visit(node: AstNode): void {
     if (node instanceof StructType) {
-      if (this.processed.has(node)) return;
+      if (this.processed.has(node)) {
+        return;
+      }
+
       this.processed.add(node);
     }
 
@@ -23,10 +28,11 @@ export class ApplyStructSpreadsVisitor extends Visitor {
           );
         }
 
-        this.visit(other); // recursion!
+        this.visit(other); // Recursion!
 
         for (const otherField of other.fields) {
           const existingIdx = node.fields.findIndex(f => f.name === otherField.name);
+
           if (existingIdx >= 0) {
             node.fields[existingIdx] = otherField;
           } else {

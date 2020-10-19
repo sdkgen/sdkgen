@@ -15,11 +15,10 @@ interface LinkInfo {
 }
 
 const links: LinkInfo[] = [
-  { to: "/playground", label: "Endpoints", icon: faClone },
-  { to: "/playground/configuration", label: "Configuration", icon: faCog },
+  { icon: faClone, label: "Endpoints", to: "/playground" },
+  { icon: faCog, label: "Configuration", to: "/playground/configuration" },
 ];
 
-export const MainHeader = observer(Header);
 function Header() {
   const { routerStore } = React.useContext(RootStore);
 
@@ -49,3 +48,5 @@ function Header() {
     </div>
   );
 }
+
+export const MainHeader = observer(Header);

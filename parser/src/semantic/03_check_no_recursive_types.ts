@@ -4,9 +4,10 @@ import { Visitor } from "./visitor";
 
 export class CheckNoRecursiveTypesVisitor extends Visitor {
   path: string[] = [];
+
   rootType: Type | undefined;
 
-  visit(node: AstNode) {
+  visit(node: AstNode): void {
     if (node instanceof TypeDefinition) {
       this.path = [node.name];
       this.rootType = node.type;
@@ -21,6 +22,7 @@ export class CheckNoRecursiveTypesVisitor extends Visitor {
       if (this.rootType === node.type) {
         throw new SemanticError(`Detected type recursion: ${this.path.join(".")} at ${node.location}`);
       }
+
       this.visit(node.type);
       super.visit(node);
     } else {

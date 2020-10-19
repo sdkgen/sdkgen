@@ -2,7 +2,7 @@ import { AstNode, EnumType, StructType } from "../ast";
 import { Visitor } from "./visitor";
 
 export class CollectStructAndEnumTypesVisitor extends Visitor {
-  visit(node: AstNode) {
+  visit(node: AstNode): void {
     super.visit(node);
 
     if (node instanceof StructType) {

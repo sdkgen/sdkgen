@@ -8,6 +8,6 @@ describe("Error", () => {
 
     expect(err1.message).toEqual("the error message");
     expect(err1.type).toEqual("TestError");
-    expect(JSON.parse(JSON.stringify(err1))).toEqual({ type: "TestError", message: "the error message" });
+    expect(JSON.parse(JSON.stringify(err1))).toEqual({ message: "the error message", type: "TestError" });
   });
 });

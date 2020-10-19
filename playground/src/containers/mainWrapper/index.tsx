@@ -3,7 +3,8 @@ import * as React from "react";
 import s from "./mainWrapper.scss";
 
 interface Props {}
-function MainWrapper(props: React.PropsWithChildren<Props>) {
+
+function MainWrapper(props: React.PropsWithChildren<Props>): JSX.Element {
   return (
     <div className={s.mainWrapper}>
       <div className={s.top}>

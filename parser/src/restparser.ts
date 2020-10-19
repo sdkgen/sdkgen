@@ -1,7 +1,48 @@
 import { parse as pathParse } from "path";
 import { RestAnnotation } from "./ast";
 
-export function parseRestAnnotation(text: string) {
+function scanHeaders(text: string) {
+  const headerRegex = /\[header (?<header>[\w-]+): \{(?<name>\w+)\}\]/gu;
+  const headers = new Map<string, string>();
+
+  let match: RegExpExecArray | null;
+
+  while ((match = headerRegex.exec(text)) !== null) {
+    if (match.groups?.header && match.groups?.name) {
+      headers.set(match.groups.header, match.groups.name);
+    }
+  }
+
+  return headers;
+}
+
+function scanBody(text: string) {
+  const bodyRegex = /\[body \{(?<name>\w+)\}\]/u;
+  const match = text.match(bodyRegex);
+
+  if (match && match.groups?.name) {
+    return match.groups.name;
+  }
+
+  return null;
+}
+
+function scanVariables(text: string) {
+  const variableRegex = /\{(?<name>\w+)\}/gu;
+  const variables: string[] = [];
+
+  let match: RegExpExecArray | null;
+
+  while ((match = variableRegex.exec(text)) !== null) {
+    if (match.groups?.name) {
+      variables.push(match.groups.name);
+    }
+  }
+
+  return variables;
+}
+
+export function parseRestAnnotation(text: string): RestAnnotation {
   const fragments = text.split(" ");
   const method = fragments[0].toUpperCase();
 
@@ -10,6 +51,7 @@ export function parseRestAnnotation(text: string) {
   }
 
   const parsedPath = pathParse(fragments[1]);
+
   if (parsedPath.root !== "/") {
     throw new Error(`Invalid path`);
   }
@@ -19,13 +61,17 @@ export function parseRestAnnotation(text: string) {
   }
 
   let queryVariables: string[] = [];
+
   if (parsedPath.base.includes("?")) {
     const [base, ...queryArray] = parsedPath.base.split("?");
+
     parsedPath.base = base;
     const query = queryArray.join("?");
-    if (!query.match(/^\{\w+\}(&\{\w+\})*$/)) {
+
+    if (!query.match(/^\{\w+\}(?:&\{\w+\})*$/u)) {
       throw new Error(`Invalid querystring on path`);
     }
+
     queryVariables = scanVariables(query);
   }
 
@@ -37,38 +83,4 @@ export function parseRestAnnotation(text: string) {
   const bodyVariable = scanBody(remaining);
 
   return new RestAnnotation(method, path, pathVariables, queryVariables, headers, bodyVariable);
-}
-
-function scanHeaders(text: string) {
-  const headerRegex = /\[header ([\w-]+): \{(\w+)\}\]/gu;
-  const headers = new Map<string, string>();
-
-  let match: RegExpExecArray | null;
-  while ((match = headerRegex.exec(text)) !== null) {
-    headers.set(match[1], match[2]);
-  }
-
-  return headers;
-}
-
-function scanBody(text: string) {
-  const bodyRegex = /\[body \{(\w+)\}\]/u;
-  const match = text.match(bodyRegex);
-  if (match) {
-    return match[1];
-  }
-
-  return null;
-}
-
-function scanVariables(text: string) {
-  const variableRegex = /\{(\w+)\}/gu;
-  const variables: string[] = [];
-
-  let match: RegExpExecArray | null;
-  while ((match = variableRegex.exec(text)) !== null) {
-    variables.push(match[1]);
-  }
-
-  return variables;
 }

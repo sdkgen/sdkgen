@@ -7,7 +7,7 @@ interface Props {
   onChange: (value: string) => void;
 }
 
-export function SearchInput(props: Props) {
+export function SearchInput(props: Props): JSX.Element {
   return (
     <div className={s.search}>
       <input type="text" className={s.searchTerm} placeholder="What are you looking for?" onChange={ev => props.onChange(ev.target.value)} />

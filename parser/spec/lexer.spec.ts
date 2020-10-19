@@ -24,6 +24,40 @@ import {
   TypeKeywordToken,
 } from "../src/token";
 
+function itLexes(source: string, expectedTokens: Token[]) {
+  test(`lexes ${JSON.stringify(source)} as [${expectedTokens.join(", ")}]`, () => {
+    const lexer = new Lexer(source);
+
+    let tokens: Token[] = [];
+
+    for (;;) {
+      const token = lexer.nextToken();
+
+      if (!token) {
+        break;
+      }
+
+      tokens.push(token);
+    }
+
+    tokens = tokens.map((token, i) => (expectedTokens[i] instanceof IdentifierToken ? token.maybeAsIdentifier() : token));
+
+    expect(tokens.join(", ")).toEqual(expectedTokens.join(", "));
+  });
+}
+
+function itDoesntLex(source: string, message: string) {
+  test(`doesn't lex ${JSON.stringify(source)}`, () => {
+    const lexer = new Lexer(source);
+
+    expect(() => {
+      while (lexer.nextToken()) {
+        //
+      }
+    }).toThrowError(message);
+  });
+}
+
 describe(Lexer, () => {
   itLexes("", []);
 
@@ -72,7 +106,7 @@ describe(Lexer, () => {
 
     itLexes(primitive, [new IdentifierToken(primitive)]);
 
-    itLexes(primitive + "a", [new IdentifierToken(primitive + "a")]);
+    itLexes(`${primitive}a`, [new IdentifierToken(`${primitive}a`)]);
   }
 
   itLexes("err", [new IdentifierToken("err")]);
@@ -211,29 +245,3 @@ describe(Lexer, () => {
 
   itLexes("@\\\n  cc   ", [new AnnotationToken("cc")]);
 });
-
-function itLexes(source: string, expectedTokens: Token[]) {
-  test(`lexes ${JSON.stringify(source)} as [${expectedTokens.join(", ")}]`, () => {
-    const lexer = new Lexer(source);
-
-    let tokens: Token[] = [];
-    let token: Token | null;
-    while ((token = lexer.nextToken())) {
-      tokens.push(token);
-    }
-
-    tokens = tokens.map((token, i) => (expectedTokens[i] instanceof IdentifierToken ? token.maybeAsIdentifier() : token));
-
-    expect(tokens.join(", ")).toEqual(expectedTokens.join(", "));
-  });
-}
-
-function itDoesntLex(source: string, message: string) {
-  test(`doesn't lex ${JSON.stringify(source)}`, () => {
-    const lexer = new Lexer(source);
-
-    expect(() => {
-      while (lexer.nextToken()) {}
-    }).toThrowError(message);
-  });
-}

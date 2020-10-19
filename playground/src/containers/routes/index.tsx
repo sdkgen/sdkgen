@@ -14,9 +14,9 @@ const asyncOptions: Options<any> = {
   fallback: <PageLoading />,
 };
 
-const NotFound = loadable(() => import("pages/notfound"), asyncOptions);
-const Home = loadable(() => import("pages/home"), asyncOptions);
-const Configuration = loadable(() => import("pages/condiguration"), asyncOptions);
+const NotFound = loadable(async () => import("pages/notfound"), asyncOptions);
+const Home = loadable(async () => import("pages/home"), asyncOptions);
+const Configuration = loadable(async () => import("pages/condiguration"), asyncOptions);
 
 export const Routes = observer(() => {
   return (
