@@ -11,7 +11,6 @@ export function setupServiceWorker(configEnvs: ConfigEnvs): void {
 
   runtime.install({
     onUpdateReady: () => runtime.applyUpdate(),
-    // Tslint:disable-next-line: deprecation
     onUpdated: () => window.location.reload(true),
   });
 
