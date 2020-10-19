@@ -32,7 +32,7 @@ export function generateEnum(type: EnumType): string {
   return `enum ${type.name} {\n  ${type.values.map(x => x.value).join(",\n  ")}\n}\n`;
 }
 
-// /Generate the class constructor with the tag [@required] for non nullable types
+// Generate the class constructor with the tag [@required] for non nullable types
 function generateConstructor(type: StructType): string {
   const doubleSpace = "  ";
   const fourSpaces = "    ";
