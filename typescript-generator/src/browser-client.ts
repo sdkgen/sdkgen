@@ -1,4 +1,4 @@
-import { AstRoot, astToJson } from "@sdkgen/parser";
+import { AstRoot, astToJson, HiddenAnnotation } from "@sdkgen/parser";
 import { generateTypescriptEnum, generateTypescriptErrorClass, generateTypescriptInterface, generateTypescriptTypeName } from "./helpers";
 
 export function generateBrowserClientSource(ast: AstRoot): string {
@@ -28,6 +28,7 @@ export function generateBrowserClientSource(ast: AstRoot): string {
         super(baseUrl, astJson, errClasses);
     }
 ${ast.operations
+  .filter(op => op.annotations.every(ann => !(ann instanceof HiddenAnnotation)))
   .map(
     op => `
     ${op.prettyName}(args${op.args.length === 0 ? "?" : ""}: {${op.args

@@ -1,4 +1,4 @@
-import { AstRoot, VoidPrimitiveType } from "@sdkgen/parser";
+import { AstRoot, HiddenAnnotation, VoidPrimitiveType } from "@sdkgen/parser";
 import { cast, generateClass, generateEnum, generateErrorClass, generateTypeName } from "./helpers";
 
 export function generateDartClientSource(ast: AstRoot): string {
@@ -28,6 +28,7 @@ import 'package:sdkgen_runtime/http_client.dart';
   code += `class ApiClient extends SdkgenHttpClient {
   ApiClient(String baseUrl, [BuildContext context]) : super(baseUrl, context, _typeTable, _fnTable, _errTable);
 ${ast.operations
+  .filter(op => op.annotations.every(ann => !(ann instanceof HiddenAnnotation)))
   .map(
     op => `
   ${op.returnType instanceof VoidPrimitiveType ? "Future<void> " : `Future<${generateTypeName(op.returnType)}> `}${op.prettyName}(${
