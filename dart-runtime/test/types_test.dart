@@ -19,10 +19,28 @@ void main() {
   test('Handle int', () {
     expect(encode(new Map(), "", "int", 23), 23);
     expect(encode(new Map(), "", "int", -266), -266);
+    expect(decode(new Map(), "", "int", 23), 23);
+    expect(decode(new Map(), "", "int", -266), -266);
 
-    // See types.dart at simpleEncodeDecode()
-    // expect(() => encode(new Map(), "", "int", "123"),
-    //     throwsA(isA<SdkgenTypeException>()));
+    expect(() => encode(new Map(), "", "int", "123"),
+        throwsA(isA<SdkgenTypeException>()));
+    expect(() => decode(new Map(), "", "int", "123"),
+        throwsA(isA<SdkgenTypeException>()));
+  });
+
+  test('Handle uint', () {
+    expect(encode(new Map(), "", "uint", 23), 23);
+    expect(decode(new Map(), "", "uint", 23), 23);
+
+    expect(() => encode(new Map(), "", "uint", "123"),
+        throwsA(isA<SdkgenTypeException>()));
+    expect(() => decode(new Map(), "", "uint", "123"),
+        throwsA(isA<SdkgenTypeException>()));
+
+    expect(() => encode(new Map(), "", "uint", -123),
+        throwsA(isA<SdkgenTypeException>()));
+    expect(() => decode(new Map(), "", "uint", -123),
+        throwsA(isA<SdkgenTypeException>()));
   });
 
   test('Handle bigint', () {
@@ -63,6 +81,9 @@ void main() {
         TestStruct(hello: "hi"));
     expect(decode(typeTable, "", "TestStruct", {"hello": "haa", "stuff": 12}),
         TestStruct(hello: "haa", stuff: 12));
+
+    expect(() => decode(typeTable, "", "TestStruct", {"stuff": 12}),
+        throwsA(isA<SdkgenTypeException>()));
   });
 
   test('Handle enum', () {
