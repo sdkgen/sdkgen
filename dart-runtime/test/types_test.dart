@@ -1,7 +1,19 @@
+import 'package:equatable/equatable.dart';
+import 'package:meta/meta.dart';
 import 'package:sdkgen_runtime/types.dart';
 import 'package:test/test.dart';
 
 enum TestEnum { first, second, third }
+
+class TestStruct extends Equatable {
+  final String hello;
+  final int stuff;
+
+  TestStruct({@required this.hello, this.stuff});
+
+  @override
+  List<Object> get props => [hello, stuff];
+}
 
 void main() {
   test('Handle int', () {
@@ -25,6 +37,32 @@ void main() {
         throwsA(isA<SdkgenTypeException>()));
     expect(() => encode(new Map(), "", "bigint", "aaa"),
         throwsA(isA<SdkgenTypeException>()));
+  });
+
+  test('Handle object', () {
+    var typeTable = new Map<String, Object>();
+    typeTable["TestStruct"] = new StructTypeDescription(
+        TestStruct,
+        {"hello": "string", "stuff": "int?"},
+        (Map fields) => TestStruct(
+            hello: fields["hello"] as String, stuff: fields["stuff"] as int),
+        (TestStruct obj) => ({"hello": obj.hello, "stuff": obj.stuff}));
+
+    expect(encode(typeTable, "", "TestStruct", TestStruct(hello: "hi")),
+        {"hello": "hi", "stuff": null});
+    expect(
+        encode(
+            typeTable, "", "TestStruct", TestStruct(hello: "haa", stuff: 12)),
+        {"hello": "haa", "stuff": 12});
+
+    expect(decode(typeTable, "", "TestStruct", {"hello": "hi", "stuff": null}),
+        TestStruct(hello: "hi"));
+    expect(decode(typeTable, "", "TestStruct", {"hello": "hi"}),
+        TestStruct(hello: "hi"));
+    expect(decode(typeTable, "", "TestStruct", {"hello": "hi", "another": 45}),
+        TestStruct(hello: "hi"));
+    expect(decode(typeTable, "", "TestStruct", {"hello": "haa", "stuff": 12}),
+        TestStruct(hello: "haa", stuff: 12));
   });
 
   test('Handle enum', () {
