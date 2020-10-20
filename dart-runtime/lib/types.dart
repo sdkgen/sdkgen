@@ -155,9 +155,9 @@ decode(Map<String, Object> typeTable, String path, Object type, Object value) {
           "Invalid Type at '$path', expected ${type.type}, got ${jsonEncode(value)}");
     }
     var resultMap = Map();
-    (value as Map).forEach((fieldName, fieldValue) {
-      resultMap[fieldName] = decode(
-          typeTable, "$path.$fieldName", type.fields[fieldName], fieldValue);
+    type.fields.keys.forEach((fieldName) {
+      resultMap[fieldName] = decode(typeTable, "$path.$fieldName",
+          type.fields[fieldName], (value as Map)[fieldName]);
     });
     return Function.apply(type.createFromFields, [resultMap]);
   } else if (type is String) {
