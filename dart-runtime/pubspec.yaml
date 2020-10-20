@@ -14,11 +14,11 @@ dependencies:
   http: ^0.12.2
   package_info: ^0.4.3
   shared_preferences: ^0.5.12+2
-  meta: ^1.2.3
+  meta: ">=1.0.0 <2.0.0"
   flutter:
     sdk: flutter
 
 dev_dependencies:
-  test: ">=1.0.0"
+  test: ">=1.0.0 <2.0.0"
   flutter_test:
     sdk: flutter
