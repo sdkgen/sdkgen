@@ -246,7 +246,7 @@ describe("Rest API", () => {
       data: `{"val":0}`,
       method: "POST",
       path: "/obj",
-      result: `{"message":"Error: Value is zero ~ spec error","type":"Fatal"}`,
+      result: `{"message":"Value is zero ~ spec error","type":"Fatal"}`,
       resultHeaders: {
         "content-type": "application/json",
       },
