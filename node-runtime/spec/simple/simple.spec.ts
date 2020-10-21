@@ -27,6 +27,10 @@ api.fn.identity = async (ctx: Context & { aaa: boolean }, { types }: { types: an
   return types;
 };
 
+api.fn.throwsError = async (ctx: Context) => {
+  throw api.err.SomeError("Some message");
+};
+
 // ExecSync(`../../cubos/sdkgen/sdkgen ${__dirname + "/api.sdkgen"} -o ${__dirname + "/legacyNodeClient.ts"} -t typescript_nodeclient`);
 const { ApiClient: NodeLegacyApiClient } = require(`${__dirname}/legacyNodeClient.ts`);
 const nodeLegacyClient = new NodeLegacyApiClient("http://localhost:8000");
@@ -98,5 +102,12 @@ describe("Simple API", () => {
     };
 
     expect(await nodeClient.identity(null, { types })).toEqual(types);
+  });
+
+  test("Errors are passed correctly", async () => {
+    await expect(nodeClient.throwsError(null, {})).rejects.toMatchObject({
+      message: "Some message",
+      type: "SomeError",
+    });
   });
 });

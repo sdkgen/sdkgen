@@ -887,7 +887,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
 
   private makeResponseError(err: any): { message: string; type: string } {
     return {
-      message: err.message || err instanceof Error ? err.toString() : typeof err === "object" ? JSON.stringify(err) : `${err}`,
+      message: err.message || (err instanceof Error ? err.toString() : typeof err === "object" ? JSON.stringify(err) : `${err}`),
       type: err.type || "Fatal",
     };
   }
