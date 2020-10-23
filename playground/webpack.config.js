@@ -187,8 +187,8 @@ module.exports = {
   plugins: [
     new ForkTsCheckerWebpackPlugin({
       eslint: {
-        files: "**/*.{ts,tsx}"
-      }
+        files: "**/*.{ts,tsx}",
+      },
     }),
     new webpack.ExtendedAPIPlugin(),
     new webpack.DefinePlugin({
