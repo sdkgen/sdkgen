@@ -186,8 +186,9 @@ module.exports = {
 
   plugins: [
     new ForkTsCheckerWebpackPlugin({
-      tsconfig: resolver("tsconfig.json"),
-      tslint: resolver("tslint.json"),
+      eslint: {
+        files: "**/*.{ts,tsx}",
+      },
     }),
     new webpack.ExtendedAPIPlugin(),
     new webpack.DefinePlugin({
