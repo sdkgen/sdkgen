@@ -1,0 +1,17 @@
+site_name: sdkgen
+site_url: https://sdkgen.github.io
+repo_url: https://github.com/sdkgen/sdkgen
+plugins:
+  - search:
+      lang: [pt]
+theme:
+  language: pt
+  name: material
+  features:
+    - navigation.instant
+    - toc.autohide
+  palette:
+    primary: deep purple
+markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.superfences
