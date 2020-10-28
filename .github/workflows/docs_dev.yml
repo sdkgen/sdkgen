@@ -1,0 +1,26 @@
+name: docs_pr
+on:
+  push:
+    branches:
+      - master
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+      - run: pip install mkdocs-material
+      - run: sed -i -e "s/sdkgen.github.io/sdkgen.github.io\/dev/g" mkdocs.yml
+      - run: mkdocs build
+      - run: git clone --depth 1 -b master https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/sdkgen/sdkgen.github.io.git
+      - run: rm -rf sdkgen.github.io/dev
+      - run: mv site sdkgen.github.io/dev
+      - run: |
+          cd sdkgen.github.io &&
+          git config --global user.name "$GITHUB_ACTOR"
+          git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git add . &&
+          git commit -m "deploy dev" &&
+          git push

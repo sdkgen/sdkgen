@@ -12,6 +12,16 @@ theme:
     - toc.autohide
   palette:
     primary: deep purple
+  logo: logo.png
+  favicon: logo.png
 markdown_extensions:
   - pymdownx.highlight
   - pymdownx.superfences
+extra:
+  social:
+    - icon: fontawesome/brands/telegram
+      link: https://t.me/sdkgen
+      name: Telegram
+    - icon: fontawesome/brands/github
+      link: https://github.com/sdkgen/sdkgen
+      name: GitHub
