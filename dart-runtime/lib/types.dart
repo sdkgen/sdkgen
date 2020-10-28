@@ -3,6 +3,7 @@ import 'dart:convert';
 class SdkgenTypeException implements Exception {
   String cause;
   SdkgenTypeException(this.cause);
+  String toString() => 'SdkgenTypeException: $cause';
 }
 
 class StructTypeDescription {
