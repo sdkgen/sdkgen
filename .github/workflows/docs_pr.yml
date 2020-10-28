@@ -20,5 +20,7 @@ jobs:
           git config --global user.name "$GITHUB_ACTOR"
           git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
           git add . &&
-          git commit -m "deploy pr/$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")" &&
-          git push
+          if git diff --cached --quiet; then
+            git commit -m "deploy pr/$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")" &&
+            git push;
+          fi
