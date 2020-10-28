@@ -108,7 +108,7 @@ simpleEncodeDecode(
       }
       return value;
     case "float":
-      if (!(value is double)) {
+      if (!(value is double) && !(value is int)) {
         throw SdkgenTypeException(
             "Invalid Type at '$path', expected $type, got ${jsonEncode(value)}");
       }
