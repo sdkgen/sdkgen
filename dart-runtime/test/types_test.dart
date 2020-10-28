@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:equatable/equatable.dart';
 import 'package:meta/meta.dart';
 import 'package:sdkgen_runtime/types.dart';
@@ -18,8 +20,10 @@ class TestStruct extends Equatable {
 void main() {
   test('Handle int', () {
     expect(encode(new Map(), "", "int", 23), 23);
+    expect(encode(new Map(), "", "int", 0), 0);
     expect(encode(new Map(), "", "int", -266), -266);
     expect(decode(new Map(), "", "int", 23), 23);
+    expect(decode(new Map(), "", "int", 0), 0);
     expect(decode(new Map(), "", "int", -266), -266);
 
     expect(() => encode(new Map(), "", "int", "123"),
@@ -29,8 +33,12 @@ void main() {
   });
 
   test('Handle uint', () {
+    expect(encode(new Map(), "", "uint", 0), 0);
+    expect(decode(new Map(), "", "uint", 0), 0);
     expect(encode(new Map(), "", "uint", 23), 23);
     expect(decode(new Map(), "", "uint", 23), 23);
+
+    expect(decode(new Map(), "", "uint", jsonDecode("23")), 23);
 
     expect(() => encode(new Map(), "", "uint", "123"),
         throwsA(isA<SdkgenTypeException>()));
@@ -40,6 +48,24 @@ void main() {
     expect(() => encode(new Map(), "", "uint", -123),
         throwsA(isA<SdkgenTypeException>()));
     expect(() => decode(new Map(), "", "uint", -123),
+        throwsA(isA<SdkgenTypeException>()));
+  });
+
+  test('Handle float', () {
+    expect(encode(new Map(), "", "float", 0), 0);
+    expect(encode(new Map(), "", "float", 23), 23);
+    expect(encode(new Map(), "", "float", -266), -266);
+    expect(encode(new Map(), "", "float", -1.5), -1.5);
+    expect(decode(new Map(), "", "float", 0), 0);
+    expect(decode(new Map(), "", "float", 23), 23);
+    expect(decode(new Map(), "", "float", -266), -266);
+    expect(decode(new Map(), "", "float", -1.5), -1.5);
+
+    expect(decode(new Map(), "", "float", jsonDecode("23.2")), 23.2);
+
+    expect(() => encode(new Map(), "", "float", "123"),
+        throwsA(isA<SdkgenTypeException>()));
+    expect(() => decode(new Map(), "", "float", "123"),
         throwsA(isA<SdkgenTypeException>()));
   });
 
