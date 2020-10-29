@@ -16,11 +16,11 @@ jobs:
       - run: rm -rf sdkgen.github.io/pr/$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
       - run: mv site sdkgen.github.io/pr/$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")
       - run: |
-          cd sdkgen.github.io &&
+          cd sdkgen.github.io
           git config --global user.name "$GITHUB_ACTOR"
           git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
-          git add . &&
-          if git diff --cached --quiet; then
-            git commit -m "deploy pr/$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")" &&
+          git add .
+          if ! git diff --cached --quiet; then
+            git commit -m "deploy pr/$(jq --raw-output .pull_request.number "$GITHUB_EVENT_PATH")"
             git push;
           fi

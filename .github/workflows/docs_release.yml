@@ -17,11 +17,11 @@ jobs:
       - run: cd sdkgen.github.io && rm -rf $(ls | grep -vE "^(pr|dev)$")
       - run: mv site/* sdkgen.github.io/
       - run: |
-          cd sdkgen.github.io &&
+          cd sdkgen.github.io
           git config --global user.name "$GITHUB_ACTOR"
           git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
-          git add . &&
-          if git diff --cached --quiet; then
-            git commit -m "deploy release" &&
+          git add .
+          if ! git diff --cached --quiet; then
+            git commit -m "deploy release"
             git push;
           fi
