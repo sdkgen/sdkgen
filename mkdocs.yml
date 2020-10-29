@@ -25,3 +25,7 @@ extra:
     - icon: fontawesome/brands/github
       link: https://github.com/sdkgen/sdkgen
       name: GitHub
+nav:
+  - index.md
+  - primeiro-projeto.md
+  - descrevendo-api.md
