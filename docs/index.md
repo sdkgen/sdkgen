@@ -28,4 +28,4 @@ fn logout()
 fn me(): User
 ```
 
-Alguns tipos primitivos já estão inclusos (como `string` e `uuid`), mas você pode definir tipos adicionais como `User` acima. Há suporte para listas e opcionais também. Por fim funções são definidas recebendo valores como argumentos e opcionalmente retornando dados. A descrição segue o formato de RPC (Remote Procedure Call) em que os clientes da API chamam essas funções, recebendo as respostas de forma assincrona. No servidor o corpo dessas funções deve ser implementado. Todos os dados trafegados são validados nas duas pontas para garantir corretude.
+Alguns tipos primitivos já estão inclusos (como `string` e `uuid`), mas você pode definir tipos adicionais como `User` acima. Há suporte para listas e opcionais também. Por fim funções são definidas recebendo valores como argumentos e opcionalmente retornando dados. A descrição segue o formato de RPC (Remote Procedure Call) em que os clientes da API chamam essas funções, recebendo as respostas de forma assíncrona. No servidor o corpo dessas funções deve ser implementado. Todos os dados trafegados são validados nas duas pontas para garantir corretude.

@@ -17,11 +17,11 @@ O sdkgen possui alguns tipos primitivos, com diferentes regras e característica
 | `uint`     | Um número inteiro não negativo, no intervalo de 0 até 4294967295.                                                                                                                                                                                             |
 | `bigint`   | Um número inteiro sem limite de precisão. Na maioria das plataformas este tipo é mais custoso.                                                                                                                                                                |
 | `float`    | Um número de ponto flutuante de 64 bits, similar ao `double` do C.                                                                                                                                                                                            |
-| `money`    | Um número inteiro com precisão extendida, mas performático. Está no intervalo de -9007199254740991 a 9007199254740991. Útil para operações financeiras                                                                                                        |
+| `money`    | Um número inteiro com precisão estendida, mas performático. Está no intervalo de -9007199254740991 a 9007199254740991. Útil para operações financeiras                                                                                                        |
 | `bool`     | Ou `true` ou `false`.                                                                                                                                                                                                                                         |
 | `json`     | Um valor JSON qualquer, incluindo objetos, arrays, strings, números e boleanos, em qualquer profundidade. Note que embora `null` possa aparecer dentro de um objeto ou array, o valor deste campo não pode ser `null` diretamente. Para isso utilize `json?`. |
 | `date`     | Representa conceitualmente uma data do calendário Gregoriano. Essa mesma data pode representar diferentes momento no tempo a depender da timezone. Para especificar um ponto no tempo utilize `datetime`.                                                     |
-| `datetime` | Representa um instante no tempo com precisão de milisegundos. Este instante será sempre traduzido para a time zone local do recebedor da mensagem.                                                                                                            |
+| `datetime` | Representa um instante no tempo com precisão de milissegundos. Este instante será sempre traduzido para o fuso horário local do recebedor da mensagem.                                                                                                        |
 | `bytes`    | Uma sequencia arbitrária de bytes de qualquer comprimento. Pode ser utilizado para tráfego de dados binários.                                                                                                                                                 |
 | `base64`   | Similar a uma `string`, mas necessariamente com uma codificação Base 64 válida.                                                                                                                                                                               |
 | `url`      | Similar a uma `string`, mas contendo uma URL válida.                                                                                                                                                                                                          |
@@ -54,7 +54,7 @@ Objetos compostos podem ser construídos, similar a classes, interfaces ou estru
 }
 ```
 
-Os campos podem vir em qualquer ordem desde de que não haja repetição. Qualquer tipo é válido em um campo, incluindo optionais, listas ou outros objetos. Por exemplo:
+Os campos podem vir em qualquer ordem desde de que não haja repetição. Qualquer tipo é válido em um campo, incluindo opcionais, listas ou outros objetos. Por exemplo:
 
 ```
 {
@@ -136,7 +136,7 @@ type User {
 }
 ```
 
-Dessa maneira tipos podem ser combinados e utilizados multiplas vezes sem repetição. Um mesmo nome pode ser declarado mais de uma vez, desde que todas as declarações sejam idênticas. A ordem das declarações não tem importância (a declaração do tipo pode aparecer depois do seu uso). Tipos, no entanto, não podem ser recursivos.
+Dessa maneira tipos podem ser combinados e utilizados múltiplas vezes sem repetição. Um mesmo nome pode ser declarado mais de uma vez, desde que todas as declarações sejam idênticas. A ordem das declarações não tem importância (a declaração do tipo pode aparecer depois do seu uso). Tipos, no entanto, não podem ser recursivos.
 
 ### Funções
 
@@ -163,7 +163,7 @@ error NotFound
 
 A implementação do servidor poderá lançar esses error ao longo da execução e estes serão transmitidos ao cliente junto a uma mensagem de texto livre, de forma que o cliente possa tratar.
 
-Toda API sdkgen possui um erro implicito de nome `Fatal`. Qualquer erro que seja lançado no servidor que não seja um dos erros descritos no contrato da API será convertido em um erro de tipo `Fatal` antes de ser encaminhado ao cliente. Idealmente uma API nunca deve deixar escapar um erro `Fatal`.
+Toda API sdkgen possui um erro implícito de nome `Fatal`. Qualquer erro que seja lançado no servidor que não seja um dos erros descritos no contrato da API será convertido em um erro de tipo `Fatal` antes de ser encaminhado ao cliente. Idealmente uma API nunca deve deixar escapar um erro `Fatal`.
 
 ### Importando outros arquivos
 
@@ -173,7 +173,64 @@ Conforme uma API se torna maior e mais complexa passa a ser interessante dividir
 import "../user"
 ```
 
-O significado desta linha é buscar um arquivo chamado `../name.sdkgen` a partir da pasta atual. O `..` neste caso significa "a pasta acima da pasta atual". Qualquer caminho relativo ao arquivo atual pode ser passado e a extenção do arquivo ( `.sdkgen`) não deve ser mencionada. O comportamento é diretamente equivalente a copiar o conteúdo do arquivo e colar dentro do arquivo atual, na posição do import. Cuidado para não incluir o mesmo arquivo mais de uma vez.
+O significado desta linha é buscar um arquivo chamado `../name.sdkgen` a partir da pasta atual. O `..` neste caso significa "a pasta acima da pasta atual". Qualquer caminho relativo ao arquivo atual pode ser passado e a extensão do arquivo ( `.sdkgen`) não deve ser mencionada. O comportamento é diretamente equivalente a copiar o conteúdo do arquivo e colar dentro do arquivo atual, na posição do import. Cuidado para não incluir o mesmo arquivo mais de uma vez.
+
+## Composição de tipos
+
+Tipos podem ser criados a partir de outros tipos já existentes. Atualmente o sdkgen suporta apenas um operador neste sentido, o spread.
+
+### Spreads
+
+Ao expressar um tipo composto (estrutura com um ou mais campos), você pode copiar os campos de outro tipo já existente no local. Para isso utilize `...NomeDoTipo` dentro da definição de uma estrutura, junto com os demais campos. Por exemplo:
+
+```
+type BasicUser {
+  id: uuid
+  name: string
+}
+
+type User {
+  email: string
+  ...BasicUser
+  friends: BasicUser[]
+}
+```
+
+Neste exemplo o tipo `User` terá 4 campos: `email`, `id`, `name` e `friends`. O operador `...` fará papel de copiar os campos de `BasicUser` para `User`. É exatamente equivalente a escrever:
+
+```
+type BasicUser {
+  id: uuid
+  name: string
+}
+
+type User {
+  email: string
+  id: uuid
+  name: string
+  friends: BasicUser[]
+}
+```
+
+Um tipo pode conter múltiplos spreads. Caso um campo exista tanto no tipo atual quanto vindo do spread, o campo vindo do spread será utilizado. Caso um mesmo campo apareça em mais de um spread, o último na ordem em que foi escrito apareça. Note que isso significa que um spread sempre substitui o campo do tipo, em caso de conflito. Exemplo:
+
+```
+type A { foo: int }
+type B { foo: string }
+type C { bar: int }
+
+type Test1 {
+  ...B
+  ...A
+}
+
+type Test2 {
+  ...C
+  bar: string
+}
+```
+
+Neste exemplo `Test1` terá um campo `foo` de tipo `int`, já que `...A` aparece por último. `Test2`, por sua vez, terá um campo `bar` de tipo `int`, já que spreads sempre tem prioridade a campos locais.
 
 ## Exemplo final
 
