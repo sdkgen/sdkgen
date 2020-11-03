@@ -1,6 +1,6 @@
 # Conhecendo o sdkgen
 
-O **sdkgen** é uma ferramenta voltada para desenhar e implementar API's ricas recursos, mas com o mínimo de esforço para o desenvolvedor. O fluxo de trabalho envolve descrever os endpoints e tipos da API em uma linguagem também chamada "sdkgen". Com essas descrições é possível gerar código para utilizar como servidor ou como cliente desta API, ambos os lados provendo garantias fortes de corretude dos dados trafegados.
+O **sdkgen** é uma ferramenta voltada para desenhar e implementar API's ricas em recursos, mas com o mínimo de esforço para o desenvolvedor. O fluxo de trabalho envolve descrever os endpoints e tipos da API em uma linguagem também chamada _sdkgen_. Com essas descrições é possível gerar código para utilizar como servidor ou como cliente desta API, ambos os lados provendo garantias fortes de corretude dos dados trafegados.
 
 ## Recursos
 
@@ -18,9 +18,9 @@ A linguagem do sdkgen permite descrever o contrato da sua API, por exemplo:
 
 ```
 type User {
-    id: uuid
-    email: string
-    name: string
+  id: uuid
+  email: string
+  name: string
 }
 
 fn login(email: string, password: string): User

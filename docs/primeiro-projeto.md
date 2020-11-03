@@ -15,13 +15,13 @@ O próximo passo será criar um arquivo de descrição da API. Nele você irá e
 
 ```
 type Post {
-    id: uuid
-    title: string
-    body: string
-    createdAt: datetime
-    author: {
-        name: string
-    }
+  id: uuid
+  title: string
+  body: string
+  createdAt: datetime
+  author: {
+    name: string
+  }
 }
 
 fn getPost(id: uuid): Post?

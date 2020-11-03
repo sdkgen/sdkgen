@@ -22,12 +22,12 @@ O sdkgen possui alguns tipos primitivos, com diferentes regras e característica
 | `json`     | Um valor JSON qualquer, incluindo objetos, arrays, strings, números e boleanos, em qualquer profundidade. Note que embora `null` possa aparecer dentro de um objeto ou array, o valor deste campo não pode ser `null` diretamente. Para isso utilize `json?`. |
 | `date`     | Representa conceitualmente uma data do calendário Gregoriano. Essa mesma data pode representar diferentes momento no tempo a depender da timezone. Para especificar um ponto no tempo utilize `datetime`.                                                     |
 | `datetime` | Representa um instante no tempo com precisão de milissegundos. Este instante será sempre traduzido para o fuso horário local do recebedor da mensagem.                                                                                                        |
-| `bytes`    | Uma sequencia arbitrária de bytes de qualquer comprimento. Pode ser utilizado para tráfego de dados binários.                                                                                                                                                 |
+| `bytes`    | Uma sequência arbitrária de bytes de qualquer comprimento. Pode ser utilizado para tráfego de dados binários.                                                                                                                                                 |
 | `base64`   | Similar a uma `string`, mas necessariamente com uma codificação Base 64 válida.                                                                                                                                                                               |
 | `url`      | Similar a uma `string`, mas contendo uma URL válida.                                                                                                                                                                                                          |
 | `hex`      | Similar a uma `string`, mas contendo uma quantidade par de caracteres hexadecimais, útil para representar bytes.                                                                                                                                              |
 | `uuid`     | Similar a uma `string`, mas contendo um UUID válido.                                                                                                                                                                                                          |
-| `email`    | Similar a uma `string`, mas contendo um email válido.                                                                                                                                                                                                         |
+| `email`    | Similar a uma `string`, mas contendo um e-mail válido.                                                                                                                                                                                                        |
 | `xml`      | Similar a uma `string`, mas contendo um XML válido.                                                                                                                                                                                                           |
 | `html`     | Similar a uma `string`, mas contendo um HTML válido.                                                                                                                                                                                                          |
 | `cpf`      | Similar a uma `string`, mas contendo um CPF válido.                                                                                                                                                                                                           |
@@ -70,7 +70,7 @@ Os campos podem vir em qualquer ordem desde de que não haja repetição. Qualqu
 
 ### Enum
 
-Em adição aos tipos anteriores um `enum` representa um conjunto limitado de possibilidades de valores, similar as enumerações em outras linguagens. A sintaxe inicia com a palavra chave `enum`, seguida por uma sequencia de palavras entre chaves, separadas por espaços ou quebras de linha. Por exemplo:
+Em adição aos tipos anteriores um `enum` representa um conjunto limitado de possibilidades de valores, similar as enumerações em outras linguagens. A sintaxe inicia com a palavra chave `enum`, seguida por uma sequência de palavras entre chaves, separadas por espaços ou quebras de linha. Por exemplo:
 
 ```
 enum {
@@ -131,7 +131,7 @@ type UserType enum {
 
 type User {
   id: uuid
-  type: Type
+  type: UserType
   name: string
 }
 ```
@@ -140,7 +140,7 @@ Dessa maneira tipos podem ser combinados e utilizados múltiplas vezes sem repet
 
 ### Funções
 
-A descrição das funções é provavelmente a parte mais importante da sua API. Toda função possui um nome, uma lista de argumentos e opcionalmente um tipo de retorno. Todas as funções descritas estarão expostas para serem chamadas por seus usuários, cabendo à implementação de usa API o trabalho de autenticar e autorizar acessos. Cada função deve possuir um nome claro que indique seu funcionamento, geralmente iniciando com um verbo.
+A descrição das funções é provavelmente a parte mais importante da sua API. Toda função possui um nome, uma lista de argumentos e opcionalmente um tipo de retorno. Todas as funções descritas estarão expostas para serem chamadas por seus usuários, cabendo à implementação de sua API o trabalho de autenticar e autorizar acessos. Cada função deve possuir um nome claro que indique seu funcionamento, geralmente iniciando com um verbo.
 
 Exemplo da sintaxe:
 
@@ -161,7 +161,7 @@ error InvalidArgument
 error NotFound
 ```
 
-A implementação do servidor poderá lançar esses error ao longo da execução e estes serão transmitidos ao cliente junto a uma mensagem de texto livre, de forma que o cliente possa tratar.
+A implementação do servidor poderá lançar esses erros ao longo da execução e estes serão transmitidos ao cliente junto a uma mensagem de texto livre, de forma que o cliente possa tratar.
 
 Toda API sdkgen possui um erro implícito de nome `Fatal`. Qualquer erro que seja lançado no servidor que não seja um dos erros descritos no contrato da API será convertido em um erro de tipo `Fatal` antes de ser encaminhado ao cliente. Idealmente uma API nunca deve deixar escapar um erro `Fatal`.
 
@@ -173,7 +173,7 @@ Conforme uma API se torna maior e mais complexa passa a ser interessante dividir
 import "../user"
 ```
 
-O significado desta linha é buscar um arquivo chamado `../name.sdkgen` a partir da pasta atual. O `..` neste caso significa "a pasta acima da pasta atual". Qualquer caminho relativo ao arquivo atual pode ser passado e a extensão do arquivo ( `.sdkgen`) não deve ser mencionada. O comportamento é diretamente equivalente a copiar o conteúdo do arquivo e colar dentro do arquivo atual, na posição do import. Cuidado para não incluir o mesmo arquivo mais de uma vez.
+O significado desta linha é buscar um arquivo chamado `../user.sdkgen` a partir da pasta atual. O `..` neste caso significa "a pasta acima da pasta atual". Qualquer caminho relativo ao arquivo atual pode ser passado e a extensão do arquivo ( `.sdkgen`) não deve ser mencionada. O comportamento é diretamente equivalente a copiar o conteúdo do arquivo e colar dentro do arquivo atual, na posição do import. Cuidado para não incluir o mesmo arquivo mais de uma vez.
 
 ## Composição de tipos
 
