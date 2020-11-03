@@ -14,9 +14,13 @@ theme:
     primary: deep purple
   logo: logo.png
   favicon: logo.png
+  icon:
+    repo: fontawesome/brands/github
 markdown_extensions:
   - pymdownx.highlight
   - pymdownx.superfences
+  - toc:
+      permalink: true
 extra:
   social:
     - icon: fontawesome/brands/telegram

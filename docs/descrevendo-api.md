@@ -2,7 +2,11 @@
 
 API's do sdkgen são descritas em um arquivo `.sdkgen`. O objetivo desta descrição é firmar um contrato claro entre o que um front-end pode solicitar e receber e quais requisições o back-end deve tratar. Todos os dados transferidos pela API precisam respeitar este contrato rigorosamente. No fim, também funciona como documentação.
 
-## Tipos primitivos
+## Tipos
+
+O primeiro passo para o entendimento de uma descrição de API do sdkgen é compreender a gramática de tipos.
+
+### Tipos primitivos
 
 O sdkgen possui alguns tipos primitivos, com diferentes regras e características.
 
@@ -29,7 +33,7 @@ O sdkgen possui alguns tipos primitivos, com diferentes regras e característica
 | `cpf`      | Similar a uma `string`, mas contendo um CPF válido.                                                                                                                                                                                                           |
 | `cnpj`     | Similar a uma `string`, mas contendo um CNPJ válido.                                                                                                                                                                                                          |
 
-## Modificadores de tipo
+### Modificadores de tipo
 
 O sdkgen possui dois modificadores que podem ser sufixados em qualquer tipo: `?` e `[]`.
 
@@ -39,7 +43,7 @@ O modificador `[]` pode ser adicionado ao final de qualquer tipo para criar uma 
 
 Esses dois modificadores podem ser combinados e repetidos livremente. Alguns exemplos: `int[]?` significa ou `null` ou uma lista de `int`'s. `string[][]` significa uma lista de listas de `string`'s. `bool?[]` significa uma lista de ou `true` ou `false` ou `null`.
 
-## Tipos compostos
+### Tipos compostos
 
 Objetos compostos podem ser construídos, similar a classes, interfaces ou estruturas em outras linguagens. A sintaxe vem na forma de uma sequência de campos entre chaves, onde cada campo possui um nome e um tipo. Por exemplo:
 
@@ -64,6 +68,128 @@ Os campos podem vir em qualquer ordem desde de que não haja repetição. Qualqu
 }
 ```
 
-## Enum
+### Enum
 
-Em adição aos tipos anteriores um `enum` representa um conjunto limitado de possibilidades de valores. Por padrão os
+Em adição aos tipos anteriores um `enum` representa um conjunto limitado de possibilidades de valores, similar as enumerações em outras linguagens. A sintaxe inicia com a palavra chave `enum`, seguida por uma sequencia de palavras entre chaves, separadas por espaços ou quebras de linha. Por exemplo:
+
+```
+enum {
+  sent
+  received
+  failed
+}
+```
+
+Ou:
+
+```
+enum { small medium large }
+```
+
+Enums podem aparecer em qualquer posição que um tipo pode, inclusive sendo opcional, lista ou parte de um tipo composto. Por exemplo:
+
+```
+{
+  name: string
+  skills: enum {
+    javascript
+    csharp
+    go
+  }[]
+}
+```
+
+## Estrutura de um arquivo `.sdkgen`.
+
+Em um arquivo `.sdkgen` você pode definir funções, tipos nomeados e erros.
+
+### Tipos nomeados
+
+Tipos nomeados podem ser criados com a sintaxe `type NomeDoTipo Tipo`. Por exemplo:
+
+```
+type PersonName string
+```
+
+Embora qualquer um dos tipos descritos acima possa aparece na definição de um tipo nomeado, esta construção é muito mais comum com tipos compostos e enums. Por exemplo:
+
+```
+type Person {
+  name: string
+  age: uint
+}
+```
+
+Uma vez que um tipo nomeado tenha sido definido, o nome do tipo pode ser utilizado em qualquer lugar que receba um tipo. Por exemplo:
+
+```
+type UserType enum {
+  guest
+  fullUser
+  admin
+}
+
+type User {
+  id: uuid
+  type: Type
+  name: string
+}
+```
+
+Dessa maneira tipos podem ser combinados e utilizados multiplas vezes sem repetição. Um mesmo nome pode ser declarado mais de uma vez, desde que todas as declarações sejam idênticas. A ordem das declarações não tem importância (a declaração do tipo pode aparecer depois do seu uso). Tipos, no entanto, não podem ser recursivos.
+
+### Funções
+
+A descrição das funções é provavelmente a parte mais importante da sua API. Toda função possui um nome, uma lista de argumentos e opcionalmente um tipo de retorno. Todas as funções descritas estarão expostas para serem chamadas por seus usuários, cabendo à implementação de usa API o trabalho de autenticar e autorizar acessos. Cada função deve possuir um nome claro que indique seu funcionamento, geralmente iniciando com um verbo.
+
+Exemplo da sintaxe:
+
+```
+fn addNumbers(first: int, second: int): int
+```
+
+Argumentos podem vir em qualquer quantidade e todos os tipos devem ser obrigatoriamente especificados. Caso um argumento seja opcional, utilize o modificador de tipo opcional `?` ao fim do tipo. O retorno da função pode ou não ser especificado. Caso não seja, a função não retornará nenhum valor.
+
+Todas as funções descritas serão expostas nos códigos gerados pelo sdkgen para cliente ou para servidor, na forma de funções que retornam `Promise`, `Future` ou equivalente. O nome de cada função deve ser único, não havendo suporte a sobrecarga de funções (ou seja, não é possível diferenciar duas funções apenas pelo tipo de seus argumentos).
+
+### Erros
+
+Toda API possui erros mapeados, seja por conta de um argumento passado incorretamente, por um recurso solicitado não existir ou por uma falha de um serviço externo, por exemplo. É importante que esses erros possíveis sejam também descritos para que um cliente não seja surpreendido. No sdkgen você pode declarar errors com a notação `error NomeDoErro`. Por exemplo:
+
+```
+error InvalidArgument
+error NotFound
+```
+
+A implementação do servidor poderá lançar esses error ao longo da execução e estes serão transmitidos ao cliente junto a uma mensagem de texto livre, de forma que o cliente possa tratar.
+
+Toda API sdkgen possui um erro implicito de nome `Fatal`. Qualquer erro que seja lançado no servidor que não seja um dos erros descritos no contrato da API será convertido em um erro de tipo `Fatal` antes de ser encaminhado ao cliente. Idealmente uma API nunca deve deixar escapar um erro `Fatal`.
+
+### Importando outros arquivos
+
+Conforme uma API se torna maior e mais complexa passa a ser interessante dividir em múltiplos arquivos. Para isso a palavra chave `import` pode ser utilizada. Por exemplo:
+
+```
+import "../user"
+```
+
+O significado desta linha é buscar um arquivo chamado `../name.sdkgen` a partir da pasta atual. O `..` neste caso significa "a pasta acima da pasta atual". Qualquer caminho relativo ao arquivo atual pode ser passado e a extenção do arquivo ( `.sdkgen`) não deve ser mencionada. O comportamento é diretamente equivalente a copiar o conteúdo do arquivo e colar dentro do arquivo atual, na posição do import. Cuidado para não incluir o mesmo arquivo mais de uma vez.
+
+## Exemplo final
+
+```
+error NotFound
+
+type User {
+  id: uuid
+  avatar: url?
+  name: string
+  type: enum {
+    guest
+    fullUser
+    admin
+  }
+}
+
+fn getUser(id: uuid): User
+```
