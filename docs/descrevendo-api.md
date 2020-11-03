@@ -212,7 +212,7 @@ type User {
 }
 ```
 
-Um tipo pode conter múltiplos spreads. Caso um campo exista tanto no tipo atual quanto vindo do spread, o campo vindo do spread será utilizado. Caso um mesmo campo apareça em mais de um spread, o último na ordem em que foi escrito apareça. Note que isso significa que um spread sempre substitui o campo do tipo, em caso de conflito. Exemplo:
+Um tipo pode conter múltiplos spreads. Caso um campo exista tanto no tipo atual quanto vindo do spread, o campo vindo do spread será utilizado. Caso um mesmo campo apareça em mais de um spread, a última ocorrência prevalecerá. Note que isso significa que um spread sempre substitui o campo do tipo, em caso de conflito. Exemplo:
 
 ```
 type A { foo: int }
