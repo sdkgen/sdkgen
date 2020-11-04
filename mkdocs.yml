@@ -33,6 +33,8 @@ nav:
   - index.md
   - primeiro-projeto.md
   - descrevendo-api.md
+  - Targets:
+      - targets/servidor-nodejs.md
   - Aprofundando:
       - date e datetime: aprofundando/datas.md
   - faq.md
