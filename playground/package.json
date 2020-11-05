@@ -76,7 +76,7 @@
     "mobx-react-router": "^4.1.0",
     "monaco-editor": "^0.21.2",
     "monaco-editor-webpack-plugin": "^2.0.0",
-    "node-sass": "^4.13.1",
+    "node-sass": "^5.0.0",
     "offline-plugin": "^5.0.7",
     "postcss-cli": "^8.1.0",
     "postcss-loader": "^4.0.4",
