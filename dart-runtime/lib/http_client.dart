@@ -67,7 +67,7 @@ class SdkgenHttpClient {
         packageInfo = await PackageInfo.fromPlatform();
       } catch (e) {}
 
-      var platform = {
+      final platform = {
         "os": Platform.operatingSystem,
         "osVersion": Platform.operatingSystemVersion,
         "dartVersion": Platform.version,
@@ -76,14 +76,19 @@ class SdkgenHttpClient {
         "screenHeight": context == null ? 0 : MediaQuery.of(context).size.height
       };
 
-      var deviceInfo = DeviceInfoPlugin();
+      final deviceInfo = DeviceInfoPlugin();
+
       if (Platform.isAndroid) {
-        var androidInfo = await deviceInfo.androidInfo;
-        platform["model"] = androidInfo.model;
-        platform["brand"] = androidInfo.brand;
+        final androidInfo = await deviceInfo.androidInfo;
+        platform["model"] = androidInfo.model; //Ex: SM-1234
+        platform["brand"] = androidInfo.brand; //Ex: Samsung
+        platform["version"] = androidInfo.version.release; //10
+        platform["sdkVersion"] = androidInfo.version.sdkInt; //29
       } else if (Platform.isIOS) {
-        var iosInfo = await deviceInfo.iosInfo;
-        platform["model"] = iosInfo.model;
+        final iosInfo = await deviceInfo.iosInfo;
+        platform["model"] = iosInfo.name; //Ex: iPhone 11 Pro Max
+        platform["brand"] = "Apple";
+        platform["version"] = iosInfo.systemVersion; //13.1
       }
 
       var body = {
