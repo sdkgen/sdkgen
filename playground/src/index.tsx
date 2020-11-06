@@ -7,13 +7,13 @@ import { App } from "./containers/app";
 import { Routes } from "./containers/routes";
 import { rootStore } from "./stores";
 
-setupConfiguration("enterprise");
+setupConfiguration();
 
 render(
-	<App>
-		<MobxProvider {...rootStore}>
-			<Routes />
-		</MobxProvider>
-	</App>,
-	document.getElementById("app"),
+  <App>
+    <MobxProvider {...rootStore}>
+      <Routes />
+    </MobxProvider>
+  </App>,
+  document.getElementById("app"),
 );

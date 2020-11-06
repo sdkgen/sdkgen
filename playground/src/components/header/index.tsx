@@ -1,3 +1,4 @@
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faClone, faCog } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classnames from "classnames";
@@ -8,44 +9,44 @@ import RootStore from "stores";
 import s from "./header.scss";
 
 interface LinkInfo {
-	to: string;
-	label: string;
-	icon: any; // bad library types
+  to: string;
+  label: string;
+  icon: IconProp;
 }
 
 const links: LinkInfo[] = [
-	{ to: "/playground", label: "Endpoints", icon: faClone },
-	// { to: "/playground/favorites", label: "Favorites", icon: faStar },
-	{ to: "/playground/configuration", label: "Configuration", icon: faCog },
+  { icon: faClone, label: "Endpoints", to: "/playground" },
+  { icon: faCog, label: "Configuration", to: "/playground/configuration" },
 ];
 
-export const MainHeader = observer(Header);
 function Header() {
-	const { routerStore } = React.useContext(RootStore);
+  const { routerStore } = React.useContext(RootStore);
 
-	const activePath = routerStore.location.pathname;
-	const Links = links.map(l => (
-		<Link key={l.to} to={l.to}>
-			<div className={classnames(s.link, l.to === activePath && s.active)}>
-				<FontAwesomeIcon size="xs" icon={l.icon} className={s.icon} />
-				{l.label}
-			</div>
-		</Link>
-	));
-	const Divider = <div className={s.divider} />;
+  const activePath = routerStore.location.pathname;
+  const Links = links.map(l => (
+    <Link key={l.to} to={l.to}>
+      <div className={classnames(s.link, l.to === activePath && s.active)}>
+        <FontAwesomeIcon size="xs" icon={l.icon} className={s.icon} />
+        {l.label}
+      </div>
+    </Link>
+  ));
+  const Divider = <div className={s.divider} />;
 
-	return (
-		<div className={s.header}>
-			<div className={s.top}>
-				<div className={s.logo} />
-				<div>
-					<div className={s.title}>sdkgen Playground</div>
-				</div>
-			</div>
-			<div className={s.actions}>
-				{Links}
-				{Divider}
-			</div>
-		</div>
-	);
+  return (
+    <div className={s.header}>
+      <div className={s.top}>
+        <div className={s.logo} />
+        <div>
+          <div className={s.title}>sdkgen Playground</div>
+        </div>
+      </div>
+      <div className={s.actions}>
+        {Links}
+        {Divider}
+      </div>
+    </div>
+  );
 }
+
+export const MainHeader = observer(Header);

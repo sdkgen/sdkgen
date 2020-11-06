@@ -30,3 +30,6 @@ type AllTypes {
     date: date
     datetime: datetime
 }
+
+error SomeError
+fn throwsError(): void

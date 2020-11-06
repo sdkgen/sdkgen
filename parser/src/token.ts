@@ -1,28 +1,31 @@
 export class TokenLocation {
-    public filename = "?";
-    public line = 0;
-    public column = 0;
+  public filename = "?";
 
-    toString() {
-        return `${this.filename}:${this.line}:${this.column}`;
-    }
+  public line = 0;
+
+  public column = 0;
+
+  toString(): string {
+    return `${this.filename}:${this.line}:${this.column}`;
+  }
 }
 
 export class Token {
-    public location = new TokenLocation();
+  public location = new TokenLocation();
 
-    constructor(public value: string = "") {
-        Object.defineProperty(this, "location", { enumerable: false });
-    }
+  constructor(public value: string = "") {
+    Object.defineProperty(this, "location", { enumerable: false });
+  }
 
-    maybeAsIdentifier(): Token {
-        return this;
-    }
+  maybeAsIdentifier(): Token {
+    return this;
+  }
 
-    toString() {
-        const name = (this.constructor as any).name.replace("Token", "");
-        return this.value === "" ? name : `${name}(${JSON.stringify(this.value)})`;
-    }
+  toString(): string {
+    const name = (this.constructor as any).name.replace("Token", "");
+
+    return this.value === "" ? name : `${name}(${JSON.stringify(this.value)})`;
+  }
 }
 
 export class IdentifierToken extends Token {}
@@ -41,55 +44,55 @@ export class SpreadSymbolToken extends Token {}
 export class AnnotationToken extends Token {}
 
 export class ImportKeywordToken extends Token {
-    maybeAsIdentifier() {
-        return new IdentifierToken("import");
-    }
+  maybeAsIdentifier(): IdentifierToken {
+    return new IdentifierToken("import");
+  }
 }
 
 export class TypeKeywordToken extends Token {
-    maybeAsIdentifier() {
-        return new IdentifierToken("type");
-    }
+  maybeAsIdentifier(): IdentifierToken {
+    return new IdentifierToken("type");
+  }
 }
 
 export class EnumKeywordToken extends Token {
-    maybeAsIdentifier() {
-        return new IdentifierToken("enum");
-    }
+  maybeAsIdentifier(): IdentifierToken {
+    return new IdentifierToken("enum");
+  }
 }
 
 export class GetKeywordToken extends Token {
-    maybeAsIdentifier() {
-        return new IdentifierToken("get");
-    }
+  maybeAsIdentifier(): IdentifierToken {
+    return new IdentifierToken("get");
+  }
 }
 
 export class FunctionKeywordToken extends Token {
-    maybeAsIdentifier() {
-        return new IdentifierToken(this.value);
-    }
+  maybeAsIdentifier(): IdentifierToken {
+    return new IdentifierToken(this.value);
+  }
 }
 
 export class ErrorKeywordToken extends Token {
-    maybeAsIdentifier() {
-        return new IdentifierToken("error");
-    }
+  maybeAsIdentifier(): IdentifierToken {
+    return new IdentifierToken("error");
+  }
 }
 
 export class TrueKeywordToken extends Token {
-    maybeAsIdentifier() {
-        return new IdentifierToken("true");
-    }
+  maybeAsIdentifier(): IdentifierToken {
+    return new IdentifierToken("true");
+  }
 }
 
 export class FalseKeywordToken extends Token {
-    maybeAsIdentifier() {
-        return new IdentifierToken("false");
-    }
+  maybeAsIdentifier(): IdentifierToken {
+    return new IdentifierToken("false");
+  }
 }
 
 export class PrimitiveTypeToken extends Token {
-    maybeAsIdentifier() {
-        return new IdentifierToken(this.value);
-    }
+  maybeAsIdentifier(): IdentifierToken {
+    return new IdentifierToken(this.value);
+  }
 }

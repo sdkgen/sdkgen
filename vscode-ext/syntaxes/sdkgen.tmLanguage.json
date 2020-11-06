@@ -3,13 +3,17 @@
 	"patterns": [
 		{
 			"include": "#any"
-		}, {
+		},
+		{
 			"include": "#annotations"
-		}, {
+		},
+		{
 			"name": "meta.variable",
 			"begin": "(\\$[a-zA-Z0-9]+) =",
 			"beginCaptures": {
-				"1": {"name": "variable.other"}
+				"1": {
+					"name": "variable.other"
+				}
 			},
 			"end": "\n",
 			"patterns": [
@@ -17,11 +21,14 @@
 					"include": "#literal"
 				}
 			]
-		}, {
+		},
+		{
 			"name": "meta.import",
 			"begin": "(import) ",
 			"beginCaptures": {
-				"1": {"name": "keyword.control"}
+				"1": {
+					"name": "keyword.control"
+				}
 			},
 			"end": "\n",
 			"patterns": [
@@ -29,19 +36,29 @@
 					"include": "#literal"
 				}
 			]
-		}, {
+		},
+		{
 			"name": "meta.error",
 			"match": "(error) ([A-Z][a-zA-Z0-9]*)",
 			"captures": {
-				"1": {"name": "keyword.control"},
-				"2": {"name": "entity.name.type"}
+				"1": {
+					"name": "keyword.control"
+				},
+				"2": {
+					"name": "entity.name.type"
+				}
 			}
-		}, {
+		},
+		{
 			"name": "meta.type",
 			"begin": "(type) ([A-Z][a-zA-Z0-9]*) ",
 			"beginCaptures": {
-				"1": {"name": "keyword.control"},
-				"2": {"name": "entity.name.type"}
+				"1": {
+					"name": "keyword.control"
+				},
+				"2": {
+					"name": "entity.name.type"
+				}
 			},
 			"end": "\n",
 			"patterns": [
@@ -49,12 +66,17 @@
 					"include": "#type"
 				}
 			]
-		}, {
+		},
+		{
 			"name": "meta.operation",
 			"begin": "(get|function|fn) ([a-zA-Z0-9]+)",
 			"beginCaptures": {
-				"1": {"name": "keyword.control"},
-				"2": {"name": "entity.name.function"}
+				"1": {
+					"name": "keyword.control"
+				},
+				"2": {
+					"name": "entity.name.function"
+				}
 			},
 			"end": "\n",
 			"patterns": [
@@ -67,7 +89,8 @@
 							"include": "#fields"
 						}
 					]
-				}, {
+				},
+				{
 					"include": "#type"
 				}
 			]
@@ -93,33 +116,51 @@
 					"name": "meta.annotation.description",
 					"match": "(@description) ((?:.|\\\n)*)\n",
 					"captures": {
-						"1": {"name": "constant.numeric"},
-						"2": {"name": "comment.block.documentation"}
+						"1": {
+							"name": "constant.numeric"
+						},
+						"2": {
+							"name": "comment.block.documentation"
+						}
 					}
 				},
 				{
 					"name": "meta.annotation.arg",
 					"match": "(@arg) (\\w+) ((?:.|\\\\\\n)*)\n",
 					"captures": {
-						"1": {"name": "constant.numeric"},
-						"2": {"name": "variable.parameter"},
-						"3": {"name": "comment.block.documentation"}
+						"1": {
+							"name": "constant.numeric"
+						},
+						"2": {
+							"name": "variable.parameter"
+						},
+						"3": {
+							"name": "comment.block.documentation"
+						}
 					}
 				},
 				{
 					"name": "meta.annotation.throws",
 					"match": "(@throws) (\\w+)\n",
 					"captures": {
-						"1": {"name": "constant.numeric"},
-						"2": {"name": "entity.name.type"}
+						"1": {
+							"name": "constant.numeric"
+						},
+						"2": {
+							"name": "entity.name.type"
+						}
 					}
 				},
 				{
 					"name": "meta.annotations.rest",
 					"begin": "(@rest) (\\w+)",
 					"beginCaptures": {
-						"1": {"name": "constant.numeric"},
-						"2": {"name": "entity.name.type"}
+						"1": {
+							"name": "constant.numeric"
+						},
+						"2": {
+							"name": "entity.name.type"
+						}
 					},
 					"end": "\n",
 					"patterns": [
@@ -128,6 +169,18 @@
 							"match": "\\{\\w+\\}"
 						}
 					]
+				},
+				{
+					"name": "meta.annotation.hidden",
+					"match": "(@hidden)\n",
+					"captures": {
+						"1": {
+							"name": "constant.numeric"
+						},
+						"2": {
+							"name": "entity.name.type"
+						}
+					}
 				}
 			]
 		},
@@ -135,13 +188,17 @@
 			"patterns": [
 				{
 					"include": "#any"
-				}, {
+				},
+				{
 					"include": "#annotations"
-				}, {
+				},
+				{
 					"name": "meta.field",
 					"begin": "(\\w+):",
 					"beginCaptures": {
-						"1": {"name": "variable.parameter"}
+						"1": {
+							"name": "variable.parameter"
+						}
 					},
 					"end": "(?=\n|,|;|\\)|\\})",
 					"patterns": [
@@ -149,12 +206,17 @@
 							"include": "#type"
 						}
 					]
-				}, {
+				},
+				{
 					"name": "meta.spread",
 					"match": "(\\.\\.\\.)\\s?([A-Z][a-zA-Z0-9]*)",
 					"captures": {
-						"1": {"name": "markup.bold"},
-						"2": {"name": "entity.name.type"}
+						"1": {
+							"name": "markup.bold"
+						},
+						"2": {
+							"name": "entity.name.type"
+						}
 					}
 				}
 			]
@@ -163,24 +225,33 @@
 			"patterns": [
 				{
 					"include": "#any"
-				}, {
+				},
+				{
 					"name": "keyword.type",
-					"match": "\\b(bool|int|uint|float|bigint|string|datetime|date|bytes|void|money|cpf|cnpj|email|url|uuid|hex|base64|xml|json)\\b"
-				}, {
+					"match": "\\b(bool|int|uint|float|bigint|string|datetime|date|bytes|void|money|cpf|cnpj|email|html|url|uuid|hex|base64|xml|json)\\b"
+				},
+				{
 					"name": "markup.bold",
 					"match": "(\\?|\\[\\])"
-				}, {
+				},
+				{
 					"name": "entity.name.type",
 					"match": "\\b([A-Z][a-zA-Z0-9]*)\\b"
-				}, {
+				},
+				{
 					"name": "constant.numeric",
 					"match": "(![a-zA-Z0-9]+)\\b"
-				}, {
+				},
+				{
 					"name": "meta.type",
 					"begin": "\\{",
 					"beginCaptures": {
-						"1": {"name": "keyword.control"},
-						"2": {"name": "entity.name.type"}
+						"1": {
+							"name": "keyword.control"
+						},
+						"2": {
+							"name": "entity.name.type"
+						}
 					},
 					"end": "\\}",
 					"patterns": [
@@ -188,18 +259,24 @@
 							"include": "#fields"
 						}
 					]
-				}, {
+				},
+				{
 					"name": "meta.enum",
 					"begin": "(enum) \\{",
 					"beginCaptures": {
-						"1": {"name": "keyword.control"},
-						"2": {"name": "entity.name.type"}
+						"1": {
+							"name": "keyword.control"
+						},
+						"2": {
+							"name": "entity.name.type"
+						}
 					},
 					"end": "\\}",
 					"patterns": [
 						{
 							"include": "#any"
-						}, {
+						},
+						{
 							"name": "variable.parameter",
 							"match": "(\\w+)"
 						}
@@ -211,7 +288,8 @@
 			"patterns": [
 				{
 					"include": "#any"
-				}, {
+				},
+				{
 					"name": "string.quoted.double.untitled",
 					"begin": "\"",
 					"end": "\"",
@@ -221,7 +299,8 @@
 							"match": "\\."
 						}
 					]
-				}, {
+				},
+				{
 					"name": "keyword.literal",
 					"match": "\\b(true|false)\\b"
 				}

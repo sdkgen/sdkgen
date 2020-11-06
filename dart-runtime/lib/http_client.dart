@@ -101,7 +101,9 @@ class SdkgenHttpClient {
           "timezone": DateTime.now().timeZoneName,
           "type": Platform.isAndroid
               ? "android"
-              : Platform.isIOS ? "ios" : "flutter",
+              : Platform.isIOS
+                  ? "ios"
+                  : "flutter",
           "version": packageInfo?.version
         }
       };

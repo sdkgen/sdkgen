@@ -1,28 +1,29 @@
 import {
-    ArrayType,
-    Base64PrimitiveType,
-    BoolPrimitiveType,
-    BytesPrimitiveType,
-    CnpjPrimitiveType,
-    CpfPrimitiveType,
-    DatePrimitiveType,
-    DateTimePrimitiveType,
-    DescriptionAnnotation,
-    EnumType,
-    FloatPrimitiveType,
-    HexPrimitiveType,
-    IntPrimitiveType,
-    MoneyPrimitiveType,
-    OptionalType,
-    RestAnnotation,
-    StringPrimitiveType,
-    StructType,
-    Type,
-    TypeReference,
-    UIntPrimitiveType,
-    UrlPrimitiveType,
-    UuidPrimitiveType,
-    VoidPrimitiveType,
+  ArrayType,
+  Base64PrimitiveType,
+  BoolPrimitiveType,
+  BytesPrimitiveType,
+  CnpjPrimitiveType,
+  CpfPrimitiveType,
+  DatePrimitiveType,
+  DateTimePrimitiveType,
+  DescriptionAnnotation,
+  EnumType,
+  FloatPrimitiveType,
+  HexPrimitiveType,
+  HtmlPrimitiveType,
+  IntPrimitiveType,
+  MoneyPrimitiveType,
+  OptionalType,
+  RestAnnotation,
+  StringPrimitiveType,
+  StructType,
+  Type,
+  TypeReference,
+  UIntPrimitiveType,
+  UrlPrimitiveType,
+  UuidPrimitiveType,
+  VoidPrimitiveType,
 } from "@sdkgen/parser";
 import staticFilesHandler from "serve-handler";
 import { getAbsoluteFSPath as getSwaggerUiAssetPath } from "swagger-ui-dist";
@@ -30,20 +31,131 @@ import { SdkgenHttpServer } from "./http-server";
 
 const swaggerUiAssetPath = getSwaggerUiAssetPath();
 
-export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContextT>) {
-    server.addHttpHandler("GET", "/swagger", (req, res) => {
-        if (!server.introspection) {
-            res.statusCode = 404;
-            res.end();
-            return;
-        }
+function objectFromEntries<T>(entries: Array<[string, T]>): { [key: string]: T } {
+  return Object.assign({}, ...Array.from(entries, ([k, v]) => ({ [k]: v })));
+}
 
-        if (!server.introspection) {
-            res.statusCode = 404;
-            res.end();
-            return;
-        }
-        res.write(`
+function typeToSchema(definitions: any, type: Type): any {
+  if (type instanceof EnumType) {
+    return {
+      enum: type.values.map(x => x.value),
+      type: "string",
+    };
+  } else if (type instanceof StructType) {
+    return {
+      properties: objectFromEntries(
+        type.fields.map(field => [
+          field.name,
+          {
+            description:
+              field.annotations
+                .filter(x => x instanceof DescriptionAnnotation)
+                .map(x => (x as DescriptionAnnotation).text)
+                .join(" ") || undefined,
+            ...typeToSchema(definitions, field.type),
+          },
+        ]),
+      ),
+      required: type.fields.filter(f => !(f.type instanceof OptionalType)).map(f => f.name),
+      type: "object",
+    };
+  } else if (
+    type instanceof StringPrimitiveType ||
+    type instanceof UuidPrimitiveType ||
+    type instanceof HexPrimitiveType ||
+    type instanceof HtmlPrimitiveType ||
+    type instanceof Base64PrimitiveType
+  ) {
+    return {
+      type: "string",
+    };
+  } else if (type instanceof UrlPrimitiveType) {
+    return {
+      format: "uri",
+      type: "string",
+    };
+  } else if (type instanceof DatePrimitiveType) {
+    return {
+      format: "date",
+      type: "string",
+    };
+  } else if (type instanceof DateTimePrimitiveType) {
+    return {
+      format: "date-time",
+      type: "string",
+    };
+  } else if (type instanceof CpfPrimitiveType) {
+    return {
+      type: "string",
+    };
+  } else if (type instanceof CnpjPrimitiveType) {
+    return {
+      type: "string",
+    };
+  } else if (type instanceof BoolPrimitiveType) {
+    return {
+      type: "boolean",
+    };
+  } else if (type instanceof BytesPrimitiveType) {
+    return {
+      format: "byte",
+      type: "string",
+    };
+  } else if (type instanceof IntPrimitiveType) {
+    return {
+      format: "int32",
+      type: "integer",
+    };
+  } else if (type instanceof UIntPrimitiveType) {
+    return {
+      format: "int32",
+      minimum: 0,
+      type: "integer",
+    };
+  } else if (type instanceof MoneyPrimitiveType) {
+    return {
+      format: "int64",
+      type: "integer",
+    };
+  } else if (type instanceof FloatPrimitiveType) {
+    return {
+      type: "number",
+    };
+  } else if (type instanceof OptionalType) {
+    return {
+      oneOf: [typeToSchema(definitions, type.base), { type: "null" }],
+    };
+  } else if (type instanceof ArrayType) {
+    return {
+      items: typeToSchema(definitions, type.base),
+      type: "array",
+    };
+  } else if (type instanceof TypeReference) {
+    if (!definitions[type.name]) {
+      definitions[type.name] = typeToSchema(definitions, type.type);
+    }
+
+    return { $ref: `#/definitions/${type.name}` };
+  }
+
+  throw new Error(`Unhandled type ${type.constructor.name}`);
+}
+
+export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContextT>): void {
+  server.addHttpHandler("GET", "/swagger", (req, res) => {
+    if (!server.introspection) {
+      res.statusCode = 404;
+      res.end();
+      return;
+    }
+
+    if (!server.introspection) {
+      res.statusCode = 404;
+      res.end();
+      return;
+    }
+
+    res.write(`
             <!DOCTYPE html>
             <html lang="en">
             <head>
@@ -98,311 +210,205 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
             </body>
             </html>
         `);
-        res.end();
+    res.end();
+  });
+
+  server.addHttpHandler("GET", /^\/swagger/u, (req, res) => {
+    if (!server.introspection) {
+      res.statusCode = 404;
+      res.end();
+      return;
+    }
+
+    if (req.url) {
+      req.url = req.url.replace(/\/swagger/u, "");
+    }
+
+    staticFilesHandler(req, res, {
+      cleanUrls: false,
+      directoryListing: false,
+      etag: true,
+      public: swaggerUiAssetPath,
+    }).catch(e => {
+      console.error(e);
+      res.statusCode = 500;
+      res.write(e.toString());
+      res.end();
     });
+  });
 
-    server.addHttpHandler("GET", /^\/swagger/u, (req, res) => {
-        if (!server.introspection) {
-            res.statusCode = 404;
-            res.end();
-            return;
-        }
+  server.addHttpHandler("GET", "/swagger.json", (req, res) => {
+    if (!server.introspection) {
+      res.statusCode = 404;
+      res.end();
+      return;
+    }
 
-        if (req.url) {
-            req.url = req.url.replace(/\/swagger/u, "");
-        }
+    try {
+      const definitions: any = {};
+      const paths: any = {};
 
-        staticFilesHandler(req, res, {
-            cleanUrls: false,
-            directoryListing: false,
-            etag: true,
-            public: swaggerUiAssetPath,
-        }).catch(e => {
-            console.error(e);
-            res.statusCode = 500;
-            res.write(e.toString());
-            res.end();
-        });
-    });
-
-    server.addHttpHandler("GET", "/swagger.json", (req, res) => {
-        if (!server.introspection) {
-            res.statusCode = 404;
-            res.end();
-            return;
-        }
-
-        try {
-            const definitions: any = {};
-            const paths: any = {};
-
-            for (const op of server.ast.operations) {
-                for (const ann of op.annotations) {
-                    if (ann instanceof RestAnnotation) {
-                        if (!paths[ann.path]) {
-                            paths[ann.path] = {};
-                        }
-
-                        paths[ann.path][ann.method.toLowerCase()] = {
-                            summary:
-                                op.annotations
-                                    .filter(x => x instanceof DescriptionAnnotation)
-                                    .map(x => (x as DescriptionAnnotation).text)
-                                    .join(" ") || undefined,
-                            tags: ["REST Endpoints"],
-                            operationId: op.name,
-                            parameters: [
-                                ...ann.pathVariables.map(name => ({
-                                    name,
-                                    location: "path",
-                                    arg: op.args.find(arg => arg.name === name)!,
-                                })),
-                                ...ann.queryVariables.map(name => ({
-                                    name,
-                                    location: "query",
-                                    arg: op.args.find(arg => arg.name === name)!,
-                                })),
-                                ...[...ann.headers.entries()].map(([header, name]) => ({
-                                    name: header,
-                                    location: "header",
-                                    arg: op.args.find(arg => arg.name === name)!,
-                                })),
-                            ].map(({ name, location, arg }) => ({
-                                name,
-                                in: location,
-                                required: !(arg.type instanceof OptionalType),
-                                schema: typeToSchema(definitions, arg.type),
-                                description:
-                                    arg.annotations
-                                        .filter(x => x instanceof DescriptionAnnotation)
-                                        .map(x => (x as DescriptionAnnotation).text)
-                                        .join(" ") || undefined,
-                            })),
-                            requestBody: ann.bodyVariable
-                                ? {
-                                      required: !(
-                                          op.args.find(arg => arg.name === ann.bodyVariable)!.type instanceof
-                                          OptionalType
-                                      ),
-                                      content: {
-                                          ...(() => {
-                                              const bodyType = op.args.find(arg => arg.name === ann.bodyVariable)!.type;
-
-                                              return bodyType instanceof BoolPrimitiveType ||
-                                                  bodyType instanceof IntPrimitiveType ||
-                                                  bodyType instanceof UIntPrimitiveType ||
-                                                  bodyType instanceof FloatPrimitiveType ||
-                                                  bodyType instanceof StringPrimitiveType ||
-                                                  bodyType instanceof DatePrimitiveType ||
-                                                  bodyType instanceof DateTimePrimitiveType ||
-                                                  bodyType instanceof MoneyPrimitiveType ||
-                                                  bodyType instanceof CpfPrimitiveType ||
-                                                  bodyType instanceof CnpjPrimitiveType ||
-                                                  bodyType instanceof UuidPrimitiveType ||
-                                                  bodyType instanceof HexPrimitiveType ||
-                                                  bodyType instanceof BytesPrimitiveType ||
-                                                  bodyType instanceof Base64PrimitiveType
-                                                  ? {
-                                                        "text/plain": { schema: typeToSchema(definitions, bodyType) },
-                                                    }
-                                                  : {};
-                                          })(),
-                                          "application/json": {
-                                              schema: typeToSchema(
-                                                  definitions,
-                                                  op.args.find(arg => arg.name === ann.bodyVariable)!.type,
-                                              ),
-                                          },
-                                      },
-                                  }
-                                : undefined,
-                            responses: {
-                                ...(op.returnType instanceof OptionalType || op.returnType instanceof VoidPrimitiveType
-                                    ? { [ann.method === "GET" ? "404" : "204"]: {} }
-                                    : {}),
-                                ...(!(op.returnType instanceof VoidPrimitiveType)
-                                    ? {
-                                          "200": {
-                                              content: {
-                                                  ...(() => {
-                                                      return op.returnType instanceof BoolPrimitiveType ||
-                                                          op.returnType instanceof IntPrimitiveType ||
-                                                          op.returnType instanceof UIntPrimitiveType ||
-                                                          op.returnType instanceof FloatPrimitiveType ||
-                                                          op.returnType instanceof StringPrimitiveType ||
-                                                          op.returnType instanceof DatePrimitiveType ||
-                                                          op.returnType instanceof DateTimePrimitiveType ||
-                                                          op.returnType instanceof MoneyPrimitiveType ||
-                                                          op.returnType instanceof CpfPrimitiveType ||
-                                                          op.returnType instanceof CnpjPrimitiveType ||
-                                                          op.returnType instanceof UuidPrimitiveType ||
-                                                          op.returnType instanceof HexPrimitiveType ||
-                                                          op.returnType instanceof BytesPrimitiveType ||
-                                                          op.returnType instanceof Base64PrimitiveType
-                                                          ? {
-                                                                "text/plain": {
-                                                                    schema: typeToSchema(definitions, op.returnType),
-                                                                },
-                                                            }
-                                                          : {};
-                                                  })(),
-                                                  "application/json": {
-                                                      schema: typeToSchema(definitions, op.returnType),
-                                                  },
-                                              },
-                                          },
-                                      }
-                                    : {}),
-                                "400": {
-                                    content: {
-                                        "application/json": {
-                                            schema: {
-                                                type: "object",
-                                                required: ["type", "message"],
-                                                properties: {
-                                                    type: {
-                                                        type: "string",
-                                                        enum: server.ast.errors,
-                                                    },
-                                                    message: {
-                                                        type: "string",
-                                                    },
-                                                },
-                                            },
-                                        },
-                                    },
-                                },
-                                "500": {},
-                            },
-                        };
-                    }
-                }
+      for (const op of server.ast.operations) {
+        for (const ann of op.annotations) {
+          if (ann instanceof RestAnnotation) {
+            if (!paths[ann.path]) {
+              paths[ann.path] = {};
             }
 
-            res.write(
-                JSON.stringify({
-                    openapi: "3.0.3",
-                    info: {},
-                    schemes: ["https"],
-                    consumes: ["application/json"],
-                    produces: ["application/json"],
-                    paths,
-                    definitions,
-                }),
-            );
-        } catch (error) {
-            console.error(error);
-            res.statusCode = 500;
-        }
+            paths[ann.path][ann.method.toLowerCase()] = {
+              operationId: op.name,
+              parameters: [
+                ...ann.pathVariables.map(name => ({
+                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                  arg: op.args.find(arg => arg.name === name)!,
+                  location: "path",
+                  name,
+                })),
+                ...ann.queryVariables.map(name => ({
+                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                  arg: op.args.find(arg => arg.name === name)!,
+                  location: "query",
+                  name,
+                })),
+                ...[...ann.headers.entries()].map(([header, name]) => ({
+                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                  arg: op.args.find(arg => arg.name === name)!,
+                  location: "header",
+                  name: header,
+                })),
+              ].map(({ name, location, arg }) => ({
+                description:
+                  arg.annotations
+                    .filter(x => x instanceof DescriptionAnnotation)
+                    .map(x => (x as DescriptionAnnotation).text)
+                    .join(" ") || undefined,
+                in: location,
+                name,
+                required: !(arg.type instanceof OptionalType),
+                schema: typeToSchema(definitions, arg.type),
+              })),
+              requestBody: ann.bodyVariable
+                ? {
+                    content: {
+                      ...(() => {
+                        const bodyType = op.args.find(arg => arg.name === ann.bodyVariable)?.type;
 
-        res.end();
-    });
-}
-
-function objectFromEntries<T>(entries: [string, T][]): { [key: string]: T } {
-    return Object.assign({}, ...Array.from(entries, ([k, v]) => ({ [k]: v })));
-}
-
-function typeToSchema(definitions: any, type: Type): any {
-    if (type instanceof EnumType) {
-        return {
-            type: "string",
-            enum: type.values.map(x => x.value),
-        };
-    } else if (type instanceof StructType) {
-        return {
-            type: "object",
-            required: type.fields.filter(f => !(f.type instanceof OptionalType)).map(f => f.name),
-            properties: objectFromEntries(
-                type.fields.map(field => [
-                    field.name,
-                    {
-                        description:
-                            field.annotations
-                                .filter(x => x instanceof DescriptionAnnotation)
-                                .map(x => (x as DescriptionAnnotation).text)
-                                .join(" ") || undefined,
-                        ...typeToSchema(definitions, field.type),
+                        return bodyType instanceof BoolPrimitiveType ||
+                          bodyType instanceof IntPrimitiveType ||
+                          bodyType instanceof UIntPrimitiveType ||
+                          bodyType instanceof FloatPrimitiveType ||
+                          bodyType instanceof StringPrimitiveType ||
+                          bodyType instanceof DatePrimitiveType ||
+                          bodyType instanceof DateTimePrimitiveType ||
+                          bodyType instanceof MoneyPrimitiveType ||
+                          bodyType instanceof CpfPrimitiveType ||
+                          bodyType instanceof CnpjPrimitiveType ||
+                          bodyType instanceof HtmlPrimitiveType ||
+                          bodyType instanceof UuidPrimitiveType ||
+                          bodyType instanceof HexPrimitiveType ||
+                          bodyType instanceof BytesPrimitiveType ||
+                          bodyType instanceof Base64PrimitiveType
+                          ? {
+                              [bodyType instanceof HtmlPrimitiveType ? "text/html" : "text/plain"]: {
+                                schema: typeToSchema(definitions, bodyType),
+                              },
+                            }
+                          : {};
+                      })(),
+                      "application/json": {
+                        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                        schema: typeToSchema(definitions, op.args.find(arg => arg.name === ann.bodyVariable)!.type),
+                      },
                     },
-                ]),
-            ),
-        };
-    } else if (
-        type instanceof StringPrimitiveType ||
-        type instanceof UuidPrimitiveType ||
-        type instanceof HexPrimitiveType ||
-        type instanceof Base64PrimitiveType
-    ) {
-        return {
-            type: "string",
-        };
-    } else if (type instanceof UrlPrimitiveType) {
-        return {
-            format: "uri",
-            type: "string",
-        };
-    } else if (type instanceof DatePrimitiveType) {
-        return {
-            format: "date",
-            type: "string",
-        };
-    } else if (type instanceof DateTimePrimitiveType) {
-        return {
-            format: "date-time",
-            type: "string",
-        };
-    } else if (type instanceof CpfPrimitiveType) {
-        return {
-            type: "string",
-        };
-    } else if (type instanceof CnpjPrimitiveType) {
-        return {
-            type: "string",
-        };
-    } else if (type instanceof BoolPrimitiveType) {
-        return {
-            type: "boolean",
-        };
-    } else if (type instanceof BytesPrimitiveType) {
-        return {
-            format: "byte",
-            type: "string",
-        };
-    } else if (type instanceof IntPrimitiveType) {
-        return {
-            type: "integer",
-            format: "int32",
-        };
-    } else if (type instanceof UIntPrimitiveType) {
-        return {
-            type: "integer",
-            format: "int32",
-            minimum: 0,
-        };
-    } else if (type instanceof MoneyPrimitiveType) {
-        return {
-            type: "integer",
-            format: "int64",
-        };
-    } else if (type instanceof FloatPrimitiveType) {
-        return {
-            type: "number",
-        };
-    } else if (type instanceof OptionalType) {
-        return {
-            oneOf: [typeToSchema(definitions, type.base), { type: "null" }],
-        };
-    } else if (type instanceof ArrayType) {
-        return {
-            type: "array",
-            items: typeToSchema(definitions, type.base),
-        };
-    } else if (type instanceof TypeReference) {
-        if (!definitions[type.name]) {
-            definitions[type.name] = typeToSchema(definitions, type.type);
+                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                    required: !(op.args.find(arg => arg.name === ann.bodyVariable)!.type instanceof OptionalType),
+                  }
+                : undefined,
+              responses: {
+                ...(op.returnType instanceof OptionalType || op.returnType instanceof VoidPrimitiveType
+                  ? { [ann.method === "GET" ? "404" : "204"]: {} }
+                  : {}),
+                ...(op.returnType instanceof VoidPrimitiveType
+                  ? {}
+                  : {
+                      200: {
+                        content: {
+                          ...(() => {
+                            return op.returnType instanceof BoolPrimitiveType ||
+                              op.returnType instanceof IntPrimitiveType ||
+                              op.returnType instanceof UIntPrimitiveType ||
+                              op.returnType instanceof FloatPrimitiveType ||
+                              op.returnType instanceof StringPrimitiveType ||
+                              op.returnType instanceof DatePrimitiveType ||
+                              op.returnType instanceof DateTimePrimitiveType ||
+                              op.returnType instanceof MoneyPrimitiveType ||
+                              op.returnType instanceof CpfPrimitiveType ||
+                              op.returnType instanceof CnpjPrimitiveType ||
+                              op.returnType instanceof UuidPrimitiveType ||
+                              op.returnType instanceof HexPrimitiveType ||
+                              op.returnType instanceof BytesPrimitiveType ||
+                              op.returnType instanceof Base64PrimitiveType
+                              ? {
+                                  "text/plain": {
+                                    schema: typeToSchema(definitions, op.returnType),
+                                  },
+                                }
+                              : {};
+                          })(),
+                          "application/json": {
+                            schema: typeToSchema(definitions, op.returnType),
+                          },
+                        },
+                      },
+                    }),
+                400: {
+                  content: {
+                    "application/json": {
+                      schema: {
+                        properties: {
+                          message: {
+                            type: "string",
+                          },
+                          type: {
+                            enum: server.ast.errors,
+                            type: "string",
+                          },
+                        },
+                        required: ["type", "message"],
+                        type: "object",
+                      },
+                    },
+                  },
+                },
+                500: {},
+              },
+              summary:
+                op.annotations
+                  .filter(x => x instanceof DescriptionAnnotation)
+                  .map(x => (x as DescriptionAnnotation).text)
+                  .join(" ") || undefined,
+              tags: ["REST Endpoints"],
+            };
+          }
         }
-        return { $ref: `#/definitions/${type.name}` };
-    } else {
-        throw new Error(`Unhandled type ${type.constructor.name}`);
+      }
+
+      res.write(
+        JSON.stringify({
+          consumes: ["application/json"],
+          definitions,
+          info: {},
+          openapi: "3.0.3",
+          paths,
+          produces: ["application/json"],
+          schemes: ["https"],
+        }),
+      );
+    } catch (error) {
+      console.error(error);
+      res.statusCode = 500;
     }
+
+    res.end();
+  });
 }

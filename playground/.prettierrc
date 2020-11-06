@@ -1,30 +1,26 @@
 {
-    "bracketSpacing": true,
-    "jsxBracketSameLine": false,
-    "parser": "typescript",
-    "printWidth": 100,
-    "semi": true,
-    "tabWidth": 4,
-    "trailingComma": "all",
-    "useTabs": true,
-    "overrides": [
-        {
-            "files": "*.scss",
-            "options": { 
-                "parser": "scss"
-            }
-        },
-        {
-            "files": "*.(js|jsx)",
-            "options": {
-                "parser": "babylon"
-            }
-        },
-        {
-            "files": "*.json",
-            "options": {
-                "parser": "json"
-            }
-        }
-    ]
+  "arrowParens": "avoid",
+  "bracketSpacing": true,
+  "endOfLine": "lf",
+  "parser": "typescript",
+  "printWidth": 150,
+  "semi": true,
+  "singleQuote": false,
+  "tabWidth": 2,
+  "trailingComma": "all",
+  "useTabs": false,
+  "overrides": [
+    {
+      "files": "*.scss",
+      "options": {
+        "parser": "scss"
+      }
+    },
+    {
+      "files": "*.json",
+      "options": {
+        "parser": "json"
+      }
+    }
+  ]
 }

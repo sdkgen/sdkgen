@@ -3,6 +3,7 @@ import 'dart:convert';
 class SdkgenTypeException implements Exception {
   String cause;
   SdkgenTypeException(this.cause);
+  String toString() => 'SdkgenTypeException: $cause';
 }
 
 class StructTypeDescription {
@@ -35,32 +36,109 @@ class LatLng {
   LatLng(this.lat, this.lng);
 }
 
-const simpleStringTypes = [
-  "string",
-  "cnpj",
-  "cpf",
-  "email",
-  "phone",
-  "url",
-  "xml",
-  "uuid",
-  "base64",
-  "hex"
-];
-var simpleTypes =
-    ["any", "bool", "int", "uint", "float", "money"] + simpleStringTypes;
+const simpleStringTypes = ["string", "cnpj", "cpf", "email", "html", "xml"];
+var simpleTypes = [
+      "json",
+      "bool",
+      "url",
+      "int",
+      "uint",
+      "float",
+      "money",
+      "hex",
+      "uuid",
+      "base64",
+      "void"
+    ] +
+    simpleStringTypes;
 
 simpleEncodeDecode(
-    Map<String, Object> typeTable, String path, Object type, Object value) {
-  // TODO: Typecheck
-  return value;
+    Map<String, Object> typeTable, String path, String type, Object value) {
+  if (simpleStringTypes.contains(type)) {
+    if (!(value is String)) {
+      throw SdkgenTypeException(
+          "Invalid Type at '$path', expected $type, got ${jsonEncode(value)}");
+    }
+    return value;
+  }
+
+  switch (type) {
+    case "json":
+      return jsonDecode(jsonEncode(value, toEncodable: (Object obj) {
+        throw SdkgenTypeException(
+            "Invalid Type at '$path', expected $type, got ${obj.runtimeType}");
+      }));
+    case "bool":
+      if (!(value is bool)) {
+        throw SdkgenTypeException(
+            "Invalid Type at '$path', expected $type, got ${jsonEncode(value)}");
+      }
+      return value;
+    case "hex":
+      if (!(value is String) ||
+          !RegExp(r'^(?:[A-Fa-f0-9]{2})*$').hasMatch(value)) {
+        throw SdkgenTypeException(
+            "Invalid Type at '$path', expected $type, got ${jsonEncode(value)}");
+      }
+      return value;
+    case "uuid":
+      if (!(value is String) ||
+          !RegExp(r'^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$')
+              .hasMatch(value)) {
+        throw SdkgenTypeException(
+            "Invalid Type at '$path', expected $type, got ${jsonEncode(value)}");
+      }
+      return value;
+    case "base64":
+      if (!(value is String) ||
+          Base64Encoder().convert(Base64Decoder().convert(value)) != value) {
+        throw SdkgenTypeException(
+            "Invalid Type at '$path', expected $type, got ${jsonEncode(value)}");
+      }
+      return value;
+    case "int":
+      if (!(value is int)) {
+        throw SdkgenTypeException(
+            "Invalid Type at '$path', expected $type, got ${jsonEncode(value)}");
+      }
+      return value;
+    case "uint":
+      if (!(value is int) || (value as int) < 0) {
+        throw SdkgenTypeException(
+            "Invalid Type at '$path', expected $type, got ${jsonEncode(value)}");
+      }
+      return value;
+    case "float":
+      if (!(value is double) && !(value is int)) {
+        throw SdkgenTypeException(
+            "Invalid Type at '$path', expected $type, got ${jsonEncode(value)}");
+      }
+      return value;
+    case "money":
+      if (!(value is int)) {
+        throw SdkgenTypeException(
+            "Invalid Type at '$path', expected $type, got ${jsonEncode(value)}");
+      }
+      return value;
+    case "url":
+      if (!(value is String) || Uri.tryParse(value) == null) {
+        throw SdkgenTypeException(
+            "Invalid Type at '$path', expected $type, got ${jsonEncode(value)}");
+      }
+
+      return Uri.parse(value).toString();
+    case "void":
+      return null;
+  }
+
+  throw SdkgenTypeException("Unknown type '$type' at '$path'");
 }
 
 encode(Map<String, Object> typeTable, String path, Object type, Object value) {
   if (type is EnumTypeDescription) {
     if (!type.enumValues.contains(value)) {
       throw SdkgenTypeException(
-          "Invalid Type at '$path', expected ${jsonEncode(type)}, got ${jsonEncode(value)}");
+          "Invalid Type at '$path', expected ${type.type}, got ${jsonEncode(value)}");
     }
     return type.stringValues[type.enumValues.indexOf(value)];
   } else if (type is StructTypeDescription) {
@@ -143,7 +221,7 @@ decode(Map<String, Object> typeTable, String path, Object type, Object value) {
   if (type is EnumTypeDescription) {
     if (!type.stringValues.contains(value)) {
       throw SdkgenTypeException(
-          "Invalid Type at '$path', expected ${jsonEncode(type)}, got ${jsonEncode(value)}");
+          "Invalid Type at '$path', expected ${type.type}, got ${jsonEncode(value)}");
     }
     return type.enumValues[type.stringValues.indexOf(value)];
   } else if (type is StructTypeDescription) {
@@ -152,9 +230,9 @@ decode(Map<String, Object> typeTable, String path, Object type, Object value) {
           "Invalid Type at '$path', expected ${type.type}, got ${jsonEncode(value)}");
     }
     var resultMap = Map();
-    (value as Map).forEach((fieldName, fieldValue) {
-      resultMap[fieldName] = decode(
-          typeTable, "$path.$fieldName", type.fields[fieldName], fieldValue);
+    type.fields.keys.forEach((fieldName) {
+      resultMap[fieldName] = decode(typeTable, "$path.$fieldName",
+          type.fields[fieldName], (value as Map)[fieldName]);
     });
     return Function.apply(type.createFromFields, [resultMap]);
   } else if (type is String) {

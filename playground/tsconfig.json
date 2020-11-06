@@ -1,43 +1,43 @@
 {
-	"buildOnSave": false,
-	"compileOnSave": true,
-	"compilerOptions": {
-		"jsx": "react",
-		"sourceMap": true,
-		"target": "es5",
-		"module": "esnext",
-		"outDir": "./dist/",
-		"allowJs": true,
-		"pretty": true,
-		"esModuleInterop": true,
-		"allowSyntheticDefaultImports": true,
-		"types": ["node", "jest", "chrome"],
-		"skipLibCheck": true,
-		"importHelpers": true,
-		"lib": ["dom", "es2018", "esnext"],
-		"moduleResolution": "node",
-		"noUnusedParameters": true,
-		"experimentalDecorators": true,
-		// remove strict to get rid of 'strictFunctionTypes'
-		"strict": true,
-		"strictFunctionTypes": false,
-		// best practices
-		"noUnusedLocals": true,
-		"baseUrl": "src",
-		"paths": {
-			"assets/*": ["assets/*"],
-			"components/*": ["components/*"],
-			"configuration/*": ["configuration/*"],
-			"containers/*": ["containers/*"],
-			"helpers/*": ["helpers/*"],
-			"resources/*": ["resources/*"],
-			"pages/*": ["pages/*"],
-			"public/*": ["public/*"],
-			"stores/*": ["stores/*"],
-			"styles/*": ["styles/*"],
-			"types/*": ["types/*"]
-		}
-	},
-	"include": ["src/", "_tests_"],
-	"exclude": ["node_modules", "!node_modules/@types", "**/__tests__/*", "dist"]
+  "buildOnSave": false,
+  "compileOnSave": true,
+  "compilerOptions": {
+    "jsx": "react",
+    "sourceMap": true,
+    "target": "es5",
+    "module": "esnext",
+    "outDir": "./dist/",
+    "allowJs": true,
+    "pretty": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "types": ["node", "jest", "chrome"],
+    "skipLibCheck": true,
+    "importHelpers": true,
+    "lib": ["dom", "es2018", "esnext"],
+    "moduleResolution": "node",
+    "noUnusedParameters": true,
+    "experimentalDecorators": true,
+    // remove strict to get rid of 'strictFunctionTypes'
+    "strict": true,
+    "strictFunctionTypes": false,
+    // best practices
+    "noUnusedLocals": true,
+    "baseUrl": "src",
+    "paths": {
+      "assets/*": ["assets/*"],
+      "components/*": ["components/*"],
+      "configuration/*": ["configuration/*"],
+      "containers/*": ["containers/*"],
+      "helpers/*": ["helpers/*"],
+      "resources/*": ["resources/*"],
+      "pages/*": ["pages/*"],
+      "public/*": ["public/*"],
+      "stores/*": ["stores/*"],
+      "styles/*": ["styles/*"],
+      "types/*": ["types/*"]
+    }
+  },
+  "include": ["src/", "_tests_", "index.d.ts"],
+  "exclude": ["node_modules", "!node_modules/@types", "**/__tests__/*", "dist"]
 }

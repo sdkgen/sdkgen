@@ -1,19 +1,19 @@
 export interface TypeTable {
-    [name: string]: TypeDescription;
+  [name: string]: TypeDescription;
 }
 
 export interface FunctionTable {
-    [name: string]: {
-        args: {
-            [arg: string]: TypeDescription;
-        };
-        ret: TypeDescription;
+  [name: string]: {
+    args: {
+      [arg: string]: TypeDescription;
     };
+    ret: TypeDescription;
+  };
 }
 
 export type TypeDescription = string | string[] | { [name: string]: TypeDescription };
 
 export interface AstJson {
-    typeTable: TypeTable;
-    functionTable: FunctionTable;
+  typeTable: TypeTable;
+  functionTable: FunctionTable;
 }

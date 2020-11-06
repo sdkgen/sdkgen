@@ -1,3 +1,3 @@
 describe("cli", () => {
-    it.todo("Write tests");
+  it.todo("Write tests");
 });

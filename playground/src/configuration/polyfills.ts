@@ -1,3 +1,4 @@
-export function setupPolyfills() {
-	window.Buffer = require("buffer");
+export function setupPolyfills(): void {
+  // eslint-disable-next-line global-require
+  window.Buffer = require("buffer");
 }

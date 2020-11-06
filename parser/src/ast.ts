@@ -1,178 +1,193 @@
 import { Token, TokenLocation } from "./token";
 
 export class AstRoot {
-    structTypes: StructType[] = [];
-    enumTypes: EnumType[] = [];
-    warnings: string[] = [];
+  structTypes: StructType[] = [];
 
-    constructor(public typeDefinitions: TypeDefinition[] = [], public operations: Operation[] = [], public errors: string[] = []) {}
+  enumTypes: EnumType[] = [];
+
+  warnings: string[] = [];
+
+  constructor(public typeDefinitions: TypeDefinition[] = [], public operations: Operation[] = [], public errors: string[] = []) {}
 }
 
 export abstract class AstNode {
-    public location = new TokenLocation();
+  public location = new TokenLocation();
 
-    constructor() {
-        Object.defineProperty(this, "location", { enumerable: false });
-    }
+  constructor() {
+    Object.defineProperty(this, "location", { enumerable: false });
+  }
 
-    at(token: Token): this {
-        this.location = token.location;
-        return this;
-    }
+  at(token: Token): this {
+    this.location = token.location;
+    return this;
+  }
 
-    atLocation(location: TokenLocation): this {
-        this.location = location;
-        return this;
-    }
+  atLocation(location: TokenLocation): this {
+    this.location = location;
+    return this;
+  }
 }
 
 export abstract class Type extends AstNode {
-    abstract get name(): string;
+  abstract get name(): string;
 
-    toJSON() {
-        const json: any = { ...this };
-        delete json.name;
-        return json;
-    }
+  toJSON(): any {
+    const json: any = { ...this };
+
+    delete json.name;
+    return json;
+  }
 }
 
 export abstract class PrimitiveType extends Type {}
 export class StringPrimitiveType extends PrimitiveType {
-    name = "string";
+  name = "string";
 }
 export class IntPrimitiveType extends PrimitiveType {
-    name = "int";
+  name = "int";
 }
 export class UIntPrimitiveType extends PrimitiveType {
-    name = "uint";
+  name = "uint";
 }
 export class FloatPrimitiveType extends PrimitiveType {
-    name = "float";
+  name = "float";
 }
 export class BigIntPrimitiveType extends PrimitiveType {
-    name = "bigint";
+  name = "bigint";
 }
 export class DatePrimitiveType extends PrimitiveType {
-    name = "date";
+  name = "date";
 }
 export class DateTimePrimitiveType extends PrimitiveType {
-    name = "datetime";
+  name = "datetime";
 }
 export class BoolPrimitiveType extends PrimitiveType {
-    name = "bool";
+  name = "bool";
 }
 export class BytesPrimitiveType extends PrimitiveType {
-    name = "bytes";
+  name = "bytes";
 }
 export class VoidPrimitiveType extends PrimitiveType {
-    name = "void";
+  name = "void";
 }
 export class MoneyPrimitiveType extends PrimitiveType {
-    name = "money";
+  name = "money";
 }
 export class CpfPrimitiveType extends PrimitiveType {
-    name = "cpf";
+  name = "cpf";
 }
 export class CnpjPrimitiveType extends PrimitiveType {
-    name = "cnpj";
+  name = "cnpj";
 }
 export class EmailPrimitiveType extends PrimitiveType {
-    name = "email";
+  name = "email";
 }
 export class UrlPrimitiveType extends PrimitiveType {
-    name = "url";
+  name = "url";
 }
 export class UuidPrimitiveType extends PrimitiveType {
-    name = "uuid";
+  name = "uuid";
 }
 export class HexPrimitiveType extends PrimitiveType {
-    name = "hex";
+  name = "hex";
+}
+export class HtmlPrimitiveType extends PrimitiveType {
+  name = "html";
 }
 export class Base64PrimitiveType extends PrimitiveType {
-    name = "base64";
+  name = "base64";
 }
 export class XmlPrimitiveType extends PrimitiveType {
-    name = "xml";
+  name = "xml";
 }
 export class JsonPrimitiveType extends PrimitiveType {
-    name = "json";
+  name = "json";
 }
 
 export class OptionalType extends Type {
-    constructor(public base: Type) {
-        super();
-    }
-    get name() {
-        return this.base.name + "?";
-    }
+  constructor(public base: Type) {
+    super();
+  }
+
+  get name(): string {
+    return `${this.base.name}?`;
+  }
 }
 
 export class ArrayType extends Type {
-    constructor(public base: Type) {
-        super();
-    }
-    get name() {
-        return this.base.name + "[]";
-    }
+  constructor(public base: Type) {
+    super();
+  }
+
+  get name(): string {
+    return `${this.base.name}[]`;
+  }
 }
 
 export class EnumValue extends AstNode {
-    annotations: Annotation[] = [];
-    constructor(public value: string) {
-        super();
-    }
+  annotations: Annotation[] = [];
+
+  constructor(public value: string) {
+    super();
+  }
 }
 
 export class EnumType extends Type {
-    name!: string;
-    constructor(public values: EnumValue[]) {
-        super();
-    }
+  name!: string;
+
+  constructor(public values: EnumValue[]) {
+    super();
+  }
 }
 
 export class StructType extends Type {
-    name!: string;
-    constructor(public fields: Field[], public spreads: TypeReference[]) {
-        super();
-    }
+  name!: string;
+
+  constructor(public fields: Field[], public spreads: TypeReference[]) {
+    super();
+  }
 }
 
 export class TypeDefinition extends AstNode {
-    annotations: Annotation[] = [];
-    constructor(public name: string, public type: Type) {
-        super();
-    }
+  annotations: Annotation[] = [];
+
+  constructor(public name: string, public type: Type) {
+    super();
+  }
 }
 
 export class TypeReference extends Type {
-    type!: Type;
-    constructor(public name: string) {
-        super();
-    }
+  type!: Type;
+
+  constructor(public name: string) {
+    super();
+  }
 }
 
 export class Field extends AstNode {
-    annotations: Annotation[] = [];
-    constructor(public name: string, public type: Type, public secret = false) {
-        super();
-    }
+  annotations: Annotation[] = [];
+
+  constructor(public name: string, public type: Type, public secret = false) {
+    super();
+  }
 }
 
 export abstract class Operation extends AstNode {
-    annotations: Annotation[] = [];
-    constructor(public name: string, public args: Field[], public returnType: Type) {
-        super();
-    }
+  annotations: Annotation[] = [];
 
-    get prettyName() {
-        return this.name;
-    }
+  constructor(public name: string, public args: Field[], public returnType: Type) {
+    super();
+  }
+
+  get prettyName(): string {
+    return this.name;
+  }
 }
 
 export class GetOperation extends Operation {
-    get prettyName() {
-        return this.returnType instanceof BoolPrimitiveType ? this.name : "get" + this.name[0].toUpperCase() + this.name.slice(1);
-    }
+  get prettyName(): string {
+    return this.returnType instanceof BoolPrimitiveType ? this.name : `get${this.name[0].toUpperCase()}${this.name.slice(1)}`;
+  }
 }
 
 export class FunctionOperation extends Operation {}
@@ -180,32 +195,34 @@ export class FunctionOperation extends Operation {}
 export abstract class Annotation extends AstNode {}
 
 export class DescriptionAnnotation extends Annotation {
-    constructor(public text: string) {
-        super();
-    }
+  constructor(public text: string) {
+    super();
+  }
 }
 
 export class ThrowsAnnotation extends Annotation {
-    constructor(public error: string) {
-        super();
-    }
+  constructor(public error: string) {
+    super();
+  }
 }
 
 export class ArgDescriptionAnnotation extends Annotation {
-    constructor(public argName: string, public text: string) {
-        super();
-    }
+  constructor(public argName: string, public text: string) {
+    super();
+  }
 }
 
 export class RestAnnotation extends Annotation {
-    constructor(
-        public method: string,
-        public path: string,
-        public pathVariables: string[],
-        public queryVariables: string[],
-        public headers: Map<string, string>,
-        public bodyVariable: string | null,
-    ) {
-        super();
-    }
+  constructor(
+    public method: string,
+    public path: string,
+    public pathVariables: string[],
+    public queryVariables: string[],
+    public headers: Map<string, string>,
+    public bodyVariable: string | null,
+  ) {
+    super();
+  }
 }
+
+export class HiddenAnnotation extends Annotation {}

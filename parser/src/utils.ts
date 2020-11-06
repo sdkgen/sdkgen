@@ -1,24 +1,25 @@
 import {
-    Base64PrimitiveType,
-    BigIntPrimitiveType,
-    BoolPrimitiveType,
-    BytesPrimitiveType,
-    CnpjPrimitiveType,
-    CpfPrimitiveType,
-    DatePrimitiveType,
-    DateTimePrimitiveType,
-    EmailPrimitiveType,
-    FloatPrimitiveType,
-    HexPrimitiveType,
-    IntPrimitiveType,
-    JsonPrimitiveType,
-    MoneyPrimitiveType,
-    StringPrimitiveType,
-    UIntPrimitiveType,
-    UrlPrimitiveType,
-    UuidPrimitiveType,
-    VoidPrimitiveType,
-    XmlPrimitiveType,
+  Base64PrimitiveType,
+  BigIntPrimitiveType,
+  BoolPrimitiveType,
+  BytesPrimitiveType,
+  CnpjPrimitiveType,
+  CpfPrimitiveType,
+  DatePrimitiveType,
+  DateTimePrimitiveType,
+  EmailPrimitiveType,
+  FloatPrimitiveType,
+  HexPrimitiveType,
+  HtmlPrimitiveType,
+  IntPrimitiveType,
+  JsonPrimitiveType,
+  MoneyPrimitiveType,
+  StringPrimitiveType,
+  UIntPrimitiveType,
+  UrlPrimitiveType,
+  UuidPrimitiveType,
+  VoidPrimitiveType,
+  XmlPrimitiveType,
 } from "./ast";
 
 export const primitiveToAstClass = new Map<string, any>();
@@ -35,6 +36,7 @@ primitiveToAstClass.set("money", MoneyPrimitiveType);
 primitiveToAstClass.set("cpf", CpfPrimitiveType);
 primitiveToAstClass.set("cnpj", CnpjPrimitiveType);
 primitiveToAstClass.set("email", EmailPrimitiveType);
+primitiveToAstClass.set("html", HtmlPrimitiveType);
 primitiveToAstClass.set("url", UrlPrimitiveType);
 primitiveToAstClass.set("uuid", UuidPrimitiveType);
 primitiveToAstClass.set("hex", HexPrimitiveType);

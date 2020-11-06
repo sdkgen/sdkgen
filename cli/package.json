@@ -7,6 +7,10 @@
   },
   "scripts": {
     "test": "jest --passWithNoTests",
+    "eslint:fix": "eslint --fix '**/*.ts'",
+    "eslint:check": "eslint '**/*.ts'",
+    "prettier:fix": "prettier --write '**/*.{t,j}s'",
+    "prettier:check": "prettier --check '**/*.{t,j}s'",
     "build": "tsc"
   },
   "repository": {
@@ -25,11 +29,17 @@
   "devDependencies": {
     "@types/command-line-args": "^5.0.0",
     "@types/command-line-usage": "^5.0.1",
-    "@types/jest": "^25.1.2",
-    "@types/node": "^13.7.0",
-    "jest": "^25.1.0",
-    "ts-jest": "^25.2.0",
-    "typescript": "^3.7.5"
+    "@types/jest": "^26.0.14",
+    "@types/node": "^14.11.9",
+    "@typescript-eslint/eslint-plugin": "^4.4.1",
+    "@typescript-eslint/parser": "^4.4.1",
+    "eslint": "^7.11.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "jest": "^26.5.3",
+    "prettier": "^2.1.2",
+    "ts-jest": "^26.4.1",
+    "typescript": "^4.0.3"
   },
   "jest": {
     "transform": {
@@ -47,7 +57,9 @@
     ]
   },
   "dependencies": {
+    "@sdkgen/csharp-generator": "file:../csharp-generator",
     "@sdkgen/dart-generator": "file:../dart-generator",
+    "@sdkgen/kotlin-generator": "file:../kotlin-generator",
     "@sdkgen/parser": "file:../parser",
     "@sdkgen/typescript-generator": "file:../typescript-generator",
     "command-line-args": "^5.1.1",

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="sdkgen_error_call_timeout">Conexão excedeu o tempo de espera.</string>
+    <string name="sdkgen_error_call_failed_without_message">Chamada falhou sem mensagem de erro!</string>
+    <string name="sdkgen_error_unknown">Ocorreu um erro desconhecido na conexão.</string>
+    <string name="sdkgen_error_serialization">Erro de serialização</string>
+    <string name="sdkgen_error_call_code">Erro Fatal (%1$s) - Tente novamente</string>
+</resources>

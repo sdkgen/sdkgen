@@ -1,174 +1,173 @@
+import { getLocalStorageBookmarks } from "helpers/localStorage/bookmarkedEndpoints";
 import { ModelAnotations, requestModel } from "helpers/requestModel";
 import { observable } from "mobx";
 import { ArgsType, AstJson, TypeDescription, TypeTable } from "resources/types/ast";
 import { v4 as uuidV4 } from "uuid";
 import { RootStore } from ".";
 
-export const simpleStringTypes = [
-	"string",
-	"cep",
-	"cnpj",
-	"cpf",
-	"email",
-	"phone",
-	"safehtml",
-	"url",
-	"xml",
-];
-export const simpleTypes = [
-	"json",
-	"bool",
-	"hex",
-	"uuid",
-	"base64",
-	"int",
-	"uint",
-	"float",
-	"money",
-	"void",
-	"latlng",
-	...simpleStringTypes,
-];
+export const simpleStringTypes = ["string", "cep", "cnpj", "cpf", "email", "html", "phone", "url", "xml"];
+export const simpleTypes = ["json", "bool", "hex", "uuid", "base64", "int", "uint", "float", "money", "void", "latlng", ...simpleStringTypes];
 
 export class RequestsStore {
-	public rootStore: RootStore;
+  public rootStore: RootStore;
 
-	@observable
-	public AST: AstJson | null = null;
+  @observable
+  public AST: AstJson | null = null;
 
-	public api: Record<string, requestModel> = {};
+  public api: Record<string, requestModel> = {};
 
-	constructor(rootStore: RootStore) {
-		this.rootStore = rootStore;
-		this.fetchAST();
-	}
+  constructor(rootStore: RootStore) {
+    this.rootStore = rootStore;
+    this.fetchAST();
+  }
 
-	public fetchAST = async () => {
-		try {
-			const response = await fetch(`${this.rootStore.configStore.endpointUrl}/ast.json`);
-			const ast = await response.json();
-			this.AST = ast;
-			if (ast) this.createModels(ast);
-		} catch (err) {
-			console.log(err);
-		}
-	};
+  public async fetchAST(): Promise<void> {
+    try {
+      const response = await fetch(`${this.rootStore.configStore.endpointUrl}/ast.json`);
+      const ast = await response.json();
 
-	private createMockBasedOnTypes = (args: ArgsType, typeTable: TypeTable) => {
-		return Object.keys(args).reduce(
-			(acc, curKey) => ({ ...acc, [curKey]: this.encodeTransform(typeTable, args[curKey]) }),
-			{},
-		);
-	};
+      this.AST = ast;
+      if (ast) {
+        this.createModels(ast);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  }
 
-	private simpleTypeMock = (type: string) => {
-		const types: Record<string, any> = {
-			json: { anything: [1, 2, 3] },
-			bool: true,
-			hex: "deadbeef",
-			uuid: uuidV4(),
-			base64: "c2RrZ2Vu",
-			int: 123,
-			uint: 123,
-			float: 12.3,
-			money: 123,
-			void: undefined,
-			latlng: undefined,
-			string: "string",
-			cep: undefined,
-			cnpj: undefined,
-			cpf: undefined,
-			email: "hello@example.com",
-			phone: undefined,
-			safehtml: "<body>Hello</body>",
-			url: location.origin,
-			xml: "<aa></aa>",
-		};
-		if (types[type] === undefined) {
-			console.log(`Unknown simple type '${type}'`);
-			return null;
-		}
-		return types[type];
-	};
+  private createMockBasedOnTypes(args: ArgsType, typeTable: TypeTable) {
+    return Object.keys(args).reduce((acc, curKey) => ({ ...acc, [curKey]: this.encodeTransform(typeTable, args[curKey]) }), {});
+  }
 
-	private encodeTransform = (typeTable: TypeTable, type: TypeDescription): any => {
-		if (Array.isArray(type)) {
-			// things like "car" | "motorcycle"
-			return type[0];
-		} else if (typeof type === "object") {
-			// resolution of complex type
-			const obj: any = {};
-			for (const key in type) {
-				obj[key] = this.encodeTransform(typeTable, type[key]);
-			}
-			return obj;
-		} else if (type.endsWith("?")) {
-			// nullish
-			return this.encodeTransform(typeTable, type.replace("?", ""));
-		} else if (type.endsWith("[]")) {
-			// arrayOf
-			return [1, 2, 3].map(() => this.encodeTransform(typeTable, type.replace("[]", "")));
-		} else if (simpleTypes.includes(type)) {
-			// simple types
-			return this.simpleTypeMock(type);
-		} else if (type === "bytes") {
-			return "deadbeef";
-		} else if (type === "date") {
-			return new Date().toISOString().split("T")[0];
-		} else if (type === "datetime") {
-			return new Date().toISOString().replace("Z", "");
-		} else {
-			// complex type
-			const resolved = typeTable[type];
-			if (resolved) {
-				return this.encodeTransform(typeTable, resolved);
-			} else {
-				throw new Error(`Unknown type '${type}'`);
-			}
-			return "complex type";
-		}
-	};
+  private simpleTypeMock(type: string) {
+    const types: Record<string, any> = {
+      base64: "c2RrZ2Vu",
+      bool: true,
+      cep: undefined,
+      cnpj: undefined,
+      cpf: undefined,
+      email: "hello@example.com",
+      float: 12.3,
+      hex: "deadbeef",
+      int: 123,
+      json: { anything: [1, 2, 3] },
+      latlng: undefined,
+      money: 123,
+      phone: undefined,
+      safehtml: "<body>Hello</body>",
+      string: "string",
+      uint: 123,
+      url: location.origin,
+      uuid: uuidV4(),
+      void: undefined,
+      xml: "<aa></aa>",
+    };
 
-	public getAnotations = (AST: AstJson, functionName: string): ModelAnotations => {
-		const functionAnnotations = AST.annotations[`fn.${functionName}`] || [];
+    if (types[type] === undefined) {
+      console.log(`Unknown simple type '${type}'`);
+      return null;
+    }
 
-		const regex = RegExp(`fn.${functionName}\\.[^\.]*`);
-		const argsKeys = Object.keys(AST.annotations).filter(target => regex.test(target));
+    return types[type];
+  }
 
-		const argsAnnotations = argsKeys.reduce((acc, argKey) => {
-			// breaks 'fn.getBalance.bankCode' into ["fn", "getBalance", "bankCode"]
-			// and gets the last part, that is the arguemnt name
-			const argName = argKey.split(".")[2];
-			return {
-				...acc,
-				[argName]: AST.annotations[argKey],
-			};
-		}, {});
+  private encodeTransform(typeTable: TypeTable, type: TypeDescription): any {
+    if (Array.isArray(type)) {
+      // Things like "car" | "motorcycle"
+      return type[0];
+    } else if (typeof type === "object") {
+      // Resolution of complex type
+      const obj: any = {};
 
-		const annotations: ModelAnotations = {
-			func: functionAnnotations,
-			args: argsAnnotations,
-		};
-		return annotations;
-	};
+      for (const [key, value] of Object.entries(type)) {
+        obj[key] = this.encodeTransform(typeTable, value);
+      }
 
-	public createModels = (AST: AstJson) => {
-		const { endpointUrl, deviceId } = this.rootStore.configStore;
+      return obj;
+    } else if (type.endsWith("?")) {
+      // Nullish
+      return this.encodeTransform(typeTable, type.replace("?", ""));
+    } else if (type.endsWith("[]")) {
+      // ArrayOf
+      return [1, 2, 3].map(() => this.encodeTransform(typeTable, type.replace("[]", "")));
+    } else if (simpleTypes.includes(type)) {
+      // Simple types
+      return this.simpleTypeMock(type);
+    } else if (type === "bytes") {
+      return "deadbeef";
+    } else if (type === "date") {
+      return new Date().toISOString().split("T")[0];
+    } else if (type === "datetime") {
+      return new Date().toISOString().replace("Z", "");
+    }
 
-		const FNs = Object.entries(AST.functionTable);
-		this.api = FNs.reduce((acc, [fName, fStruct]) => {
-			const argsMock = this.createMockBasedOnTypes(fStruct.args, AST.typeTable);
-			const annotations = this.getAnotations(AST, fName);
-			return {
-				...acc,
-				[fName]: new requestModel({
-					name: fName,
-					defaultArgsMock: argsMock,
-					baseUrl: endpointUrl,
-					deviceId: deviceId!,
-					annotations,
-				}),
-			};
-		}, {});
-	};
+    // Complex type
+    const resolved = typeTable[type];
+
+    if (resolved) {
+      return this.encodeTransform(typeTable, resolved);
+    }
+
+    throw new Error(`Unknown type '${type}'`);
+  }
+
+  public getAnotations = (AST: AstJson, functionName: string): ModelAnotations => {
+    const functionAnnotations = AST.annotations[`fn.${functionName}`] || [];
+
+    const regex = RegExp(`fn.${functionName}\\.[^.]*`, "u");
+    const argsKeys = Object.keys(AST.annotations).filter(target => regex.test(target));
+
+    const argsAnnotations = argsKeys.reduce((acc, argKey) => {
+      /*
+       * Breaks 'fn.getBalance.bankCode' into ["fn", "getBalance", "bankCode"]
+       * and gets the last part, that is the argument name
+       */
+      const pieces = argKey.split(".");
+
+      return {
+        ...acc,
+        [pieces[2]]: AST.annotations[argKey],
+      };
+    }, {});
+
+    const annotations: ModelAnotations = {
+      args: argsAnnotations,
+      func: functionAnnotations,
+    };
+
+    return annotations;
+  };
+
+  private createBookmarkedEndpointIndex = (): Record<string, boolean | undefined> => {
+    return getLocalStorageBookmarks().reduce((acc, name) => ({ ...acc, [name]: true }), {});
+  };
+
+  public createModels(AST: AstJson): void {
+    console.log("createModels");
+    const { endpointUrl, deviceId } = this.rootStore.configStore;
+
+    const FNs = Object.entries(AST.functionTable);
+    const bookmarkedEndpointsIndex = this.createBookmarkedEndpointIndex();
+
+    this.api = FNs.reduce((acc, [fName, fStruct]) => {
+      const argsMock = this.createMockBasedOnTypes(fStruct.args, AST.typeTable);
+      const annotations = this.getAnotations(AST, fName);
+
+      if (annotations.func.some(ann => ann.type === "hidden")) {
+        return acc;
+      }
+
+      return {
+        ...acc,
+        [fName]: new requestModel({
+          annotations,
+          baseUrl: endpointUrl,
+          bookmarked: Boolean(bookmarkedEndpointsIndex[fName]),
+          defaultArgsMock: argsMock,
+          deviceId,
+          name: fName,
+        }),
+      };
+    }, {});
+  }
 }

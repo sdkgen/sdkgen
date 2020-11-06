@@ -1,160 +1,237 @@
 name: test
 on: [push]
 jobs:
-
-  prettier:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v1
-    - run: npm i -g prettier
-    - run: prettier -c '**/*.ts'
-
   browser-runtime:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 13.x]
+        node-version: [10.x, 12.x, 14.x]
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm install
-      working-directory: ./browser-runtime
-    - run: npm run build
-      working-directory: ./browser-runtime
-    - run: npm test
-      working-directory: ./browser-runtime
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+        working-directory: ./browser-runtime
+      - run: npm run prettier:check
+        working-directory: ./browser-runtime
+      - run: npm run eslint:check
+        working-directory: ./browser-runtime
+      - run: npm run build
+        working-directory: ./browser-runtime
+      - run: npm test
+        working-directory: ./browser-runtime
 
   cli:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 13.x]
+        node-version: [10.x, 12.x, 14.x]
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm install
-      working-directory: ./cli
-    - run: npm run build
-      working-directory: ./cli
-    - run: npm test
-      working-directory: ./cli
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+        working-directory: ./cli
+      - run: npm run prettier:check
+        working-directory: ./cli
+      - run: npm run eslint:check
+        working-directory: ./cli
+      - run: npm run build
+        working-directory: ./cli
+      - run: npm test
+        working-directory: ./cli
 
   dart-generator:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 13.x]
+        node-version: [10.x, 12.x, 14.x]
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm install
-      working-directory: ./dart-generator
-    - run: npm run build
-      working-directory: ./dart-generator
-    - run: npm test
-      working-directory: ./dart-generator
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+        working-directory: ./dart-generator
+      - run: npm run prettier:check
+        working-directory: ./dart-generator
+      - run: npm run eslint:check
+        working-directory: ./dart-generator
+      - run: npm run build
+        working-directory: ./dart-generator
+      - run: npm test
+        working-directory: ./dart-generator
 
   dart-runtime:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        flutter-version: [1.12.x, 1.13.x, 1.14.x]
-        flutter-channel: [stable, beta]
-        exclude:
-          - flutter-version: 1.12.x
-            flutter-channel: beta
-          - flutter-version: 1.13.x
-            flutter-channel: stable
-          - flutter-version: 1.14.x
-            flutter-channel: stable
+        flutter-version: [1.12.x, 1.17.x, 1.20.x, 1.22.x]
+        flutter-channel: [stable]
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-java@v1
-      with:
-        java-version: 12.x
-    - uses: subosito/flutter-action@v1
-      with:
-        flutter-version: ${{ matrix.flutter-version }}
-        channel: ${{ matrix.flutter-channel }}
-    - run: flutter pub get
-      working-directory: ./dart-runtime
-    - run: flutter analyze
-      working-directory: ./dart-runtime
-    - run: flutter format . --set-exit-if-changed
-      working-directory: ./dart-runtime
-    - run: flutter pub pub publish --dry-run
-      working-directory: ./dart-runtime
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
+        with:
+          java-version: 12.x
+      - uses: subosito/flutter-action@v1
+        with:
+          flutter-version: ${{ matrix.flutter-version }}
+          channel: ${{ matrix.flutter-channel }}
+      - run: flutter pub get
+        working-directory: ./dart-runtime
+      - run: flutter test
+        working-directory: ./dart-runtime
+      - run: if [ "${{ matrix.flutter-version }}" == "1.22.x" ]; then flutter analyze; fi
+        working-directory: ./dart-runtime
+      - run: if [ "${{ matrix.flutter-version }}" == "1.22.x" ]; then flutter format . --set-exit-if-changed; fi
+        working-directory: ./dart-runtime
+      - run: if [ "${{ matrix.flutter-version }}" == "1.22.x" ]; then flutter pub pub publish --dry-run; fi
+        working-directory: ./dart-runtime
 
   node-runtime:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 13.x]
+        node-version: [10.x, 12.x, 14.x]
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm install
-      working-directory: ./node-runtime
-    - run: npm run build
-      working-directory: ./node-runtime
-    - run: npm test
-      working-directory: ./node-runtime
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+        working-directory: ./node-runtime
+      - run: npm run prettier:check
+        working-directory: ./node-runtime
+      - run: npm run eslint:check
+        working-directory: ./node-runtime
+      - run: npm run build
+        working-directory: ./node-runtime
+      - run: npm test
+        working-directory: ./node-runtime
 
   parser:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 13.x]
+        node-version: [10.x, 12.x, 14.x]
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm install
-      working-directory: ./parser
-    - run: npm run build
-      working-directory: ./parser
-    - run: npm test
-      working-directory: ./parser
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+        working-directory: ./parser
+      - run: npm run prettier:check
+        working-directory: ./parser
+      - run: npm run eslint:check
+        working-directory: ./parser
+      - run: npm run build
+        working-directory: ./parser
+      - run: npm test
+        working-directory: ./parser
 
   playground:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        # TODO: Enable 13.x. See #1.
-        node-version: [10.x, 12.x]
+        node-version: [10.x, 12.x, 14.x]
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm install
-      working-directory: ./playground
-    - run: npm run build
-      working-directory: ./playground
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+        working-directory: ./playground
+      - run: npm run prettier:check
+        working-directory: ./playground
+      - run: npm run eslint:check
+        working-directory: ./playground
+      - run: npm run build
+        working-directory: ./playground
 
   typescript-generator:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [10.x, 12.x, 13.x]
+        node-version: [10.x, 12.x, 14.x]
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v1
-      with:
-        node-version: ${{ matrix.node-version }}
-    - run: npm install
-      working-directory: ./typescript-generator
-    - run: npm run build
-      working-directory: ./typescript-generator
-    - run: npm test
-      working-directory: ./typescript-generator
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+        working-directory: ./typescript-generator
+      - run: npm run prettier:check
+        working-directory: ./typescript-generator
+      - run: npm run eslint:check
+        working-directory: ./typescript-generator
+      - run: npm run build
+        working-directory: ./typescript-generator
+      - run: npm test
+        working-directory: ./typescript-generator
+
+  csharp-generator:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x, 14.x]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+        working-directory: ./csharp-generator
+      - run: npm run prettier:check
+        working-directory: ./csharp-generator
+      - run: npm run eslint:check
+        working-directory: ./csharp-generator
+      - run: npm run build
+        working-directory: ./csharp-generator
+      - run: npm test
+        working-directory: ./csharp-generator
+
+  dotnetcore-runtime:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dotnet-version: ["3.1.x"]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+      - run: dotnet pack
+        working-directory: ./dotnetcore-runtime
+
+  kotlin-generator:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [10.x, 12.x, 14.x]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+        working-directory: ./kotlin-generator
+      - run: npm run prettier:check
+        working-directory: ./kotlin-generator
+      - run: npm run eslint:check
+        working-directory: ./kotlin-generator
+      - run: npm run build
+        working-directory: ./kotlin-generator
+      - run: npm test
+        working-directory: ./kotlin-generator
+
+  android-runtime:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: giorgosneokleous93/docker-multicommand-android@v1.0.0
+        with:
+          workingdir: "./android-runtime/"
+          command1: "./gradlew test assembleRelease"

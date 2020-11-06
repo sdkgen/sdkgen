@@ -1,21 +1,25 @@
+/* eslint-disable camelcase */
 import { ConfigEnvs } from ".";
 
-export function setupServiceWorker(configEnvs: ConfigEnvs) {
-	if (!configEnvs.isProductionBuild) return; //should not use service worker on development mode
+export function setupServiceWorker(configEnvs: ConfigEnvs): void {
+  if (!configEnvs.isProductionBuild) {
+    return;
+  } // Should not use service worker on development mode
 
-	const runtime = require("offline-plugin/runtime");
-	runtime.install({
-		onUpdateReady: () => runtime.applyUpdate(),
-		// tslint:disable-next-line: deprecation
-		onUpdated: () => window.location.reload(true),
-	});
+  // eslint-disable-next-line global-require
+  const runtime = require("offline-plugin/runtime");
 
-	try {
-		if (localStorage.getItem("build") !== __webpack_hash__) {
-			localStorage.setItem("build", __webpack_hash__);
-			runtime.update();
-		}
-	} catch {
-		runtime.update();
-	}
+  runtime.install({
+    onUpdateReady: () => runtime.applyUpdate(),
+    onUpdated: () => window.location.reload(true),
+  });
+
+  try {
+    if (localStorage.getItem("build") !== __webpack_hash__) {
+      localStorage.setItem("build", __webpack_hash__);
+      runtime.update();
+    }
+  } catch {
+    runtime.update();
+  }
 }
