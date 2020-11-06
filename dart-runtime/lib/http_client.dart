@@ -69,6 +69,7 @@ class SdkgenHttpClient {
 
       final platform = {
         "os": Platform.operatingSystem,
+        "osVersion": Platform.operatingSystemVersion,
         "dartVersion": Platform.version,
         "appId": packageInfo?.packageName,
         "screenWidth": context == null ? 0 : MediaQuery.of(context).size.width,
@@ -81,13 +82,13 @@ class SdkgenHttpClient {
         final androidInfo = await deviceInfo.androidInfo;
         platform["model"] = androidInfo.model; //Ex: SM-1234
         platform["brand"] = androidInfo.brand; //Ex: Samsung
-        platform["osVersion"] = androidInfo.version.release; //10
-        platform["sdkVersion"] = androidInfo.version.sdkInt.toString(); //29
+        platform["version"] = androidInfo.version.release; //10
+        platform["sdkVersion"] = androidInfo.version.sdkInt; //29
       } else if (Platform.isIOS) {
         final iosInfo = await deviceInfo.iosInfo;
         platform["model"] = iosInfo.name; //Ex: iPhone 11 Pro Max
         platform["brand"] = "Apple";
-        platform["osVersion"] = iosInfo.systemVersion; //13.1
+        platform["version"] = iosInfo.systemVersion; //13.1
       }
 
       var body = {
