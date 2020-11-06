@@ -34,6 +34,7 @@ export function generateNodeServerSource(ast: AstRoot): string {
       .join("")}
     }
 
+    /** @deprecated api.err shouldn't be used. Import and throw errors directly. */
     err = {${ast.errors
       .map(
         err => `
