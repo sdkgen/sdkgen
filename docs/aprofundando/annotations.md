@@ -64,7 +64,7 @@ Neste exemplo a função `getUser` pode lançar o erro `NotFound` ou o erro `For
 
 ## `@hidden`
 
-Por padrão todas as funções podem ser chamadas no playground e são parte dos targets de clientes gerados. Caso uma função precise existir, mas não deva ser chamada normalmente, a anotação `@hidden` pode ser aplicada. As funções ocultas não existirão no playground ou nos target gerados, sendo útil para depreciar funções antigas ou para marcar funções para serem utilizadas exclusivamente como REST (ver [`@rest`](#rest)). Repare que funções marcadas como `@hidden` ainda existem e ainda podem ser chamadas, especialmente por targets antigos. Não use para efeitos de segurança. Exemplo:
+Por padrão todas as funções podem ser chamadas no playground e são parte dos targets de clientes gerados. Caso uma função precise existir, mas não deva ser chamada normalmente, a anotação `@hidden` pode ser aplicada. As funções ocultas não existirão no playground ou nos target gerados, sendo útil para depreciar funções antigas ou para marcar funções para serem utilizadas exclusivamente como [REST](./rest.md). Repare que funções marcadas como `@hidden` ainda existem e ainda podem ser chamadas, especialmente por targets antigos. Não use para efeitos de segurança. Exemplo:
 
 ```
 @hidden
@@ -74,3 +74,5 @@ fn getUserV2(): UserV2
 ```
 
 ## `@rest`
+
+Ver [REST](./rest.md).
