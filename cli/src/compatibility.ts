@@ -25,5 +25,7 @@ export function compatibilityCmd(argv: string[]): void {
 
   if (issues.length) {
     process.exit(1);
+  } else {
+    console.log("No breaking changes.");
   }
 }
