@@ -36,5 +36,6 @@ nav:
   - Targets:
       - targets/servidor-nodejs.md
   - Aprofundando:
+      - Annotations: aprofundando/annotations.md
       - date e datetime: aprofundando/datas.md
   - faq.md

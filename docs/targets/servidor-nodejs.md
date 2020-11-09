@@ -16,7 +16,7 @@ Adicione este script no seu package.json:
 
 Com isso você poderá executar `npm run sdkgen` para gerar novamente o arquivo `src/api.ts` a partir do `src/api.sdkgen`.
 
-# Estrutura do arquivo gerado
+## Estrutura do arquivo gerado
 
 O arquivo `api.ts` gerado pelo sdkgen é um módulo que importa `@sdkgen/node-runtime` (por isso precisa estar instalado) e exporta alguns tipos/objetos:
 
