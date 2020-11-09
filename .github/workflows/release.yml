@@ -308,3 +308,17 @@ jobs:
         working-directory: ./dotnetcore-runtime
         env:
           NUGET_TOKEN: ${{ secrets.NUGET_TOKEN }}
+
+  vscode-ext:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+      - run: |
+          npm install -g json && json -I -f package.json -e '
+            this.version = "${{ github.ref }}".replace("refs/tags/", "");
+          '
+        working-directory: ./vscode-ext
+      - run: npm install -g vsce
+      - run: vsce publish -p ${{ secrets.VSCE_TOKEN }}
+        working-directory: ./vscode-ext
