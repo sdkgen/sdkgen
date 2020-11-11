@@ -69,5 +69,3 @@ node index.js
 Com a aplicação rodando você pode abrir o playground no seu browser em: http://localhost:8000/playground. Experimente chamar a função lá.
 
 Para projetos pequenos essa estrutura é suficiente, mas em outros casos é interessante estruturar o projeto de forma a comportar uma API mais complexa, dividindo em múltiplos controllers, separando responsabilidades e facilitando injeção de dependências.
-
-## Cliente
