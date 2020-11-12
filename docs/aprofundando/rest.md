@@ -120,7 +120,7 @@ A sua função pode retornar qualquer um dos tipos suportados pelo sdkgen. No en
 | ------------------------------------------------------------- | ------------------------- |
 | Sucesso, mas com retorno null ou sem retorno e com método GET | 404 Not Found             |
 | Sucesso, mas com retorno null ou sem retorno e outros métodos | 204 No Content            |
-| Sucesso, com qualquer outro tipo de retorno                   | 200 Ok                    |
+| Sucesso, com qualquer outro tipo de retorno                   | 200 OK                    |
 | Erro lançado dentro da função                                 | 400 Bad Request           |
 | Erro não especificado durante o processamento da requisição   | 500 Internal Server Error |
 
