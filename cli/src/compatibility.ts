@@ -1,23 +1,68 @@
 /* eslint-disable no-process-exit */
 import { compatibilityIssues, Parser } from "@sdkgen/parser";
+import commandLineArgs from "command-line-args";
+import commandLineUsage from "command-line-usage";
+
+const optionDefinitions = [
+  { description: "Specifies the old version", name: "old" },
+  { description: "Specifies the new version", name: "new" },
+  { alias: "h", description: "Display this usage guide.", name: "help", type: Boolean },
+];
 
 export function compatibilityCmd(argv: string[]): void {
-  const [source1, source2] = argv;
+  const options: {
+    old?: string;
+    new?: string;
+    help?: boolean;
+    _unknown?: string[];
+  } = commandLineArgs(optionDefinitions, { argv, partial: true });
 
-  if (!source1 || !source2) {
-    console.error("Error: Need to specify two source files.");
-    process.exit(1);
+  if (options.help) {
+    console.log(
+      commandLineUsage([
+        {
+          content: "sdkgen compatibility --old src/old.sdkgen --new src/new.sdkgen",
+          header: "Typical Example",
+        },
+        {
+          header: "Options",
+          optionList: optionDefinitions,
+        },
+        {
+          content: "Project home: {underline https://sdkgen.github.io}",
+        },
+      ]),
+    );
+    process.exit(0);
   }
 
-  if (argv.length > 2) {
+  const args = options._unknown ?? [];
+
+  if (!options.old) {
+    options.old = args.shift();
+    if (!options.old) {
+      console.error("Error: Missing 'old' option.");
+      process.exit(1);
+    }
+  }
+
+  if (!options.new) {
+    options.new = args.shift();
+    if (!options.new) {
+      console.error("Error: Missing 'new' option.");
+      process.exit(1);
+    }
+  }
+
+  if (args.length > 0) {
     console.error("Error: Too many arguments.");
     process.exit(1);
   }
 
-  const ast1 = new Parser(source1).parse();
-  const ast2 = new Parser(source2).parse();
+  const astOld = new Parser(options.old).parse();
+  const astNew = new Parser(options.new).parse();
 
-  const issues = compatibilityIssues(ast1, ast2);
+  const issues = compatibilityIssues(astOld, astNew);
 
   for (const issue of issues) {
     console.log(issue);
