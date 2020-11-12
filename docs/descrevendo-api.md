@@ -167,7 +167,7 @@ Toda API sdkgen possui um erro implícito de nome `Fatal`. Qualquer erro que sej
 
 ### Importando outros arquivos
 
-Conforme uma API se torna maior e mais complexa passa a ser interessante dividir em múltiplos arquivos. Para isso a palavra chave `import` pode ser utilizada. Por exemplo:
+Conforme uma API se torna maior e mais complexa passa a ser interessante dividir em múltiplos arquivos. Para isso a palavra-chave `import` pode ser utilizada. Por exemplo:
 
 ```
 import "../user"
