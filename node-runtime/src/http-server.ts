@@ -435,6 +435,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
               try {
                 if (reply.error) {
                   const error = this.makeResponseError(reply.error);
+
                   res.statusCode = error.type === "Fatal" ? 500 : 400;
                   res.setHeader("content-type", "application/json");
                   res.write(JSON.stringify(error));
