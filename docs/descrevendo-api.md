@@ -230,7 +230,7 @@ type Test2 {
 }
 ```
 
-Neste exemplo `Test1` terá um campo `foo` de tipo `int`, já que `...A` aparece por último. `Test2`, por sua vez, terá um campo `bar` de tipo `int`, já que spreads sempre tem prioridade a campos locais.
+Neste exemplo `Test1` terá um campo `foo` de tipo `int`, já que `...A` aparece por último. `Test2`, por sua vez, terá um campo `bar` de tipo `int`, já que spreads sempre têm prioridade a campos locais.
 
 ## Exemplo final
 
