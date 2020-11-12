@@ -1,0 +1,43 @@
+site_name: sdkgen
+site_url: https://sdkgen.github.io
+repo_url: https://github.com/sdkgen/sdkgen
+plugins:
+  - search:
+      lang: [pt]
+theme:
+  language: pt
+  name: material
+  features:
+    - navigation.instant
+    - toc.autohide
+  palette:
+    primary: deep purple
+  logo: logo.png
+  favicon: logo.png
+  icon:
+    repo: fontawesome/brands/github
+markdown_extensions:
+  - pymdownx.highlight
+  - pymdownx.superfences
+  - toc:
+      permalink: true
+extra:
+  social:
+    - icon: fontawesome/brands/telegram
+      link: https://t.me/sdkgen
+      name: Telegram
+    - icon: fontawesome/brands/github
+      link: https://github.com/sdkgen/sdkgen
+      name: GitHub
+nav:
+  - index.md
+  - primeiro-projeto.md
+  - descrevendo-api.md
+  - cli.md
+  - Targets:
+      - targets/servidor-nodejs.md
+  - Aprofundando:
+      - Annotations: aprofundando/annotations.md
+      - REST: aprofundando/rest.md
+      - date e datetime: aprofundando/datas.md
+  - faq.md
