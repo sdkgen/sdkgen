@@ -56,6 +56,10 @@ api.fn.getHtml = async () => {
   return "<h1>Hello world!</h1>";
 };
 
+api.fn.getXml = async () => {
+  return "<h1>Hello world!</h1>";
+};
+
 writeFileSync(`${__dirname}/nodeClient.ts`, generateNodeClientSource(ast).replace("@sdkgen/node-runtime", "../../src"));
 const { ApiClient: NodeApiClient } = require(`${__dirname}/nodeClient.ts`);
 
@@ -267,6 +271,14 @@ describe("Rest API", () => {
       result: "<h1>Hello world!</h1>",
       resultHeaders: {
         "content-type": "text/html",
+      },
+    },
+    {
+      method: "GET",
+      path: "/xml",
+      result: "<h1>Hello world!</h1>",
+      resultHeaders: {
+        "content-type": "text/xml",
       },
     },
     (() => {
