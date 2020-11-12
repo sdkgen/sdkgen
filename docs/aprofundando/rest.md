@@ -44,7 +44,7 @@ fn createProduct(newProduct: Product): Product
 
 ## Caminho
 
-Logo após o método o segundo elemento obrigatório do `@rest` é o caminho (ou "endpoint"). Este caminho deve começar com uma "/" e utilizar caracteres permitidos em uma URL. Neste caminho podem ser incluídos alguns seguimentos dinâmicos vinculados aos argumentos da função, como `/product/{id}` onde `id` é um argumento. O caminho pode incluir múltiplos destes argumentos.
+Logo após o método o segundo elemento obrigatório do `@rest` é o caminho (ou "endpoint"). Este caminho deve começar com uma "/" e utilizar caracteres permitidos em uma URL. Neste caminho podem ser incluídos alguns segmentos dinâmicos vinculados aos argumentos da função, como `/product/{id}` onde `id` é um argumento. O caminho pode incluir múltiplos destes argumentos.
 
 Para um argumento poder ser utilizado dentro de um caminho ele deve ter um dos seguintes tipos: `bool`, `int`, `uint`, `bigint`, `float`, `string`, `date`, `datetime`, `money`, `cpf`, `cnpj`, `uuid`, `hex`, `base64` ou ser um enum. Note que o tipo não pode ser nulável.
 
