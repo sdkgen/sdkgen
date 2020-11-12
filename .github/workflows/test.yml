@@ -243,3 +243,12 @@ jobs:
         with:
           workingdir: "./android-runtime/"
           command1: "./gradlew test assembleRelease"
+
+  vscode-ext:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+      - run: npm install -g vsce
+      - run: vsce package
+        working-directory: ./vscode-ext
