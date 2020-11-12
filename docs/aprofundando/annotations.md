@@ -15,7 +15,7 @@ type User {
   @description Nome de apresentação, escolhido pelo próprio usuário.
   name: string
 
-  @description Email já validado do usuário.
+  @description E-mail já validado do usuário.
   email: string?
 }
 
