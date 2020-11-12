@@ -1,6 +1,6 @@
 # Comportamento de `date` e `datetime`
 
-Como descrito na [sessão sobre tipos primitivos](../descrevendo-api.md), `date` e `datetime` possuem significados parecidos, mas fundamentalmente diferentes. Utilize `datetime` quando quer se referir a um ponto no tempo utilize `date` quando quer se referir a uma data no calendário.
+Como descrito na [sessão sobre tipos primitivos](../descrevendo-api.md), `date` e `datetime` possuem significados parecidos, mas fundamentalmente diferentes. Utilize `datetime` quando quiser se referir a um ponto no tempo ou `date` quando quiser se referir a uma data no calendário.
 
 ## Ponto no tempo: `datetime`
 
