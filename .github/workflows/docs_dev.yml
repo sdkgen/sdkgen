@@ -1,4 +1,4 @@
-name: docs_pr
+name: docs_dev
 on:
   push:
     branches:
