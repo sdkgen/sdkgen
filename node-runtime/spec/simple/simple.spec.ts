@@ -27,7 +27,7 @@ api.fn.identity = async (ctx: Context & { aaa: boolean }, { types }: { types: an
   return types;
 };
 
-api.fn.throwsError = async (ctx: Context) => {
+api.fn.throwsError = async () => {
   throw new SomeError("Some message");
 };
 

@@ -22,6 +22,7 @@ import {
   ThrowsAnnotation,
   UIntPrimitiveType,
   UuidPrimitiveType,
+  XmlPrimitiveType,
 } from "@sdkgen/parser";
 import { PLAYGROUND_PUBLIC_PATH } from "@sdkgen/playground";
 import { generateBrowserClientSource, generateNodeClientSource, generateNodeServerSource } from "@sdkgen/typescript-generator";
@@ -434,9 +435,11 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
             this.executeRequest(request, (ctx, reply) => {
               try {
                 if (reply.error) {
-                  res.statusCode = 400;
+                  const error = this.makeResponseError(reply.error);
+
+                  res.statusCode = error.type === "Fatal" ? 500 : 400;
                   res.setHeader("content-type", "application/json");
-                  res.write(JSON.stringify(this.makeResponseError(reply.error)));
+                  res.write(JSON.stringify(error));
                   res.end();
                   return;
                 }
@@ -479,6 +482,10 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
                     res.end();
                   } else if (type instanceof HtmlPrimitiveType) {
                     res.setHeader("content-type", "text/html");
+                    res.write(`${reply.result}`);
+                    res.end();
+                  } else if (type instanceof XmlPrimitiveType) {
+                    res.setHeader("content-type", "text/xml");
                     res.write(`${reply.result}`);
                     res.end();
                   } else if (type instanceof BytesPrimitiveType) {

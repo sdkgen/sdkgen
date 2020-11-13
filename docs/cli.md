@@ -61,13 +61,13 @@ E alterações que podem serem feitas sem risco:
 Estas regras podem rapidamente ficar complexas e são difíceis de checar por quem está escrevendo uma alteração em uma API existente. Por conta disso o sdkgen vem com uma ferramenta para checar compatibilidade entre alterações. Para isso utilize o seguinte comando:
 
 ```
-sdkgen compatibility <old source file> <new source file>
+sdkgen compatibility --old <old source file> --new <new source file>
 ```
 
 Por exemplo:
 
 ```
-sdkgen compatibility api_antiga.sdkgen api_nova.sdkgen
+sdkgen compatibility --old api_antiga.sdkgen --new api_nova.sdkgen
 ```
 
 Caso existam quebras de compatibilidade estas serão reportadas.

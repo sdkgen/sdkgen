@@ -121,7 +121,8 @@ A sua função pode retornar qualquer um dos tipos suportados pelo sdkgen. No en
 | Sucesso, mas com retorno null ou sem retorno e com método GET | 404 Not Found             |
 | Sucesso, mas com retorno null ou sem retorno e outros métodos | 204 No Content            |
 | Sucesso, com qualquer outro tipo de retorno                   | 200 OK                    |
-| Erro lançado dentro da função                                 | 400 Bad Request           |
+| Erro lançado dentro da função diferente de Fatal              | 400 Bad Request           |
+| Erro Fatal lançado dentro da função                           | 500 Internal Server Error |
 | Erro não especificado durante o processamento da requisição   | 500 Internal Server Error |
 
 ### Codificação do corpo da resposta
@@ -132,5 +133,6 @@ Se a requisição tiver passado o header `Accept` como `application/json`, entã
 | ------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `bool`, `int`, `uint`, `float`, `string`, `date`, `datetime`, `money`, `bigint`, `cpf`, `cnpj`, `uuid`, `hex` ou `base64` | Valor será posto diretamente no body, sem aspas adicionais. O `Content-Type` será `text/plain`.                                                                                                                         |
 | `html`                                                                                                                    | Valor será posto diretamente no body, sem aspas adicionais. O `Content-Type` será `text/html`.                                                                                                                          |
+| `xml`                                                                                                                    | Valor será posto diretamente no body, sem aspas adicionais. O `Content-Type` será `text/xml`.                                                                                                                          |
 | `bytes`                                                                                                                   | Os bytes serão entregues diretamente, ideal para oferecer download de arquivos. O `Content-Type` será detectado dinamicamente a depender do conteúdo. Caso não seja possível detectar, será `application/octet-stream`. |
 | outros tipos                                                                                                              | O body será gerado conforme as regras de codificação e decodificação padrões do sdkgen.                                                                                                                                 |
