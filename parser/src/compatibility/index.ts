@@ -249,5 +249,15 @@ export function compatibilityIssues(ast1: AstRoot, ast2: AstRoot): string[] {
     }
   }
 
+  for (const err1 of ast1.errors) {
+    const err2 = ast2.errors.find(x => x.name === err1.name);
+
+    if (!err2) {
+      continue;
+    }
+
+    checkServerToClient(`${err1.name}.data`, issues, err1.dataType, err2.dataType);
+  }
+
   return issues;
 }

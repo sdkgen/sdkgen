@@ -10,6 +10,7 @@ import {
   DateTimePrimitiveType,
   EmailPrimitiveType,
   EnumType,
+  ErrorNode,
   FloatPrimitiveType,
   HexPrimitiveType,
   HtmlPrimitiveType,
@@ -269,6 +270,6 @@ export function generateClass(type: StructType): string {
   return classDesc;
 }
 
-export function generateErrorClass(error: string): string {
-  return `class ${error}(message: String) : Error(message)\n`;
+export function generateErrorClass(error: ErrorNode): string {
+  return `class ${error.name}(message: String) : Error(message)\n`;
 }

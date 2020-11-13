@@ -39,15 +39,21 @@
 		},
 		{
 			"name": "meta.error",
-			"match": "(error) ([A-Z][a-zA-Z0-9]*)",
-			"captures": {
+			"begin": "(error) ([A-Z][a-zA-Z0-9]*) ",
+			"beginCaptures": {
 				"1": {
 					"name": "keyword.control"
 				},
 				"2": {
 					"name": "entity.name.type"
 				}
-			}
+			},
+			"end": "\n",
+			"patterns": [
+				{
+					"include": "#type"
+				}
+			]
 		},
 		{
 			"name": "meta.type",

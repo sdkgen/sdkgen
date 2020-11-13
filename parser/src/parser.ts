@@ -9,6 +9,7 @@ import {
   DescriptionAnnotation,
   EnumType,
   EnumValue,
+  ErrorNode,
   Field,
   FunctionOperation,
   GetOperation,
@@ -158,7 +159,7 @@ export class Parser {
   parse(): AstRoot {
     const operations: Operation[] = [];
     const typeDefinition: TypeDefinition[] = [];
-    const errors: string[] = [];
+    const errors: ErrorNode[] = [];
 
     this.warnings = [];
 
@@ -166,10 +167,7 @@ export class Parser {
       this.acceptAnnotations();
       this.multiExpect({
         ErrorKeywordToken: () => {
-          this.checkCannotHaveAnnotationsHere();
-          this.nextToken();
-          errors.push(this.expect(IdentifierToken).value);
-          this.nextToken();
+          errors.push(this.parseError());
         },
         FunctionKeywordToken: () => {
           operations.push(this.parseOperation());
@@ -270,6 +268,35 @@ export class Parser {
     definitions.annotations = annotations;
 
     return definitions;
+  }
+
+  private parseError(): ErrorNode {
+    this.checkCannotHaveAnnotationsHere();
+    const errorToken = this.expect(ErrorKeywordToken);
+
+    this.nextToken();
+
+    const nameToken = this.expect(IdentifierToken);
+    const name = nameToken.value;
+
+    if (!name[0].match(/[A-Z]/u)) {
+      throw new ParserError(`Error name must start with an uppercase letter, but found '${JSON.stringify(name)}' at ${nameToken.location}`);
+    }
+
+    this.nextToken();
+
+    let type = new VoidPrimitiveType();
+
+    if (
+      this.token instanceof CurlyOpenSymbolToken ||
+      this.token instanceof EnumKeywordToken ||
+      this.token instanceof IdentifierToken ||
+      this.token instanceof PrimitiveTypeToken
+    ) {
+      type = this.parseType();
+    }
+
+    return new ErrorNode(name, type).at(errorToken);
   }
 
   private parseOperation(): Operation {

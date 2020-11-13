@@ -86,7 +86,7 @@ export class ValidateAnnotationsVisitor extends Visitor {
         if (annotation instanceof DescriptionAnnotation) {
           // Ok
         } else if (annotation instanceof ThrowsAnnotation) {
-          if (!this.root.errors.includes(annotation.error)) {
+          if (!this.root.errors.some(error => error.name === annotation.error)) {
             throw new SemanticError(`Unknown error type '${annotation.error}' at ${annotation.location}`);
           }
         } else if (annotation instanceof RestAnnotation) {

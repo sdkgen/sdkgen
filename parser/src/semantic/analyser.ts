@@ -1,4 +1,4 @@
-import { AstRoot } from "../ast";
+import { AstRoot, ErrorNode, VoidPrimitiveType } from "../ast";
 import { CheckMultipleDeclarationVisitor } from "./01_check_multiple_declaration";
 import { MatchTypeDefinitionsVisitor } from "./02_match_type_definitions";
 import { CheckNoRecursiveTypesVisitor } from "./03_check_no_recursive_types";
@@ -13,8 +13,9 @@ import { ValidateAnnotationsVisitor } from "./10_validate_annotations";
 export class SemanticError extends Error {}
 
 export function analyse(root: AstRoot): void {
-  root.errors.push("Fatal");
-  root.errors = [...new Set(root.errors)];
+  if (!root.errors.some(error => error.name === "Fatal")) {
+    root.errors.push(new ErrorNode("Fatal", new VoidPrimitiveType()));
+  }
 
   new CheckMultipleDeclarationVisitor(root).process();
   new MatchTypeDefinitionsVisitor(root).process();

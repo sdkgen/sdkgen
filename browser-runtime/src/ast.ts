@@ -16,4 +16,5 @@ export type TypeDescription = string | string[] | { [name: string]: TypeDescript
 export interface AstJson {
   typeTable: TypeTable;
   functionTable: FunctionTable;
+  errors: Array<string | string[]>;
 }
