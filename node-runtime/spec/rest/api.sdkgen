@@ -32,3 +32,6 @@ fn uploadFile(): File[]
 
 @rest GET /html
 fn getHtml(): html
+
+@rest GET /xml
+fn getXml(): xml

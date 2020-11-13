@@ -22,6 +22,7 @@ import {
   ThrowsAnnotation,
   UIntPrimitiveType,
   UuidPrimitiveType,
+  XmlPrimitiveType,
 } from "@sdkgen/parser";
 import { PLAYGROUND_PUBLIC_PATH } from "@sdkgen/playground";
 import { generateBrowserClientSource, generateNodeClientSource, generateNodeServerSource } from "@sdkgen/typescript-generator";
@@ -481,6 +482,10 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
                     res.end();
                   } else if (type instanceof HtmlPrimitiveType) {
                     res.setHeader("content-type", "text/html");
+                    res.write(`${reply.result}`);
+                    res.end();
+                  } else if (type instanceof XmlPrimitiveType) {
+                    res.setHeader("content-type", "text/xml");
                     res.write(`${reply.result}`);
                     res.end();
                   } else if (type instanceof BytesPrimitiveType) {
