@@ -30,6 +30,12 @@ class FunctionDescription {
   FunctionDescription(this.ret, this.args);
 }
 
+class SdkgenErrorDescription {
+  String dataType;
+  Function create;
+  SdkgenErrorDescription(this.dataType, this.create);
+}
+
 class LatLng {
   double lat;
   double lng;

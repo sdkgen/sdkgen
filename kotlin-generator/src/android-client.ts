@@ -1,4 +1,4 @@
-import { AstRoot, HiddenAnnotation } from "@sdkgen/parser";
+import { AstRoot, ErrorNode, HiddenAnnotation, VoidPrimitiveType } from "@sdkgen/parser";
 import { generateClass, generateEnum, generateErrorClass, generateJsonAddRepresentation, generateKotlinTypeName, mangle } from "./helpers";
 
 export function generateAndroidClientSource(ast: AstRoot): string {
@@ -48,14 +48,14 @@ class ApiClient(
 
   const errorTypeEnumEntries: string[] = [];
 
-  const connectionError = "Connection";
+  const connectionError = new ErrorNode("Connection", new VoidPrimitiveType());
 
-  errorTypeEnumEntries.push(connectionError);
+  errorTypeEnumEntries.push(connectionError.name);
   code += `    ${generateErrorClass(connectionError)}`;
 
   for (const error of ast.errors) {
     code += `    ${generateErrorClass(error)}`;
-    errorTypeEnumEntries.push(error);
+    errorTypeEnumEntries.push(error.name);
   }
 
   if (errorTypeEnumEntries.length > 0) {

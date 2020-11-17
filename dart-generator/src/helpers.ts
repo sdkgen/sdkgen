@@ -10,6 +10,7 @@ import {
   DateTimePrimitiveType,
   EmailPrimitiveType,
   EnumType,
+  ErrorNode,
   FloatPrimitiveType,
   HexPrimitiveType,
   HtmlPrimitiveType,
@@ -49,10 +50,6 @@ function generateConstructor(type: StructType): string {
   });
   str = str.concat(`${doubleSpace}});\n`);
   return str;
-}
-
-export function generateErrorClass(error: string): string {
-  return `class ${error} extends SdkgenError {\n  ${error}(msg) : super(msg);\n}\n`;
 }
 
 export function generateTypeName(type: Type): string {
@@ -102,6 +99,16 @@ export function generateTypeName(type: Type): string {
     default:
       throw new Error(`BUG: generateTypeName with ${type.constructor.name}`);
   }
+}
+
+export function generateErrorClass(error: ErrorNode): string {
+  if (error.dataType instanceof VoidPrimitiveType) {
+    return `class ${error} extends SdkgenError {\n  ${error}(String msg) : super(msg);\n}\n`;
+  }
+
+  const dataType = generateTypeName(error.dataType);
+
+  return `class ${error} extends SdkgenErrorWithData<${dataType}> {\n  ${error}(String msg, ${dataType} data) : super(msg, data);\n}\n`;
 }
 
 export function cast(value: string, type: Type): string {

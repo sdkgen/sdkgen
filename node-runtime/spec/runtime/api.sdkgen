@@ -1,0 +1,5 @@
+error CustomError {
+  value: uint
+}
+
+fn throwCustomError(value: uint)

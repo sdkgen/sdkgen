@@ -165,6 +165,17 @@ A implementação do servidor poderá lançar esses erros ao longo da execução
 
 Toda API sdkgen possui um erro implícito de nome `Fatal`. Qualquer erro que seja lançado no servidor que não seja um dos erros descritos no contrato da API será convertido em um erro de tipo `Fatal` antes de ser encaminhado ao cliente. Idealmente uma API nunca deve deixar escapar um erro `Fatal`.
 
+Um erro do sdkgen também pode possuir dados adicionais que ajudem a explicar o ocorrido. Esses dados podem ser de qualquer tipo (inclusive objetos) e serão trafegados para o cliente quando o backend lançar o erro. Exemplo:
+
+```
+error InvalidArgument {
+  argumentName: string
+  reason: string
+}
+
+error RetryLater datetime
+```
+
 ### Importando outros arquivos
 
 Conforme uma API se torna maior e mais complexa passa a ser interessante dividir em múltiplos arquivos. Para isso a palavra-chave `import` pode ser utilizada. Por exemplo:

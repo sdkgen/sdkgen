@@ -16,11 +16,17 @@ class SdkgenError implements Exception {
   SdkgenError(this.message);
 }
 
+class SdkgenErrorWithData<T> implements Exception {
+  String message;
+  T data;
+  SdkgenErrorWithData(this.message, this.data);
+}
+
 class SdkgenHttpClient {
   String baseUrl;
   Map<String, Object> typeTable;
   Map<String, FunctionDescription> fnTable;
-  Map<String, Function> errTable;
+  Map<String, SdkgenErrorDescription> errTable;
   String deviceId;
   Random random = Random.secure();
   BuildContext context;
@@ -32,9 +38,12 @@ class SdkgenHttpClient {
     return hex.encode(List<int>.generate(bytes, (i) => random.nextInt(256)));
   }
 
-  _throwError(String type, String message) {
-    var factory = errTable[type] == null ? errTable["Fatal"] : errTable[type];
-    throw Function.apply(factory, [message]);
+  _throwError(String type, String message, dynamic data) {
+    var description =
+        errTable[type] == null ? errTable["Fatal"] : errTable[type];
+    var decodedData =
+        decode(this.typeTable, "$type.data", description.dataType, data);
+    throw Function.apply(description.create, [message, decodedData]);
   }
 
   _deviceId() async {
@@ -117,8 +126,8 @@ class SdkgenHttpClient {
       var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (responseBody["error"] != null) {
-        throw _throwError(
-            responseBody["error"]["type"], responseBody["error"]["message"]);
+        throw _throwError(responseBody["error"]["type"],
+            responseBody["error"]["message"], responseBody["error"]["data"]);
       } else {
         return decode(
             typeTable, "$functionName.ret", func.ret, responseBody["result"]);
@@ -127,7 +136,7 @@ class SdkgenHttpClient {
       if (e is SdkgenError)
         throw e;
       else
-        throw _throwError("Fatal", e.toString());
+        throw _throwError("Fatal", e.toString(), null);
     }
   }
 }

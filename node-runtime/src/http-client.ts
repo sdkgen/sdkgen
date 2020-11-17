@@ -6,10 +6,10 @@ import { hostname } from "os";
 import { URL } from "url";
 import { Context } from "./context";
 import { decode, encode } from "./encode-decode";
-import { SdkgenError } from "./error";
+import { SdkgenError, SdkgenErrorWithData } from "./error";
 
 interface ErrClasses {
-  [className: string]: typeof SdkgenError;
+  [className: string]: { new (message: string, data: any): SdkgenErrorWithData<any> | SdkgenError };
 }
 
 export class SdkgenHttpClient {
@@ -89,10 +89,18 @@ export class SdkgenHttpClient {
       const errClass = this.errClasses[error.type];
 
       if (errClass) {
-        throw new errClass(error.message);
-      } else {
-        throw new this.errClasses.Fatal(`${error.type}: ${error.message}`);
+        const errorJson = this.astJson.errors.find(err => (Array.isArray(err) ? err[0] === error.type : err === error.type));
+
+        if (errorJson) {
+          if (Array.isArray(errorJson)) {
+            throw new errClass(error.message, decode(this.astJson.typeTable, `${errClass.name}.data`, errorJson[1], error.data));
+          } else {
+            throw new errClass(error.message, undefined);
+          }
+        }
       }
+
+      throw new this.errClasses.Fatal(`${error.type}: ${error.message}`, undefined);
     });
 
     return decode(this.astJson.typeTable, `${functionName}.ret`, func.ret, encodedRet);

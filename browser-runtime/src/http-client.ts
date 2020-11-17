@@ -113,19 +113,22 @@ export class SdkgenHttpClient {
       };
 
       req.send(JSON.stringify(request));
-    }).catch(err => {
-      const errClass = this.errClasses[err.type];
+    }).catch(error => {
+      const errClass = this.errClasses[error.type];
 
       if (errClass) {
-        throw new errClass(err.message);
-      } else {
-        throw err;
+        const errorJson = this.astJson.errors.find(err => (Array.isArray(err) ? err[0] === error.type : err === error.type));
+
+        if (errorJson) {
+          if (Array.isArray(errorJson)) {
+            throw new errClass(error.message, decode(this.astJson.typeTable, `${errClass.name}.data`, errorJson[1], error.data));
+          } else {
+            throw new errClass(error.message, undefined);
+          }
+        }
       }
+
+      throw new this.errClasses.Fatal(`${error.type}: ${error.message}`, undefined);
     });
-
-    const ret = decode(this.astJson.typeTable, `${functionName}.ret`, func.ret, encodedRet);
-
-    this.successHook(ret, functionName, args);
-    return ret;
   }
 }

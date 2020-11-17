@@ -4,7 +4,7 @@ import { generateTypescriptEnum, generateTypescriptErrorClass, generateTypescrip
 export function generateNodeClientSource(ast: AstRoot): string {
   let code = "";
 
-  code += `import { Context, SdkgenError, SdkgenHttpClient } from "@sdkgen/node-runtime";
+  code += `import { Context, SdkgenError, SdkgenHttpClient, SdkgenErrorWithData } from "@sdkgen/node-runtime";
 
 `;
 
@@ -38,7 +38,7 @@ ${ast.operations
   .join("")}
 }\n\n`;
 
-  code += `const errClasses = {\n${ast.errors.map(err => `    ${err}`).join(",\n")}\n};\n\n`;
+  code += `const errClasses = {\n${ast.errors.map(err => `    ${err.name}`).join(",\n")}\n};\n\n`;
 
   code += `const astJson = ${JSON.stringify(astToJson(ast), null, 4).replace(/"(?<key>\w+)":/gu, "$<key>:")};\n`;
 

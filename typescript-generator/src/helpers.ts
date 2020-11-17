@@ -10,6 +10,7 @@ import {
   DateTimePrimitiveType,
   EmailPrimitiveType,
   EnumType,
+  ErrorNode,
   FloatPrimitiveType,
   HexPrimitiveType,
   HtmlPrimitiveType,
@@ -103,8 +104,10 @@ export function generateTypescriptEnum(type: EnumType): string {
   return `export type ${type.name} = ${type.values.map(x => `"${x.value}"`).join(" | ")};\n`;
 }
 
-export function generateTypescriptErrorClass(name: string): string {
-  return `export class ${name} extends SdkgenError {}\n`;
+export function generateTypescriptErrorClass(error: ErrorNode): string {
+  return `export class ${error.name} extends ${
+    error.dataType instanceof VoidPrimitiveType ? "SdkgenError" : `SdkgenErrorWithData<${generateTypescriptTypeName(error.dataType)}>`
+  } {}\n`;
 }
 
 export function clearForLogging(path: string, type: Type): string {

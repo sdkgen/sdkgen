@@ -4,6 +4,7 @@ import {
   DescriptionAnnotation,
   EnumType,
   EnumValue,
+  ErrorNode,
   Field,
   FunctionOperation,
   HiddenAnnotation,
@@ -15,6 +16,7 @@ import {
   Type,
   TypeDefinition,
   TypeReference,
+  VoidPrimitiveType,
 } from "./ast";
 import { analyse } from "./semantic/analyser";
 import { primitiveToAstClass } from "./utils";
@@ -42,7 +44,7 @@ interface AnnotationJson {
 export interface AstJson {
   typeTable: TypeTable;
   functionTable: FunctionTable;
-  errors: string[];
+  errors: Array<string | string[]>;
   annotations: { [target: string]: AnnotationJson[] };
 }
 
@@ -132,7 +134,7 @@ export function astToJson(ast: AstRoot): AstJson {
     }
   }
 
-  const { errors } = ast;
+  const errors = ast.errors.map(error => (error.dataType instanceof VoidPrimitiveType ? error.name : [error.name, error.dataType.name]));
 
   return {
     annotations,
@@ -145,7 +147,6 @@ export function astToJson(ast: AstRoot): AstJson {
 export function jsonToAst(json: AstJson): AstRoot {
   const operations: Operation[] = [];
   const typeDefinition: TypeDefinition[] = [];
-  const errors: string[] = json.errors || [];
 
   function processType(description: TypeDescription, typeName?: string): Type {
     if (typeof description === "string") {
@@ -188,11 +189,6 @@ export function jsonToAst(json: AstJson): AstRoot {
   for (const [typeName, description] of Object.entries(json.typeTable)) {
     const type = processType(description, typeName);
 
-    if (typeName === "ErrorType" && type instanceof EnumType) {
-      errors.push(...type.values.map(v => v.value));
-      continue;
-    }
-
     typeDefinition.push(new TypeDefinition(typeName, type));
   }
 
@@ -230,7 +226,15 @@ export function jsonToAst(json: AstJson): AstRoot {
     operations.push(op);
   }
 
-  const ast = new AstRoot(typeDefinition, operations, [...new Set(errors)]);
+  const errors = (json.errors || []).map(error => {
+    if (Array.isArray(error)) {
+      return new ErrorNode(error[0], processType(error[1]));
+    }
+
+    return new ErrorNode(error as string, new VoidPrimitiveType());
+  });
+
+  const ast = new AstRoot(typeDefinition, operations, errors);
 
   analyse(ast);
   return ast;
