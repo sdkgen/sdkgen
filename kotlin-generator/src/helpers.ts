@@ -213,7 +213,7 @@ export function generateJsonAddRepresentation(type: Type, fieldName: string): st
     case VoidPrimitiveType:
       return "";
     case BytesPrimitiveType:
-      return `addProperty("${fieldName}", Base64.encodeToString(${mangle(fieldName)}, Base64.DEFAULT))`;
+      return `addProperty("${fieldName}", Base64.encodeToString(${mangle(fieldName)}, Base64.NO_WRAP))`;
     default:
       throw new Error(`BUG: No result found for generateJsonRepresentation with ${type.constructor.name}`);
   }
