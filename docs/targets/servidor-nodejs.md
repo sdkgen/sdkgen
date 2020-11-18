@@ -2,7 +2,7 @@
 
 > **Slug:** `typescript_nodeserver` <br/> **Maturidade:** Estável
 
-Para criar um servidor em Node.js você deve criar um projeto em TypeScript e instalar o pacote npm [`@sdkgen/node-runtime`](https://www.npmjs.com/package/@sdkgen/node-runtime)`. Instale também o [`@sdkgen/cli`](https://www.npmjs.com/package/@sdkgen/cli) para ter acesso aos comandos de terminal para gerar código. Descreva a sua API em arquivos `.sdkgen`. A sugestão é criar um arquivo `api.sdkgen` contendo as definições ou importando os demais arquivos que contém essas definições de tipos e funções.
+Para criar um servidor em Node.js você deve criar um projeto em TypeScript e instalar o pacote npm [`@sdkgen/node-runtime`](https://www.npmjs.com/package/@sdkgen/node-runtime). Instale também o [`@sdkgen/cli`](https://www.npmjs.com/package/@sdkgen/cli) para ter acesso aos comandos de terminal para gerar código. Descreva a sua API em arquivos `.sdkgen`. A sugestão é criar um arquivo `api.sdkgen` contendo as definições ou importando os demais arquivos que contém essas definições de tipos e funções.
 
 Adicione este script ao seu package.json:
 
