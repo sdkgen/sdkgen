@@ -41,3 +41,4 @@ nav:
       - REST: aprofundando/rest.md
       - date e datetime: aprofundando/datas.md
   - faq.md
+  - releases.md
