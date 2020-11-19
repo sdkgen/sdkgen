@@ -55,7 +55,7 @@ Por exemplo:
 fn getProduct(storeId: uint, id: uint): Product?
 ```
 
-Neste caso uma chamada por `GET /stores/3/products/47` será similar a chamar `getProduct(2, 47)`.
+Neste caso uma chamada por `GET /stores/3/products/47` será similar a chamar `getProduct(3, 47)`.
 
 Argumentos também podem ser recebidos como parte da _query_. A _query_ é a parte da URL que vem depois do `?`, por exemplo: `GET /orders?state=open`. Para estes argumentos especifique confirme o exemplo abaixo:
 
