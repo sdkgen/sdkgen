@@ -8,6 +8,7 @@ import {
   DatePrimitiveType,
   DateTimePrimitiveType,
   DescriptionAnnotation,
+  EmailPrimitiveType,
   EnumType,
   FloatPrimitiveType,
   HexPrimitiveType,
@@ -120,6 +121,10 @@ function typeToSchema(definitions: any, type: Type): any {
   } else if (type instanceof FloatPrimitiveType) {
     return {
       type: "number",
+    };
+  } else if (type instanceof EmailPrimitiveType) {
+    return {
+      type: "string",
     };
   } else if (type instanceof OptionalType) {
     return {
@@ -303,6 +308,7 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
                           bodyType instanceof MoneyPrimitiveType ||
                           bodyType instanceof CpfPrimitiveType ||
                           bodyType instanceof CnpjPrimitiveType ||
+                          bodyType instanceof EmailPrimitiveType ||
                           bodyType instanceof HtmlPrimitiveType ||
                           bodyType instanceof UuidPrimitiveType ||
                           bodyType instanceof HexPrimitiveType ||
@@ -344,6 +350,7 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
                               op.returnType instanceof MoneyPrimitiveType ||
                               op.returnType instanceof CpfPrimitiveType ||
                               op.returnType instanceof CnpjPrimitiveType ||
+                              op.returnType instanceof EmailPrimitiveType ||
                               op.returnType instanceof UuidPrimitiveType ||
                               op.returnType instanceof HexPrimitiveType ||
                               op.returnType instanceof BytesPrimitiveType ||
