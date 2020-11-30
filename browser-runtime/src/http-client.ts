@@ -130,5 +130,11 @@ export class SdkgenHttpClient {
 
       throw new this.errClasses.Fatal(`${error.type}: ${error.message}`, undefined);
     });
+
+    const ret = decode(this.astJson.typeTable, `${functionName}.ret`, func.ret, encodedRet);
+
+    this.successHook(ret, functionName, args);
+
+    return ret;
   }
 }
