@@ -1,10 +1,12 @@
-import { AstRoot, astToJson, HiddenAnnotation } from "@sdkgen/parser";
+import { AstRoot, astToJson, HiddenAnnotation, VoidPrimitiveType } from "@sdkgen/parser";
 import { generateTypescriptEnum, generateTypescriptErrorClass, generateTypescriptInterface, generateTypescriptTypeName } from "./helpers";
 
 export function generateNodeClientSource(ast: AstRoot): string {
   let code = "";
 
-  code += `import { Context, SdkgenError, SdkgenHttpClient, SdkgenErrorWithData } from "@sdkgen/node-runtime";
+  const hasErrorWithData = ast.errors.some(err => !(err.dataType instanceof VoidPrimitiveType));
+
+  code += `import { Context, SdkgenError${hasErrorWithData ? ", SdkgenErrorWithData" : ""}, SdkgenHttpClient } from "@sdkgen/node-runtime";
 
 `;
 

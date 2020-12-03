@@ -4,7 +4,9 @@ import { generateTypescriptEnum, generateTypescriptErrorClass, generateTypescrip
 export function generateNodeServerSource(ast: AstRoot): string {
   let code = "";
 
-  code += `import { BaseApiConfig, Context, SdkgenError, SdkgenErrorWithData } from "@sdkgen/node-runtime";
+  const hasErrorWithData = ast.errors.some(err => !(err.dataType instanceof VoidPrimitiveType));
+
+  code += `import { BaseApiConfig, Context, SdkgenError${hasErrorWithData ? ", SdkgenErrorWithData" : ""} } from "@sdkgen/node-runtime";
 
 `;
 
