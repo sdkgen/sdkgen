@@ -5,7 +5,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
 const ImageMinPlugin = require("imagemin-webpack-plugin").default;
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
-const ManifestPlugin = require("webpack-manifest-plugin");
+const { WebpackManifestPlugin } = require("webpack-manifest-plugin");
 const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
 
 const shouldBuildForProduction = process.env.NODE_ENV === "production";
@@ -52,7 +52,7 @@ const sassLoader = rootDir => ({
 
 const styleLoader = "style-loader";
 
-//HELPER
+// HELPER
 
 function resolver(desiredPath) {
   return path.join(__dirname, desiredPath);
@@ -204,21 +204,22 @@ module.exports = {
     new FaviconsWebpackPlugin({
       logo: resolver("src/public/favicon.png"),
     }),
-    new ManifestPlugin({
+    new WebpackManifestPlugin({
       fileName: "manifest.json",
       seed: resolver("src/public/manifest.json"),
       generate: (seed, files) => {
-        const manifestFiles = files.reduce(function (manifest, file) {
+        const manifestFiles = files.reduce((manifest, file) => {
           manifest[file.name] = file.path;
           return manifest;
         }, seed);
+
         return {
           files: manifestFiles,
         };
       },
     }),
     new MonacoWebpackPlugin({
-      // available options are documented at https://github.com/Microsoft/monaco-editor-webpack-plugin#options
+      // Available options are documented at https://github.com/Microsoft/monaco-editor-webpack-plugin#options
       languages: ["json"],
     }),
     ...(shouldBuildForProduction
