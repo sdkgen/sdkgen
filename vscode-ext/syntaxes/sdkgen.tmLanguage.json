@@ -39,7 +39,7 @@
 		},
 		{
 			"name": "meta.error",
-			"begin": "(error) ([A-Z][a-zA-Z0-9]*) ",
+			"begin": "(error) ([A-Z][a-zA-Z0-9]*)",
 			"beginCaptures": {
 				"1": {
 					"name": "keyword.control"
