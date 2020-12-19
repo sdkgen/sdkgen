@@ -8,21 +8,6 @@
 			"include": "#annotations"
 		},
 		{
-			"name": "meta.variable",
-			"begin": "(\\$[a-zA-Z0-9]+) =",
-			"beginCaptures": {
-				"1": {
-					"name": "variable.other"
-				}
-			},
-			"end": "\n",
-			"patterns": [
-				{
-					"include": "#literal"
-				}
-			]
-		},
-		{
 			"name": "meta.import",
 			"begin": "(import) ",
 			"beginCaptures": {
@@ -39,7 +24,7 @@
 		},
 		{
 			"name": "meta.error",
-			"begin": "(error) ([A-Z][a-zA-Z0-9]*) ",
+			"begin": "(error) ([A-Z][a-zA-Z0-9]*)",
 			"beginCaptures": {
 				"1": {
 					"name": "keyword.control"
