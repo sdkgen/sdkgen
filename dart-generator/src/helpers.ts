@@ -118,8 +118,10 @@ export function cast(value: string, type: Type): string {
     return `(${value} as List)?.map((e) => ${cast("e", (type as ArrayType).base)})?.toList()`;
   } else if (type instanceof VoidPrimitiveType) {
     return value;
-  } else if (type instanceof FloatPrimitiveType || type instanceof MoneyPrimitiveType) {
+  } else if (type instanceof FloatPrimitiveType) {
     return `(${value} as num)?.toDouble()`;
+  } else if (type instanceof MoneyPrimitiveType) {
+    return `${value} as int`;
   }
 
   return `${value} as ${generateTypeName(type)}`;
