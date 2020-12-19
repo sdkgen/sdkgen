@@ -103,7 +103,7 @@ export function generateTypeName(type: Type): string {
 
 export function generateErrorClass(error: ErrorNode): string {
   if (error.dataType instanceof VoidPrimitiveType) {
-    return `class ${error} extends SdkgenError {\n  ${error}(String msg) : super(msg);\n}\n`;
+    return `class ${error.name} extends SdkgenError {\n  ${error.name}(String msg) : super(msg);\n}\n`;
   }
 
   const dataType = generateTypeName(error.dataType);
