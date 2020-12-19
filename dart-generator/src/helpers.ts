@@ -85,7 +85,7 @@ export function generateTypeName(type: Type): string {
     case VoidPrimitiveType:
       return "void";
     case JsonPrimitiveType:
-      return "Object";
+      return "dynamic";
     case OptionalType:
       return generateTypeName((type as OptionalType).base);
     case ArrayType:
