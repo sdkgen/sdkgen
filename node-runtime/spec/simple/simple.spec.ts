@@ -8,7 +8,7 @@ import { Context, SdkgenHttpServer } from "../../src";
 const ast = new Parser(`${__dirname}/api.sdkgen`).parse();
 
 writeFileSync(`${__dirname}/api.ts`, generateNodeServerSource(ast).replace("@sdkgen/node-runtime", "../../src"));
-const { api } = require(`${__dirname}/api.ts`);
+const { api, SomeError } = require(`${__dirname}/api.ts`);
 
 unlinkSync(`${__dirname}/api.ts`);
 
@@ -27,8 +27,8 @@ api.fn.identity = async (ctx: Context & { aaa: boolean }, { types }: { types: an
   return types;
 };
 
-api.fn.throwsError = async (ctx: Context) => {
-  throw api.err.SomeError("Some message");
+api.fn.throwsError = async () => {
+  throw new SomeError("Some message");
 };
 
 // ExecSync(`../../cubos/sdkgen/sdkgen ${__dirname + "/api.sdkgen"} -o ${__dirname + "/legacyNodeClient.ts"} -t typescript_nodeclient`);

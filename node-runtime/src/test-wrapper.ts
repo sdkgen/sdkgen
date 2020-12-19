@@ -60,9 +60,13 @@ export function apiTestWrapper<T extends BaseApiConfig<any>>(api: T): T {
 
       if (reply.error) {
         try {
-          throw (api.err[reply.error.type] || api.err.Fatal)(
-            reply.error.message === reply.error.type ? undefined : reply.error.message || reply.error.toString(),
-          );
+          const errorJson = api.astJson.errors.find(err => reply && (Array.isArray(err) ? err[0] === reply.error.type : err === reply.error.type));
+
+          if (errorJson) {
+            throw reply.error;
+          } else {
+            throw api.err.Fatal(reply.error.message === reply.error.type ? undefined : reply.error.message || reply.error.toString());
+          }
         } catch (err) {
           if (reply.error.stack) {
             err.stack = reply.error.stack;

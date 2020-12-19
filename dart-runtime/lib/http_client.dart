@@ -16,11 +16,17 @@ class SdkgenError implements Exception {
   SdkgenError(this.message);
 }
 
+class SdkgenErrorWithData<T> implements Exception {
+  String message;
+  T data;
+  SdkgenErrorWithData(this.message, this.data);
+}
+
 class SdkgenHttpClient {
   String baseUrl;
   Map<String, Object> typeTable;
   Map<String, FunctionDescription> fnTable;
-  Map<String, Function> errTable;
+  Map<String, SdkgenErrorDescription> errTable;
   String deviceId;
   Random random = Random.secure();
   BuildContext context;
@@ -32,9 +38,12 @@ class SdkgenHttpClient {
     return hex.encode(List<int>.generate(bytes, (i) => random.nextInt(256)));
   }
 
-  _throwError(String type, String message) {
-    var factory = errTable[type] == null ? errTable["Fatal"] : errTable[type];
-    throw Function.apply(factory, [message]);
+  _throwError(String type, String message, dynamic data) {
+    var description =
+        errTable[type] == null ? errTable["Fatal"] : errTable[type];
+    var decodedData =
+        decode(this.typeTable, "$type.data", description.dataType, data);
+    throw Function.apply(description.create, [message, decodedData]);
   }
 
   _deviceId() async {
@@ -67,7 +76,7 @@ class SdkgenHttpClient {
         packageInfo = await PackageInfo.fromPlatform();
       } catch (e) {}
 
-      var platform = {
+      final platform = {
         "os": Platform.operatingSystem,
         "osVersion": Platform.operatingSystemVersion,
         "dartVersion": Platform.version,
@@ -76,14 +85,19 @@ class SdkgenHttpClient {
         "screenHeight": context == null ? 0 : MediaQuery.of(context).size.height
       };
 
-      var deviceInfo = DeviceInfoPlugin();
+      final deviceInfo = DeviceInfoPlugin();
+
       if (Platform.isAndroid) {
-        var androidInfo = await deviceInfo.androidInfo;
-        platform["model"] = androidInfo.model;
-        platform["brand"] = androidInfo.brand;
+        final androidInfo = await deviceInfo.androidInfo;
+        platform["model"] = androidInfo.model; //Ex: SM-1234
+        platform["brand"] = androidInfo.brand; //Ex: Samsung
+        platform["version"] = androidInfo.version.release; //10
+        platform["sdkVersion"] = androidInfo.version.sdkInt; //29
       } else if (Platform.isIOS) {
-        var iosInfo = await deviceInfo.iosInfo;
-        platform["model"] = iosInfo.model;
+        final iosInfo = await deviceInfo.iosInfo;
+        platform["model"] = iosInfo.name; //Ex: iPhone 11 Pro Max
+        platform["brand"] = "Apple";
+        platform["version"] = iosInfo.systemVersion; //13.1
       }
 
       var body = {
@@ -112,8 +126,8 @@ class SdkgenHttpClient {
       var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (responseBody["error"] != null) {
-        throw _throwError(
-            responseBody["error"]["type"], responseBody["error"]["message"]);
+        throw _throwError(responseBody["error"]["type"],
+            responseBody["error"]["message"], responseBody["error"]["data"]);
       } else {
         return decode(
             typeTable, "$functionName.ret", func.ret, responseBody["result"]);
@@ -122,7 +136,7 @@ class SdkgenHttpClient {
       if (e is SdkgenError)
         throw e;
       else
-        throw _throwError("Fatal", e.toString());
+        throw _throwError("Fatal", e.toString(), null);
     }
   }
 }

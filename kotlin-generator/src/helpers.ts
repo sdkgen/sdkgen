@@ -10,6 +10,7 @@ import {
   DateTimePrimitiveType,
   EmailPrimitiveType,
   EnumType,
+  ErrorNode,
   FloatPrimitiveType,
   HexPrimitiveType,
   HtmlPrimitiveType,
@@ -213,7 +214,7 @@ export function generateJsonAddRepresentation(type: Type, fieldName: string): st
     case VoidPrimitiveType:
       return "";
     case BytesPrimitiveType:
-      return `addProperty("${fieldName}", Base64.encodeToString(${mangle(fieldName)}, Base64.DEFAULT))`;
+      return `addProperty("${fieldName}", Base64.encodeToString(${mangle(fieldName)}, Base64.NO_WRAP))`;
     default:
       throw new Error(`BUG: No result found for generateJsonRepresentation with ${type.constructor.name}`);
   }
@@ -269,6 +270,6 @@ export function generateClass(type: StructType): string {
   return classDesc;
 }
 
-export function generateErrorClass(error: string): string {
-  return `class ${error}(message: String) : Error(message)\n`;
+export function generateErrorClass(error: ErrorNode): string {
+  return `class ${error.name}(message: String) : Error(message)\n`;
 }

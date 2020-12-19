@@ -9,7 +9,7 @@ import { Context, SdkgenHttpServer } from "../../src";
 const ast = new Parser(`${__dirname}/api.sdkgen`).parse();
 
 writeFileSync(`${__dirname}/api.ts`, generateNodeServerSource(ast).replace("@sdkgen/node-runtime", "../../src"));
-const { api } = require(`${__dirname}/api.ts`);
+const { api, TestError } = require(`${__dirname}/api.ts`);
 
 unlinkSync(`${__dirname}/api.ts`);
 
@@ -27,7 +27,11 @@ api.fn.hex = async (ctx: Context, { bin }: { bin: Buffer }) => {
 
 api.fn.obj = async (ctx: Context, { obj }: { obj: { val: number } }) => {
   if (obj.val === 0) {
-    throw new Error("Value is zero ~ spec error");
+    throw new Error("Value is zero ~ Fatal");
+  }
+
+  if (obj.val === -100) {
+    throw new TestError("Value is -100 ~ TestError");
   }
 
   return obj;
@@ -53,6 +57,10 @@ api.fn.uploadFile = async (ctx: Context) => {
 };
 
 api.fn.getHtml = async () => {
+  return "<h1>Hello world!</h1>";
+};
+
+api.fn.getXml = async () => {
   return "<h1>Hello world!</h1>";
 };
 
@@ -246,7 +254,17 @@ describe("Rest API", () => {
       data: `{"val":0}`,
       method: "POST",
       path: "/obj",
-      result: `{"message":"Value is zero ~ spec error","type":"Fatal"}`,
+      result: `{"message":"Value is zero ~ Fatal","type":"Fatal"}`,
+      resultHeaders: {
+        "content-type": "application/json",
+      },
+      statusCode: 500,
+    },
+    {
+      data: `{"val":-100}`,
+      method: "POST",
+      path: "/obj",
+      result: `{"message":"Value is -100 ~ TestError","type":"TestError"}`,
       resultHeaders: {
         "content-type": "application/json",
       },
@@ -267,6 +285,14 @@ describe("Rest API", () => {
       result: "<h1>Hello world!</h1>",
       resultHeaders: {
         "content-type": "text/html",
+      },
+    },
+    {
+      method: "GET",
+      path: "/xml",
+      result: "<h1>Hello world!</h1>",
+      resultHeaders: {
+        "content-type": "text/xml",
       },
     },
     (() => {

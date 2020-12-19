@@ -7,7 +7,7 @@ export class AstRoot {
 
   warnings: string[] = [];
 
-  constructor(public typeDefinitions: TypeDefinition[] = [], public operations: Operation[] = [], public errors: string[] = []) {}
+  constructor(public typeDefinitions: TypeDefinition[] = [], public operations: Operation[] = [], public errors: ErrorNode[] = []) {}
 }
 
 export abstract class AstNode {
@@ -25,6 +25,12 @@ export abstract class AstNode {
   atLocation(location: TokenLocation): this {
     this.location = location;
     return this;
+  }
+}
+
+export class ErrorNode extends AstNode {
+  constructor(public name: string, public dataType: Type) {
+    super();
   }
 }
 

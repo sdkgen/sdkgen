@@ -95,9 +95,9 @@ namespace SdkgenGenerated
 `;
   for (const error of ast.errors) {
     code += `
-    public class ${error}Exception : SdkgenException
+    public class ${error.name}Exception : SdkgenException
     {
-        public ${error}Exception(string message, Exception? inner = null) : base("${error}", message, inner) { }
+        public ${error.name}Exception(string message, Exception? inner = null) : base("${error.name}", message, inner) { }
     }
 `;
   }

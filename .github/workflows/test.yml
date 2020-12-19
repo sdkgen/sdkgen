@@ -1,5 +1,5 @@
 name: test
-on: [push]
+on: [push, pull_request]
 jobs:
   browser-runtime:
     runs-on: ubuntu-latest
@@ -197,7 +197,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        dotnet-version: ["3.1.x"]
+        dotnet-version: ["3.1.x", "5.0.x"]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-dotnet@v1
@@ -235,3 +235,12 @@ jobs:
         with:
           workingdir: "./android-runtime/"
           command1: "./gradlew test assembleRelease"
+
+  vscode-ext:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+      - run: npm install -g vsce
+      - run: vsce package
+        working-directory: ./vscode-ext

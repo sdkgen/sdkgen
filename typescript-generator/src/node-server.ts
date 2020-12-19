@@ -1,10 +1,12 @@
-import { AstRoot, astToJson } from "@sdkgen/parser";
+import { AstRoot, astToJson, VoidPrimitiveType } from "@sdkgen/parser";
 import { generateTypescriptEnum, generateTypescriptErrorClass, generateTypescriptInterface, generateTypescriptTypeName } from "./helpers";
 
 export function generateNodeServerSource(ast: AstRoot): string {
   let code = "";
 
-  code += `import { BaseApiConfig, Context, SdkgenError } from "@sdkgen/node-runtime";
+  const hasErrorWithData = ast.errors.some(err => !(err.dataType instanceof VoidPrimitiveType));
+
+  code += `import { BaseApiConfig, Context, SdkgenError${hasErrorWithData ? ", SdkgenErrorWithData" : ""} } from "@sdkgen/node-runtime";
 
 `;
 
@@ -34,10 +36,12 @@ export function generateNodeServerSource(ast: AstRoot): string {
       .join("")}
     }
 
+    /** @deprecated api.err shouldn't be used. Import and throw errors directly. */
     err = {${ast.errors
+      .filter(err => err.dataType instanceof VoidPrimitiveType)
       .map(
         err => `
-        ${err}(message: string = "") { throw new ${err}(message); }`,
+        ${err.name}(message: string = "") { throw new ${err.name}(message); }`,
       )
       .join(",")}
     }

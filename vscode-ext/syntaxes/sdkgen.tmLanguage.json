@@ -8,21 +8,6 @@
 			"include": "#annotations"
 		},
 		{
-			"name": "meta.variable",
-			"begin": "(\\$[a-zA-Z0-9]+) =",
-			"beginCaptures": {
-				"1": {
-					"name": "variable.other"
-				}
-			},
-			"end": "\n",
-			"patterns": [
-				{
-					"include": "#literal"
-				}
-			]
-		},
-		{
 			"name": "meta.import",
 			"begin": "(import) ",
 			"beginCaptures": {
@@ -39,15 +24,21 @@
 		},
 		{
 			"name": "meta.error",
-			"match": "(error) ([A-Z][a-zA-Z0-9]*)",
-			"captures": {
+			"begin": "(error) ([A-Z][a-zA-Z0-9]*)",
+			"beginCaptures": {
 				"1": {
 					"name": "keyword.control"
 				},
 				"2": {
 					"name": "entity.name.type"
 				}
-			}
+			},
+			"end": "\n",
+			"patterns": [
+				{
+					"include": "#type"
+				}
+			]
 		},
 		{
 			"name": "meta.type",
@@ -113,8 +104,32 @@
 		"annotations": {
 			"patterns": [
 				{
+					"name": "meta.annotation.description.block",
+					"begin": "(@description) (.*\\\\)\\n",
+					"end": "(.*[^\\\\])\\n",
+					"beginCaptures": {
+						"1": {
+							"name": "constant.numeric"
+						},
+						"2": {
+							"name": "comment.block.documentation"
+						}
+					},
+					"endCaptures": {
+						"1": {
+							"name": "comment.block.documentation"
+						}
+					},
+					"patterns": [
+						{
+							"name": "comment.block.documentation",
+							"match": ".*\\\\\\n"
+						}
+					]
+				},
+				{
 					"name": "meta.annotation.description",
-					"match": "(@description) ((?:.|\\\n)*)\n",
+					"match": "(@description) (.*)\\n",
 					"captures": {
 						"1": {
 							"name": "constant.numeric"
@@ -125,8 +140,35 @@
 					}
 				},
 				{
+					"name": "meta.annotation.arg.block",
+					"begin": "(@arg) (\\w+) (.*\\\\)\\n",
+					"end": "(.*[^\\\\])\\n",
+					"beginCaptures": {
+						"1": {
+							"name": "constant.numeric"
+						},
+						"2": {
+							"name": "variable.parameter"
+						},
+						"3": {
+							"name": "comment.block.documentation"
+						}
+					},
+					"endCaptures": {
+						"1": {
+							"name": "comment.block.documentation"
+						}
+					},
+					"patterns": [
+						{
+							"name": "comment.block.documentation",
+							"match": ".*\\\\\\n"
+						}
+					]
+				},
+				{
 					"name": "meta.annotation.arg",
-					"match": "(@arg) (\\w+) ((?:.|\\\\\\n)*)\n",
+					"match": "(@arg) (\\w+) (.*)\\n",
 					"captures": {
 						"1": {
 							"name": "constant.numeric"

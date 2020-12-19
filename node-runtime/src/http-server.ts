@@ -22,6 +22,8 @@ import {
   ThrowsAnnotation,
   UIntPrimitiveType,
   UuidPrimitiveType,
+  VoidPrimitiveType,
+  XmlPrimitiveType,
 } from "@sdkgen/parser";
 import { PLAYGROUND_PUBLIC_PATH } from "@sdkgen/playground";
 import { generateBrowserClientSource, generateNodeClientSource, generateNodeServerSource } from "@sdkgen/typescript-generator";
@@ -434,9 +436,11 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
             this.executeRequest(request, (ctx, reply) => {
               try {
                 if (reply.error) {
-                  res.statusCode = 400;
+                  const error = this.makeResponseError(reply.error);
+
+                  res.statusCode = error.type === "Fatal" ? 500 : 400;
                   res.setHeader("content-type", "application/json");
-                  res.write(JSON.stringify(this.makeResponseError(reply.error)));
+                  res.write(JSON.stringify(error));
                   res.end();
                   return;
                 }
@@ -479,6 +483,10 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
                     res.end();
                   } else if (type instanceof HtmlPrimitiveType) {
                     res.setHeader("content-type", "text/html");
+                    res.write(`${reply.result}`);
+                    res.end();
+                  } else if (type instanceof XmlPrimitiveType) {
+                    res.setHeader("content-type", "text/xml");
                     res.write(`${reply.result}`);
                     res.end();
                   } else if (type instanceof BytesPrimitiveType) {
@@ -885,11 +893,27 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
     };
   }
 
-  private makeResponseError(err: any): { message: string; type: string } {
-    return {
-      message: err.message || (err instanceof Error ? err.toString() : typeof err === "object" ? JSON.stringify(err) : `${err}`),
-      type: err.type || "Fatal",
-    };
+  private makeResponseError(err: any): { message: string; type: string; data: any } {
+    let type = err.type || "Fatal";
+    let message = err.message || (err instanceof Error ? err.toString() : typeof err === "object" ? JSON.stringify(err) : `${err}`);
+
+    const error = this.ast.errors.find(x => x.name === type);
+    let data;
+
+    if (error) {
+      if (!(error.dataType instanceof VoidPrimitiveType)) {
+        try {
+          data = encode(this.apiConfig.astJson.typeTable, `error.${type}`, error.dataType.name, err.data);
+        } catch (encodeError) {
+          message = `Failed to encode error ${type} because: ${encodeError}. Original message: ${message}`;
+          type = "Fatal";
+        }
+      }
+    } else {
+      type = "Fatal";
+    }
+
+    return { data, message, type };
   }
 
   private writeReply(res: ServerResponse, ctx: Context | null, reply: ContextReply, hrStart: [number, number]) {

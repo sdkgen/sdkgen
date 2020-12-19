@@ -8,6 +8,7 @@ import {
   DatePrimitiveType,
   DateTimePrimitiveType,
   DescriptionAnnotation,
+  EmailPrimitiveType,
   EnumType,
   FloatPrimitiveType,
   HexPrimitiveType,
@@ -121,6 +122,10 @@ function typeToSchema(definitions: any, type: Type): any {
     return {
       type: "number",
     };
+  } else if (type instanceof EmailPrimitiveType) {
+    return {
+      type: "string",
+    };
   } else if (type instanceof OptionalType) {
     return {
       oneOf: [typeToSchema(definitions, type.base), { type: "null" }],
@@ -143,12 +148,6 @@ function typeToSchema(definitions: any, type: Type): any {
 
 export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContextT>): void {
   server.addHttpHandler("GET", "/swagger", (req, res) => {
-    if (!server.introspection) {
-      res.statusCode = 404;
-      res.end();
-      return;
-    }
-
     if (!server.introspection) {
       res.statusCode = 404;
       res.end();
@@ -303,6 +302,7 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
                           bodyType instanceof MoneyPrimitiveType ||
                           bodyType instanceof CpfPrimitiveType ||
                           bodyType instanceof CnpjPrimitiveType ||
+                          bodyType instanceof EmailPrimitiveType ||
                           bodyType instanceof HtmlPrimitiveType ||
                           bodyType instanceof UuidPrimitiveType ||
                           bodyType instanceof HexPrimitiveType ||
@@ -344,6 +344,7 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
                               op.returnType instanceof MoneyPrimitiveType ||
                               op.returnType instanceof CpfPrimitiveType ||
                               op.returnType instanceof CnpjPrimitiveType ||
+                              op.returnType instanceof EmailPrimitiveType ||
                               op.returnType instanceof UuidPrimitiveType ||
                               op.returnType instanceof HexPrimitiveType ||
                               op.returnType instanceof BytesPrimitiveType ||

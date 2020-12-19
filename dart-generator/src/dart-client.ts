@@ -90,7 +90,9 @@ ${ast.operations
 
   code += `var _errTable = {\n`;
   for (const error of ast.errors) {
-    code += `  "${error}": (msg) => ${error}(msg),\n`;
+    const hasData = !(error.dataType instanceof VoidPrimitiveType);
+
+    code += `  "${error.name}": SdkgenErrorDescription("${error.dataType.name}", (msg, data) => ${error.name}(msg${hasData ? ", data" : ""})),\n`;
   }
 
   code += `};\n`;
