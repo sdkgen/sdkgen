@@ -154,12 +154,6 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
       return;
     }
 
-    if (!server.introspection) {
-      res.statusCode = 404;
-      res.end();
-      return;
-    }
-
     res.write(`
             <!DOCTYPE html>
             <html lang="en">
