@@ -46,7 +46,9 @@ import { setupSwagger } from "./swagger";
 export class SdkgenHttpServer<ExtraContextT = unknown> {
   public httpServer: Server;
 
-  private headers = new Map<string, string>();
+  private readonly headers = new Map<string, string>();
+
+  private readonly healthChecks: Array<() => Promise<boolean>> = [];
 
   private handlers: Array<{
     method: string;
@@ -133,6 +135,10 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
         res.end();
       });
     });
+  }
+
+  registerHealthCheck(healthCheck: () => Promise<boolean>): void {
+    this.healthChecks.push(healthCheck);
   }
 
   ignoreUrlPrefix(urlPrefix: string): void {
@@ -631,6 +637,13 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
 
       try {
         ok = await this.apiConfig.hook.onHealthCheck();
+        for (const healthCheck of this.healthChecks) {
+          if (!ok) {
+            break;
+          }
+
+          ok = await healthCheck();
+        }
       } catch (e) {
         ok = false;
       }
@@ -694,24 +707,32 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
       return;
     }
 
-    let reply: ContextReply | null;
+    let next = async (nextCtx: Context & ExtraContextT) => {
+      try {
+        const args = decode(this.apiConfig.astJson.typeTable, `${nextCtx.request.name}.args`, functionDescription.args, nextCtx.request.args);
+        const ret = await functionImplementation(nextCtx, args);
+        const encodedRet = encode(this.apiConfig.astJson.typeTable, `${nextCtx.request.name}.ret`, functionDescription.ret, ret);
 
-    try {
-      reply = await this.apiConfig.hook.onRequestStart(ctx);
-      if (!reply) {
-        const args = decode(this.apiConfig.astJson.typeTable, `${ctx.request.name}.args`, functionDescription.args, ctx.request.args);
-        const ret = await functionImplementation(ctx, args);
-        const encodedRet = encode(this.apiConfig.astJson.typeTable, `${ctx.request.name}.ret`, functionDescription.ret, ret);
-
-        reply = { result: encodedRet };
+        return { result: encodedRet } as ContextReply;
+      } catch (error) {
+        return { error } as ContextReply;
       }
-    } catch (e) {
-      reply = {
-        error: e,
+    };
+
+    for (let i = this.apiConfig.middlewares.length - 1; i >= 0; --i) {
+      const middleware = this.apiConfig.middlewares[i];
+      const previousNext = next;
+
+      next = async nextCtx => {
+        try {
+          return await middleware(nextCtx, previousNext);
+        } catch (error) {
+          return { error } as ContextReply;
+        }
       };
     }
 
-    reply = (await this.apiConfig.hook.onRequestEnd(ctx, reply)) || reply;
+    const reply = await next(ctx);
 
     // If errors, check if the error type is one of the @throws annotation. If it isn't, change to Fatal
     if (reply.error) {

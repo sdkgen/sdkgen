@@ -3,3 +3,5 @@ error CustomError {
 }
 
 fn throwCustomError(value: uint)
+
+fn identity(value: int): int
