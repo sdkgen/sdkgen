@@ -58,6 +58,8 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
 
   public introspection = true;
 
+  private hasSwagger = false;
+
   private ignoredUrlPrefix = "";
 
   public readonly ast: AstRoot;
@@ -137,12 +139,24 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
     this.ignoredUrlPrefix = urlPrefix;
   }
 
-  listen(port = 8000): void {
-    this.httpServer.listen(port, () => {
-      const addr = this.httpServer.address();
-      const addrString = addr === null ? "???" : typeof addr === "string" ? addr : `${addr.address}:${addr.port}`;
+  async listen(port = 8000): Promise<void> {
+    return new Promise(resolve => {
+      this.httpServer.listen(port, () => {
+        const addr = this.httpServer.address();
+        const addrString = addr === null ? "???" : typeof addr === "string" ? addr : `${addr.address}:${addr.port}`;
 
-      console.log(`Listening on ${addrString}`);
+        console.log(`Listening on ${addrString}`);
+
+        if (this.introspection) {
+          console.log(`Access the sdkgen Playground at http://${addrString}/playground`);
+        }
+
+        if (this.hasSwagger) {
+          console.log(`Access the REST API Swagger at http://${addrString}/swagger`);
+        }
+
+        resolve();
+      });
     });
   }
 
@@ -206,17 +220,15 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
       return str.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&");
     }
 
-    let hasSwagger = false;
-
     for (const op of this.ast.operations) {
       for (const ann of op.annotations) {
         if (!(ann instanceof RestAnnotation)) {
           continue;
         }
 
-        if (!hasSwagger) {
+        if (!this.hasSwagger) {
           setupSwagger(this);
-          hasSwagger = true;
+          this.hasSwagger = true;
         }
 
         const pathFragments = ann.path.split(/\{\w+\}/u);

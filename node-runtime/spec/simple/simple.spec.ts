@@ -44,8 +44,8 @@ const nodeClient = new NodeApiClient("http://localhost:8000");
 const server = new SdkgenHttpServer(api, { aaa: true });
 
 describe("Simple API", () => {
-  beforeAll(() => {
-    server.listen();
+  beforeAll(async () => {
+    await server.listen();
   });
 
   afterAll(async () => {
