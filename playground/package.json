@@ -90,7 +90,7 @@
     "react-router-dom": "^5.1.2",
     "react-test-renderer": "^16.14.0",
     "sass-loader": "^10.0.3",
-    "storage-factory": "^0.1.1",
+    "storage-factory": "^0.2.0",
     "style-loader": "^2.0.0",
     "ts-jest": "^26.4.1",
     "ts-loader": "^8.0.5",
