@@ -1,4 +1,5 @@
 import { parse as pathParse } from "path";
+
 import { RestAnnotation } from "./ast";
 
 function scanHeaders(text: string) {
@@ -8,7 +9,7 @@ function scanHeaders(text: string) {
   let match: RegExpExecArray | null;
 
   while ((match = headerRegex.exec(text)) !== null) {
-    if (match.groups?.header && match.groups?.name) {
+    if (match.groups?.header && match.groups.name) {
       headers.set(match.groups.header, match.groups.name);
     }
   }
@@ -17,10 +18,9 @@ function scanHeaders(text: string) {
 }
 
 function scanBody(text: string) {
-  const bodyRegex = /\[body \{(?<name>\w+)\}\]/u;
-  const match = text.match(bodyRegex);
+  const match = /\[body \{(?<name>\w+)\}\]/u.exec(text);
 
-  if (match && match.groups?.name) {
+  if (match?.groups?.name) {
     return match.groups.name;
   }
 
@@ -68,7 +68,7 @@ export function parseRestAnnotation(text: string): RestAnnotation {
     parsedPath.base = base;
     const query = queryArray.join("?");
 
-    if (!query.match(/^\{\w+\}(?:&\{\w+\})*$/u)) {
+    if (!/^\{\w+\}(?:&\{\w+\})*$/u.exec(query)) {
       throw new Error(`Invalid querystring on path`);
     }
 

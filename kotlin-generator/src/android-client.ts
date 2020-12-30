@@ -1,4 +1,6 @@
-import { AstRoot, ErrorNode, HiddenAnnotation, VoidPrimitiveType } from "@sdkgen/parser";
+import type { AstRoot } from "@sdkgen/parser";
+import { ErrorNode, HiddenAnnotation, VoidPrimitiveType } from "@sdkgen/parser";
+
 import { generateClass, generateEnum, generateErrorClass, generateJsonAddRepresentation, generateKotlinTypeName, mangle } from "./helpers";
 
 export function generateAndroidClientSource(ast: AstRoot): string {

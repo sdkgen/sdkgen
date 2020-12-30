@@ -1,6 +1,6 @@
 import { persistEndpointBookmarkStatus } from "helpers/localStorage/bookmarkedEndpoints";
 import { observable } from "mobx";
-import { AnnotationJson } from "resources/types/ast";
+import type { AnnotationJson } from "resources/types/ast";
 
 export type RequestStatus = "notFetched" | "success" | "fetching" | "error";
 

@@ -1,4 +1,5 @@
-import { AstRoot, ErrorNode, VoidPrimitiveType } from "../ast";
+import type { AstRoot } from "../ast";
+import { ErrorNode, VoidPrimitiveType } from "../ast";
 import { CheckMultipleDeclarationVisitor } from "./01_check_multiple_declaration";
 import { MatchTypeDefinitionsVisitor } from "./02_match_type_definitions";
 import { CheckNoRecursiveTypesVisitor } from "./03_check_no_recursive_types";
@@ -9,8 +10,6 @@ import { CheckEmptyStructOrEnumVisitor } from "./07_check_empty_struct_or_enum";
 import { CollectStructAndEnumTypesVisitor } from "./08_collect_struct_and_enum_types";
 import { ApplyStructSpreadsVisitor } from "./09_apply_struct_spreads";
 import { ValidateAnnotationsVisitor } from "./10_validate_annotations";
-
-export class SemanticError extends Error {}
 
 export function analyse(root: AstRoot): void {
   if (!root.errors.some(error => error.name === "Fatal")) {

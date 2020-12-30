@@ -1,10 +1,11 @@
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import * as React from "react";
+
 import s from "./searchInput.scss";
 
 interface Props {
-  onChange: (value: string) => void;
+  onChange(value: string): void;
 }
 
 export function SearchInput(props: Props): JSX.Element {

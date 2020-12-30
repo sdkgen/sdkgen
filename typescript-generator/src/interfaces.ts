@@ -1,4 +1,5 @@
-import { AstRoot } from "@sdkgen/parser";
+import type { AstRoot } from "@sdkgen/parser";
+
 import { generateTypescriptEnum, generateTypescriptInterface } from "./helpers";
 
 export function generateTypescriptInterfaces(ast: AstRoot): string {

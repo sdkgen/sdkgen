@@ -1,11 +1,12 @@
 import { RequestCard } from "components/requestCard";
 import { SearchInput } from "components/searchInput";
 import { Section } from "components/section";
-import { requestModel } from "helpers/requestModel";
-import { observer } from "mobx-react-lite";
+import type { requestModel } from "helpers/requestModel";
+import { observer } from "mobx-react";
 import * as React from "react";
 import RootStore from "stores";
 import { useDebounce } from "use-debounce";
+
 import s from "./home.scss";
 
 function Home() {

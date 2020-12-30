@@ -1,4 +1,4 @@
-import * as React from "react";
+import type * as React from "react";
 
 export function componentSwitch<Options extends string>(
   choice: Options,

@@ -1,13 +1,15 @@
-import loadable, { Options } from "@loadable/component";
+import type { Options } from "@loadable/component";
+import loadable from "@loadable/component";
 import { PageLoading } from "components/loading";
 import { MainWrapper } from "containers/mainWrapper";
 import { createBrowserHistory } from "history";
-import { observer } from "mobx-react-lite";
+import { observer } from "mobx-react";
 import { syncHistoryWithStore } from "mobx-react-router";
 import * as React from "react";
 import { Router } from "react-router";
 import { Route, Switch } from "react-router-dom";
 import { rootStore } from "stores";
+
 const history = syncHistoryWithStore(createBrowserHistory(), rootStore.routerStore);
 
 const asyncOptions: Options<any> = {

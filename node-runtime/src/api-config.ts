@@ -1,11 +1,14 @@
-import { AstJson } from "@sdkgen/parser";
-import { Context, ContextReply } from "./context";
+import type { AstJson } from "@sdkgen/parser";
+
+import type { Context, ContextReply } from "./context";
+import type { DeepReadonly } from "./utils";
 
 export abstract class BaseApiConfig<ExtraContextT = unknown> {
-  astJson!: AstJson;
+  astJson!: DeepReadonly<AstJson>;
 
   fn: {
-    [name: string]: ((ctx: Context & ExtraContextT, args: any) => any) | undefined;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    [name: string]: ((ctx: Context & ExtraContextT, args: any) => Promise<any>) | undefined;
   } = {};
 
   err: {
@@ -13,12 +16,12 @@ export abstract class BaseApiConfig<ExtraContextT = unknown> {
   } = {};
 
   hook: {
-    onHealthCheck: () => Promise<boolean>;
-    onRequestEnd: (ctx: Context & ExtraContextT, reply: ContextReply) => Promise<null | ContextReply>;
-    onRequestStart: (ctx: Context & ExtraContextT) => Promise<null | ContextReply>;
+    onHealthCheck(): Promise<boolean>;
+    onRequestEnd(ctx: Context & ExtraContextT, reply: ContextReply): Promise<null | ContextReply>;
+    onRequestStart(ctx: Context & ExtraContextT): Promise<null | ContextReply>;
   } = {
-    onHealthCheck: async () => true,
-    onRequestEnd: async () => null,
-    onRequestStart: async () => null,
+    onHealthCheck: async () => Promise.resolve(true),
+    onRequestEnd: async () => Promise.resolve(null),
+    onRequestStart: async () => Promise.resolve(null),
   };
 }

@@ -1,5 +1,6 @@
-import { generateTypescriptInterface, generateTypescriptTypeName } from "../src/helpers";
 import * as parser from "@sdkgen/parser";
+
+import { generateTypescriptInterface, generateTypescriptTypeName } from "../src/helpers";
 
 describe("helpers.ts", () => {
   test("generateTypescriptInterface", () => {

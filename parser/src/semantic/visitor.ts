@@ -1,4 +1,7 @@
-import { ArrayType, AstNode, AstRoot, ErrorNode, Field, Operation, OptionalType, StructType, TypeDefinition } from "../ast";
+import type { AstNode, AstRoot } from "../ast";
+import { ArrayType, ErrorNode, Field, Operation, OptionalType, StructType, TypeDefinition } from "../ast";
+
+export class SemanticError extends Error {}
 
 export abstract class Visitor {
   constructor(protected root: AstRoot) {}

@@ -1,9 +1,11 @@
 import { getLocalStorageBookmarks } from "helpers/localStorage/bookmarkedEndpoints";
-import { ModelAnotations, requestModel } from "helpers/requestModel";
+import type { ModelAnotations } from "helpers/requestModel";
+import { requestModel } from "helpers/requestModel";
 import { observable } from "mobx";
-import { ArgsType, AstJson, TypeDescription, TypeTable } from "resources/types/ast";
+import type { ArgsType, AstJson, TypeDescription, TypeTable } from "resources/types/ast";
 import { v4 as uuidV4 } from "uuid";
-import { RootStore } from ".";
+
+import type { RootStore } from ".";
 
 export const simpleStringTypes = ["string", "cep", "cnpj", "cpf", "email", "html", "phone", "url", "xml"];
 export const simpleTypes = ["json", "bool", "hex", "uuid", "base64", "int", "uint", "float", "money", "void", "latlng", ...simpleStringTypes];
@@ -112,7 +114,7 @@ export class RequestsStore {
   }
 
   public getAnotations = (AST: AstJson, functionName: string): ModelAnotations => {
-    const functionAnnotations = AST.annotations[`fn.${functionName}`] || [];
+    const functionAnnotations = AST.annotations[`fn.${functionName}`] ?? [];
 
     const regex = RegExp(`fn.${functionName}\\.[^.]*`, "u");
     const argsKeys = Object.keys(AST.annotations).filter(target => regex.test(target));
@@ -142,16 +144,16 @@ export class RequestsStore {
     return getLocalStorageBookmarks().reduce((acc, name) => ({ ...acc, [name]: true }), {});
   };
 
-  public createModels(AST: AstJson): void {
+  public createModels(ast: AstJson): void {
     console.log("createModels");
     const { endpointUrl, deviceId } = this.rootStore.configStore;
 
-    const FNs = Object.entries(AST.functionTable);
+    const functions = Object.entries(ast.functionTable);
     const bookmarkedEndpointsIndex = this.createBookmarkedEndpointIndex();
 
-    this.api = FNs.reduce((acc, [fName, fStruct]) => {
-      const argsMock = this.createMockBasedOnTypes(fStruct.args, AST.typeTable);
-      const annotations = this.getAnotations(AST, fName);
+    this.api = functions.reduce((acc, [fName, fStruct]) => {
+      const argsMock = this.createMockBasedOnTypes(fStruct!.args, ast.typeTable);
+      const annotations = this.getAnotations(ast, fName);
 
       if (annotations.func.some(ann => ann.type === "hidden")) {
         return acc;

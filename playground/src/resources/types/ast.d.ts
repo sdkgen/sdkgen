@@ -1,28 +1,49 @@
 export type TypeDescription = string | string[] | { [name: string]: TypeDescription };
 
-export interface TypeTable {
-  [name: string]: TypeDescription;
-}
-
 export interface ArgsType {
   [arg: string]: TypeDescription;
 }
 
-export interface FunctionTable {
-  [name: string]: {
-    args: ArgsType;
-    ret: TypeDescription;
-  };
+interface TypeTable {
+  [name: string]: TypeDescription | undefined;
 }
 
-interface AnnotationJson {
-  type: string;
-  value: any;
+interface FunctionTable {
+  [name: string]:
+    | {
+        args: ArgsType;
+        ret: TypeDescription;
+      }
+    | undefined;
 }
+type AnnotationJson =
+  | {
+      type: "description";
+      value: string;
+    }
+  | {
+      type: "throws";
+      value: string;
+    }
+  | {
+      type: "hidden";
+      value: null;
+    }
+  | {
+      type: "rest";
+      value: {
+        bodyVariable: string | null;
+        headers: Array<[string, string]>;
+        method: string;
+        path: string;
+        pathVariables: string[];
+        queryVariables: string[];
+      };
+    };
 
 export interface AstJson {
   typeTable: TypeTable;
   functionTable: FunctionTable;
-  errors: string[];
-  annotations: { [target: string]: AnnotationJson[] };
+  errors: Array<string | string[]>;
+  annotations: Record<string, AnnotationJson[] | undefined>;
 }

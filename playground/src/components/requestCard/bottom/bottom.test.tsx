@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
-import { RequestStatus } from "helpers/requestModel";
+import type { RequestStatus } from "helpers/requestModel";
 import * as React from "react";
+
 import Bottom from ".";
 
 describe("<Bottom />", () => {

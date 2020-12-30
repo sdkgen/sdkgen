@@ -1,4 +1,6 @@
 /* eslint-disable no-process-exit */
+import { writeFileSync } from "fs";
+
 import { generateCSharpServerSource } from "@sdkgen/csharp-generator";
 import { generateDartClientSource } from "@sdkgen/dart-generator";
 import { generateAndroidClientSource } from "@sdkgen/kotlin-generator";
@@ -11,7 +13,6 @@ import {
 } from "@sdkgen/typescript-generator";
 import commandLineArgs from "command-line-args";
 import commandLineUsage from "command-line-usage";
-import { writeFileSync } from "fs";
 
 const optionDefinitions = [
   { defaultOption: true, description: "Specifies the source file", name: "source" },
@@ -21,13 +22,13 @@ const optionDefinitions = [
 ];
 
 export function buildCmd(argv: string[]): void {
-  const options: {
+  const options = commandLineArgs(optionDefinitions, { argv }) as {
     source?: string;
     output?: string;
     target?: string;
     help?: boolean;
     _unknown?: string[];
-  } = commandLineArgs(optionDefinitions, { argv });
+  };
 
   if (options.help) {
     console.log(
