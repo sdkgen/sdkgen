@@ -18,7 +18,7 @@
     "url": "git+https://github.com/sdkgen/sdkgen.git"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/sdkgen/sdkgen/issues"
   },
