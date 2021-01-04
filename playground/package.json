@@ -25,7 +25,7 @@
     "url": "git+ssh://git@github.com:sdkgen/playground.git"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/sdkgen/sdkgen"
   },
