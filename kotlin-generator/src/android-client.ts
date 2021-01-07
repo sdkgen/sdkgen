@@ -72,7 +72,7 @@ class ApiClient(
     }\n\n`;
   }
 
-  code += `    private val sdkgenIOScope = CoroutineScope(IO)\n\n`;
+  code += `    private val sdkgenIOScope = CoroutineScope(IO + SupervisorJob())\n\n`;
   code += ast.operations
     .filter(op => op.annotations.every(ann => !(ann instanceof HiddenAnnotation)))
     .map(op => {
