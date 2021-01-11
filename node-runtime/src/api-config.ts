@@ -1,4 +1,5 @@
-import type { AstJson } from "@sdkgen/parser";
+import type { AstJson, AstRoot } from "@sdkgen/parser";
+import { jsonToAst } from "@sdkgen/parser";
 
 import type { Context, ContextReply } from "./context";
 import type { DeepReadonly } from "./utils";
@@ -12,6 +13,12 @@ export abstract class BaseApiConfig<ExtraContextT = unknown> {
 
       return (await this.hook.onRequestEnd(ctx, reply)) ?? reply;
     });
+  }
+
+  private _ast: AstRoot | undefined;
+
+  get ast() {
+    return (this._ast ??= jsonToAst(this.astJson));
   }
 
   astJson!: DeepReadonly<AstJson>;

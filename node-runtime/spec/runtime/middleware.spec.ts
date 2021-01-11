@@ -17,7 +17,7 @@ import { SdkgenHttpServer } from "../../src";
 
 const ast = new Parser(`${__dirname}/api.sdkgen`).parse();
 
-writeFileSync(`${__dirname}/middleware-api.ts`, generateNodeServerSource(ast).replace("@sdkgen/node-runtime", "../../src"));
+writeFileSync(`${__dirname}/middleware-api.ts`, generateNodeServerSource(ast).replace(/@sdkgen\/node-runtime/gu, "../../src"));
 const { api } = require(`${__dirname}/middleware-api.ts`);
 
 unlinkSync(`${__dirname}/middleware-api.ts`);
@@ -30,7 +30,7 @@ api.fn.sum = async (_ctx: Context, args: { a: number; b: number }) => {
   return args.a + args.b;
 };
 
-writeFileSync(`${__dirname}/middleware-nodeClient.ts`, generateNodeClientSource(ast).replace("@sdkgen/node-runtime", "../../src"));
+writeFileSync(`${__dirname}/middleware-nodeClient.ts`, generateNodeClientSource(ast).replace(/@sdkgen\/node-runtime/gu, "../../src"));
 const { ApiClient: NodeApiClient } = require(`${__dirname}/middleware-nodeClient.ts`);
 
 unlinkSync(`${__dirname}/middleware-nodeClient.ts`);

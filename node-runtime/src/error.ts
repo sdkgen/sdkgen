@@ -23,3 +23,5 @@ export abstract class SdkgenErrorWithData<DataType> extends SdkgenError {
     };
   }
 }
+
+export class Fatal extends SdkgenError {}

@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/require-await */
+//* eslint-disable @typescript-eslint/require-await */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable @typescript-eslint/no-require-imports */
@@ -16,7 +16,7 @@ import { SdkgenHttpServer } from "../../src";
 
 const ast = new Parser(`${__dirname}/api.sdkgen`).parse();
 
-writeFileSync(`${__dirname}/errors-api.ts`, generateNodeServerSource(ast).replace("@sdkgen/node-runtime", "../../src"));
+writeFileSync(`${__dirname}/errors-api.ts`, generateNodeServerSource(ast).replace(/@sdkgen\/node-runtime/gu, "../../src"));
 const { api, CustomError } = require(`${__dirname}/errors-api.ts`);
 
 unlinkSync(`${__dirname}/errors-api.ts`);
@@ -25,7 +25,7 @@ api.fn.throwCustomError = async (ctx: Context, args: { value: number }) => {
   throw new CustomError("Some message", args);
 };
 
-writeFileSync(`${__dirname}/errors-nodeClient.ts`, generateNodeClientSource(ast).replace("@sdkgen/node-runtime", "../../src"));
+writeFileSync(`${__dirname}/errors-nodeClient.ts`, generateNodeClientSource(ast).replace(/@sdkgen\/node-runtime/gu, "../../src"));
 const { ApiClient: NodeApiClient } = require(`${__dirname}/errors-nodeClient.ts`);
 
 unlinkSync(`${__dirname}/errors-nodeClient.ts`);
