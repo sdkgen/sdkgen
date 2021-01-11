@@ -1,8 +1,19 @@
+/* eslint-disable @typescript-eslint/require-await */
+/* eslint-disable @typescript-eslint/no-unsafe-return */
+/* eslint-disable @typescript-eslint/naming-convention */
+/* eslint-disable @typescript-eslint/no-require-imports */
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+import { unlinkSync, writeFileSync } from "fs";
+import type { Context } from "vm";
+
 import { Parser } from "@sdkgen/parser";
 import { generateNodeClientSource, generateNodeServerSource } from "@sdkgen/typescript-generator";
-import { unlinkSync, writeFileSync } from "fs";
-import { Context } from "vm";
-import { BaseApiConfig, SdkgenHttpServer } from "../../src";
+
+import type { BaseApiConfig } from "../../src";
+import { SdkgenHttpServer } from "../../src";
 
 const ast = new Parser(`${__dirname}/api.sdkgen`).parse();
 
@@ -38,13 +49,13 @@ describe("Middleware", () => {
     expect(await nodeClient.identity(null, { value: 3 })).toBe(3);
 
     (api as BaseApiConfig).use(async (ctx, next) => {
-      if (ctx.request.args.value === 2) {
+      if ((ctx.request.args as { value: number }).value === 2) {
         return {
           result: 17,
         };
       }
 
-      return next(ctx);
+      return next();
     });
 
     expect(await nodeClient.identity(null, { value: 1 })).toBe(1);
@@ -62,7 +73,7 @@ describe("Middleware", () => {
     expect(await nodeClient.identity(null, { value: 3 })).toBe(3);
 
     (api as BaseApiConfig).hook.onRequestStart = async ctx => {
-      if (ctx.request.args.value === 2) {
+      if ((ctx.request.args as { value: number }).value === 2) {
         return {
           result: 17,
         };
@@ -84,23 +95,23 @@ describe("Middleware", () => {
     expect(await nodeClient.identity(null, { value: 3 })).toBe(3);
 
     (api as BaseApiConfig).use(async (ctx, next) => {
-      if (ctx.request.args.value === 2) {
+      if ((ctx.request.args as { value: number }).value === 2) {
         return {
           result: 17,
         };
       }
 
-      return next(ctx);
+      return next();
     });
 
     (api as BaseApiConfig).use(async (ctx, next) => {
-      if (ctx.request.args.value < 3) {
+      if ((ctx.request.args as { value: number }).value < 3) {
         return {
           result: 10,
         };
       }
 
-      return next(ctx);
+      return next();
     });
 
     expect(await nodeClient.identity(null, { value: 1 })).toBe(10);
