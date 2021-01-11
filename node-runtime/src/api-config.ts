@@ -7,7 +7,6 @@ export abstract class BaseApiConfig<ExtraContextT = unknown> {
   astJson!: DeepReadonly<AstJson>;
 
   fn: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [name: string]: ((ctx: Context & ExtraContextT, args: any) => Promise<any>) | undefined;
   } = {};
 

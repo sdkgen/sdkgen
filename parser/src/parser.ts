@@ -254,7 +254,7 @@ export class Parser {
     const nameToken = this.expect(IdentifierToken);
     const name = nameToken.value;
 
-    if (!/[A-Z]/u.exec(name[0])) {
+    if (!/[A-Z]/u.test(name[0])) {
       throw new ParserError(`The custom type name must start with an uppercase letter, but found '${JSON.stringify(name)}' at ${nameToken.location}`);
     }
 
@@ -281,7 +281,7 @@ export class Parser {
     const nameToken = this.expect(IdentifierToken);
     const name = nameToken.value;
 
-    if (!/[A-Z]/u.exec(name[0])) {
+    if (!/[A-Z]/u.test(name[0])) {
       throw new ParserError(`Error name must start with an uppercase letter, but found '${JSON.stringify(name)}' at ${nameToken.location}`);
     }
 
@@ -481,7 +481,7 @@ export class Parser {
           const identToken = this.expect(IdentifierToken);
 
           this.nextToken();
-          if (!/[A-Z]/u.exec(identToken.value[0])) {
+          if (!/[A-Z]/u.test(identToken.value[0])) {
             throw new ParserError(`Expected a type but found '${JSON.stringify(identToken.value)}' at ${identToken.location}`);
           }
 
@@ -500,7 +500,7 @@ export class Parser {
       EnumKeywordToken: () => this.parseEnum(),
       IdentifierToken: token => {
         this.nextToken();
-        if (!/[A-Z]/u.exec(token.value[0])) {
+        if (!/[A-Z]/u.test(token.value[0])) {
           throw new ParserError(`Expected a type but found '${JSON.stringify(token.value)}' at ${token.location}`);
         }
 

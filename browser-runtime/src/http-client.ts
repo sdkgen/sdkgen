@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { AstJson } from "./ast";
 import { decode, encode } from "./encode-decode";
 import type { SdkgenError, SdkgenErrorWithData } from "./error";

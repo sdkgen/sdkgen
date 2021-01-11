@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
@@ -28,20 +27,18 @@ export function apiTestWrapper<T extends BaseApiConfig>(api: T): T {
 
       ctx.request = {
         args: encodedArgs,
-        deviceInfo: ctx.request?.deviceInfo
-          ? ctx.request.deviceInfo
-          : {
-              fingerprint: null,
-              id: randomBytes(16).toString("hex"),
-              language: null,
-              platform: null,
-              timezone: null,
-              type: ctx.request?.deviceInfo && ctx.request.deviceInfo.type ? ctx.request.deviceInfo.type : "test",
-              version: null,
-            },
-        extra: ctx.request?.extra ? ctx.request.extra : {},
-        files: ctx.request?.files ? ctx.request.files : [],
-        headers: ctx.request?.headers ? ctx.request.headers : {},
+        deviceInfo: ctx.request?.deviceInfo ?? {
+          fingerprint: null,
+          id: randomBytes(16).toString("hex"),
+          language: null,
+          platform: null,
+          timezone: null,
+          type: ctx.request?.deviceInfo.type ?? "test",
+          version: null,
+        },
+        extra: ctx.request?.extra ?? {},
+        files: ctx.request?.files ?? [],
+        headers: ctx.request?.headers ?? {},
         id: randomBytes(16).toString("hex"),
         ip: ctx.request?.ip ? ctx.request.ip : "0.0.0.0",
         name: functionName,

@@ -288,8 +288,8 @@ export class Lexer {
       }
 
       default: {
-        if (/[a-zA-Z_]/u.exec(this.currentChar())) {
-          while (/[a-zA-Z0-9_]/u.exec(this.nextChar())) {
+        if (/[a-zA-Z_]/u.test(this.currentChar())) {
+          while (/[a-zA-Z0-9_]/u.test(this.nextChar())) {
             //
           }
 

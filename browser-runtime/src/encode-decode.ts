@@ -37,13 +37,13 @@ function simpleEncodeDecode(path: string, type: string, value: unknown) {
 
     return value;
   } else if (type === "hex") {
-    if (typeof value !== "string" || !/^(?:[A-Fa-f0-9]{2})*$/u.exec(value)) {
+    if (typeof value !== "string" || !/^(?:[A-Fa-f0-9]{2})*$/u.test(value)) {
       throw new ParseError(path, type, value);
     }
 
     return value.toLowerCase();
   } else if (type === "uuid") {
-    if (typeof value !== "string" || !/^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$/u.exec(value)) {
+    if (typeof value !== "string" || !/^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$/u.test(value)) {
       throw new ParseError(path, type, value);
     }
 
@@ -161,7 +161,7 @@ export function encode(typeTable: TypeTable, path: string, type: TypeDescription
 
     return value;
   } else if (type === "date") {
-    if (!(value instanceof Date) && !(typeof value === "string" && /^[0-9]{4}-[01][0-9]-[0123][0-9]$/u.exec(value))) {
+    if (!(value instanceof Date) && !(typeof value === "string" && /^[0-9]{4}-[01][0-9]-[0123][0-9]$/u.test(value))) {
       throw new ParseError(path, type, value);
     }
 
@@ -171,7 +171,7 @@ export function encode(typeTable: TypeTable, path: string, type: TypeDescription
       !(value instanceof Date) &&
       !(
         typeof value === "string" &&
-        /^[0-9]{4}-[01][0-9]-[0123][0-9]T[012][0-9]:[0123456][0-9]:[0123456][0-9](?:\.[0-9]{1,6})?(?:Z|[+-][012][0-9]:[0123456][0-9])?$/u.exec(value)
+        /^[0-9]{4}-[01][0-9]-[0123][0-9]T[012][0-9]:[0123456][0-9]:[0123456][0-9](?:\.[0-9]{1,6})?(?:Z|[+-][012][0-9]:[0123456][0-9])?$/u.test(value)
       )
     ) {
       throw new ParseError(path, type, value);
@@ -237,7 +237,7 @@ export function decode(typeTable: TypeTable, path: string, type: TypeDescription
 
     return buffer;
   } else if (type === "bigint") {
-    if (typeof value !== "number" && (typeof value !== "string" || !/^-?[0-9]+$/u.exec(value))) {
+    if (typeof value !== "number" && (typeof value !== "string" || !/^-?[0-9]+$/u.test(value))) {
       throw new ParseError(path, type, value);
     }
 
@@ -255,7 +255,7 @@ export function decode(typeTable: TypeTable, path: string, type: TypeDescription
 
     return value;
   } else if (type === "date") {
-    if (typeof value !== "string" || !/^[0-9]{4}-[01][0-9]-[0123][0-9]$/u.exec(value)) {
+    if (typeof value !== "string" || !/^[0-9]{4}-[01][0-9]-[0123][0-9]$/u.test(value)) {
       throw new ParseError(path, type, value);
     }
 
@@ -270,7 +270,7 @@ export function decode(typeTable: TypeTable, path: string, type: TypeDescription
 
     return date;
   } else if (type === "datetime") {
-    if (typeof value !== "string" || !/^[0-9]{4}-[01][0-9]-[0123][0-9]T[012][0-9]:[0123456][0-9]:[0123456][0-9](?:\.[0-9]{1,6})?Z?$/u.exec(value)) {
+    if (typeof value !== "string" || !/^[0-9]{4}-[01][0-9]-[0123][0-9]T[012][0-9]:[0123456][0-9]:[0123456][0-9](?:\.[0-9]{1,6})?Z?$/u.test(value)) {
       throw new ParseError(path, type, value);
     }
 

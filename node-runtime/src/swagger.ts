@@ -248,7 +248,6 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
 
     try {
       const definitions: Record<string, JSONSchema | undefined> = {};
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const paths: Record<string, any> = {};
 
       for (const op of server.ast.operations) {

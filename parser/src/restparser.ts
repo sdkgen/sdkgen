@@ -68,7 +68,7 @@ export function parseRestAnnotation(text: string): RestAnnotation {
     parsedPath.base = base;
     const query = queryArray.join("?");
 
-    if (!/^\{\w+\}(?:&\{\w+\})*$/u.exec(query)) {
+    if (!/^\{\w+\}(?:&\{\w+\})*$/u.test(query)) {
       throw new Error(`Invalid querystring on path`);
     }
 
