@@ -1,6 +1,8 @@
-import { ModelAnotations } from "helpers/requestModel";
+import type { ModelAnotations } from "helpers/requestModel";
 import * as React from "react";
+
 import s from "./annotations.scss";
+
 interface Props {
   annotations: ModelAnotations;
 }

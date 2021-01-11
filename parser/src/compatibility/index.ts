@@ -1,6 +1,6 @@
+import type { AstRoot, Type } from "../ast";
 import {
   ArrayType,
-  AstRoot,
   Base64PrimitiveType,
   BigIntPrimitiveType,
   BytesPrimitiveType,
@@ -18,7 +18,6 @@ import {
   OptionalType,
   StringPrimitiveType,
   StructType,
-  Type,
   TypeReference,
   UIntPrimitiveType,
   UrlPrimitiveType,

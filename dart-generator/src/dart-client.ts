@@ -1,4 +1,6 @@
-import { AstRoot, HiddenAnnotation, VoidPrimitiveType } from "@sdkgen/parser";
+import type { AstRoot } from "@sdkgen/parser";
+import { HiddenAnnotation, VoidPrimitiveType } from "@sdkgen/parser";
+
 import { cast, generateClass, generateEnum, generateErrorClass, generateTypeName } from "./helpers";
 
 export function generateDartClientSource(ast: AstRoot): string {

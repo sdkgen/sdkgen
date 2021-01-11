@@ -1,6 +1,6 @@
 import * as React from "react";
 
-const s = require("./loading.scss");
+import s from "./loading.scss";
 
 export function Loading(): JSX.Element {
   return (

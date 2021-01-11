@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
 import { decode, encode } from "../src";
 
 describe("Encode/Decode", () => {
-  test("Process CPF", async () => {
+  test("Process CPF", () => {
     expect(encode({}, "", "cpf", "067.183.145-36")).toBe("06718314536");
     expect(decode({}, "", "cpf", "06718314536")).toBe("067.183.145-36");
     expect(() => {
@@ -12,7 +14,7 @@ describe("Encode/Decode", () => {
     }).toThrow();
   });
 
-  test("Process CNPJ", async () => {
+  test("Process CNPJ", () => {
     expect(encode({}, "", "cnpj", "18.571.767/0001-36")).toBe("18571767000136");
     expect(decode({}, "", "cnpj", "18571767000136")).toBe("18.571.767/0001-36");
     expect(() => {
@@ -23,7 +25,7 @@ describe("Encode/Decode", () => {
     }).toThrow();
   });
 
-  test("Process URL", async () => {
+  test("Process URL", () => {
     expect(encode({}, "", "url", "https://cubos.io/")).toBe("https://cubos.io/");
     expect(decode({}, "", "url", "https://cubos.io/")).toBe("https://cubos.io/");
     expect(encode({}, "", "url", " https:cubos.io/  ")).toBe("https://cubos.io/");
@@ -36,7 +38,7 @@ describe("Encode/Decode", () => {
     }).toThrow();
   });
 
-  test("Process Base64", async () => {
+  test("Process Base64", () => {
     expect(encode({}, "", "base64", "c3VyZS4=")).toBe("c3VyZS4=");
     expect(encode({}, "", "base64", "")).toBe("");
     expect(() => {
@@ -92,7 +94,7 @@ describe("Encode/Decode", () => {
     expect(decode({}, "", "datetime", "2020-11-10T15:34:50.000").getTime()).toBe(new Date("2020-11-10T15:34:50Z").getTime());
   });
 
-  test("Process BigInt", async () => {
+  test("Process BigInt", () => {
     expect(encode({}, "", "bigint", BigInt(10))).toBe("10");
     expect(() => {
       encode({}, "", "bigint", 10);

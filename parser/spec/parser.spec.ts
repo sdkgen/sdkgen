@@ -1,4 +1,5 @@
-import { AstJson, astToJson, jsonToAst } from "../src/json";
+import type { AstJson } from "../src/json";
+import { astToJson, jsonToAst } from "../src/json";
 import { Lexer } from "../src/lexer";
 import { Parser } from "../src/parser";
 

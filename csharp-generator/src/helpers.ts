@@ -1,3 +1,4 @@
+import type { Type } from "@sdkgen/parser";
 import {
   ArrayType,
   Base64PrimitiveType,
@@ -19,7 +20,6 @@ import {
   OptionalType,
   StringPrimitiveType,
   StructType,
-  Type,
   TypeReference,
   UIntPrimitiveType,
   UrlPrimitiveType,
@@ -110,7 +110,7 @@ const reservedWords = [
   "while",
 ];
 
-const typesWithNativeNullable: any[] = [
+const typesWithNativeNullable: Function[] = [
   StringPrimitiveType,
   HtmlPrimitiveType,
   CpfPrimitiveType,
@@ -126,7 +126,7 @@ const typesWithNativeNullable: any[] = [
   ArrayType,
 ];
 
-const needsTempVarForNullable: any[] = [
+const needsTempVarForNullable: Function[] = [
   BigIntPrimitiveType,
   DatePrimitiveType,
   DateTimePrimitiveType,

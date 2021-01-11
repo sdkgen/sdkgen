@@ -1,5 +1,5 @@
+import type { AstNode, Type } from "../ast";
 import {
-  AstNode,
   Base64PrimitiveType,
   BigIntPrimitiveType,
   BoolPrimitiveType,
@@ -21,15 +21,13 @@ import {
   RestAnnotation,
   StringPrimitiveType,
   ThrowsAnnotation,
-  Type,
   TypeDefinition,
   TypeReference,
   UIntPrimitiveType,
   UuidPrimitiveType,
   VoidPrimitiveType,
 } from "../ast";
-import { SemanticError } from "./analyser";
-import { Visitor } from "./visitor";
+import { SemanticError, Visitor } from "./visitor";
 
 function isRestEncodable(type: Type) {
   return (

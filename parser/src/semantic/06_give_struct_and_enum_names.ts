@@ -1,6 +1,6 @@
-import { AstNode, EnumType, ErrorNode, Field, Operation, StructType, Type, TypeDefinition } from "../ast";
-import { SemanticError } from "./analyser";
-import { Visitor } from "./visitor";
+import type { AstNode, Type } from "../ast";
+import { EnumType, ErrorNode, Field, Operation, StructType, TypeDefinition } from "../ast";
+import { SemanticError, Visitor } from "./visitor";
 
 export class GiveStructAndEnumNamesVisitor extends Visitor {
   path: string[] = [];

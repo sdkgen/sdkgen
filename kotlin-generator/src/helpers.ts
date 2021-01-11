@@ -1,3 +1,4 @@
+import type { ErrorNode, Type } from "@sdkgen/parser";
 import {
   ArrayType,
   Base64PrimitiveType,
@@ -10,7 +11,6 @@ import {
   DateTimePrimitiveType,
   EmailPrimitiveType,
   EnumType,
-  ErrorNode,
   FloatPrimitiveType,
   HexPrimitiveType,
   HtmlPrimitiveType,
@@ -20,7 +20,6 @@ import {
   OptionalType,
   StringPrimitiveType,
   StructType,
-  Type,
   TypeReference,
   UIntPrimitiveType,
   UrlPrimitiveType,

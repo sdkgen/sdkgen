@@ -1,11 +1,12 @@
-import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import type { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faClone, faCog } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classnames from "classnames";
-import { observer } from "mobx-react-lite";
+import { observer } from "mobx-react";
 import * as React from "react";
 import { Link } from "react-router-dom";
 import RootStore from "stores";
+
 import s from "./header.scss";
 
 interface LinkInfo {
@@ -23,7 +24,7 @@ function Header() {
   const { routerStore } = React.useContext(RootStore);
 
   const activePath = routerStore.location.pathname;
-  const Links = links.map(l => (
+  const linkElements = links.map(l => (
     <Link key={l.to} to={l.to}>
       <div className={classnames(s.link, l.to === activePath && s.active)}>
         <FontAwesomeIcon size="xs" icon={l.icon} className={s.icon} />
@@ -31,7 +32,7 @@ function Header() {
       </div>
     </Link>
   ));
-  const Divider = <div className={s.divider} />;
+  const divider = <div className={s.divider} />;
 
   return (
     <div className={s.header}>
@@ -42,8 +43,8 @@ function Header() {
         </div>
       </div>
       <div className={s.actions}>
-        {Links}
-        {Divider}
+        {linkElements}
+        {divider}
       </div>
     </div>
   );

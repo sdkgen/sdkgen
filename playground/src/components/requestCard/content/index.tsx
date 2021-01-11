@@ -1,12 +1,13 @@
 import { componentSwitch } from "helpers/componentSwitch";
-import { requestModel } from "helpers/requestModel";
-import { observer } from "mobx-react-lite";
+import type { requestModel } from "helpers/requestModel";
+import { observer } from "mobx-react";
 import * as React from "react";
 import ReactJson from "react-json-view";
 import MonacoEditor from "react-monaco-editor";
+
 import { Annotations } from "../annotations";
 import { Errors } from "../errors";
-import { TabKeys } from "../tabs";
+import type { TabKeys } from "../tabs";
 import s from "./content.scss";
 
 interface ContentProps {

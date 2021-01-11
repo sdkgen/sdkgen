@@ -1,4 +1,6 @@
-import { AstRoot, astToJson, OptionalType, VoidPrimitiveType } from "@sdkgen/parser";
+import type { AstRoot } from "@sdkgen/parser";
+import { astToJson, OptionalType, VoidPrimitiveType } from "@sdkgen/parser";
+
 import { capitalize, decodeType, encodeType, generateEnum, generateStruct, generateTypeName, ident } from "./helpers";
 
 export function generateCSharpServerSource(ast: AstRoot): string {
