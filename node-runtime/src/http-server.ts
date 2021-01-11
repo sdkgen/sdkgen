@@ -722,18 +722,15 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
       request,
     };
 
-    const functionDescription = this.apiConfig.astJson.functionTable[ctx.request.name];
-    const functionImplementation = this.apiConfig.fn[ctx.request.name];
-
-    if (!functionDescription || !functionImplementation) {
-      writeReply(ctx, {
-        error: this.fatalError(`Function does not exist: ${ctx.request.name}`),
-      });
-      return;
-    }
-
     let next = async () => {
       try {
+        const functionDescription = this.apiConfig.astJson.functionTable[ctx.request.name];
+        const functionImplementation = this.apiConfig.fn[ctx.request.name];
+
+        if (!functionDescription || !functionImplementation) {
+          throw this.fatalError(`Function does not exist: ${ctx.request.name}`);
+        }
+
         const args = decode(this.apiConfig.astJson.typeTable, `${ctx.request.name}.args`, functionDescription.args, ctx.request.args);
         const ret = await functionImplementation(ctx, args);
         const encodedRet = encode(this.apiConfig.astJson.typeTable, `${ctx.request.name}.ret`, functionDescription.ret, ret);

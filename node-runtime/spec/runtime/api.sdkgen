@@ -5,3 +5,4 @@ error CustomError {
 fn throwCustomError(value: uint)
 
 fn identity(value: int): int
+fn sum(a: int, b: int): int

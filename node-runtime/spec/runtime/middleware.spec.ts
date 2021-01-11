@@ -26,6 +26,10 @@ api.fn.identity = async (_ctx: Context, args: { value: number }) => {
   return args.value;
 };
 
+api.fn.sum = async (_ctx: Context, args: { a: number; b: number }) => {
+  return args.a + args.b;
+};
+
 writeFileSync(`${__dirname}/middleware-nodeClient.ts`, generateNodeClientSource(ast).replace("@sdkgen/node-runtime", "../../src"));
 const { ApiClient: NodeApiClient } = require(`${__dirname}/middleware-nodeClient.ts`);
 
@@ -117,6 +121,33 @@ describe("Middleware", () => {
     expect(await nodeClient.identity(null, { value: 1 })).toBe(10);
     expect(await nodeClient.identity(null, { value: 2 })).toBe(17);
     expect(await nodeClient.identity(null, { value: 3 })).toBe(3);
+
+    (api as BaseApiConfig).middlewares.pop();
+    (api as BaseApiConfig).middlewares.pop();
+  });
+
+  test("A middeware can redirect calls", async () => {
+    expect(await nodeClient.identity(null, { value: 1 })).toBe(1);
+    expect(await nodeClient.identity(null, { value: 2 })).toBe(2);
+    expect(await nodeClient.identity(null, { value: 3 })).toBe(3);
+
+    (api as BaseApiConfig).use(async (ctx, next) => {
+      if (ctx.request.name === "identity") {
+        ctx.request.name = "sum";
+        const { value } = ctx.request.args as { value: number };
+
+        ctx.request.args = {
+          a: value,
+          b: value,
+        };
+      }
+
+      return next();
+    });
+
+    expect(await nodeClient.identity(null, { value: 1 })).toBe(2);
+    expect(await nodeClient.identity(null, { value: 2 })).toBe(4);
+    expect(await nodeClient.identity(null, { value: 3 })).toBe(6);
 
     (api as BaseApiConfig).middlewares.pop();
   });
