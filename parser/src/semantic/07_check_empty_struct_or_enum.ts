@@ -1,6 +1,6 @@
-import { AstNode, EnumType, StructType } from "../ast";
-import { SemanticError } from "./analyser";
-import { Visitor } from "./visitor";
+import type { AstNode } from "../ast";
+import { EnumType, StructType } from "../ast";
+import { SemanticError, Visitor } from "./visitor";
 
 export class CheckEmptyStructOrEnumVisitor extends Visitor {
   visit(node: AstNode): void {

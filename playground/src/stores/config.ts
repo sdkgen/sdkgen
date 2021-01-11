@@ -1,6 +1,7 @@
 import { safeLocalStorage } from "helpers/localStorage/safeLocalStorage";
 import { observable } from "mobx";
-import { RootStore } from ".";
+
+import type { RootStore } from ".";
 
 const endpointUrlFallback = process.env.NODE_ENV === "development" ? `http://localhost:${process.env.SERVER_PORT}` : location.origin;
 
@@ -52,7 +53,7 @@ export class ConfigStore {
         safeLocalStorage.setItem("endpointUrl", this.endpointUrl);
       }
     } else {
-      this.deviceId = safeLocalStorage.getItem("deviceId") || randomBytesHex(16);
+      this.deviceId = safeLocalStorage.getItem("deviceId") ?? randomBytesHex(16);
       this.endpointUrl = (this.canChangeEndpoint && safeLocalStorage.getItem("endpointUrl")) || endpointUrlFallback;
     }
   }

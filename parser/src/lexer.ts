@@ -1,3 +1,4 @@
+import type { Token } from "./token";
 import {
   AnnotationToken,
   ArraySymbolToken,
@@ -20,7 +21,6 @@ import {
   PrimitiveTypeToken,
   SpreadSymbolToken,
   StringLiteralToken,
-  Token,
   TrueKeywordToken,
   TypeKeywordToken,
 } from "./token";
@@ -288,8 +288,8 @@ export class Lexer {
       }
 
       default: {
-        if (this.currentChar().match(/[a-zA-Z_]/u)) {
-          while (this.nextChar().match(/[a-zA-Z0-9_]/u)) {
+        if (/[a-zA-Z_]/u.test(this.currentChar())) {
+          while (/[a-zA-Z0-9_]/u.test(this.nextChar())) {
             //
           }
 

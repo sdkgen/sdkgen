@@ -1,6 +1,6 @@
-import { AstNode, BoolPrimitiveType, GetOperation } from "../ast";
-import { SemanticError } from "./analyser";
-import { Visitor } from "./visitor";
+import type { AstNode } from "../ast";
+import { BoolPrimitiveType, GetOperation } from "../ast";
+import { SemanticError, Visitor } from "./visitor";
 
 export class CheckNamingForGettersReturningBoolVisitor extends Visitor {
   visit(node: AstNode): void {
@@ -8,7 +8,7 @@ export class CheckNamingForGettersReturningBoolVisitor extends Visitor {
 
     if (node instanceof GetOperation) {
       const returnsBool = node.returnType instanceof BoolPrimitiveType;
-      const hasBoolNaming = Boolean(node.name.match(/^(?:is|has|can|may|should)/u));
+      const hasBoolNaming = /^(?:is|has|can|may|should)/u.test(node.name);
 
       if (returnsBool && !hasBoolNaming) {
         throw new SemanticError(`Get operation '${node.name}' at ${node.location} returns bool but isn't named accordingly`);

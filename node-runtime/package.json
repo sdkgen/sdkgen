@@ -7,8 +7,6 @@
     "test": "TZ=UTC jest --passWithNoTests",
     "eslint:fix": "eslint --fix '**/*.ts'",
     "eslint:check": "eslint '**/*.ts'",
-    "prettier:fix": "prettier --write '**/*.{t,j}s'",
-    "prettier:check": "prettier --check '**/*.{t,j}s'",
     "build": "tsc"
   },
   "repository": {
@@ -16,7 +14,7 @@
     "url": "git+https://github.com/sdkgen/sdkgen.git"
   },
   "author": "",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/sdkgen/sdkgen/issues"
   },
@@ -25,6 +23,7 @@
   },
   "homepage": "https://github.com/sdkgen/sdkgen#readme",
   "devDependencies": {
+    "@cubos/eslint-config": "^1.0.442740",
     "@types/busboy": "^0.2.3",
     "@types/jest": "^26.0.14",
     "@types/node": "^14.11.9",
@@ -39,7 +38,7 @@
     "eslint-plugin-prettier": "^3.1.2",
     "form-data": "^3.0.0",
     "jest": "^26.5.3",
-    "prettier": "^2.1.2",
+    "json-schema-typed": "^7.0.3",
     "ts-jest": "^26.4.1",
     "typescript": "^4.0.3"
   },

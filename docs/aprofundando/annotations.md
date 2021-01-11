@@ -23,7 +23,7 @@ type User {
 fn getUser(): User?
 ```
 
-Essa descrição pode também ser multilinha através da adição de um caractere `\` ao final da linha. Mas repare que não é permitido duplicar anotações description no mesmo item.
+Essa descrição pode também ser multilinha através da adição de um caractere `\` ao final da linha. Mas observe que não é permitido duplicar anotações description no mesmo item.
 
 ```
 @description Retorna o próximo pedido disponível para execução. Essa função \

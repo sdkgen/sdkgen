@@ -1,13 +1,14 @@
-import { IconProp } from "@fortawesome/fontawesome-svg-core";
+import type { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faPause, faPlay, faRedo } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
-import { RequestStatus } from "helpers/requestModel";
+import type { RequestStatus } from "helpers/requestModel";
 import * as React from "react";
+
 import s from "./bottom.scss";
 
 interface BottomProps {
-  onClick: (status: RequestStatus) => void;
+  onClick(status: RequestStatus): void;
   status: RequestStatus;
 }
 export default function Bottom(props: BottomProps): JSX.Element {

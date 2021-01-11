@@ -1,3 +1,4 @@
+import type { PrimitiveType } from "./ast";
 import {
   Base64PrimitiveType,
   BigIntPrimitiveType,
@@ -22,7 +23,7 @@ import {
   XmlPrimitiveType,
 } from "./ast";
 
-export const primitiveToAstClass = new Map<string, any>();
+export const primitiveToAstClass = new Map<string, new () => PrimitiveType>();
 primitiveToAstClass.set("string", StringPrimitiveType);
 primitiveToAstClass.set("int", IntPrimitiveType);
 primitiveToAstClass.set("uint", UIntPrimitiveType);
@@ -44,3 +45,17 @@ primitiveToAstClass.set("base64", Base64PrimitiveType);
 primitiveToAstClass.set("xml", XmlPrimitiveType);
 primitiveToAstClass.set("json", JsonPrimitiveType);
 primitiveToAstClass.set("void", VoidPrimitiveType);
+
+export type DeepReadonly<T> = T extends undefined | null | boolean | string | number | Function
+  ? T
+  : T extends []
+  ? readonly []
+  : T extends [infer U, ...infer Rest]
+  ? readonly [DeepReadonly<U>, ...DeepReadonly<Rest>]
+  : T extends Array<infer U>
+  ? ReadonlyArray<DeepReadonly<U>>
+  : T extends Map<infer K, infer V>
+  ? ReadonlyMap<DeepReadonly<K>, DeepReadonly<V>>
+  : T extends Set<infer U>
+  ? ReadonlySet<DeepReadonly<U>>
+  : { readonly [K in keyof T]: DeepReadonly<T[K]> };

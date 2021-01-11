@@ -1,11 +1,13 @@
-import { requestModel } from "helpers/requestModel";
-import { observer } from "mobx-react-lite";
+import type { requestModel } from "helpers/requestModel";
+import { observer } from "mobx-react";
 import * as React from "react";
+
 import Bottom from "./bottom";
 import Content from "./content";
 import Header from "./header";
 import s from "./requestCard.scss";
-import Tabs, { TabKeys } from "./tabs";
+import type { TabKeys } from "./tabs";
+import Tabs from "./tabs";
 
 interface CardProps {
   model: requestModel;

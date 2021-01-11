@@ -1,5 +1,18 @@
 # Releases
 
+## 1.4.2 (2020-12-21)
+
+**Correções**
+
+- `SdkgenErrorWithData` não será mais importado pelo código gerado sem necessidade, evitando problemas com linter ([#141](https://github.com/sdkgen/sdkgen/pull/141)).
+- Correção na uso do `WebpackManifestPlugin` no playground.
+- Correção no syntax highlighting no Visual Studio Code para `error` ([#152](https://github.com/sdkgen/sdkgen/pull/152)).
+- Correção no processamento do tipo `money` no Flutter ([#153](https://github.com/sdkgen/sdkgen/pull/153)).
+- Código duplicado removido ([#155](https://github.com/sdkgen/sdkgen/pull/155)).
+- Correção ao gerar classes de erro no Flutter ([#160](https://github.com/sdkgen/sdkgen/pull/160)).
+- Correção no processamento do tipo `json` no Flutter ([#159](https://github.com/sdkgen/sdkgen/pull/159)).
+- Atualização de dependências.
+
 ## 1.4.1 (2020-11-30)
 
 **Correções**

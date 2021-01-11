@@ -1,5 +1,6 @@
 import classnames from "classnames";
 import * as React from "react";
+
 import s from "./section.scss";
 
 interface TitleProps {

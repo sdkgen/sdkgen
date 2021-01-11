@@ -1,4 +1,5 @@
 import { Lexer } from "../src/lexer";
+import type { Token } from "../src/token";
 import {
   AnnotationToken,
   ArraySymbolToken,
@@ -20,7 +21,6 @@ import {
   PrimitiveTypeToken,
   SpreadSymbolToken,
   StringLiteralToken,
-  Token,
   TypeKeywordToken,
 } from "../src/token";
 

@@ -1,4 +1,4 @@
-import { TypeDescription, TypeTable } from "./ast";
+import type { TypeDescription, TypeTable } from "./ast";
 
 const simpleStringTypes = ["string", "email", "phone", "html", "xml"];
 const simpleTypes = ["json", "bool", "url", "int", "uint", "float", "money", "hex", "uuid", "base64", "void", ...simpleStringTypes];
@@ -17,13 +17,13 @@ class ParseError extends Error {
   }
 }
 
-function simpleEncodeDecode(path: string, type: string, value: any) {
+function simpleEncodeDecode(path: string, type: string, value: unknown) {
   if (type === "json") {
     if (value === null || value === undefined) {
       return null;
     }
 
-    return JSON.parse(JSON.stringify(value));
+    return JSON.parse(JSON.stringify(value)) as unknown;
   } else if (type === "bool") {
     if (typeof value !== "boolean") {
       throw new ParseError(path, type, value);
@@ -37,13 +37,13 @@ function simpleEncodeDecode(path: string, type: string, value: any) {
 
     return value;
   } else if (type === "hex") {
-    if (typeof value !== "string" || !value.match(/^(?:[A-Fa-f0-9]{2})*$/u)) {
+    if (typeof value !== "string" || !/^(?:[A-Fa-f0-9]{2})*$/u.test(value)) {
       throw new ParseError(path, type, value);
     }
 
     return value.toLowerCase();
   } else if (type === "uuid") {
-    if (typeof value !== "string" || !value.match(/^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$/u)) {
+    if (typeof value !== "string" || !/^[A-Fa-f0-9]{8}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{4}-[A-Fa-f0-9]{12}$/u.test(value)) {
       throw new ParseError(path, type, value);
     }
 
@@ -79,18 +79,17 @@ function simpleEncodeDecode(path: string, type: string, value: any) {
 
     return value;
   } else if (type === "url") {
-    let isValid = typeof value === "string";
-    let url!: URL;
+    let url: URL | undefined;
 
-    if (isValid) {
+    if (typeof value === "string") {
       try {
         url = new URL(value);
       } catch (e) {
-        isValid = false;
+        // ignore
       }
     }
 
-    if (!isValid) {
+    if (!url) {
       throw new ParseError(path, type, value);
     }
 
@@ -102,7 +101,7 @@ function simpleEncodeDecode(path: string, type: string, value: any) {
   throw new Error(`Unknown type '${type}' at '${path}'`);
 }
 
-export function encode(typeTable: TypeTable, path: string, type: TypeDescription, value: unknown): any {
+export function encode(typeTable: TypeTable, path: string, type: TypeDescription, value: unknown): unknown {
   if (typeof type === "string" && !type.endsWith("?") && type !== "void" && (value === null || value === undefined)) {
     throw new Error(`Invalid type at '${path}', cannot be null`);
   } else if (Array.isArray(type)) {
@@ -112,11 +111,11 @@ export function encode(typeTable: TypeTable, path: string, type: TypeDescription
 
     return value;
   } else if (typeof type === "object") {
-    if (typeof value !== "object" || value === undefined) {
+    if (typeof value !== "object") {
       throw new ParseError(path, type, value);
     }
 
-    const obj: any = {};
+    const obj: Record<string, unknown> = {};
 
     for (const key of Object.keys(type)) {
       obj[key] = encode(typeTable, `${path}.${key}`, type[key], (value as Record<string, unknown>)[key]);
@@ -162,7 +161,7 @@ export function encode(typeTable: TypeTable, path: string, type: TypeDescription
 
     return value;
   } else if (type === "date") {
-    if (!(value instanceof Date) && !(typeof value === "string" && value.match(/^[0-9]{4}-[01][0-9]-[0123][0-9]$/u))) {
+    if (!(value instanceof Date) && !(typeof value === "string" && /^[0-9]{4}-[01][0-9]-[0123][0-9]$/u.test(value))) {
       throw new ParseError(path, type, value);
     }
 
@@ -172,7 +171,7 @@ export function encode(typeTable: TypeTable, path: string, type: TypeDescription
       !(value instanceof Date) &&
       !(
         typeof value === "string" &&
-        value.match(/^[0-9]{4}-[01][0-9]-[0123][0-9]T[012][0-9]:[0123456][0-9]:[0123456][0-9](?:\.[0-9]{1,6})?(?:Z|[+-][012][0-9]:[0123456][0-9])?$/u)
+        /^[0-9]{4}-[01][0-9]-[0123][0-9]T[012][0-9]:[0123456][0-9]:[0123456][0-9](?:\.[0-9]{1,6})?(?:Z|[+-][012][0-9]:[0123456][0-9])?$/u.test(value)
       )
     ) {
       throw new ParseError(path, type, value);
@@ -190,7 +189,7 @@ export function encode(typeTable: TypeTable, path: string, type: TypeDescription
   }
 }
 
-export function decode(typeTable: TypeTable, path: string, type: TypeDescription, value: unknown): any {
+export function decode(typeTable: TypeTable, path: string, type: TypeDescription, value: unknown): unknown {
   if (typeof type === "string" && !type.endsWith("?") && type !== "void" && (value === null || value === undefined)) {
     throw new Error(`Invalid type at '${path}', cannot be null`);
   } else if (Array.isArray(type)) {
@@ -200,11 +199,11 @@ export function decode(typeTable: TypeTable, path: string, type: TypeDescription
 
     return value;
   } else if (typeof type === "object") {
-    if (typeof value !== "object" || value === undefined) {
+    if (typeof value !== "object") {
       throw new ParseError(path, type, value);
     }
 
-    const obj: any = {};
+    const obj: Record<string, unknown> = {};
 
     for (const key of Object.keys(type)) {
       obj[key] = decode(typeTable, `${path}.${key}`, type[key], (value as Record<string, unknown>)[key]);
@@ -238,7 +237,7 @@ export function decode(typeTable: TypeTable, path: string, type: TypeDescription
 
     return buffer;
   } else if (type === "bigint") {
-    if (typeof value !== "number" && (typeof value !== "string" || !value.match(/^-?[0-9]+$/u))) {
+    if (typeof value !== "number" && (typeof value !== "string" || !/^-?[0-9]+$/u.test(value))) {
       throw new ParseError(path, type, value);
     }
 
@@ -256,7 +255,7 @@ export function decode(typeTable: TypeTable, path: string, type: TypeDescription
 
     return value;
   } else if (type === "date") {
-    if (typeof value !== "string" || !value.match(/^[0-9]{4}-[01][0-9]-[0123][0-9]$/u)) {
+    if (typeof value !== "string" || !/^[0-9]{4}-[01][0-9]-[0123][0-9]$/u.test(value)) {
       throw new ParseError(path, type, value);
     }
 
@@ -271,7 +270,7 @@ export function decode(typeTable: TypeTable, path: string, type: TypeDescription
 
     return date;
   } else if (type === "datetime") {
-    if (typeof value !== "string" || !value.match(/^[0-9]{4}-[01][0-9]-[0123][0-9]T[012][0-9]:[0123456][0-9]:[0123456][0-9](?:\.[0-9]{1,6})?Z?$/u)) {
+    if (typeof value !== "string" || !/^[0-9]{4}-[01][0-9]-[0123][0-9]T[012][0-9]:[0123456][0-9]:[0123456][0-9](?:\.[0-9]{1,6})?Z?$/u.test(value)) {
       throw new ParseError(path, type, value);
     }
 

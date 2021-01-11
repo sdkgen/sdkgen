@@ -1,3 +1,4 @@
+import type { ErrorNode, Type } from "@sdkgen/parser";
 import {
   ArrayType,
   Base64PrimitiveType,
@@ -10,7 +11,6 @@ import {
   DateTimePrimitiveType,
   EmailPrimitiveType,
   EnumType,
-  ErrorNode,
   FloatPrimitiveType,
   HexPrimitiveType,
   HtmlPrimitiveType,
@@ -20,7 +20,6 @@ import {
   OptionalType,
   StringPrimitiveType,
   StructType,
-  Type,
   TypeReference,
   UIntPrimitiveType,
   UrlPrimitiveType,
@@ -39,7 +38,7 @@ function generateConstructor(type: StructType): string {
   const fourSpaces = "    ";
   let str = `${doubleSpace}${type.name}({\n`;
 
-  type.fields.forEach((field: any) => {
+  type.fields.forEach(field => {
     if (field.type instanceof OptionalType) {
       str = str.concat(fourSpaces);
     } else {
@@ -113,9 +112,9 @@ export function generateErrorClass(error: ErrorNode): string {
 
 export function cast(value: string, type: Type): string {
   if (type instanceof OptionalType) {
-    return cast(value, (type as OptionalType).base);
+    return cast(value, type.base);
   } else if (type instanceof ArrayType) {
-    return `(${value} as List)?.map((e) => ${cast("e", (type as ArrayType).base)})?.toList()`;
+    return `(${value} as List)?.map((e) => ${cast("e", type.base)})?.toList()`;
   } else if (type instanceof VoidPrimitiveType) {
     return value;
   } else if (type instanceof FloatPrimitiveType) {
@@ -128,7 +127,7 @@ export function cast(value: string, type: Type): string {
 }
 
 export function generateClass(type: StructType): string {
-  return `class ${type.name} {\n  ${type.fields
-    .map((field: any) => `${generateTypeName(field.type)} ${field.name};`)
-    .join("\n  ")}\n\n${generateConstructor(type)}}\n`;
+  return `class ${type.name} {\n  ${type.fields.map(field => `${generateTypeName(field.type)} ${field.name};`).join("\n  ")}\n\n${generateConstructor(
+    type,
+  )}}\n`;
 }

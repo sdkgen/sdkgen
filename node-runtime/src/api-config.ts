@@ -1,24 +1,23 @@
-import { AstJson } from "@sdkgen/parser";
-import { Context, ContextReply } from "./context";
+import type { AstJson } from "@sdkgen/parser";
 
-type Middleware<ExtraContextT> = (
-  ctx: Context & ExtraContextT,
-  next: (nextCtx: Context & ExtraContextT) => Promise<ContextReply>,
-) => Promise<ContextReply>;
+import type { Context, ContextReply } from "./context";
+import type { DeepReadonly } from "./utils";
+
+type Middleware<ExtraContextT> = (ctx: Context & ExtraContextT, next: () => Promise<ContextReply>) => Promise<ContextReply>;
 
 export abstract class BaseApiConfig<ExtraContextT = unknown> {
   constructor() {
     this.use(async (ctx, next) => {
-      const reply = (await this.hook.onRequestStart(ctx)) ?? (await next(ctx));
+      const reply = (await this.hook.onRequestStart(ctx)) ?? (await next());
 
       return (await this.hook.onRequestEnd(ctx, reply)) ?? reply;
     });
   }
 
-  astJson!: AstJson;
+  astJson!: DeepReadonly<AstJson>;
 
   fn: {
-    [name: string]: ((ctx: Context & ExtraContextT, args: any) => any) | undefined;
+    [name: string]: ((ctx: Context & ExtraContextT, args: any) => Promise<any>) | undefined;
   } = {};
 
   err: {
@@ -27,15 +26,15 @@ export abstract class BaseApiConfig<ExtraContextT = unknown> {
 
   hook: {
     /** @deprecated Use server.registerHealthCheck() instead. */
-    onHealthCheck: () => Promise<boolean>;
+    onHealthCheck(): Promise<boolean>;
     /** @deprecated Use middlewares with api.use() instead. */
-    onRequestEnd: (ctx: Context & ExtraContextT, reply: ContextReply) => Promise<null | ContextReply>;
+    onRequestEnd(ctx: Context & ExtraContextT, reply: ContextReply): Promise<null | ContextReply>;
     /** @deprecated Use middlewares with api.use() instead. */
-    onRequestStart: (ctx: Context & ExtraContextT) => Promise<null | ContextReply>;
+    onRequestStart(ctx: Context & ExtraContextT): Promise<null | ContextReply>;
   } = {
-    onHealthCheck: async () => true,
-    onRequestEnd: async () => null,
-    onRequestStart: async () => null,
+    onHealthCheck: async () => Promise.resolve(true),
+    onRequestEnd: async () => Promise.resolve(null),
+    onRequestStart: async () => Promise.resolve(null),
   };
 
   readonly middlewares: Array<Middleware<ExtraContextT>> = [];

@@ -1,4 +1,6 @@
-import { AstRoot, astToJson, VoidPrimitiveType } from "@sdkgen/parser";
+import type { AstRoot } from "@sdkgen/parser";
+import { astToJson, VoidPrimitiveType } from "@sdkgen/parser";
+
 import { generateTypescriptEnum, generateTypescriptErrorClass, generateTypescriptInterface, generateTypescriptTypeName } from "./helpers";
 
 export function generateNodeServerSource(ast: AstRoot): string {
@@ -6,7 +8,8 @@ export function generateNodeServerSource(ast: AstRoot): string {
 
   const hasErrorWithData = ast.errors.some(err => !(err.dataType instanceof VoidPrimitiveType));
 
-  code += `import { BaseApiConfig, Context, SdkgenError${hasErrorWithData ? ", SdkgenErrorWithData" : ""} } from "@sdkgen/node-runtime";
+  code += `/* eslint-disable */
+import { BaseApiConfig, Context, SdkgenError${hasErrorWithData ? ", SdkgenErrorWithData" : ""} } from "@sdkgen/node-runtime";
 
 `;
 
@@ -48,7 +51,7 @@ export function generateNodeServerSource(ast: AstRoot): string {
 
     astJson = ${JSON.stringify(astToJson(ast), null, 4)
       .replace(/"(?<key>\w+)":/gu, "$<key>:")
-      .replace(/\n/gu, "\n    ")}
+      .replace(/\n/gu, "\n    ")} as const
 }
 
 export const api = new ApiConfig<{}>();
