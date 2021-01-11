@@ -8,7 +8,7 @@ export class CheckNamingForGettersReturningBoolVisitor extends Visitor {
 
     if (node instanceof GetOperation) {
       const returnsBool = node.returnType instanceof BoolPrimitiveType;
-      const hasBoolNaming = /^(?:is|has|can|may|should)/u.test(node.name) !== null;
+      const hasBoolNaming = /^(?:is|has|can|may|should)/u.test(node.name);
 
       if (returnsBool && !hasBoolNaming) {
         throw new SemanticError(`Get operation '${node.name}' at ${node.location} returns bool but isn't named accordingly`);
