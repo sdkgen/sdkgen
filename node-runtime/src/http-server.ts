@@ -66,7 +66,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
 
   private ignoredUrlPrefix = "";
 
-  constructor(protected apiConfig: BaseApiConfig<ExtraContextT>, private extraContext: ExtraContextT) {
+  constructor(public apiConfig: BaseApiConfig<ExtraContextT>, private extraContext: ExtraContextT) {
     this.httpServer = createServer(this.handleRequest.bind(this));
     this.enableCors();
     this.attachRestHandlers();

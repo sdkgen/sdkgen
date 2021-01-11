@@ -250,7 +250,7 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
       const definitions: Record<string, JSONSchema | undefined> = {};
       const paths: Record<string, any> = {};
 
-      for (const op of server.ast.operations) {
+      for (const op of server.apiConfig.ast.operations) {
         for (const ann of op.annotations) {
           if (ann instanceof RestAnnotation) {
             if (!paths[ann.path]) {
@@ -375,7 +375,7 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
                             type: "string",
                           },
                           type: {
-                            enum: server.ast.errors,
+                            enum: server.apiConfig.ast.errors,
                             type: "string",
                           },
                         },
