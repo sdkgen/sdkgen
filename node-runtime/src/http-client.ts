@@ -11,13 +11,10 @@ import type { Context } from "./context";
 import { decode, encode } from "./encode-decode";
 import type { SdkgenError, SdkgenErrorWithData } from "./error";
 import type { DeepReadonly } from "./utils";
+import { has } from "./utils";
 
 interface ErrClasses {
   [className: string]: (new (message: string, data: any) => SdkgenErrorWithData<any>) | (new (message: string) => SdkgenError) | undefined;
-}
-
-function has<P extends PropertyKey>(target: object, property: P): target is { [K in P]: unknown } {
-  return property in target;
 }
 
 export class SdkgenHttpClient {

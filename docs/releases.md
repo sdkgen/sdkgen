@@ -1,5 +1,33 @@
 # Releases
 
+## 1.5.0 (2021-01-XX)
+
+**Middlewares**
+
+Agora é possível adicionar múltiplos middlewares na configuração de uma API, possibilitando tomar ações a depender dos argumentos ou do retorno.
+
+```typescript
+api.use(async (ctx, next) => {
+  // Faça qualquer coisa com o `ctx` aqui.
+  // O nome da função é `ctx.request.name` e os argumentos `ctx.request.args`.
+  const reply = await next();
+  // Faça qualquer coisa com a resposta aqui.
+  return reply;
+});
+```
+
+Os hooks anteriores de `onRequestStart` e `onRequestEnd` continuam funcionando, mas estão agora depreciados.
+
+Você pode, por exemplo:
+
+- Salvar os dados da requisição e resposta em um log;
+- Medir estatísticas das requisições;
+- Controlar rate limit;
+- Bloquear ou redirecionar chamadas a depender da função e dos argumentos;
+- Implementar cache;
+- Implementar re-tentativa a depender de algum erro específico (chamando `next` mais de uma vez);
+- Modificar o erro retornado (`try`/`catch` em volta do `next`).
+
 ## 1.4.2 (2020-12-21)
 
 **Correções**

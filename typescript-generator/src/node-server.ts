@@ -7,9 +7,13 @@ export function generateNodeServerSource(ast: AstRoot): string {
   let code = "";
 
   const hasErrorWithData = ast.errors.some(err => !(err.dataType instanceof VoidPrimitiveType));
+  const hasErrorWithoutData = ast.errors.filter(err => err.name !== "Fatal").some(err => err.dataType instanceof VoidPrimitiveType);
 
   code += `/* eslint-disable */
-import { BaseApiConfig, Context, SdkgenError${hasErrorWithData ? ", SdkgenErrorWithData" : ""} } from "@sdkgen/node-runtime";
+import { BaseApiConfig, Context, Fatal${hasErrorWithoutData ? ", SdkgenError" : ""}${
+    hasErrorWithData ? ", SdkgenErrorWithData" : ""
+  } } from "@sdkgen/node-runtime";
+export { Fatal } from "@sdkgen/node-runtime";
 
 `;
 
@@ -24,6 +28,10 @@ import { BaseApiConfig, Context, SdkgenError${hasErrorWithData ? ", SdkgenErrorW
   }
 
   for (const error of ast.errors) {
+    if (error.name === "Fatal") {
+      continue;
+    }
+
     code += generateTypescriptErrorClass(error);
     code += "\n";
   }

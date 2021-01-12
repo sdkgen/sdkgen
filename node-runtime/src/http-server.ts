@@ -8,7 +8,6 @@ import { parse as parseUrl } from "url";
 import { promisify } from "util";
 
 import { generateDartClientSource } from "@sdkgen/dart-generator";
-import type { AstRoot } from "@sdkgen/parser";
 import {
   Base64PrimitiveType,
   BigIntPrimitiveType,
@@ -22,12 +21,10 @@ import {
   HexPrimitiveType,
   HtmlPrimitiveType,
   IntPrimitiveType,
-  jsonToAst,
   MoneyPrimitiveType,
   OptionalType,
   RestAnnotation,
   StringPrimitiveType,
-  ThrowsAnnotation,
   UIntPrimitiveType,
   UuidPrimitiveType,
   VoidPrimitiveType,
@@ -43,17 +40,17 @@ import staticFilesHandler from "serve-handler";
 import type { BaseApiConfig } from "./api-config";
 import type { Context, ContextReply, ContextRequest } from "./context";
 import { decode, encode } from "./encode-decode";
-import type { SdkgenError } from "./error";
+import { Fatal } from "./error";
+import { executeRequest } from "./execute";
 import { setupSwagger } from "./swagger";
-
-function has<P extends PropertyKey>(target: object, property: P): target is { [K in P]: unknown } {
-  return property in target;
-}
+import { has } from "./utils";
 
 export class SdkgenHttpServer<ExtraContextT = unknown> {
   public httpServer: Server;
 
-  private headers = new Map<string, string>();
+  private readonly headers = new Map<string, string>();
+
+  private readonly healthChecks: Array<() => Promise<boolean>> = [];
 
   private handlers: Array<{
     method: string;
@@ -65,12 +62,11 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
 
   public introspection = true;
 
+  private hasSwagger = false;
+
   private ignoredUrlPrefix = "";
 
-  public readonly ast: AstRoot;
-
-  constructor(protected apiConfig: BaseApiConfig<ExtraContextT>, private extraContext: ExtraContextT) {
-    this.ast = jsonToAst(apiConfig.astJson);
+  constructor(public apiConfig: BaseApiConfig<ExtraContextT>, private extraContext: ExtraContextT) {
     this.httpServer = createServer(this.handleRequest.bind(this));
     this.enableCors();
     this.attachRestHandlers();
@@ -92,7 +88,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
 
         try {
           res.setHeader("Content-Type", "application/octet-stream");
-          res.write(generateFn(this.ast));
+          res.write(generateFn(this.apiConfig.ast));
         } catch (e) {
           console.error(e);
           res.statusCode = 500;
@@ -140,21 +136,46 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
     });
   }
 
+  registerHealthCheck(healthCheck: () => Promise<boolean>): void {
+    this.healthChecks.push(healthCheck);
+  }
+
   ignoreUrlPrefix(urlPrefix: string): void {
     this.ignoredUrlPrefix = urlPrefix;
   }
 
-  listen(port = 8000): void {
-    this.httpServer.listen(port, () => {
-      const addr = this.httpServer.address();
+  async listen(port = 8000): Promise<void> {
+    return new Promise(resolve => {
+      this.httpServer.listen(port, () => {
+        const addr = this.httpServer.address();
+        let addrString: string | undefined;
 
-      if (addr === null) {
-        console.log(`Listening.`);
-      } else if (typeof addr === "string") {
-        console.log(`Listening on ${addr}`);
-      } else {
-        console.log(`Listening on ${addr.address}:${addr.port}`);
-      }
+        if (addr === null) {
+          addrString = undefined;
+        } else if (typeof addr === "string") {
+          addrString = addr;
+        } else {
+          addrString = `${addr.address}:${addr.port}`;
+        }
+
+        if (!addrString) {
+          console.log(`Listening.`);
+          resolve();
+          return;
+        }
+
+        console.log(`Listening on ${addrString}`);
+
+        if (this.introspection) {
+          console.log(`Access the sdkgen Playground at http://${addrString}/playground`);
+        }
+
+        if (this.hasSwagger) {
+          console.log(`Access the REST API Swagger at http://${addrString}/swagger`);
+        }
+
+        resolve();
+      });
     });
   }
 
@@ -218,17 +239,15 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
       return str.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&");
     }
 
-    let hasSwagger = false;
-
-    for (const op of this.ast.operations) {
+    for (const op of this.apiConfig.ast.operations) {
       for (const ann of op.annotations) {
         if (!(ann instanceof RestAnnotation)) {
           continue;
         }
 
-        if (!hasSwagger) {
+        if (!this.hasSwagger) {
           setupSwagger(this);
-          hasSwagger = true;
+          this.hasSwagger = true;
         }
 
         const pathFragments = ann.path.split(/\{\w+\}/u);
@@ -305,28 +324,30 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
               });
 
               busboy.on("file", (_field, file, name) => {
-                const fileName = randomBytes(32).toString("hex");
-                const writeStream = createWriteStream(fileName);
+                const tempName = randomBytes(32).toString("hex");
+                const writeStream = createWriteStream(tempName);
 
                 filePromises.push(
                   new Promise((resolve, reject) => {
                     writeStream.on("error", reject);
 
-                    writeStream.on("open", () => {
-                      const contents = createReadStream(fileName);
+                    writeStream.on("close", () => {
+                      const contents = createReadStream(tempName);
 
                       files.push({ contents, name });
 
                       contents.on("open", () => {
-                        unlink(fileName, err => {
+                        unlink(tempName, err => {
                           if (err) {
                             reject(err);
-                            writeStream.end();
+                          } else {
+                            resolve();
                           }
                         });
                       });
+                    });
 
-                      writeStream.on("close", resolve);
+                    writeStream.on("open", () => {
                       file.pipe(writeStream);
                     });
                   }),
@@ -592,14 +613,6 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
     });
   }
 
-  private fatalError(message: string) {
-    try {
-      throw this.apiConfig.err.Fatal(message);
-    } catch (fatal: unknown) {
-      return fatal as SdkgenError;
-    }
-  }
-
   private log(message: string) {
     console.log(`${new Date().toISOString()} ${message}`);
   }
@@ -639,6 +652,13 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
 
       try {
         ok = await this.apiConfig.hook.onHealthCheck();
+        for (const healthCheck of this.healthChecks) {
+          if (!ok) {
+            break;
+          }
+
+          ok = await healthCheck();
+        }
       } catch (e) {
         ok = false;
       }
@@ -662,7 +682,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
         res,
         null,
         {
-          error: this.fatalError("Couldn't determine client IP"),
+          error: new Fatal("Couldn't determine client IP"),
         },
         hrStart,
       );
@@ -676,7 +696,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
         res,
         null,
         {
-          error: this.fatalError("Couldn't parse request"),
+          error: new Fatal("Couldn't parse request"),
         },
         hrStart,
       );
@@ -692,55 +712,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
       request,
     };
 
-    const functionDescription = this.apiConfig.astJson.functionTable[ctx.request.name];
-    const functionImplementation = this.apiConfig.fn[ctx.request.name];
-
-    if (!functionDescription || !functionImplementation) {
-      writeReply(ctx, {
-        error: this.fatalError(`Function does not exist: ${ctx.request.name}`),
-      });
-      return;
-    }
-
-    let reply: ContextReply | null;
-
-    try {
-      reply = await this.apiConfig.hook.onRequestStart(ctx);
-      if (!reply) {
-        const args = decode(this.apiConfig.astJson.typeTable, `${ctx.request.name}.args`, functionDescription.args, ctx.request.args);
-        const ret = await functionImplementation(ctx, args);
-        const encodedRet = encode(this.apiConfig.astJson.typeTable, `${ctx.request.name}.ret`, functionDescription.ret, ret);
-
-        reply = { result: encodedRet };
-      }
-    } catch (e) {
-      reply = {
-        error: e,
-      };
-    }
-
-    reply = (await this.apiConfig.hook.onRequestEnd(ctx, reply)) ?? reply;
-
-    // If errors, check if the error type is one of the @throws annotation. If it isn't, change to Fatal
-    if (reply.error) {
-      const functionAst = this.ast.operations.find(op => op.name === ctx.request.name);
-
-      if (functionAst) {
-        const allowedErrors = functionAst.annotations.filter(ann => ann instanceof ThrowsAnnotation).map(ann => (ann as ThrowsAnnotation).error);
-
-        if (
-          typeof reply.error !== "object" ||
-          reply.error === null ||
-          !has(reply.error, "type") ||
-          typeof reply.error.type !== "string" ||
-          (allowedErrors.length > 0 && !allowedErrors.includes(reply.error.type))
-        ) {
-          Object.defineProperty(reply.error, "type", { value: "Fatal" });
-        }
-      }
-    }
-
-    writeReply(ctx, reply);
+    writeReply(ctx, await executeRequest(ctx, this.apiConfig));
   }
 
   private parseRequest(req: IncomingMessage, body: string, ip: string): ContextRequest | null {
@@ -950,7 +922,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
       ({ data } = err);
     }
 
-    const error = this.ast.errors.find(x => x.name === type);
+    const error = this.apiConfig.ast.errors.find(x => x.name === type);
 
     if (error) {
       if (!(error.dataType instanceof VoidPrimitiveType)) {
@@ -973,7 +945,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
       res.statusCode = 500;
       res.write(
         JSON.stringify({
-          error: this.makeResponseError(reply.error ?? this.fatalError("Response without context")),
+          error: this.makeResponseError(reply.error ?? new Fatal("Response without context")),
         }),
       );
       res.end();
@@ -1051,7 +1023,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
         res.statusCode = 500;
         res.write(
           JSON.stringify({
-            error: this.makeResponseError(reply.error ?? this.fatalError("Unknown request version")),
+            error: this.makeResponseError(reply.error ?? new Fatal("Unknown request version")),
           }),
         );
         res.end();
