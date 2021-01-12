@@ -332,14 +332,18 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
                     writeStream.on("error", reject);
 
                     writeStream.on("close", () => {
-                      files.push({ contents: createReadStream(tempName), name });
+                      const contents = createReadStream(tempName);
 
-                      unlink(tempName, err => {
-                        if (err) {
-                          reject(err);
-                        } else {
-                          resolve();
-                        }
+                      files.push({ contents, name });
+
+                      contents.on("open", () => {
+                        unlink(tempName, err => {
+                          if (err) {
+                            reject(err);
+                          } else {
+                            resolve();
+                          }
+                        });
                       });
                     });
 
