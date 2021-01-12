@@ -96,6 +96,10 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm install
         working-directory: ./node-runtime
+      - run: npm install
+        working-directory: ./dart-generator
+      - run: npm install
+        working-directory: ./typescript-generator
       - run: npm run eslint:check
         working-directory: ./node-runtime
       - run: npm run build
