@@ -1,6 +1,6 @@
-import { AstNode, StructType } from "../ast";
-import { SemanticError } from "./analyser";
-import { Visitor } from "./visitor";
+import type { AstNode } from "../ast";
+import { StructType } from "../ast";
+import { SemanticError, Visitor } from "./visitor";
 
 export class ApplyStructSpreadsVisitor extends Visitor {
   /*

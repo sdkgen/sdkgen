@@ -3,6 +3,7 @@ import 'dart:convert';
 class SdkgenTypeException implements Exception {
   String cause;
   SdkgenTypeException(this.cause);
+  String toString() => 'SdkgenTypeException: $cause';
 }
 
 class StructTypeDescription {
@@ -27,6 +28,12 @@ class FunctionDescription {
   String ret;
   Map<String, String> args;
   FunctionDescription(this.ret, this.args);
+}
+
+class SdkgenErrorDescription {
+  String dataType;
+  Function create;
+  SdkgenErrorDescription(this.dataType, this.create);
 }
 
 class LatLng {
@@ -108,7 +115,7 @@ simpleEncodeDecode(
       }
       return value;
     case "float":
-      if (!(value is double)) {
+      if (!(value is double) && !(value is int)) {
         throw SdkgenTypeException(
             "Invalid Type at '$path', expected $type, got ${jsonEncode(value)}");
       }

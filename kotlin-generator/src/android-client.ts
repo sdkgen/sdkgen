@@ -1,4 +1,6 @@
-import { AstRoot, HiddenAnnotation } from "@sdkgen/parser";
+import type { AstRoot } from "@sdkgen/parser";
+import { ErrorNode, HiddenAnnotation, VoidPrimitiveType } from "@sdkgen/parser";
+
 import { generateClass, generateEnum, generateErrorClass, generateJsonAddRepresentation, generateKotlinTypeName, mangle } from "./helpers";
 
 export function generateAndroidClientSource(ast: AstRoot): string {
@@ -48,14 +50,14 @@ class ApiClient(
 
   const errorTypeEnumEntries: string[] = [];
 
-  const connectionError = "Connection";
+  const connectionError = new ErrorNode("Connection", new VoidPrimitiveType());
 
-  errorTypeEnumEntries.push(connectionError);
+  errorTypeEnumEntries.push(connectionError.name);
   code += `    ${generateErrorClass(connectionError)}`;
 
   for (const error of ast.errors) {
     code += `    ${generateErrorClass(error)}`;
-    errorTypeEnumEntries.push(error);
+    errorTypeEnumEntries.push(error.name);
   }
 
   if (errorTypeEnumEntries.length > 0) {
@@ -72,7 +74,7 @@ class ApiClient(
     }\n\n`;
   }
 
-  code += `    private val sdkgenIOScope = CoroutineScope(IO)\n\n`;
+  code += `    private val sdkgenIOScope = CoroutineScope(IO + SupervisorJob())\n\n`;
   code += ast.operations
     .filter(op => op.annotations.every(ann => !(ann instanceof HiddenAnnotation)))
     .map(op => {

@@ -1,0 +1,27 @@
+name: docs_release
+on:
+  release:
+    types: [published]
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: "3.x"
+      - run: pip install mkdocs-material
+      - run: mkdocs build
+      - run: git clone --depth 1 -b master https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/sdkgen/sdkgen.github.io.git
+      - run: mkdir -p sdkgen.github.io/pr
+      - run: cd sdkgen.github.io && rm -rf $(ls | grep -vE "^(pr|dev)$")
+      - run: mv site/* sdkgen.github.io/
+      - run: |
+          cd sdkgen.github.io
+          git config --global user.name "$GITHUB_ACTOR"
+          git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
+          git add .
+          if ! git diff --cached --quiet; then
+            git commit -m "deploy release"
+            git push;
+          fi

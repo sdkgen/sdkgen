@@ -1,8 +1,9 @@
-import { AstJson } from "./ast";
+import type { AstJson } from "./ast";
 import { decode, encode } from "./encode-decode";
+import type { SdkgenError, SdkgenErrorWithData } from "./error";
 
 interface ErrClasses {
-  [className: string]: any;
+  [className: string]: (new (message: string, data: any) => SdkgenErrorWithData<any>) | (new (message: string) => SdkgenError) | undefined;
 }
 
 function randomBytesHex(len: number) {
@@ -34,6 +35,10 @@ function getDeviceId() {
   return fallbackDeviceId;
 }
 
+function has<P extends PropertyKey>(target: object, property: P): target is { [K in P]: unknown } {
+  return property in target;
+}
+
 export class SdkgenHttpClient {
   private baseUrl: string;
 
@@ -54,8 +59,6 @@ export class SdkgenHttpClient {
       throw new Error(`Unknown function ${functionName}`);
     }
 
-    const thisScript = document.currentScript as HTMLScriptElement;
-
     const request = {
       args: encode(this.astJson.typeTable, `${functionName}.args`, func.args, args),
       deviceInfo: {
@@ -66,7 +69,7 @@ export class SdkgenHttpClient {
         },
         timezone: typeof Intl === "object" ? Intl.DateTimeFormat().resolvedOptions().timeZone : null,
         type: "web",
-        version: thisScript ? thisScript.src : "",
+        version: document.currentScript?.getAttribute("src") ?? "",
       },
       extra: {
         ...this.extra,
@@ -76,7 +79,7 @@ export class SdkgenHttpClient {
       version: 3,
     };
 
-    const encodedRet = await new Promise<any>((resolve, reject) => {
+    const encodedRet = await new Promise<unknown>((resolve, reject) => {
       const req = new XMLHttpRequest();
 
       req.open("POST", `${this.baseUrl}/${functionName}`);
@@ -87,24 +90,22 @@ export class SdkgenHttpClient {
         }
 
         try {
-          const response = JSON.parse(req.responseText);
+          const response = JSON.parse(req.responseText) as object;
 
           try {
-            if (response.error) {
+            if (has(response, "error") && response.error) {
               reject(response.error);
               this.errorHook(response.error, functionName, args);
             } else {
-              resolve(response.result);
+              resolve(has(response, "result") ? response.result : null);
             }
           } catch (e) {
-            console.error(e);
-            const err = { message: e.toString(), type: "Fatal" };
+            const err = { message: `${e}`, type: "Fatal" };
 
             reject(err);
             this.errorHook(err, functionName, args);
           }
         } catch (e) {
-          console.error(e);
           const err = { message: `Falha de conexão com o servidor`, type: "Fatal" };
 
           reject(err);
@@ -113,19 +114,33 @@ export class SdkgenHttpClient {
       };
 
       req.send(JSON.stringify(request));
-    }).catch(err => {
-      const errClass = this.errClasses[err.type];
+    }).catch((error: object) => {
+      console.error(error);
+      if (has(error, "type") && has(error, "message") && typeof error.type === "string" && typeof error.message === "string") {
+        const errClass = this.errClasses[error.type];
 
-      if (errClass) {
-        throw new errClass(err.message);
+        if (errClass) {
+          const errorJson = this.astJson.errors.find(err => (Array.isArray(err) ? err[0] === error.type : err === error.type));
+
+          if (errorJson) {
+            if (Array.isArray(errorJson) && has(error, "data")) {
+              throw new errClass(error.message, decode(this.astJson.typeTable, `${errClass.name}.data`, errorJson[1], error.data));
+            } else {
+              throw new errClass(error.message, undefined);
+            }
+          }
+        }
+
+        throw new (this.errClasses.Fatal as new (message: string) => SdkgenError)(`${error.type}: ${error.message}`);
       } else {
-        throw err;
+        throw error;
       }
     });
 
     const ret = decode(this.astJson.typeTable, `${functionName}.ret`, func.ret, encodedRet);
 
     this.successHook(ret, functionName, args);
+
     return ret;
   }
 }

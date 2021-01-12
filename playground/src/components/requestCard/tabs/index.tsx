@@ -1,12 +1,13 @@
 import classNames from "classnames";
 import * as React from "react";
+
 import s from "./tabs.scss";
 
 export type TabKeys = "arguments" | "response" | "error" | "annotations";
 
 interface TabsProps {
   activeTab: TabKeys;
-  onChangeTab: (tab: TabKeys) => void;
+  onChangeTab(tab: TabKeys): void;
 }
 interface TabInfo {
   label: string;

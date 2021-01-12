@@ -24,6 +24,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           registry-url: https://registry.npmjs.org
+      - run: cp LICENSE parser/
       - run: npm install
         working-directory: ./parser
       - run: |
@@ -54,6 +55,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           registry-url: https://registry.npmjs.org
+      - run: cp LICENSE browser-runtime/
       - run: npm install
         working-directory: ./browser-runtime
       - run: |
@@ -87,6 +89,7 @@ jobs:
       - uses: subosito/flutter-action@v1
         with:
           channel: stable
+      - run: cp LICENSE dart-runtime/
       - run: flutter pub get
         working-directory: ./dart-runtime
       - run: "sed 's/version: 0.0.0/version: '$(cat ../version/version.txt)'/' -i pubspec.yaml"
@@ -98,6 +101,7 @@ jobs:
           PUB_CREDENTIALS: ${{ secrets.PUB_CREDENTIALS }}
 
   android-runtime:
+    needs: [_version]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -129,6 +133,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           registry-url: https://registry.npmjs.org
+      - run: cp LICENSE typescript-generator/
       - run: npm install
         working-directory: ./typescript-generator
       - run: |
@@ -159,6 +164,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           registry-url: https://registry.npmjs.org
+      - run: cp LICENSE csharp-generator/
       - run: npm install
         working-directory: ./csharp-generator
       - run: |
@@ -189,6 +195,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           registry-url: https://registry.npmjs.org
+      - run: cp LICENSE kotlin-generator/
       - run: npm install
         working-directory: ./kotlin-generator
       - run: |
@@ -219,6 +226,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           registry-url: https://registry.npmjs.org
+      - run: cp LICENSE dart-generator/
       - run: npm install
         working-directory: ./dart-generator
       - run: |
@@ -249,6 +257,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           registry-url: https://registry.npmjs.org
+      - run: cp LICENSE cli/
       - run: npm install
         working-directory: ./cli
       - run: |
@@ -279,6 +288,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           registry-url: https://registry.npmjs.org
+      - run: cp LICENSE playground/
       - run: npm install
         working-directory: ./playground
       - run: |
@@ -319,6 +329,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           registry-url: https://registry.npmjs.org
+      - run: cp LICENSE node-runtime/
       - run: npm install
         working-directory: ./node-runtime
       - run: |
@@ -348,6 +359,7 @@ jobs:
           name: version
       - uses: actions/setup-dotnet@v1
       - uses: actions/setup-node@v1
+      - run: cp LICENSE dotnetcore-runtime/
       - run: npm install
         working-directory: ./playground
       - run: npm run build

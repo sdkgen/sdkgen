@@ -1,6 +1,6 @@
-import { AstNode, Field, Type, TypeDefinition, TypeReference } from "../ast";
-import { SemanticError } from "./analyser";
-import { Visitor } from "./visitor";
+import type { AstNode, Type } from "../ast";
+import { Field, TypeDefinition, TypeReference } from "../ast";
+import { SemanticError, Visitor } from "./visitor";
 
 export class CheckNoRecursiveTypesVisitor extends Visitor {
   path: string[] = [];

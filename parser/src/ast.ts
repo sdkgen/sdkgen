@@ -1,14 +1,5 @@
-import { Token, TokenLocation } from "./token";
-
-export class AstRoot {
-  structTypes: StructType[] = [];
-
-  enumTypes: EnumType[] = [];
-
-  warnings: string[] = [];
-
-  constructor(public typeDefinitions: TypeDefinition[] = [], public operations: Operation[] = [], public errors: string[] = []) {}
-}
+import type { Token } from "./token";
+import { TokenLocation } from "./token";
 
 export abstract class AstNode {
   public location = new TokenLocation();
@@ -31,13 +22,53 @@ export abstract class AstNode {
 export abstract class Type extends AstNode {
   abstract get name(): string;
 
-  toJSON(): any {
-    const json: any = { ...this };
+  toJSON() {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { name, ...rest } = { ...this };
 
-    delete json.name;
-    return json;
+    return rest;
   }
 }
+
+export class ErrorNode extends AstNode {
+  constructor(public name: string, public dataType: Type) {
+    super();
+  }
+}
+export abstract class Annotation extends AstNode {}
+
+export class DescriptionAnnotation extends Annotation {
+  constructor(public text: string) {
+    super();
+  }
+}
+
+export class ThrowsAnnotation extends Annotation {
+  constructor(public error: string) {
+    super();
+  }
+}
+
+export class ArgDescriptionAnnotation extends Annotation {
+  constructor(public argName: string, public text: string) {
+    super();
+  }
+}
+
+export class RestAnnotation extends Annotation {
+  constructor(
+    public readonly method: string,
+    public readonly path: string,
+    public readonly pathVariables: readonly string[],
+    public readonly queryVariables: readonly string[],
+    public readonly headers: ReadonlyMap<string, string>,
+    public readonly bodyVariable: string | null,
+  ) {
+    super();
+  }
+}
+
+export class HiddenAnnotation extends Annotation {}
 
 export abstract class PrimitiveType extends Type {}
 export class StringPrimitiveType extends PrimitiveType {
@@ -140,18 +171,10 @@ export class EnumType extends Type {
   }
 }
 
-export class StructType extends Type {
-  name!: string;
-
-  constructor(public fields: Field[], public spreads: TypeReference[]) {
-    super();
-  }
-}
-
-export class TypeDefinition extends AstNode {
+export class Field extends AstNode {
   annotations: Annotation[] = [];
 
-  constructor(public name: string, public type: Type) {
+  constructor(public name: string, public type: Type, public secret = false) {
     super();
   }
 }
@@ -164,10 +187,18 @@ export class TypeReference extends Type {
   }
 }
 
-export class Field extends AstNode {
+export class StructType extends Type {
+  name!: string;
+
+  constructor(public fields: Field[], public spreads: TypeReference[]) {
+    super();
+  }
+}
+
+export class TypeDefinition extends AstNode {
   annotations: Annotation[] = [];
 
-  constructor(public name: string, public type: Type, public secret = false) {
+  constructor(public name: string, public type: Type) {
     super();
   }
 }
@@ -192,37 +223,12 @@ export class GetOperation extends Operation {
 
 export class FunctionOperation extends Operation {}
 
-export abstract class Annotation extends AstNode {}
+export class AstRoot {
+  structTypes: StructType[] = [];
 
-export class DescriptionAnnotation extends Annotation {
-  constructor(public text: string) {
-    super();
-  }
+  enumTypes: EnumType[] = [];
+
+  warnings: string[] = [];
+
+  constructor(public typeDefinitions: TypeDefinition[] = [], public operations: Operation[] = [], public errors: ErrorNode[] = []) {}
 }
-
-export class ThrowsAnnotation extends Annotation {
-  constructor(public error: string) {
-    super();
-  }
-}
-
-export class ArgDescriptionAnnotation extends Annotation {
-  constructor(public argName: string, public text: string) {
-    super();
-  }
-}
-
-export class RestAnnotation extends Annotation {
-  constructor(
-    public method: string,
-    public path: string,
-    public pathVariables: string[],
-    public queryVariables: string[],
-    public headers: Map<string, string>,
-    public bodyVariable: string | null,
-  ) {
-    super();
-  }
-}
-
-export class HiddenAnnotation extends Annotation {}

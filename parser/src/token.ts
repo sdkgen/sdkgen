@@ -22,7 +22,7 @@ export class Token {
   }
 
   toString(): string {
-    const name = (this.constructor as any).name.replace("Token", "");
+    const name = this.constructor.name.replace("Token", "");
 
     return this.value === "" ? name : `${name}(${JSON.stringify(this.value)})`;
   }

@@ -1,6 +1,7 @@
 import * as React from "react";
+
 import ErrorBoundary from "../errorBoundary";
-const s = require("./app.scss");
+import s from "./app.scss";
 
 interface Props {}
 

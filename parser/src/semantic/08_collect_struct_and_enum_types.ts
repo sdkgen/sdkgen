@@ -1,4 +1,5 @@
-import { AstNode, EnumType, StructType } from "../ast";
+import type { AstNode } from "../ast";
+import { EnumType, StructType } from "../ast";
 import { Visitor } from "./visitor";
 
 export class CollectStructAndEnumTypesVisitor extends Visitor {

@@ -1,15 +1,23 @@
-import { AstJson } from "@sdkgen/parser";
+/* eslint-disable prefer-promise-reject-errors */
 import { randomBytes } from "crypto";
 import { request as httpRequest } from "http";
 import { request as httpsRequest } from "https";
 import { hostname } from "os";
 import { URL } from "url";
-import { Context } from "./context";
+
+import type { AstJson } from "@sdkgen/parser";
+
+import type { Context } from "./context";
 import { decode, encode } from "./encode-decode";
-import { SdkgenError } from "./error";
+import type { SdkgenError, SdkgenErrorWithData } from "./error";
+import type { DeepReadonly } from "./utils";
 
 interface ErrClasses {
-  [className: string]: typeof SdkgenError;
+  [className: string]: (new (message: string, data: any) => SdkgenErrorWithData<any>) | (new (message: string) => SdkgenError) | undefined;
+}
+
+function has<P extends PropertyKey>(target: object, property: P): target is { [K in P]: unknown } {
+  return property in target;
 }
 
 export class SdkgenHttpClient {
@@ -17,7 +25,7 @@ export class SdkgenHttpClient {
 
   extra = new Map<string, unknown>();
 
-  constructor(baseUrl: string, private astJson: AstJson, private errClasses: ErrClasses) {
+  constructor(baseUrl: string, private astJson: DeepReadonly<AstJson>, private errClasses: ErrClasses) {
     this.baseUrl = new URL(baseUrl);
   }
 
@@ -30,13 +38,13 @@ export class SdkgenHttpClient {
 
     const requestBody = JSON.stringify({
       args: encode(this.astJson.typeTable, `${functionName}.args`, func.args, args),
-      deviceInfo: ctx && ctx.request ? ctx.request.deviceInfo : { id: hostname(), type: "node" },
+      deviceInfo: ctx?.request ? ctx.request.deviceInfo : { id: hostname(), type: "node" },
       extra: {
         ...this.extra,
-        ...(ctx && ctx.request ? ctx.request.extra : {}),
+        ...(ctx?.request ? ctx.request.extra : {}),
       },
       name: functionName,
-      requestId: ctx && ctx.request ? ctx.request.id + randomBytes(6).toString("hex") : randomBytes(16).toString("hex"),
+      requestId: ctx?.request ? ctx.request.id + randomBytes(6).toString("hex") : randomBytes(16).toString("hex"),
       version: 3,
     });
 
@@ -47,7 +55,7 @@ export class SdkgenHttpClient {
       port: this.baseUrl.port,
     };
 
-    const encodedRet = await new Promise<any>((resolve, reject) => {
+    const encodedRet = await new Promise<unknown>((resolve, reject) => {
       const req = (this.baseUrl.protocol === "http:" ? httpRequest : httpsRequest)(options, res => {
         let data = "";
 
@@ -56,18 +64,14 @@ export class SdkgenHttpClient {
         });
         res.on("end", () => {
           try {
-            const response = JSON.parse(data);
+            const response = JSON.parse(data) as object;
 
-            if (response.error) {
+            if (has(response, "error") && response.error) {
               reject(response.error);
             } else {
-              resolve(response.result);
+              resolve(has(response, "result") ? response.result : null);
             }
           } catch (error) {
-            if (`${error}`.includes("SyntaxError")) {
-              console.error(data);
-            }
-
             reject({ message: `${error}`, type: "Fatal" });
           }
         });
@@ -86,15 +90,28 @@ export class SdkgenHttpClient {
       req.write(requestBody);
       req.end();
     }).catch(error => {
-      const errClass = this.errClasses[error.type];
+      if (has(error, "type") && has(error, "message") && typeof error.type === "string" && typeof error.message === "string") {
+        const errClass = this.errClasses[error.type];
 
-      if (errClass) {
-        throw new errClass(error.message);
+        if (errClass) {
+          const errorJson = this.astJson.errors.find(err => (Array.isArray(err) ? err[0] === error.type : err === error.type));
+
+          if (errorJson) {
+            if (Array.isArray(errorJson) && has(error, "data")) {
+              throw new errClass(error.message, decode(this.astJson.typeTable, `${errClass.name}.data`, errorJson[1], error.data));
+            } else {
+              throw new errClass(error.message, undefined);
+            }
+          }
+        }
+
+        throw new (this.errClasses.Fatal as new (message: string) => SdkgenError)(`${error.type}: ${error.message}`);
       } else {
-        throw new this.errClasses.Fatal(`${error.type}: ${error.message}`);
+        throw error;
       }
     });
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return decode(this.astJson.typeTable, `${functionName}.ret`, func.ret, encodedRet);
   }
 }

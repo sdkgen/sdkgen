@@ -1,58 +1,82 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
+import type { Operation, Type } from "./ast";
 import {
   ArrayType,
   AstRoot,
   DescriptionAnnotation,
   EnumType,
   EnumValue,
+  ErrorNode,
   Field,
   FunctionOperation,
   HiddenAnnotation,
-  Operation,
   OptionalType,
   RestAnnotation,
   StructType,
   ThrowsAnnotation,
-  Type,
   TypeDefinition,
   TypeReference,
+  VoidPrimitiveType,
 } from "./ast";
 import { analyse } from "./semantic/analyser";
+import type { DeepReadonly } from "./utils";
 import { primitiveToAstClass } from "./utils";
-
-interface TypeTable {
-  [name: string]: TypeDescription;
-}
-
-interface FunctionTable {
-  [name: string]: {
-    args: {
-      [arg: string]: TypeDescription;
-    };
-    ret: TypeDescription;
-  };
-}
 
 export type TypeDescription = string | string[] | { [name: string]: TypeDescription };
 
-interface AnnotationJson {
-  type: string;
-  value: any;
+interface TypeTable {
+  [name: string]: TypeDescription | undefined;
 }
+
+interface FunctionTable {
+  [name: string]:
+    | {
+        args: {
+          [arg: string]: TypeDescription;
+        };
+        ret: TypeDescription;
+      }
+    | undefined;
+}
+type AnnotationJson =
+  | {
+      type: "description";
+      value: string;
+    }
+  | {
+      type: "throws";
+      value: string;
+    }
+  | {
+      type: "hidden";
+      value: null;
+    }
+  | {
+      type: "rest";
+      value: {
+        bodyVariable: string | null;
+        headers: Array<[string, string]>;
+        method: string;
+        path: string;
+        pathVariables: string[];
+        queryVariables: string[];
+      };
+    };
 
 export interface AstJson {
   typeTable: TypeTable;
   functionTable: FunctionTable;
-  errors: string[];
-  annotations: { [target: string]: AnnotationJson[] };
+  errors: Array<string | string[]>;
+  annotations: Record<string, AnnotationJson[] | undefined>;
 }
 
 export function astToJson(ast: AstRoot): AstJson {
-  const annotations: { [target: string]: AnnotationJson[] } = {};
+  const annotations: Record<string, AnnotationJson[]> = {};
   const typeTable: TypeTable = {};
 
   for (const { name, fields } of ast.structTypes) {
     typeTable[name] = {};
-    const obj: any = typeTable[name];
+    const obj = typeTable[name] as Record<string, TypeDescription>;
 
     for (const field of fields) {
       obj[field.name] = field.type.name;
@@ -77,7 +101,7 @@ export function astToJson(ast: AstRoot): AstJson {
   const functionTable: FunctionTable = {};
 
   for (const op of ast.operations) {
-    const args: any = {};
+    const args: Record<string, TypeDescription> = {};
 
     for (const arg of op.args) {
       args[arg.name] = arg.type.name;
@@ -102,7 +126,7 @@ export function astToJson(ast: AstRoot): AstJson {
       const target = `fn.${op.prettyName}`;
 
       annotations[target] ||= [];
-      const list = annotations[target];
+      const list: Array<DeepReadonly<AnnotationJson>> = annotations[target];
 
       if (ann instanceof DescriptionAnnotation) {
         list.push({ type: "description", value: ann.text });
@@ -132,7 +156,7 @@ export function astToJson(ast: AstRoot): AstJson {
     }
   }
 
-  const { errors } = ast;
+  const errors = ast.errors.map(error => (error.dataType instanceof VoidPrimitiveType ? error.name : [error.name, error.dataType.name]));
 
   return {
     annotations,
@@ -142,12 +166,11 @@ export function astToJson(ast: AstRoot): AstJson {
   };
 }
 
-export function jsonToAst(json: AstJson): AstRoot {
+export function jsonToAst(json: DeepReadonly<AstJson>): AstRoot {
   const operations: Operation[] = [];
   const typeDefinition: TypeDefinition[] = [];
-  const errors: string[] = json.errors || [];
 
-  function processType(description: TypeDescription, typeName?: string): Type {
+  function processType(description: DeepReadonly<TypeDescription>, typeName?: string): Type {
     if (typeof description === "string") {
       const primitiveClass = primitiveToAstClass.get(description);
 
@@ -167,12 +190,12 @@ export function jsonToAst(json: AstJson): AstRoot {
     const fields: Field[] = [];
 
     for (const fieldName of Object.keys(description)) {
-      const field = new Field(fieldName, processType(description[fieldName]));
+      const field = new Field(fieldName, processType((description as { [name: string]: TypeDescription })[fieldName]));
 
       if (typeName) {
         const target = `type.${typeName}.${fieldName}`;
 
-        for (const annotationJson of json.annotations[target] || []) {
+        for (const annotationJson of json.annotations[target] ?? []) {
           if (annotationJson.type === "description") {
             field.annotations.push(new DescriptionAnnotation(annotationJson.value));
           }
@@ -186,22 +209,17 @@ export function jsonToAst(json: AstJson): AstRoot {
   }
 
   for (const [typeName, description] of Object.entries(json.typeTable)) {
-    const type = processType(description, typeName);
-
-    if (typeName === "ErrorType" && type instanceof EnumType) {
-      errors.push(...type.values.map(v => v.value));
-      continue;
-    }
+    const type = processType(description!, typeName);
 
     typeDefinition.push(new TypeDefinition(typeName, type));
   }
 
   for (const [functionName, func] of Object.entries(json.functionTable)) {
-    const args = Object.keys(func.args).map(argName => {
-      const field = new Field(argName, processType(func.args[argName]));
+    const args = Object.keys(func!.args).map(argName => {
+      const field = new Field(argName, processType(func!.args[argName]));
       const target = `fn.${functionName}.${argName}`;
 
-      for (const annotationJson of json.annotations[target] || []) {
+      for (const annotationJson of json.annotations[target] ?? []) {
         if (annotationJson.type === "description") {
           field.annotations.push(new DescriptionAnnotation(annotationJson.value));
         }
@@ -210,15 +228,15 @@ export function jsonToAst(json: AstJson): AstRoot {
       return field;
     });
 
-    const op = new FunctionOperation(functionName, args, processType(func.ret));
+    const op = new FunctionOperation(functionName, args, processType(func!.ret));
     const target = `fn.${functionName}`;
 
-    for (const annotationJson of json.annotations[target] || []) {
+    for (const annotationJson of json.annotations[target] ?? []) {
       if (annotationJson.type === "description") {
         op.annotations.push(new DescriptionAnnotation(annotationJson.value));
       } else if (annotationJson.type === "throws") {
         op.annotations.push(new ThrowsAnnotation(annotationJson.value));
-      } else if (annotationJson.type === "rest") {
+      } else if (annotationJson.type === "rest" && typeof annotationJson.value === "object") {
         const { method, path, pathVariables, queryVariables, headers, bodyVariable } = annotationJson.value;
 
         op.annotations.push(new RestAnnotation(method, path, pathVariables, queryVariables, new Map(headers), bodyVariable));
@@ -230,7 +248,15 @@ export function jsonToAst(json: AstJson): AstRoot {
     operations.push(op);
   }
 
-  const ast = new AstRoot(typeDefinition, operations, [...new Set(errors)]);
+  const errors = json.errors.map(error => {
+    if (Array.isArray(error)) {
+      return new ErrorNode(error[0], processType(error[1]));
+    }
+
+    return new ErrorNode(error as string, new VoidPrimitiveType());
+  });
+
+  const ast = new AstRoot(typeDefinition, operations, errors);
 
   analyse(ast);
   return ast;

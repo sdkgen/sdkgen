@@ -1,3 +1,4 @@
+import type { Type } from "@sdkgen/parser";
 import {
   ArrayType,
   Base64PrimitiveType,
@@ -8,6 +9,7 @@ import {
   DatePrimitiveType,
   DateTimePrimitiveType,
   DescriptionAnnotation,
+  EmailPrimitiveType,
   EnumType,
   FloatPrimitiveType,
   HexPrimitiveType,
@@ -18,24 +20,25 @@ import {
   RestAnnotation,
   StringPrimitiveType,
   StructType,
-  Type,
   TypeReference,
   UIntPrimitiveType,
   UrlPrimitiveType,
   UuidPrimitiveType,
   VoidPrimitiveType,
 } from "@sdkgen/parser";
+import type { JSONSchema } from "json-schema-typed";
 import staticFilesHandler from "serve-handler";
 import { getAbsoluteFSPath as getSwaggerUiAssetPath } from "swagger-ui-dist";
-import { SdkgenHttpServer } from "./http-server";
+
+import type { SdkgenHttpServer } from "./http-server";
 
 const swaggerUiAssetPath = getSwaggerUiAssetPath();
 
-function objectFromEntries<T>(entries: Array<[string, T]>): { [key: string]: T } {
-  return Object.assign({}, ...Array.from(entries, ([k, v]) => ({ [k]: v })));
+function objectFromEntries<T>(entries: Array<[string, T]>) {
+  return Object.assign({}, ...Array.from(entries, ([k, v]) => ({ [k]: v }))) as { [key: string]: T };
 }
 
-function typeToSchema(definitions: any, type: Type): any {
+function typeToSchema(definitions: Record<string, JSONSchema | undefined>, type: Type): JSONSchema {
   if (type instanceof EnumType) {
     return {
       enum: type.values.map(x => x.value),
@@ -98,28 +101,32 @@ function typeToSchema(definitions: any, type: Type): any {
     };
   } else if (type instanceof BytesPrimitiveType) {
     return {
-      format: "byte",
+      format: "byte" as never,
       type: "string",
     };
   } else if (type instanceof IntPrimitiveType) {
     return {
-      format: "int32",
+      format: "int32" as never,
       type: "integer",
     };
   } else if (type instanceof UIntPrimitiveType) {
     return {
-      format: "int32",
+      format: "int32" as never,
       minimum: 0,
       type: "integer",
     };
   } else if (type instanceof MoneyPrimitiveType) {
     return {
-      format: "int64",
+      format: "int64" as never,
       type: "integer",
     };
   } else if (type instanceof FloatPrimitiveType) {
     return {
       type: "number",
+    };
+  } else if (type instanceof EmailPrimitiveType) {
+    return {
+      type: "string",
     };
   } else if (type instanceof OptionalType) {
     return {
@@ -143,12 +150,6 @@ function typeToSchema(definitions: any, type: Type): any {
 
 export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContextT>): void {
   server.addHttpHandler("GET", "/swagger", (req, res) => {
-    if (!server.introspection) {
-      res.statusCode = 404;
-      res.end();
-      return;
-    }
-
     if (!server.introspection) {
       res.statusCode = 404;
       res.end();
@@ -224,6 +225,7 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
       req.url = req.url.replace(/\/swagger/u, "");
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access, @typescript-eslint/no-unsafe-call
     staticFilesHandler(req, res, {
       cleanUrls: false,
       directoryListing: false,
@@ -232,7 +234,7 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
     }).catch(e => {
       console.error(e);
       res.statusCode = 500;
-      res.write(e.toString());
+      res.write(`${e}`);
       res.end();
     });
   });
@@ -245,8 +247,8 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
     }
 
     try {
-      const definitions: any = {};
-      const paths: any = {};
+      const definitions: Record<string, JSONSchema | undefined> = {};
+      const paths: Record<string, any> = {};
 
       for (const op of server.ast.operations) {
         for (const ann of op.annotations) {
@@ -255,6 +257,7 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
               paths[ann.path] = {};
             }
 
+            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
             paths[ann.path][ann.method.toLowerCase()] = {
               operationId: op.name,
               parameters: [
@@ -303,6 +306,7 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
                           bodyType instanceof MoneyPrimitiveType ||
                           bodyType instanceof CpfPrimitiveType ||
                           bodyType instanceof CnpjPrimitiveType ||
+                          bodyType instanceof EmailPrimitiveType ||
                           bodyType instanceof HtmlPrimitiveType ||
                           bodyType instanceof UuidPrimitiveType ||
                           bodyType instanceof HexPrimitiveType ||
@@ -344,6 +348,7 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
                               op.returnType instanceof MoneyPrimitiveType ||
                               op.returnType instanceof CpfPrimitiveType ||
                               op.returnType instanceof CnpjPrimitiveType ||
+                              op.returnType instanceof EmailPrimitiveType ||
                               op.returnType instanceof UuidPrimitiveType ||
                               op.returnType instanceof HexPrimitiveType ||
                               op.returnType instanceof BytesPrimitiveType ||

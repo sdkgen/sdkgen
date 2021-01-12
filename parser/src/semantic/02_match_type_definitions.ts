@@ -1,6 +1,6 @@
-import { AstNode, TypeReference } from "../ast";
-import { SemanticError } from "./analyser";
-import { Visitor } from "./visitor";
+import type { AstNode } from "../ast";
+import { TypeReference } from "../ast";
+import { SemanticError, Visitor } from "./visitor";
 
 export class MatchTypeDefinitionsVisitor extends Visitor {
   visit(node: AstNode): void {

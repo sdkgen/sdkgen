@@ -1,10 +1,15 @@
-import { AstRoot, astToJson, HiddenAnnotation } from "@sdkgen/parser";
+import type { AstRoot } from "@sdkgen/parser";
+import { astToJson, HiddenAnnotation, VoidPrimitiveType } from "@sdkgen/parser";
+
 import { generateTypescriptEnum, generateTypescriptErrorClass, generateTypescriptInterface, generateTypescriptTypeName } from "./helpers";
 
 export function generateNodeClientSource(ast: AstRoot): string {
   let code = "";
 
-  code += `import { Context, SdkgenError, SdkgenHttpClient } from "@sdkgen/node-runtime";
+  const hasErrorWithData = ast.errors.some(err => !(err.dataType instanceof VoidPrimitiveType));
+
+  code += `/* eslint-disable */
+import { Context, SdkgenError${hasErrorWithData ? ", SdkgenErrorWithData" : ""}, SdkgenHttpClient } from "@sdkgen/node-runtime";
 
 `;
 
@@ -38,9 +43,9 @@ ${ast.operations
   .join("")}
 }\n\n`;
 
-  code += `const errClasses = {\n${ast.errors.map(err => `    ${err}`).join(",\n")}\n};\n\n`;
+  code += `const errClasses = {\n${ast.errors.map(err => `    ${err.name}`).join(",\n")}\n};\n\n`;
 
-  code += `const astJson = ${JSON.stringify(astToJson(ast), null, 4).replace(/"(?<key>\w+)":/gu, "$<key>:")};\n`;
+  code += `const astJson = ${JSON.stringify(astToJson(ast), null, 4).replace(/"(?<key>\w+)":/gu, "$<key>:")} as const;\n`;
 
   return code;
 }

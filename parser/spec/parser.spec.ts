@@ -1,4 +1,5 @@
-import { AstJson, astToJson, jsonToAst } from "../src/json";
+import type { AstJson } from "../src/json";
+import { astToJson, jsonToAst } from "../src/json";
 import { Lexer } from "../src/lexer";
 import { Parser } from "../src/parser";
 
@@ -150,14 +151,20 @@ describe(Parser, () => {
     expectParses(
       `
         error Foo
-        error Bar
-        error FooBar
+        error Bar {
+          foo: string
+        }
+        error FooBar int
       `,
       {
         annotations: {},
-        errors: ["Foo", "Bar", "FooBar", "Fatal"],
+        errors: ["Foo", ["Bar", "BarData"], ["FooBar", "int"], "Fatal"],
         functionTable: {},
-        typeTable: {},
+        typeTable: {
+          BarData: {
+            foo: "string",
+          },
+        },
       },
     );
   });

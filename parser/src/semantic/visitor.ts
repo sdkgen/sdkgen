@@ -1,9 +1,16 @@
-import { ArrayType, AstNode, AstRoot, Field, Operation, OptionalType, StructType, TypeDefinition } from "../ast";
+import type { AstNode, AstRoot } from "../ast";
+import { ArrayType, ErrorNode, Field, Operation, OptionalType, StructType, TypeDefinition } from "../ast";
+
+export class SemanticError extends Error {}
 
 export abstract class Visitor {
   constructor(protected root: AstRoot) {}
 
   process(): void {
+    for (const error of this.root.errors) {
+      this.visit(error);
+    }
+
     for (const typeDefinition of this.root.typeDefinitions) {
       this.visit(typeDefinition);
     }
@@ -32,6 +39,8 @@ export abstract class Visitor {
       }
     } else if (node instanceof ArrayType || node instanceof OptionalType) {
       this.visit(node.base);
+    } else if (node instanceof ErrorNode) {
+      this.visit(node.dataType);
     }
   }
 }

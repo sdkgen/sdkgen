@@ -1,4 +1,6 @@
 /* eslint-disable no-process-exit */
+import { writeFileSync } from "fs";
+
 import { generateCSharpServerSource } from "@sdkgen/csharp-generator";
 import { generateDartClientSource } from "@sdkgen/dart-generator";
 import { generateAndroidClientSource } from "@sdkgen/kotlin-generator";
@@ -11,7 +13,6 @@ import {
 } from "@sdkgen/typescript-generator";
 import commandLineArgs from "command-line-args";
 import commandLineUsage from "command-line-usage";
-import { writeFileSync } from "fs";
 
 const optionDefinitions = [
   { defaultOption: true, description: "Specifies the source file", name: "source" },
@@ -21,13 +22,13 @@ const optionDefinitions = [
 ];
 
 export function buildCmd(argv: string[]): void {
-  const options: {
+  const options = commandLineArgs(optionDefinitions, { argv }) as {
     source?: string;
     output?: string;
     target?: string;
     help?: boolean;
     _unknown?: string[];
-  } = commandLineArgs(optionDefinitions, { argv });
+  };
 
   if (options.help) {
     console.log(
@@ -37,11 +38,23 @@ export function buildCmd(argv: string[]): void {
           header: "Typical Example",
         },
         {
+          content: [
+            "- typescript_nodeserver",
+            "- typescript_nodeclient",
+            "- typescript_web",
+            "- typescript_interfaces",
+            "- flutter",
+            "- csharp_server",
+            "- kotlin_android",
+          ].join("\n"),
+          header: "Available targets",
+        },
+        {
           header: "Options",
           optionList: optionDefinitions,
         },
         {
-          content: "Project home: {underline https://github.com/sdkgen}",
+          content: "Project home: {underline https://sdkgen.github.io}",
         },
       ]),
     );
@@ -49,17 +62,17 @@ export function buildCmd(argv: string[]): void {
   }
 
   if (!options.source) {
-    console.error("Error: Missing source option.");
+    console.error("Error: Missing 'source' option.");
     process.exit(1);
   }
 
   if (!options.output) {
-    console.error("Error: Missing output option.");
+    console.error("Error: Missing 'output' option.");
     process.exit(1);
   }
 
   if (!options.target) {
-    console.error("Error: Missing target option.");
+    console.error("Error: Missing 'target' option.");
     process.exit(1);
   }
 

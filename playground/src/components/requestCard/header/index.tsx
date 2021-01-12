@@ -1,15 +1,16 @@
 import { faBookmark, faChevronDown, faChevronUp, faCircle } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
-import { requestModel, RequestStatus } from "helpers/requestModel";
-import { observer } from "mobx-react-lite";
+import type { requestModel, RequestStatus } from "helpers/requestModel";
+import { observer } from "mobx-react";
 import * as React from "react";
+
 import s from "./header.scss";
 
 interface HeaderProps {
   open?: boolean;
   model: requestModel;
-  closeCard?: () => void;
+  closeCard?(): void;
 }
 
 function Header(props: HeaderProps) {

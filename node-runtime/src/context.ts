@@ -1,23 +1,19 @@
-import { IncomingHttpHeaders } from "http";
-import { Readable } from "stream";
-
-export interface Context {
-  request: ContextRequest;
-}
+import type { IncomingHttpHeaders } from "http";
+import type { Readable } from "stream";
 
 export interface ContextRequest {
-  args: any;
+  args: unknown;
   deviceInfo: {
     id: string;
     language: string | null;
-    platform: any;
+    platform: unknown;
     timezone: string | null;
     type: string;
     version: string | null;
     fingerprint: string | null;
   };
   extra: {
-    [name: string]: any;
+    [name: string]: unknown;
   };
   headers: IncomingHttpHeaders;
   id: string;
@@ -31,6 +27,10 @@ export interface ContextRequest {
 }
 
 export interface ContextReply {
-  error?: any;
-  result?: any;
+  error?: unknown;
+  result?: unknown;
+}
+
+export interface Context {
+  request: ContextRequest;
 }

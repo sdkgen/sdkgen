@@ -1,4 +1,6 @@
-import { AstRoot, HiddenAnnotation, VoidPrimitiveType } from "@sdkgen/parser";
+import type { AstRoot } from "@sdkgen/parser";
+import { HiddenAnnotation, VoidPrimitiveType } from "@sdkgen/parser";
+
 import { cast, generateClass, generateEnum, generateErrorClass, generateTypeName } from "./helpers";
 
 export function generateDartClientSource(ast: AstRoot): string {
@@ -90,7 +92,9 @@ ${ast.operations
 
   code += `var _errTable = {\n`;
   for (const error of ast.errors) {
-    code += `  "${error}": (msg) => ${error}(msg),\n`;
+    const hasData = !(error.dataType instanceof VoidPrimitiveType);
+
+    code += `  "${error.name}": SdkgenErrorDescription("${error.dataType.name}", (msg, data) => ${error.name}(msg${hasData ? ", data" : ""})),\n`;
   }
 
   code += `};\n`;
