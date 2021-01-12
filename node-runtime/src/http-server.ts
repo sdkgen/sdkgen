@@ -313,13 +313,17 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
                     writeStream.on("error", reject);
 
                     writeStream.on("open", () => {
-                      files.push({ contents: createReadStream(fileName), name });
+                      const contents = createReadStream(fileName);
 
-                      unlink(fileName, err => {
-                        if (err) {
-                          reject(err);
-                          writeStream.end();
-                        }
+                      files.push({ contents, name });
+
+                      contents.on("open", () => {
+                        unlink(fileName, err => {
+                          if (err) {
+                            reject(err);
+                            writeStream.end();
+                          }
+                        });
                       });
 
                       writeStream.on("close", resolve);
