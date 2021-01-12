@@ -44,19 +44,19 @@ api.fn.throwsError = async () => {
 
 // ExecSync(`../../cubos/sdkgen/sdkgen ${__dirname + "/api.sdkgen"} -o ${__dirname + "/legacyNodeClient.ts"} -t typescript_nodeclient`);
 const { ApiClient: NodeLegacyApiClient } = require(`${__dirname}/legacyNodeClient.ts`);
-const nodeLegacyClient = new NodeLegacyApiClient("http://localhost:8000");
+const nodeLegacyClient = new NodeLegacyApiClient("http://localhost:34367");
 
 writeFileSync(`${__dirname}/nodeClient.ts`, generateNodeClientSource(ast).replace(/@sdkgen\/node-runtime/gu, "../../src"));
 const { ApiClient: NodeApiClient } = require(`${__dirname}/nodeClient.ts`);
 
 unlinkSync(`${__dirname}/nodeClient.ts`);
-const nodeClient = new NodeApiClient("http://localhost:8000");
+const nodeClient = new NodeApiClient("http://localhost:34367");
 
 const server = new SdkgenHttpServer(api, { aaa: true });
 
 describe("Simple API", () => {
   beforeAll(async () => {
-    await server.listen();
+    await server.listen(34367);
   });
 
   afterAll(async () => {
@@ -64,14 +64,14 @@ describe("Simple API", () => {
   });
 
   test("Healthcheck on 'GET /' only", async () => {
-    expect(await axios.get("http://localhost:8000/")).toMatchObject({ data: { ok: true } });
-    await expect(axios.get("http://localhost:8000/egesg")).rejects.toThrowError();
+    expect(await axios.get("http://localhost:34367/")).toMatchObject({ data: { ok: true } });
+    await expect(axios.get("http://localhost:34367/egesg")).rejects.toThrowError();
   });
 
   test("Can get ast.json at runtime", async () => {
-    expect(await axios.get("http://localhost:8000/ast.json")).toMatchObject({ data: astToJson(ast) });
+    expect(await axios.get("http://localhost:34367/ast.json")).toMatchObject({ data: astToJson(ast) });
     server.introspection = false;
-    await expect(axios.get("http://localhost:8000/ast.json")).rejects.toThrowError();
+    await expect(axios.get("http://localhost:34367/ast.json")).rejects.toThrowError();
   });
 
   test("Can make a call from legacy node client", async () => {

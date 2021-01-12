@@ -324,24 +324,26 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
               });
 
               busboy.on("file", (_field, file, name) => {
-                const fileName = randomBytes(32).toString("hex");
-                const writeStream = createWriteStream(fileName);
+                const tempName = randomBytes(32).toString("hex");
+                const writeStream = createWriteStream(tempName);
 
                 filePromises.push(
                   new Promise((resolve, reject) => {
                     writeStream.on("error", reject);
 
-                    writeStream.on("open", () => {
-                      files.push({ contents: createReadStream(fileName), name });
+                    writeStream.on("close", () => {
+                      files.push({ contents: createReadStream(tempName), name });
 
-                      unlink(fileName, err => {
+                      unlink(tempName, err => {
                         if (err) {
                           reject(err);
-                          writeStream.end();
+                        } else {
+                          resolve();
                         }
                       });
+                    });
 
-                      writeStream.on("close", resolve);
+                    writeStream.on("open", () => {
                       file.pipe(writeStream);
                     });
                   }),
