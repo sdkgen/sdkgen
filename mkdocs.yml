@@ -34,11 +34,12 @@ nav:
   - primeiro-projeto.md
   - descrevendo-api.md
   - cli.md
-  - Targets:
-      - targets/servidor-nodejs.md
   - Aprofundando:
       - Annotations: aprofundando/annotations.md
       - REST: aprofundando/rest.md
       - date e datetime: aprofundando/datas.md
+  - Servidor Node.js:
+      - typescript_nodeserver/intro.md
+      - typescript_nodeserver/middlewares.md
   - faq.md
   - releases.md
