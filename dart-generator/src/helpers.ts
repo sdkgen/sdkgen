@@ -107,7 +107,7 @@ export function generateErrorClass(error: ErrorNode): string {
 
   const dataType = generateTypeName(error.dataType);
 
-  return `class ${error} extends SdkgenErrorWithData<${dataType}> {\n  ${error}(String msg, ${dataType} data) : super(msg, data);\n}\n`;
+  return `class ${error.name} extends SdkgenErrorWithData<${dataType}> {\n  ${error.name}(String msg, ${dataType} data) : super(msg, data);\n}\n`;
 }
 
 export function cast(value: string, type: Type): string {
