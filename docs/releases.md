@@ -28,6 +28,13 @@ Você pode, por exemplo:
 - Implementar re-tentativa a depender de algum erro específico (chamando `next` mais de uma vez);
 - Modificar o erro retornado (`try`/`catch` em volta do `next`).
 
+## 1.4.3 (2021-01-18)
+
+**Correções**
+
+- Gerador de código do Flutter com erros que contém dados (`SdkgenErrorWithData`) agora produzem código válido ([#171](https://github.com/sdkgen/sdkgen/pull/171)).
+- Gerador de código do Android agora utiliza `SupervisorJob` ([#168](https://github.com/sdkgen/sdkgen/pull/168)).
+
 ## 1.4.2 (2020-12-21)
 
 **Correções**
@@ -45,7 +52,7 @@ Você pode, por exemplo:
 
 **Correções**
 
-- Correção de regressão na versão 1.4.0 em que o brower-runtime não retornava o conteúdo da resposta em caso de sucesso.
+- Correção de regressão na versão 1.4.0 em que o browser-runtime não retornava o conteúdo da resposta em caso de sucesso.
 - Suporte ao tipo primitivo `email` no Swagger gerado para funções `@rest` ([#140](https://github.com/sdkgen/sdkgen/pull/140)).
 - Correção de exemplo na documentação ([#137](https://github.com/sdkgen/sdkgen/pull/137)).
 
