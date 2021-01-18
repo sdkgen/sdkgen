@@ -1,5 +1,12 @@
 # Releases
 
+## 1.4.3 (2021-01-18)
+
+**Correções**
+
+- Gerador de código do Flutter com erros que contém dados (`SdkgenErrorWithData`) agora produzem código válido ([#171](https://github.com/sdkgen/sdkgen/pull/171)).
+- Gerador de código do Android agora utiliza `SupervisorJob` ([#168](https://github.com/sdkgen/sdkgen/pull/168)).
+
 ## 1.4.2 (2020-12-21)
 
 **Correções**
