@@ -27,7 +27,7 @@ export interface ContextRequest {
 }
 
 export interface ContextReply {
-  error?: unknown;
+  error?: any;
   result?: unknown;
 }
 
