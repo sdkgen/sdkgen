@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
@@ -7,11 +9,9 @@ import { randomBytes } from "crypto";
 import type { BaseApiConfig } from "./api-config";
 import type { Context } from "./context";
 import { decode, encode } from "./encode-decode";
-import { Fatal } from "./error";
 import { executeRequest } from "./execute";
-import { has } from "./utils";
 
-export function apiTestWrapper<T extends BaseApiConfig>(api: T): T {
+export function apiTestWrapper<T>(api: T extends BaseApiConfig<Context & infer _ExtraContextT> ? T : never): T {
   const wrappedApi = new (api.constructor as any)();
 
   for (const functionName of Object.keys(api.astJson.functionTable)) {
