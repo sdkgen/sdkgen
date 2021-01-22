@@ -768,6 +768,10 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
 
     const deviceId = parsed.device.id ?? randomBytes(20).toString("hex");
 
+    if (!parsed.args || Array.isArray(parsed.args) || typeof parsed.args !== 'object') {
+      throw new Error("Expected 'args' to be an object")
+    }
+
     return {
       args: parsed.args,
       deviceInfo: {
@@ -812,6 +816,10 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
       "Request",
       JSON.parse(body),
     );
+
+    if (!parsed.args || Array.isArray(parsed.args) || typeof parsed.args !== 'object') {
+      throw new Error("Expected 'args' to be an object")
+    }
 
     return {
       args: parsed.args,
@@ -875,6 +883,10 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
       version: null,
     };
     const deviceId = deviceInfo.id ?? randomBytes(16).toString("hex");
+
+    if (!parsed.args || Array.isArray(parsed.args) || typeof parsed.args !== 'object') {
+      throw new Error("Expected 'args' to be an object")
+    }
 
     return {
       args: parsed.args,
