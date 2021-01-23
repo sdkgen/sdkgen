@@ -2,7 +2,7 @@ import type { IncomingHttpHeaders } from "http";
 import type { Readable } from "stream";
 
 export interface ContextRequest {
-  args: unknown;
+  args: Record<string, unknown>;
   deviceInfo: {
     id: string;
     language: string | null;
@@ -12,9 +12,7 @@ export interface ContextRequest {
     version: string | null;
     fingerprint: string | null;
   };
-  extra: {
-    [name: string]: unknown;
-  };
+  extra: Record<string, unknown>;
   headers: IncomingHttpHeaders;
   id: string;
   ip: string;
