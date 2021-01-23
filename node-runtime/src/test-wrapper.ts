@@ -19,7 +19,7 @@ export function apiTestWrapper<T>(api: T extends BaseApiConfig<Context & infer _
       const encodedArgs = encode(api.astJson.typeTable, `fn.${functionName}.args`, (api.astJson.functionTable as any)[functionName].args, args);
 
       ctx.request = {
-        args: encodedArgs,
+        args: encodedArgs as Record<string, unknown>,
         deviceInfo: ctx.request?.deviceInfo ?? {
           fingerprint: null,
           id: randomBytes(16).toString("hex"),
