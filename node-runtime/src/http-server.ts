@@ -818,7 +818,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
     );
 
     if (!parsed.args || Array.isArray(parsed.args) || typeof parsed.args !== 'object') {
-      throw new Error("Expected 'args' to be an object")
+      throw new Error("Expected 'args' to be an object");
     }
 
     return {
