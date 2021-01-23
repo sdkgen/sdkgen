@@ -884,7 +884,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
     };
     const deviceId = deviceInfo.id ?? randomBytes(16).toString("hex");
 
-    if (!parsed.args || Array.isArray(parsed.args) || typeof parsed.args !== 'object') {
+    if (!parsed.args || Array.isArray(parsed.args) || typeof parsed.args !== "object") {
       throw new Error("Expected 'args' to be an object")
     }
 
