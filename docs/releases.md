@@ -1,6 +1,6 @@
 # Releases
 
-## 1.5.0 (2021-01-XX)
+## 1.5.0 (2021-01-26)
 
 **Middlewares**
 
@@ -27,6 +27,21 @@ Você pode, por exemplo:
 - Implementar cache;
 - Implementar re-tentativa a depender de algum erro específico (chamando `next` mais de uma vez);
 - Modificar o erro retornado (`try`/`catch` em volta do `next`).
+
+Ver [#161](https://github.com/sdkgen/sdkgen/pull/161).
+
+**Outras mudanças**
+
+- Suporte ao Node.js 15 ([#115](https://github.com/sdkgen/sdkgen/pull/115)).
+- Configuração do eslint renovada e tipagem mais forte em todos os pacotes TypeScript ([#166](https://github.com/sdkgen/sdkgen/pull/166)).
+- Licença do projeto modificada para MIT ([#167](https://github.com/sdkgen/sdkgen/pull/167)).
+- Atualização de dependências.
+
+## 1.4.4 (2021-01-26)
+
+**Correções**
+
+- Correção no runtime do Flutter ao lançar erros do tipo `SdkgenErrorWithData` ([#175](https://github.com/sdkgen/sdkgen/pull/175)).
 
 ## 1.4.3 (2021-01-18)
 
