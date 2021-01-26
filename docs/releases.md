@@ -1,5 +1,11 @@
 # Releases
 
+## 1.4.4 (2021-01-26)
+
+**Correções**
+
+- Correção no runtime do Flutter ao lançar erros do tipo `SdkgenErrorWithData` ([#175](https://github.com/sdkgen/sdkgen/pull/175)).
+
 ## 1.4.3 (2021-01-18)
 
 **Correções**
