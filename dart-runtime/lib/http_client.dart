@@ -136,7 +136,7 @@ class SdkgenHttpClient {
             typeTable, "$functionName.ret", func.ret, responseBody["result"]);
       }
     } catch (e) {
-      if (e is SdkgenError)
+      if (e is SdkgenError || e is SdkgenErrorWithData)
         throw e;
       else
         throw _throwError("Fatal", e.toString(), null);
