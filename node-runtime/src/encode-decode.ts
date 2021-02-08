@@ -37,6 +37,8 @@ type DecodedType<Type, Table extends object> = TypeDescription extends Type
   ? Array<DecodedType<X, Table>>
   : Type extends string[]
   ? Type[number]
+  : Type extends readonly string[]
+  ? Type[number]
   : Type extends object
   ? { -readonly [Key in keyof Type]: DecodedType<Type[Key], Table> }
   : object extends Table
@@ -64,6 +66,8 @@ type EncodedType<Type, Table extends object> = TypeDescription extends Type
   : Type extends `${infer X}[]`
   ? Array<EncodedType<X, Table>>
   : Type extends string[]
+  ? Type[number]
+  : Type extends readonly string[]
   ? Type[number]
   : Type extends object
   ? { -readonly [Key in keyof Type]: EncodedType<Type[Key], Table> }
