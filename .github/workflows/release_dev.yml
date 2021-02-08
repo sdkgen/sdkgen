@@ -123,7 +123,7 @@ jobs:
           BINTRAY_API_KEY: ${{ secrets.BINTRAY_API_KEY }}
 
   typescript-generator:
-    needs: [parser, _version]
+    needs: [_version]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -154,7 +154,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
   csharp-generator:
-    needs: [parser, _version]
+    needs: [_version]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -185,7 +185,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
   kotlin-generator:
-    needs: [parser, _version]
+    needs: [_version]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -216,7 +216,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
   dart-generator:
-    needs: [parser, _version]
+    needs: [_version]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -247,7 +247,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
   cli:
-    needs: [parser, typescript-generator, dart-generator, _version]
+    needs: [_version]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -311,15 +311,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
   node-runtime:
-    needs:
-      [
-        parser,
-        typescript-generator,
-        kotlin-generator,
-        dart-generator,
-        playground,
-        _version,
-      ]
+    needs: [_version]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
