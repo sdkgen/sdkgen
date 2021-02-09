@@ -1,5 +1,16 @@
 # Releases
 
+## 1.5.2 (2021-02-09)
+
+**Correção:**
+- O tipo de retorno das funções `encode` e `decode` do `@sdkgen/node-runtime` estava sendo incorretamente inferido quando o tipo possuia um enum. Essa tipagem foi corrigida.
+
+Esta release não inclui nenhuma alteração no comportamento durante execução.
+
+## 1.5.1 (2021-01-26)
+
+Nenhuma alteração.
+
 ## 1.5.0 (2021-01-26)
 
 **Middlewares**
