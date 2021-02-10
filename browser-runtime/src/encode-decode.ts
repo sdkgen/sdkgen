@@ -1,5 +1,5 @@
 import type { TypeDescription, TypeTable } from "./ast";
-import { DeepReadonly } from "./utils";
+import type { DeepReadonly } from "./utils";
 
 const simpleStringTypes = ["string", "email", "phone", "html", "xml"];
 const simpleTypes = ["json", "bool", "url", "int", "uint", "float", "money", "hex", "uuid", "base64", "void", ...simpleStringTypes];
