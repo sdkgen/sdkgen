@@ -1,10 +1,11 @@
 import type { TypeDescription, TypeTable } from "./ast";
+import { DeepReadonly } from "./utils";
 
 const simpleStringTypes = ["string", "email", "phone", "html", "xml"];
 const simpleTypes = ["json", "bool", "url", "int", "uint", "float", "money", "hex", "uuid", "base64", "void", ...simpleStringTypes];
 
 class ParseError extends Error {
-  constructor(path: string, type: TypeDescription, value: unknown) {
+  constructor(path: string, type: DeepReadonly<TypeDescription>, value: unknown) {
     let str: string;
 
     try {
@@ -101,7 +102,7 @@ function simpleEncodeDecode(path: string, type: string, value: unknown) {
   throw new Error(`Unknown type '${type}' at '${path}'`);
 }
 
-export function encode(typeTable: TypeTable, path: string, type: TypeDescription, value: unknown): unknown {
+export function encode(typeTable: DeepReadonly<TypeTable>, path: string, type: DeepReadonly<TypeDescription>, value: unknown): unknown {
   if (typeof type === "string" && !type.endsWith("?") && type !== "void" && (value === null || value === undefined)) {
     throw new Error(`Invalid type at '${path}', cannot be null`);
   } else if (Array.isArray(type)) {
@@ -118,7 +119,7 @@ export function encode(typeTable: TypeTable, path: string, type: TypeDescription
     const obj: Record<string, unknown> = {};
 
     for (const key of Object.keys(type)) {
-      obj[key] = encode(typeTable, `${path}.${key}`, type[key], (value as Record<string, unknown>)[key]);
+      obj[key] = encode(typeTable, `${path}.${key}`, (type as Record<string, TypeDescription>)[key], (value as Record<string, unknown>)[key]);
     }
 
     return obj;
@@ -189,7 +190,7 @@ export function encode(typeTable: TypeTable, path: string, type: TypeDescription
   }
 }
 
-export function decode(typeTable: TypeTable, path: string, type: TypeDescription, value: unknown): unknown {
+export function decode(typeTable: DeepReadonly<TypeTable>, path: string, type: DeepReadonly<TypeDescription>, value: unknown): unknown {
   if (typeof type === "string" && !type.endsWith("?") && type !== "void" && (value === null || value === undefined)) {
     throw new Error(`Invalid type at '${path}', cannot be null`);
   } else if (Array.isArray(type)) {
@@ -206,7 +207,7 @@ export function decode(typeTable: TypeTable, path: string, type: TypeDescription
     const obj: Record<string, unknown> = {};
 
     for (const key of Object.keys(type)) {
-      obj[key] = decode(typeTable, `${path}.${key}`, type[key], (value as Record<string, unknown>)[key]);
+      obj[key] = encode(typeTable, `${path}.${key}`, (type as Record<string, TypeDescription>)[key], (value as Record<string, unknown>)[key]);
     }
 
     return obj;

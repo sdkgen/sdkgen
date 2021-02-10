@@ -22,7 +22,7 @@ import { analyse } from "./semantic/analyser";
 import type { DeepReadonly } from "./utils";
 import { primitiveToAstClass } from "./utils";
 
-export type TypeDescription = string | readonly string[] | string[] | { [name: string]: TypeDescription };
+export type TypeDescription = string | string[] | { [name: string]: TypeDescription };
 
 interface TypeTable {
   [name: string]: TypeDescription | undefined;

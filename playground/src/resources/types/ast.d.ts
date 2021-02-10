@@ -1,4 +1,4 @@
-export type TypeDescription = string | readonly string[] | string[] | { [name: string]: TypeDescription };
+export type TypeDescription = string | string[] | { [name: string]: TypeDescription };
 
 export interface ArgsType {
   [arg: string]: TypeDescription;

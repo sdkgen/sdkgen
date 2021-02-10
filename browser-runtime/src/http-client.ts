@@ -1,6 +1,7 @@
 import type { AstJson } from "./ast";
 import { decode, encode } from "./encode-decode";
 import type { SdkgenError, SdkgenErrorWithData } from "./error";
+import type { DeepReadonly } from "./utils";
 
 interface ErrClasses {
   [className: string]: (new (message: string, data: any) => SdkgenErrorWithData<any>) | (new (message: string) => SdkgenError) | undefined;
@@ -48,7 +49,7 @@ export class SdkgenHttpClient {
 
   errorHook: (result: any, name: string, args: any) => void = () => undefined;
 
-  constructor(baseUrl: string, private astJson: AstJson, private errClasses: ErrClasses) {
+  constructor(baseUrl: string, private astJson: DeepReadonly<AstJson>, private errClasses: ErrClasses) {
     this.baseUrl = baseUrl;
   }
 
