@@ -1,5 +1,12 @@
 # Releases
 
+## 1.5.3 (2021-02-10)
+
+**Correção:**
+- Ajustado o tipo `TypeDescription` utilizado para tipagem dos clientes em Node e Web com respeito ao enums.
+
+Esta release não inclui nenhuma alteração no comportamento durante execução.
+
 ## 1.5.2 (2021-02-09)
 
 **Correção:**
