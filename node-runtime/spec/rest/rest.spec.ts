@@ -48,6 +48,14 @@ api.fn.obj = async (ctx: Context, { obj }: { obj: { val: number } }) => {
   return obj;
 };
 
+api.fn.returnArg = async (ctx: Context, { arg }: { arg: string }) => {
+  return arg;
+};
+
+api.fn.returnNoArg = async () => {
+  return "no-arg";
+};
+
 async function readAllStream(stream: Readable) {
   return new Promise((resolve, reject) => {
     const chunks: Buffer[] = [];
@@ -85,8 +93,8 @@ const nodeClient = new NodeApiClient("http://localhost:8001");
 const server = new SdkgenHttpServer(api, {});
 
 describe("Rest API", () => {
-  beforeAll(() => {
-    server.listen(8001);
+  beforeAll(async () => {
+    await server.listen(8001);
   });
 
   afterAll(async () => {
@@ -305,6 +313,26 @@ describe("Rest API", () => {
       resultHeaders: {
         "content-type": "text/xml",
       },
+    },
+    {
+      method: "GET",
+      path: "/foo/haha/hello",
+      result: "haha",
+    },
+    {
+      method: "GET",
+      path: "/foo/barhaha/hello",
+      result: "haha",
+    },
+    {
+      method: "GET",
+      path: "/foo/bar/hello",
+      result: "bar",
+    },
+    {
+      method: "GET",
+      path: "/foo/baz/hello",
+      result: "no-arg",
     },
     (() => {
       const form = new FormData();
