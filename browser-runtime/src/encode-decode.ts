@@ -207,7 +207,7 @@ export function decode(typeTable: DeepReadonly<TypeTable>, path: string, type: D
     const obj: Record<string, unknown> = {};
 
     for (const key of Object.keys(type)) {
-      obj[key] = encode(typeTable, `${path}.${key}`, (type as Record<string, TypeDescription>)[key], (value as Record<string, unknown>)[key]);
+      obj[key] = decode(typeTable, `${path}.${key}`, (type as Record<string, TypeDescription>)[key], (value as Record<string, unknown>)[key]);
     }
 
     return obj;
