@@ -240,14 +240,14 @@ export function encode<Table extends DeepReadonly<TypeTable>, Type extends DeepR
 
     return CNPJ.strip(value) as EncodedType<Type, Table>;
   } else if (type === "date") {
-    if (!(value instanceof Date) && !(typeof value === "string" && /^[0-9]{4}-[01][0-9]-[0123][0-9]$/u.test(value))) {
+    if (!(value instanceof Date && !isNaN(value.getTime())) && !(typeof value === "string" && /^[0-9]{4}-[01][0-9]-[0123][0-9]$/u.test(value))) {
       throw new ParseError(path, type, value);
     }
 
     return (typeof value === "string" ? new Date(value).toISOString().split("T")[0] : value.toISOString().split("T")[0]) as EncodedType<Type, Table>;
   } else if (type === "datetime") {
     if (
-      !(value instanceof Date) &&
+      !(value instanceof Date && !isNaN(value.getTime())) &&
       !(
         typeof value === "string" &&
         /^[0-9]{4}-[01][0-9]-[0123][0-9]T[012][0-9]:[0123456][0-9]:[0123456][0-9](?:\.[0-9]{1,6})?(?:Z|[+-][012][0-9]:[0123456][0-9])?$/u.test(value)
