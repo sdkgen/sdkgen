@@ -70,6 +70,9 @@ describe("Encode/Decode", () => {
     expect(() => {
       decode({}, "", "date", "2020-02-30");
     }).toThrow();
+    expect(() => {
+      encode({}, "", "date", new Date(""));
+    }).toThrow();
   });
 
   test("Process Datetime", () => {
@@ -92,6 +95,9 @@ describe("Encode/Decode", () => {
     }).toThrow();
     expect(decode({}, "", "datetime", "2020-11-10T15:34:50Z").getTime()).toBe(new Date("2020-11-10T15:34:50Z").getTime());
     expect(decode({}, "", "datetime", "2020-11-10T15:34:50.000").getTime()).toBe(new Date("2020-11-10T15:34:50Z").getTime());
+    expect(() => {
+      encode({}, "", "datetime", new Date(""));
+    }).toThrow();
   });
 
   test("Process BigInt", () => {
