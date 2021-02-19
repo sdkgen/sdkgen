@@ -35,3 +35,14 @@ fn getHtml(): html
 
 @rest GET /xml
 fn getXml(): xml
+
+@rest GET /foo/{arg}/hello
+@rest GET /foo/bar{arg}/hello
+fn returnArg(arg: string): string
+
+@rest GET /foo/baz/hello
+fn returnNoArg(): string
+
+@rest GET /foo/{arg}/hello/{arg2}/world
+@rest GET /foo/bar{arg}/hello/bar{arg2}/world
+fn returnArgConcat(arg: string, arg2: string): string

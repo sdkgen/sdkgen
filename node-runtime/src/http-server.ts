@@ -214,9 +214,10 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
           return matcher === path;
         }
 
-        return path.search(matcher) === 0;
+        return matcher.exec(path)?.[0] === path;
       })
       .sort(({ matcher: first }, { matcher: second }) => {
+        // Prefer string matches instead of Regexp matches
         if (typeof first === "string" && typeof second === "string") {
           return 0;
         } else if (typeof first === "string") {
@@ -228,7 +229,20 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
         const firstMatch = first.exec(path);
         const secondMatch = second.exec(path);
 
-        return (secondMatch?.[0]?.length ?? 0) - (firstMatch?.[0]?.length ?? 0);
+        if (!firstMatch) {
+          return -1;
+        }
+
+        if (!secondMatch) {
+          return 1;
+        }
+
+        // Compute how many characters were NOT part of a capture group
+        const firstLength = firstMatch[0].length - firstMatch.slice(1).reduce((acc, cur) => acc + cur.length, 0);
+        const secondLength = secondMatch[0].length - secondMatch.slice(1).reduce((acc, cur) => acc + cur.length, 0);
+
+        // Prefer the maximum number of non-captured characters
+        return secondLength - firstLength;
       });
 
     return matchingHandlers.length ? matchingHandlers[0] : null;
@@ -256,7 +270,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
 
         for (let i = 0; i < pathFragments.length; ++i) {
           if (i > 0) {
-            pathRegex += "(.+?)";
+            pathRegex += "([^/]+?)";
           }
 
           pathRegex += escapeRegExp(pathFragments[i]);
