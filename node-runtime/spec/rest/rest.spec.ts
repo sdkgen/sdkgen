@@ -56,6 +56,10 @@ api.fn.returnNoArg = async () => {
   return "no-arg";
 };
 
+api.fn.returnArgConcat = async (ctx: Context, { arg, arg2 }: { arg: string; arg2: string }) => {
+  return `${arg}${arg2}`;
+};
+
 async function readAllStream(stream: Readable) {
   return new Promise((resolve, reject) => {
     const chunks: Buffer[] = [];
@@ -333,6 +337,21 @@ describe("Rest API", () => {
       method: "GET",
       path: "/foo/baz/hello",
       result: "no-arg",
+    },
+    {
+      method: "GET",
+      path: "/foo/haha/hello/hehe/world",
+      result: "hahahehe",
+    },
+    {
+      method: "GET",
+      path: "/foo/barhaha/hello/barhehe/world",
+      result: "hahahehe",
+    },
+    {
+      method: "GET",
+      path: "/foo/bar/hello/bar/world",
+      result: "barbar",
     },
     (() => {
       const form = new FormData();
