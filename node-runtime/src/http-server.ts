@@ -111,7 +111,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
       res.end();
     });
 
-    this.addHttpHandler("GET", /^\/playground/u, (req, res) => {
+    this.addHttpHandler("GET", /^\/playground.*/u, (req, res) => {
       if (!this.introspection) {
         res.statusCode = 404;
         res.end();
