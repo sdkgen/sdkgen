@@ -1,5 +1,14 @@
 # Releases
 
+## 1.5.4 (2021-02-19)
+
+**Correções:**
+- Correção no recebimento de objetos retornados pela API no browser-runtime ([#181](https://github.com/sdkgen/sdkgen/pull/181)).
+- Correção no tratamento de rotas REST para que caso mais de uma rota encaixe com uma requisição, aquela que contém a maior quantidade de caracteres que não fazem parte dos argumentos seja escolhida ([#179](https://github.com/sdkgen/sdkgen/pull/179)).
+- Mudança no tratamento de rotas REST de forma que argumentos do tipo `string` dentra da path não possam mais conter o caracter `/` ([#179](https://github.com/sdkgen/sdkgen/pull/179)).
+- Validação de datas no browser-runtime e node-runtime de forma que uma data inválida não seja aceita ([#180](https://github.com/sdkgen/sdkgen/pull/180)).
+- Atualização de dependências.
+
 ## 1.5.3 (2021-02-10)
 
 **Correção:**
