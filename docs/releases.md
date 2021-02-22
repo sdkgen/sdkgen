@@ -1,5 +1,10 @@
 # Releases
 
+## 1.5.5 (2021-02-22)
+
+**Correções:**
+- Correção no carregamento do `/playground` por conta de regressão causada pela versão 1.5.4 ([#184](https://github.com/sdkgen/sdkgen/pull/184)).
+
 ## 1.5.4 (2021-02-19)
 
 **Correções:**
