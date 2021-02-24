@@ -10,10 +10,10 @@ environment:
 dependencies:
   convert: ^2.1.1
   device_info: ^1.0.0
-  equatable: ^1.2.5
+  equatable: ^1.2.6
   http: ^0.12.2
-  package_info: ^0.4.3
-  shared_preferences: ^0.5.12+2
+  package_info: ^0.4.3+4
+  shared_preferences: ^0.5.12+4
   meta: ">=1.0.0 <2.0.0"
   flutter:
     sdk: flutter
