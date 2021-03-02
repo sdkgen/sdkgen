@@ -60,6 +60,12 @@ export class SdkgenHttpClient {
       throw new Error(`Unknown function ${functionName}`);
     }
 
+    const extra: Record<string, any> = {};
+
+    this.extra.forEach((value, key) => {
+      extra[key] = value;
+    });
+
     const request = {
       args: encode(this.astJson.typeTable, `${functionName}.args`, func.args, args),
       deviceInfo: {
@@ -72,9 +78,7 @@ export class SdkgenHttpClient {
         type: "web",
         version: document.currentScript?.getAttribute("src") ?? "",
       },
-      extra: {
-        ...this.extra,
-      },
+      extra,
       name: functionName,
       requestId: randomBytesHex(16),
       version: 3,

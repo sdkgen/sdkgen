@@ -33,11 +33,17 @@ export class SdkgenHttpClient {
       throw new Error(`Unknown function ${functionName}`);
     }
 
+    const extra: Record<string, any> = {};
+
+    this.extra.forEach((value, key) => {
+      extra[key] = value;
+    });
+
     const requestBody = JSON.stringify({
       args: encode(this.astJson.typeTable, `${functionName}.args`, func.args, args),
       deviceInfo: ctx?.request ? ctx.request.deviceInfo : { id: hostname(), type: "node" },
       extra: {
-        ...this.extra,
+        ...extra,
         ...(ctx?.request ? ctx.request.extra : {}),
       },
       name: functionName,
