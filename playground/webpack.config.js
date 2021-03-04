@@ -1,12 +1,14 @@
+/* eslint-disable @typescript-eslint/prefer-nullish-coalescing */
 const path = require("path");
+
 const webpack = require("webpack");
 const OfflinePlugin = require("offline-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const FaviconsWebpackPlugin = require("favicons-webpack-plugin");
 const ImageMinPlugin = require("imagemin-webpack-plugin").default;
 const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
-const { WebpackManifestPlugin } = require("webpack-manifest-plugin");
 const MonacoWebpackPlugin = require("monaco-editor-webpack-plugin");
+const { WebpackManifestPlugin } = require("webpack-manifest-plugin");
 
 const shouldBuildForProduction = process.env.NODE_ENV === "production";
 const hash = shouldBuildForProduction ? "[chunkhash]" : "[name]";
@@ -19,17 +21,19 @@ const title = "sdkgen playground";
 const rootDir = __dirname;
 
 // LOADERS
-const cssLoader = (modules = false) => ({
-  loader: "css-loader",
-  options: {
-    modules: modules
-      ? {
-          localIdentName: "[path].[name].[local]",
-        }
-      : false,
-    importLoaders: 1,
-  },
-});
+function cssLoader(modules = false) {
+  return {
+    loader: "css-loader",
+    options: {
+      modules: modules
+        ? {
+            localIdentName: "[path].[name].[local]",
+          }
+        : false,
+      importLoaders: 1,
+    },
+  };
+}
 
 const postCssLoader = {
   loader: "postcss-loader",
@@ -41,14 +45,16 @@ const postCssLoader = {
   },
 };
 
-const sassLoader = rootDir => ({
-  loader: "sass-loader",
-  options: {
-    sassOptions: {
-      includePaths: [resolver("src/resources/styles")],
+function sassLoader() {
+  return {
+    loader: "sass-loader",
+    options: {
+      sassOptions: {
+        includePaths: [resolver("src/resources/styles")],
+      },
     },
-  },
-});
+  };
+}
 
 const styleLoader = "style-loader";
 
@@ -104,7 +110,7 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\*.html$/,
+        test: /\*.html$/u,
         use: [
           {
             loader: "html-loader",
@@ -116,14 +122,14 @@ module.exports = {
         ],
       },
       {
-        test: /react-icons.*\.js$/,
+        test: /react-icons.*\.js$/u,
         loader: "ts-loader",
         options: {
           transpileOnly: true,
         },
       },
       {
-        test: /\.tsx?$/,
+        test: /\.tsx?$/u,
         use: [
           ...(shouldBuildForProduction ? [] : ["cache-loader"]),
           {
@@ -136,18 +142,18 @@ module.exports = {
         ],
       },
       {
-        test: /\.css/,
+        test: /\.css/u,
         use: [styleLoader, cssLoader(false), postCssLoader],
       },
       {
-        test: /\.scss$/,
+        test: /\.scss$/u,
         resolve: {
           extensions: [".scss", ".sass"],
         },
         use: [styleLoader, cssLoader(true), postCssLoader, sassLoader(rootDir)],
       },
       {
-        test: /\.woff(2)?(\?v=[0-9].[0-9].[0-9])?$/,
+        test: /\.woff2?(?:\?v=[0-9].[0-9].[0-9])?$/u,
         use: [
           {
             loader: "url-loader",
@@ -158,7 +164,7 @@ module.exports = {
         ],
       },
       {
-        test: /\.(ttf|otf|eot)(\?v=[0-9].[0-9].[0-9])?$/,
+        test: /\.(?:ttf|otf|eot)(?:\?v=[0-9].[0-9].[0-9])?$/u,
         loader: [
           {
             loader: "file-loader",
@@ -169,7 +175,7 @@ module.exports = {
         ],
       },
       {
-        test: /\.(jpe?g|png|gif|svg)$/i,
+        test: /\.(?:jpe?g|png|gif|svg)$/iu,
         use: [
           {
             loader: "file-loader",
@@ -185,11 +191,7 @@ module.exports = {
   },
 
   plugins: [
-    new ForkTsCheckerWebpackPlugin({
-      eslint: {
-        files: "**/*.{ts,tsx}",
-      },
-    }),
+    new ForkTsCheckerWebpackPlugin(),
     new webpack.ExtendedAPIPlugin(),
     new webpack.DefinePlugin({
       "process.env.NODE_ENV": JSON.stringify(process.env.NODE_ENV || "development"),

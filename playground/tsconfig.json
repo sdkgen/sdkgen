@@ -13,7 +13,6 @@
     "allowSyntheticDefaultImports": true,
     "types": ["node", "jest", "chrome"],
     "skipLibCheck": true,
-    "importHelpers": true,
     "lib": ["dom", "es2018", "esnext"],
     "moduleResolution": "node",
     "noUnusedParameters": true,
