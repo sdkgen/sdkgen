@@ -25,14 +25,14 @@
   },
   "homepage": "https://github.com/sdkgen/sdkgen#readme",
   "devDependencies": {
+    "@cubos/eslint-config": "^1.0.480297",
     "@types/command-line-args": "^5.0.0",
     "@types/command-line-usage": "^5.0.1",
-    "@types/jest": "^26.0.14",
-    "@types/node": "^14.11.9",
-    "jest": "^26.5.3",
-    "@cubos/eslint-config": "^1.0.442740",
-    "ts-jest": "^26.4.1",
-    "typescript": "^4.0.3"
+    "@types/jest": "^26.0.20",
+    "@types/node": "^14.14.31",
+    "jest": "^26.6.3",
+    "ts-jest": "^26.5.3",
+    "typescript": "^4.2.2"
   },
   "jest": {
     "transform": {
@@ -56,6 +56,6 @@
     "@sdkgen/parser": "file:../parser",
     "@sdkgen/typescript-generator": "file:../typescript-generator",
     "command-line-args": "^5.1.1",
-    "command-line-usage": "^6.1.0"
+    "command-line-usage": "^6.1.1"
   }
 }
