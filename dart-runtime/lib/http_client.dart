@@ -1,15 +1,16 @@
 import 'dart:convert';
-import 'dart:io';
 import 'dart:math';
 
 import 'package:convert/convert.dart';
-import 'package:device_info/device_info.dart';
 import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
-import 'package:package_info/package_info.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'types.dart';
+
+import 'deviceinfo_generic.dart'
+    if (dart.library.io) 'deviceinfo_io.dart'
+    if (dart.library.js) 'deviceinfo_web.dart';
 
 class SdkgenError implements Exception {
   String message;
@@ -24,14 +25,14 @@ class SdkgenErrorWithData<T> implements Exception {
 
 class SdkgenHttpClient {
   String baseUrl;
-  Map<String, dynamic> extra;
-  Map<String, String> headers;
+  Map<String, dynamic> extra = new Map<String, dynamic>();
+  Map<String, String> headers = new Map<String, String>();
   Map<String, Object> typeTable;
   Map<String, FunctionDescription> fnTable;
   Map<String, SdkgenErrorDescription> errTable;
-  String deviceId;
+  String? deviceId;
   Random random = Random.secure();
-  BuildContext context;
+  BuildContext? context;
 
   SdkgenHttpClient(
       this.baseUrl, this.context, this.typeTable, this.fnTable, this.errTable);
@@ -41,8 +42,7 @@ class SdkgenHttpClient {
   }
 
   _throwError(String type, String message, dynamic data) {
-    var description =
-        errTable[type] == null ? errTable["Fatal"] : errTable[type];
+    var description = errTable[type] ?? errTable["Fatal"]!;
     var decodedData =
         decode(this.typeTable, "$type.data", description.dataType, data);
     throw Function.apply(description.create, [message, decodedData]);
@@ -54,8 +54,7 @@ class SdkgenHttpClient {
       if (prefs.containsKey("sdkgen_deviceId")) {
         deviceId = prefs.getString("sdkgen_deviceId");
       } else {
-        deviceId = _randomBytesHex(16);
-        prefs.setString("sdkgen_deviceId", deviceId);
+        prefs.setString("sdkgen_deviceId", deviceId = _randomBytesHex(16));
       }
     }
     return deviceId;
@@ -64,43 +63,12 @@ class SdkgenHttpClient {
   Future<Object> makeRequest(
       String functionName, Map<String, Object> args) async {
     try {
-      var func = fnTable[functionName];
+      var func = fnTable[functionName]!;
       var encodedArgs = Map();
       args.forEach((argName, argValue) {
         encodedArgs[argName] = encode(typeTable, "$functionName.args.$argName",
-            func.args[argName], argValue);
+            func.args[argName]!, argValue);
       });
-
-      var locale = context == null ? null : Localizations.localeOf(context);
-
-      PackageInfo packageInfo;
-      try {
-        packageInfo = await PackageInfo.fromPlatform();
-      } catch (e) {}
-
-      final platform = {
-        "os": Platform.operatingSystem,
-        "osVersion": Platform.operatingSystemVersion,
-        "dartVersion": Platform.version,
-        "appId": packageInfo?.packageName,
-        "screenWidth": context == null ? 0 : MediaQuery.of(context).size.width,
-        "screenHeight": context == null ? 0 : MediaQuery.of(context).size.height
-      };
-
-      final deviceInfo = DeviceInfoPlugin();
-
-      if (Platform.isAndroid) {
-        final androidInfo = await deviceInfo.androidInfo;
-        platform["model"] = androidInfo.model; //Ex: SM-1234
-        platform["brand"] = androidInfo.brand; //Ex: Samsung
-        platform["version"] = androidInfo.version.release; //10
-        platform["sdkVersion"] = androidInfo.version.sdkInt; //29
-      } else if (Platform.isIOS) {
-        final iosInfo = await deviceInfo.iosInfo;
-        platform["model"] = iosInfo.name; //Ex: iPhone 11 Pro Max
-        platform["brand"] = "Apple";
-        platform["version"] = iosInfo.systemVersion; //13.1
-      }
 
       var body = {
         "version": 3,
@@ -108,23 +76,10 @@ class SdkgenHttpClient {
         "name": functionName,
         "args": encodedArgs,
         "extra": this.extra,
-        "deviceInfo": {
-          "id": await _deviceId(),
-          "language": locale == null
-              ? null
-              : "${locale.languageCode}-${locale.countryCode}",
-          "platform": platform,
-          "timezone": DateTime.now().timeZoneName,
-          "type": Platform.isAndroid
-              ? "android"
-              : Platform.isIOS
-                  ? "ios"
-                  : "flutter",
-          "version": packageInfo?.version
-        }
+        "deviceInfo": await getDeviceInfo(context, await _deviceId())
       };
 
-      var response = await http.post(baseUrl,
+      var response = await http.post(Uri.parse(baseUrl),
           headers: this.headers, body: jsonEncode(body));
       var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
 

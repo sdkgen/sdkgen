@@ -32,7 +32,6 @@ export function generateEnum(type: EnumType): string {
   return `enum ${type.name} {\n  ${type.values.map(x => x.value).join(",\n  ")}\n}\n`;
 }
 
-// Generate the class constructor with the tag [@required] for non nullable types
 function generateConstructor(type: StructType): string {
   const doubleSpace = "  ";
   const fourSpaces = "    ";
@@ -42,7 +41,7 @@ function generateConstructor(type: StructType): string {
     if (field.type instanceof OptionalType) {
       str = str.concat(fourSpaces);
     } else {
-      str = str.concat(`${fourSpaces}@required `);
+      str = str.concat(`${fourSpaces}required `);
     }
 
     str = str.concat(`this.${field.name},\n`);
@@ -86,7 +85,7 @@ export function generateTypeName(type: Type): string {
     case JsonPrimitiveType:
       return "dynamic";
     case OptionalType:
-      return generateTypeName((type as OptionalType).base);
+      return `${generateTypeName((type as OptionalType).base)}?`;
     case ArrayType:
       return `List<${generateTypeName((type as ArrayType).base)}>`;
     case StructType:

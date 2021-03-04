@@ -59,7 +59,7 @@ var simpleTypes = [
     simpleStringTypes;
 
 simpleEncodeDecode(
-    Map<String, Object> typeTable, String path, String type, Object value) {
+    Map<String, Object> typeTable, String path, String type, Object? value) {
   if (simpleStringTypes.contains(type)) {
     if (!(value is String)) {
       throw SdkgenTypeException(
@@ -70,7 +70,7 @@ simpleEncodeDecode(
 
   switch (type) {
     case "json":
-      return jsonDecode(jsonEncode(value, toEncodable: (Object obj) {
+      return jsonDecode(jsonEncode(value, toEncodable: (Object? obj) {
         throw SdkgenTypeException(
             "Invalid Type at '$path', expected $type, got ${obj.runtimeType}");
       }));
@@ -109,7 +109,7 @@ simpleEncodeDecode(
       }
       return value;
     case "uint":
-      if (!(value is int) || (value as int) < 0) {
+      if (!(value is int) || value < 0) {
         throw SdkgenTypeException(
             "Invalid Type at '$path', expected $type, got ${jsonEncode(value)}");
       }
@@ -140,9 +140,9 @@ simpleEncodeDecode(
   throw SdkgenTypeException("Unknown type '$type' at '$path'");
 }
 
-encode(Map<String, Object> typeTable, String path, Object type, Object value) {
+encode(Map<String, Object> typeTable, String path, Object type, Object? value) {
   if (type is EnumTypeDescription) {
-    if (!type.enumValues.contains(value)) {
+    if (!type.enumValues.contains(value) || value == null) {
       throw SdkgenTypeException(
           "Invalid Type at '$path', expected ${type.type}, got ${jsonEncode(value)}");
     }
@@ -152,11 +152,11 @@ encode(Map<String, Object> typeTable, String path, Object type, Object value) {
       throw SdkgenTypeException(
           "Invalid Type at '$path', expected ${type.type}, got ${jsonEncode(value)}");
     }
-    var map = Function.apply(type.exportAsMap, [value]) as Map<String, Object>;
+    var map = Function.apply(type.exportAsMap, [value]) as Map<String, Object?>;
     var resultMap = Map();
     map.forEach((fieldName, fieldValue) {
       resultMap[fieldName] = encode(
-          typeTable, "$path.$fieldName", type.fields[fieldName], fieldValue);
+          typeTable, "$path.$fieldName", type.fields[fieldName]!, fieldValue);
     });
     return resultMap;
   } else if (type is String) {
@@ -172,7 +172,7 @@ encode(Map<String, Object> typeTable, String path, Object type, Object value) {
         throw SdkgenTypeException(
             "Invalid Type at '$path', expected ${jsonEncode(type)}, got ${jsonEncode(value)}");
       }
-      return (value as List)
+      return value
           .asMap()
           .entries
           .map((entry) => encode(typeTable, "$path[${entry.key}]",
@@ -181,7 +181,7 @@ encode(Map<String, Object> typeTable, String path, Object type, Object value) {
     } else {
       switch (type) {
         case "bytes":
-          if (!(value is List)) {
+          if (!(value is List<int>)) {
             throw SdkgenTypeException(
                 "Invalid Type at '$path', expected ${jsonEncode(type)}, got ${jsonEncode(value)}");
           }
@@ -191,27 +191,24 @@ encode(Map<String, Object> typeTable, String path, Object type, Object value) {
             throw SdkgenTypeException(
                 "Invalid Type at '$path', expected ${jsonEncode(type)}, got ${jsonEncode(value)}");
           }
-          return (value as BigInt).toString();
+          return value.toString();
         case "date":
           if (!(value is DateTime)) {
             throw SdkgenTypeException(
                 "Invalid Type at '$path', expected ${jsonEncode(type)}, got ${jsonEncode(value)}");
           }
-          return (value as DateTime).toIso8601String().split("T")[0];
+          return value.toIso8601String().split("T")[0];
         case "datetime":
           if (!(value is DateTime)) {
             throw SdkgenTypeException(
                 "Invalid Type at '$path', expected ${jsonEncode(type)}, got ${jsonEncode(value)}");
           }
-          return (value as DateTime)
-              .toUtc()
-              .toIso8601String()
-              .replaceAll("Z", "");
+          return value.toUtc().toIso8601String().replaceAll("Z", "");
         default:
           if (simpleTypes.contains(type)) {
             return simpleEncodeDecode(typeTable, path, type, value);
           } else if (typeTable.containsKey(type)) {
-            return encode(typeTable, path, typeTable[type], value);
+            return encode(typeTable, path, typeTable[type]!, value);
           } else {
             throw SdkgenTypeException(
                 "Unknown type '${jsonEncode(type)}' at '$path'");
@@ -223,9 +220,9 @@ encode(Map<String, Object> typeTable, String path, Object type, Object value) {
   }
 }
 
-decode(Map<String, Object> typeTable, String path, Object type, Object value) {
+decode(Map<String, Object> typeTable, String path, Object type, Object? value) {
   if (type is EnumTypeDescription) {
-    if (!type.stringValues.contains(value)) {
+    if (!(value is String) || !type.stringValues.contains(value)) {
       throw SdkgenTypeException(
           "Invalid Type at '$path', expected ${type.type}, got ${jsonEncode(value)}");
     }
@@ -238,7 +235,7 @@ decode(Map<String, Object> typeTable, String path, Object type, Object value) {
     var resultMap = Map();
     type.fields.keys.forEach((fieldName) {
       resultMap[fieldName] = decode(typeTable, "$path.$fieldName",
-          type.fields[fieldName], (value as Map)[fieldName]);
+          type.fields[fieldName]!, value[fieldName]);
     });
     return Function.apply(type.createFromFields, [resultMap]);
   } else if (type is String) {
@@ -254,7 +251,7 @@ decode(Map<String, Object> typeTable, String path, Object type, Object value) {
         throw SdkgenTypeException(
             "Invalid Type at '$path', expected ${jsonEncode(type)}, got ${jsonEncode(value)}");
       }
-      return (value as List)
+      return value
           .asMap()
           .entries
           .map((entry) => decode(typeTable, "$path[${entry.key}]",
@@ -269,12 +266,16 @@ decode(Map<String, Object> typeTable, String path, Object type, Object value) {
           }
           return Base64Decoder().convert(value);
         case "bigint":
-          if (!(value is num) &&
-              (!(value is String) || !RegExp(r'^-?[0-9]+$').hasMatch(value))) {
-            throw SdkgenTypeException(
-                "Invalid Type at '$path', expected ${jsonEncode(type)}, got ${jsonEncode(value)}");
+          if (value is num) {
+            return BigInt.from(value);
+          } else {
+            if ((!(value is String) ||
+                !RegExp(r'^-?[0-9]+$').hasMatch(value))) {
+              throw SdkgenTypeException(
+                  "Invalid Type at '$path', expected ${jsonEncode(type)}, got ${jsonEncode(value)}");
+            }
+            return BigInt.parse(value);
           }
-          return value is num ? BigInt.from(value) : BigInt.parse(value);
         case "date":
           if (!(value is String) ||
               !RegExp(r'^[0-9]{4}-[01][0-9]-[0123][0-9]$').hasMatch(value)) {
@@ -294,7 +295,7 @@ decode(Map<String, Object> typeTable, String path, Object type, Object value) {
           if (simpleTypes.contains(type)) {
             return simpleEncodeDecode(typeTable, path, type, value);
           } else if (typeTable.containsKey(type)) {
-            return decode(typeTable, path, typeTable[type], value);
+            return decode(typeTable, path, typeTable[type]!, value);
           } else {
             throw SdkgenTypeException(
                 "Unknown type '${jsonEncode(type)}' at '$path'");
