@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import type { Operation, Type } from "./ast";
 import {
+  PrimitiveType,
+  ComplexType,
+  UnionType,
   ArrayType,
   AstRoot,
   DescriptionAnnotation,
@@ -22,22 +25,26 @@ import { analyse } from "./semantic/analyser";
 import type { DeepReadonly } from "./utils";
 import { primitiveToAstClass } from "./utils";
 
-export type TypeDescription = string | string[] | { [name: string]: TypeDescription };
+export type TypeDescription =
+  | string
+  | Array<TypeDescription | string>
+  // Type instantiation is excessively deep and possibly infinite:
+  // | ["enum", ...string[]]
+  // | ["union", ...TypeDescription[]]
+  // | ["array" | "optional", TypeDescription]
+  | { [name: string]: TypeDescription };
 
-interface TypeTable {
-  [name: string]: TypeDescription | undefined;
-}
+type TypeTable = Record<string, TypeDescription | undefined>;
 
-interface FunctionTable {
-  [name: string]:
-    | {
-        args: {
-          [arg: string]: TypeDescription;
-        };
-        ret: TypeDescription;
-      }
-    | undefined;
-}
+type FunctionTable = Record<
+  string,
+  | {
+      args: Record<string, TypeDescription>;
+      ret: TypeDescription;
+    }
+  | undefined
+>;
+
 type AnnotationJson =
   | {
       type: "description";
@@ -74,12 +81,30 @@ export function astToJson(ast: AstRoot): AstJson {
   const annotations: Record<string, AnnotationJson[]> = {};
   const typeTable: TypeTable = {};
 
+  function processType(type: Type): TypeDescription {
+    if (type instanceof ComplexType || type instanceof PrimitiveType || type instanceof TypeReference) {
+      return type.name;
+    } else if (type instanceof UnionType) {
+      return ["union", ...type.types.map(t => processType(t))];
+    } else if (type instanceof ArrayType) {
+      const inner = processType(type.base);
+
+      return typeof inner === "string" ? `${inner}[]` : ["array", processType(type.base)];
+    } else if (type instanceof OptionalType) {
+      const inner = processType(type.base);
+
+      return typeof inner === "string" ? `${inner}?` : ["optional", processType(type.base)];
+    }
+
+    throw new Error(type.constructor.name);
+  }
+
   for (const { name, fields } of ast.structTypes) {
     typeTable[name] = {};
     const obj = typeTable[name] as Record<string, TypeDescription>;
 
     for (const field of fields) {
-      obj[field.name] = field.type.name;
+      obj[field.name] = processType(field.type);
 
       for (const ann of field.annotations) {
         if (ann instanceof DescriptionAnnotation) {
@@ -95,7 +120,13 @@ export function astToJson(ast: AstRoot): AstJson {
   }
 
   for (const { name, values } of ast.enumTypes) {
-    typeTable[name] = values.map(v => v.value);
+    typeTable[name] = ["enum", ...values.map(v => v.value)];
+  }
+
+  for (const { name, type } of ast.typeDefinitions) {
+    if (!(type instanceof ComplexType)) {
+      typeTable[name] = processType(type);
+    }
   }
 
   const functionTable: FunctionTable = {};
@@ -104,7 +135,7 @@ export function astToJson(ast: AstRoot): AstJson {
     const args: Record<string, TypeDescription> = {};
 
     for (const arg of op.args) {
-      args[arg.name] = arg.type.name;
+      args[arg.name] = processType(arg.type);
       for (const ann of arg.annotations) {
         if (ann instanceof DescriptionAnnotation) {
           const target = `fn.${op.prettyName}.${arg.name}`;
@@ -119,7 +150,7 @@ export function astToJson(ast: AstRoot): AstJson {
 
     functionTable[op.prettyName] = {
       args,
-      ret: op.returnType.name,
+      ret: processType(op.returnType),
     };
 
     for (const ann of op.annotations) {
@@ -184,7 +215,16 @@ export function jsonToAst(json: DeepReadonly<AstJson>): AstRoot {
 
       return new TypeReference(description);
     } else if (Array.isArray(description)) {
-      return new EnumType(description.map(v => new EnumValue(v)));
+      switch (description[0] as "enum" | "union" | "array" | "optional") {
+        case "enum":
+          return new EnumType(description.slice(1).map(v => new EnumValue(v as string)));
+        case "union":
+          return new UnionType(description.slice(1).map(t => processType(t)));
+        case "array":
+          return new ArrayType(processType(description[1]));
+        case "optional":
+          return new OptionalType(processType(description[1]));
+      }
     }
 
     const fields: Field[] = [];

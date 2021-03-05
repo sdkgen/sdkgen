@@ -140,8 +140,8 @@ describe(Parser, () => {
             a: "int",
             status: "FooStatus",
           },
-          FooStatus: ["c", "a", "zzz"],
-          Other: ["aa", "bb"],
+          FooStatus: ["enum", "c", "a", "zzz"],
+          Other: ["enum", "aa", "bb"],
         },
       },
     );
@@ -640,7 +640,7 @@ describe(Parser, () => {
           },
         },
         typeTable: {
-          Kind: ["first", "second", "third"],
+          Kind: ["enum", "first", "second", "third"],
         },
       },
     );
@@ -739,6 +739,61 @@ describe(Parser, () => {
           },
         },
         typeTable: {},
+      },
+    );
+  });
+
+  test("parses types with parens", () => {
+    expectParses(
+      `
+        type Foo1 string
+        type Foo2 (string)
+        type Foo3 string[]
+        type Foo4 (string)[]
+        type Foo5 ((string)[])
+      `,
+      {
+        annotations: {},
+        errors: ["Fatal"],
+        functionTable: {},
+        typeTable: {
+          Foo1: "string",
+          Foo2: "string",
+          Foo3: "string[]",
+          Foo4: "string[]",
+          Foo5: "string[]",
+        },
+      },
+    );
+
+    expectDoesntParse(
+      `
+        type Empty ()
+      `,
+      "Expected CurlyOpenSymbol or EnumKeyword or Identifier or PrimitiveType or ParensOpenSymbol at -:2:21, but found ParensCloseSymbol",
+    );
+  });
+
+  test("parses simple type unions", () => {
+    expectParses(
+      `
+        type Foo1 string | uint
+        type Foo2 int | uint | bool? | string
+        type Foo3 string[] | uint[]
+        type Foo4 (string | int)[]
+        type Foo5 (string | int)[] | (int | string) | (string | uint)[]
+      `,
+      {
+        annotations: {},
+        errors: ["Fatal"],
+        functionTable: {},
+        typeTable: {
+          Foo1: ["union", "string", "uint"],
+          Foo2: ["union", "int", "uint", "bool?", "string"],
+          Foo3: ["union", "string[]", "uint[]"],
+          Foo4: ["array", ["union", "string", "int"]],
+          Foo5: ["union", ["array", ["union", "string", "int"]], "int", "string", ["array", ["union", "string", "uint"]]],
+        },
       },
     );
   });

@@ -2,7 +2,7 @@ import type { AstNode, Type } from "../ast";
 import { EnumType, ErrorNode, Field, Operation, StructType, TypeDefinition } from "../ast";
 import { SemanticError, Visitor } from "./visitor";
 
-export class GiveStructAndEnumNamesVisitor extends Visitor {
+export class GiveComplexTypeNamesVisitor extends Visitor {
   path: string[] = [];
 
   names = new Map<string, { type: Type; path: string[] }>();

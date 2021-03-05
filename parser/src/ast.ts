@@ -23,8 +23,7 @@ export abstract class Type extends AstNode {
   abstract get name(): string;
 
   toJSON() {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { name, ...rest } = { ...this };
+    const { name: _name, ...rest } = { ...this };
 
     return rest;
   }
@@ -163,9 +162,11 @@ export class EnumValue extends AstNode {
   }
 }
 
-export class EnumType extends Type {
+export class ComplexType extends Type {
   name!: string;
+}
 
+export class EnumType extends ComplexType {
   constructor(public values: EnumValue[]) {
     super();
   }
@@ -187,9 +188,17 @@ export class TypeReference extends Type {
   }
 }
 
-export class StructType extends Type {
-  name!: string;
+export class UnionType extends Type {
+  constructor(public types: Type[]) {
+    super();
+  }
 
+  get name() {
+    return `(${this.types.map(t => t.name).join(" | ")})`;
+  }
+}
+
+export class StructType extends ComplexType {
   constructor(public fields: Field[], public spreads: TypeReference[]) {
     super();
   }

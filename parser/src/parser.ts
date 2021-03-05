@@ -4,6 +4,7 @@ import { dirname, resolve } from "path";
 
 import type { Annotation, Operation, Type } from "./ast";
 import {
+  UnionType,
   ArgDescriptionAnnotation,
   ArrayType,
   AstRoot,
@@ -35,6 +36,7 @@ import type {
   TrueKeywordToken,
 } from "./token";
 import {
+  PipeSymbolToken,
   AnnotationToken,
   ArraySymbolToken,
   ColonSymbolToken,
@@ -72,6 +74,7 @@ interface MultiExpectMatcher<T> {
   SpreadSymbolToken?(token: SpreadSymbolToken): T;
   TrueKeywordToken?(token: TrueKeywordToken): T;
   FalseKeywordToken?(token: FalseKeywordToken): T;
+  ParensOpenSymbolToken?(token: ParensOpenSymbolToken): T;
 }
 
 export class Parser {
@@ -516,6 +519,16 @@ export class Parser {
 
         throw new ParserError(`BUG! Should handle primitive ${token.value}`);
       },
+      ParensOpenSymbolToken: () => {
+        this.nextToken();
+
+        const type = this.parseType();
+
+        this.expect(ParensCloseSymbolToken);
+        this.nextToken();
+
+        return type;
+      },
     });
 
     while (this.token instanceof ArraySymbolToken || this.token instanceof OptionalSymbolToken) {
@@ -524,6 +537,17 @@ export class Parser {
         OptionalSymbolToken: token => (result = new OptionalType(result).at(token)),
       });
       this.nextToken();
+    }
+
+    if (this.token instanceof PipeSymbolToken) {
+      this.nextToken();
+
+      const nextType = this.parseType();
+
+      const types1 = result instanceof UnionType ? result.types : [result];
+      const types2 = nextType instanceof UnionType ? nextType.types : [nextType];
+
+      return new UnionType([...types1, ...types2]);
     }
 
     return result;

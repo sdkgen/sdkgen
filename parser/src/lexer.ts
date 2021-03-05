@@ -18,6 +18,7 @@ import {
   OptionalSymbolToken,
   ParensCloseSymbolToken,
   ParensOpenSymbolToken,
+  PipeSymbolToken,
   PrimitiveTypeToken,
   SpreadSymbolToken,
   StringLiteralToken,
@@ -173,6 +174,10 @@ export class Lexer {
       case ")":
         this.nextChar();
         token = new ParensCloseSymbolToken();
+        break;
+      case "|":
+        this.nextChar();
+        token = new PipeSymbolToken();
         break;
       case "?":
         this.nextChar();

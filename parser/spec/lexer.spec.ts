@@ -1,6 +1,7 @@
 import { Lexer } from "../src/lexer";
 import type { Token } from "../src/token";
 import {
+  PipeSymbolToken,
   AnnotationToken,
   ArraySymbolToken,
   ColonSymbolToken,
@@ -244,4 +245,6 @@ describe(Lexer, () => {
   itLexes("  @  aa bb \\   \n  cc   ", [new AnnotationToken("aa bb cc")]);
 
   itLexes("@\\\n  cc   ", [new AnnotationToken("cc")]);
+
+  itLexes("|", [new PipeSymbolToken()]);
 });
