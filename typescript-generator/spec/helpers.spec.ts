@@ -21,7 +21,7 @@ describe("helpers.ts", () => {
 
     structType.name = "awesomeInterface";
 
-    expect(generateTypescriptInterface(structType)).toBe(`export interface awesomeInterface {
+    expect(generateTypescriptInterface(structType, false)).toBe(`export interface awesomeInterface {
     int: number
     bigint: bigint
     date: Date
@@ -38,85 +38,85 @@ describe("helpers.ts", () => {
   test("generateTypescriptTypeName: IntPrimitiveType", () => {
     const type = new parser.IntPrimitiveType();
 
-    expect(generateTypescriptTypeName(type)).toBe("number");
+    expect(generateTypescriptTypeName(type, false)).toBe("number");
   });
 
   test("generateTypescriptTypeName: UIntPrimitiveType", () => {
     const type = new parser.UIntPrimitiveType();
 
-    expect(generateTypescriptTypeName(type)).toBe("number");
+    expect(generateTypescriptTypeName(type, false)).toBe("number");
   });
 
   test("generateTypescriptTypeName: MoneyPrimitiveType", () => {
     const type = new parser.MoneyPrimitiveType();
 
-    expect(generateTypescriptTypeName(type)).toBe("number");
+    expect(generateTypescriptTypeName(type, false)).toBe("number");
   });
 
   test("generateTypescriptTypeName: FloatPrimitiveType", () => {
     const type = new parser.FloatPrimitiveType();
 
-    expect(generateTypescriptTypeName(type)).toBe("number");
+    expect(generateTypescriptTypeName(type, false)).toBe("number");
   });
 
   test("generateTypescriptTypeName: DateTimePrimitiveType", () => {
     const type = new parser.DateTimePrimitiveType();
 
-    expect(generateTypescriptTypeName(type)).toBe("Date");
+    expect(generateTypescriptTypeName(type, false)).toBe("Date");
   });
 
   test("generateTypescriptTypeName: StringPrimitiveType", () => {
     const type = new parser.StringPrimitiveType();
 
-    expect(generateTypescriptTypeName(type)).toBe("string");
+    expect(generateTypescriptTypeName(type, false)).toBe("string");
   });
 
   test("generateTypescriptTypeName: CpfPrimitiveType", () => {
     const type = new parser.CpfPrimitiveType();
 
-    expect(generateTypescriptTypeName(type)).toBe("string");
+    expect(generateTypescriptTypeName(type, false)).toBe("string");
   });
 
   test("generateTypescriptTypeName: CnpjPrimitiveType", () => {
     const type = new parser.CnpjPrimitiveType();
 
-    expect(generateTypescriptTypeName(type)).toBe("string");
+    expect(generateTypescriptTypeName(type, false)).toBe("string");
   });
 
   test("generateTypescriptTypeName: EmailPrimitiveType", () => {
     const type = new parser.EmailPrimitiveType();
 
-    expect(generateTypescriptTypeName(type)).toBe("string");
+    expect(generateTypescriptTypeName(type, false)).toBe("string");
   });
 
   test("generateTypescriptTypeName: HtmlPrimitiveType", () => {
     const type = new parser.HtmlPrimitiveType();
 
-    expect(generateTypescriptTypeName(type)).toBe("string");
+    expect(generateTypescriptTypeName(type, false)).toBe("string");
   });
 
   test("generateTypescriptTypeName: UrlPrimitiveType", () => {
     const type = new parser.UrlPrimitiveType();
 
-    expect(generateTypescriptTypeName(type)).toBe("string");
+    expect(generateTypescriptTypeName(type, false)).toBe("string");
   });
 
   test("generateTypescriptTypeName: HexPrimitiveType", () => {
     const type = new parser.HexPrimitiveType();
 
-    expect(generateTypescriptTypeName(type)).toBe("string");
+    expect(generateTypescriptTypeName(type, false)).toBe("string");
   });
 
   test("generateTypescriptTypeName: Base64PrimitiveType", () => {
     const type = new parser.Base64PrimitiveType();
 
-    expect(generateTypescriptTypeName(type)).toBe("string");
+    expect(generateTypescriptTypeName(type, false)).toBe("string");
   });
 
   test("generateTypescriptTypeName: XmlPrimitiveType", () => {
     const type = new parser.XmlPrimitiveType();
 
-    expect(generateTypescriptTypeName(type)).toBe("string");
+    expect(generateTypescriptTypeName(type, false)).toBe("string");
   });
 
   test("generateTypescriptTypeName: StructType", () => {
@@ -126,7 +126,7 @@ describe("helpers.ts", () => {
     );
 
     structType.name = "simpleInterface";
-    expect(generateTypescriptTypeName(structType)).toBe(structType.name);
+    expect(generateTypescriptTypeName(structType, false)).toBe(structType.name);
   });
 
   test("generateTypescriptTypeName: EnumType", () => {
@@ -134,7 +134,7 @@ describe("helpers.ts", () => {
 
     enumType.name = "simpleEnum";
 
-    expect(generateTypescriptTypeName(enumType)).toBe(enumType.name);
+    expect(generateTypescriptTypeName(enumType, false)).toBe(enumType.name);
   });
 
   test("generateTypescriptTypeName: TypeReference", () => {
@@ -142,7 +142,7 @@ describe("helpers.ts", () => {
 
     enumType.type = new parser.HexPrimitiveType();
 
-    expect(generateTypescriptTypeName(enumType)).toBe("string");
+    expect(generateTypescriptTypeName(enumType, false)).toBe("string");
   });
 
   test("generateTypescriptTypeName: unknown PrimitiveType error", () => {
@@ -152,6 +152,6 @@ describe("helpers.ts", () => {
 
     const newUnknownType = new UnknownType();
 
-    expect(() => generateTypescriptTypeName(newUnknownType)).toThrowError(`BUG: generateTypescriptTypeName with ${newUnknownType.name}`);
+    expect(() => generateTypescriptTypeName(newUnknownType, false)).toThrowError(`BUG: generateTypescriptTypeName with ${newUnknownType.name}`);
   });
 });

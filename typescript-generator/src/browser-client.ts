@@ -19,12 +19,12 @@ import { SdkgenError${hasErrorWithData ? ", SdkgenErrorWithData" : ""}, SdkgenHt
   }
 
   for (const type of ast.structTypes) {
-    code += generateTypescriptInterface(type);
+    code += generateTypescriptInterface(type, true);
     code += "\n";
   }
 
   for (const error of ast.errors) {
-    code += generateTypescriptErrorClass(error);
+    code += generateTypescriptErrorClass(error, true);
     code += "\n";
   }
 
@@ -37,8 +37,8 @@ ${ast.operations
   .map(
     op => `
     ${op.prettyName}(args${op.args.length === 0 ? "?" : ""}: {${op.args
-      .map(arg => `${arg.name}${arg.type.name.endsWith("?") ? "?" : ""}: ${generateTypescriptTypeName(arg.type)}`)
-      .join(", ")}}): Promise<${generateTypescriptTypeName(op.returnType)}> { return this.makeRequest("${op.prettyName}", args || {}); }`,
+      .map(arg => `${arg.name}${arg.type.name.endsWith("?") ? "?" : ""}: ${generateTypescriptTypeName(arg.type, true)}`)
+      .join(", ")}}): Promise<${generateTypescriptTypeName(op.returnType, true)}> { return this.makeRequest("${op.prettyName}", args || {}); }`,
   )
   .join("")}
 }\n\n`;
