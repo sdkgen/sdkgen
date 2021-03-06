@@ -9,7 +9,6 @@ export function generateDartClientSource(ast: AstRoot): string {
   code += `import 'package:flutter/widgets.dart';
 import 'package:sdkgen_runtime/types.dart';
 import 'package:sdkgen_runtime/http_client.dart';
-import 'package:meta/meta.dart';
 
 `;
 

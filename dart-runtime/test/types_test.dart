@@ -1,7 +1,6 @@
 import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
-import 'package:meta/meta.dart';
 import 'package:sdkgen_runtime/types.dart';
 import 'package:test/test.dart';
 
@@ -9,12 +8,12 @@ enum TestEnum { first, second, third }
 
 class TestStruct extends Equatable {
   final String hello;
-  final int stuff;
+  final int? stuff;
 
-  TestStruct({@required this.hello, this.stuff});
+  TestStruct({required this.hello, this.stuff});
 
   @override
-  List<Object> get props => [hello, stuff];
+  List<Object?> get props => [hello, stuff];
 }
 
 void main() {
@@ -89,7 +88,7 @@ void main() {
         TestStruct,
         {"hello": "string", "stuff": "int?"},
         (Map fields) => TestStruct(
-            hello: fields["hello"] as String, stuff: fields["stuff"] as int),
+            hello: fields["hello"] as String, stuff: fields["stuff"] as int?),
         (TestStruct obj) => ({"hello": obj.hello, "stuff": obj.stuff}));
 
     expect(encode(typeTable, "", "TestStruct", TestStruct(hello: "hi")),
