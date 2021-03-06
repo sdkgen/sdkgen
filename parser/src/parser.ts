@@ -519,10 +519,10 @@ export class Parser {
 
         throw new ParserError(`BUG! Should handle primitive ${token.value}`);
       },
-      ParensOpenSymbolToken: () => {
+      ParensOpenSymbolToken: token => {
         this.nextToken();
 
-        const type = this.parseType();
+        const type = this.parseType().at(token);
 
         this.expect(ParensCloseSymbolToken);
         this.nextToken();
@@ -533,8 +533,8 @@ export class Parser {
 
     while (this.token instanceof ArraySymbolToken || this.token instanceof OptionalSymbolToken) {
       this.multiExpect({
-        ArraySymbolToken: token => (result = new ArrayType(result).at(token)),
-        OptionalSymbolToken: token => (result = new OptionalType(result).at(token)),
+        ArraySymbolToken: () => (result = new ArrayType(result).atLocation(result.location)),
+        OptionalSymbolToken: () => (result = new OptionalType(result).atLocation(result.location)),
       });
       this.nextToken();
     }
@@ -547,7 +547,7 @@ export class Parser {
       const types1 = result instanceof UnionType ? result.types : [result];
       const types2 = nextType instanceof UnionType ? nextType.types : [nextType];
 
-      return new UnionType([...types1, ...types2]);
+      return new UnionType([...types1, ...types2]).atLocation(result.location);
     }
 
     return result;

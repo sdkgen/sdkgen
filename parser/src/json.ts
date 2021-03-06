@@ -2,7 +2,6 @@
 import type { Operation, Type } from "./ast";
 import {
   PrimitiveType,
-  ComplexType,
   UnionType,
   ArrayType,
   AstRoot,
@@ -82,7 +81,7 @@ export function astToJson(ast: AstRoot): AstJson {
   const typeTable: TypeTable = {};
 
   function processType(type: Type): TypeDescription {
-    if (type instanceof ComplexType || type instanceof PrimitiveType || type instanceof TypeReference) {
+    if (type instanceof StructType || type instanceof EnumType || type instanceof PrimitiveType || type instanceof TypeReference) {
       return type.name;
     } else if (type instanceof UnionType) {
       return ["union", ...type.types.map(t => processType(t))];
@@ -124,7 +123,7 @@ export function astToJson(ast: AstRoot): AstJson {
   }
 
   for (const { name, type } of ast.typeDefinitions) {
-    if (!(type instanceof ComplexType)) {
+    if (!(type instanceof StructType || type instanceof EnumType)) {
       typeTable[name] = processType(type);
     }
   }

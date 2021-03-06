@@ -188,13 +188,9 @@ export class TypeReference extends Type {
   }
 }
 
-export class UnionType extends Type {
+export class UnionType extends ComplexType {
   constructor(public types: Type[]) {
     super();
-  }
-
-  get name() {
-    return `(${this.types.map(t => t.name).join(" | ")})`;
   }
 }
 

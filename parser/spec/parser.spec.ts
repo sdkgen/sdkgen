@@ -774,7 +774,7 @@ describe(Parser, () => {
     );
   });
 
-  test("parses simple type unions", () => {
+  test("parses unions", () => {
     expectParses(
       `
         type Foo1 string | uint
@@ -789,12 +789,20 @@ describe(Parser, () => {
         functionTable: {},
         typeTable: {
           Foo1: ["union", "string", "uint"],
-          Foo2: ["union", "int", "uint", "bool?", "string"],
+          Foo2: ["union", "bool?", "int", "string", "uint"],
           Foo3: ["union", "string[]", "uint[]"],
-          Foo4: ["array", ["union", "string", "int"]],
-          Foo5: ["union", ["array", ["union", "string", "int"]], "int", "string", ["array", ["union", "string", "uint"]]],
+          Foo4: ["array", ["union", "int", "string"]],
+          Foo5: ["union", ["array", ["union", "int", "string"]], ["array", ["union", "string", "uint"]], "int", "string"],
         },
       },
     );
+  });
+
+  test("doesn't parse invalid unions", () => {
+    expectDoesntParse(`type X string | string`, "Union can't have repeated types at -:1:8");
+    expectDoesntParse(`type X (string | int)[] | (int | string)[]`, "Union can't have repeated types at -:1:8");
+    expectDoesntParse(`type X int | enum { a b }`, "Can't have a literal enum type inside a union at -:1:14. Give it a name.");
+    expectDoesntParse(`type X int | { foo: string }`, "Can't have a literal struct type inside a union at -:1:14. Give it a name.");
+    expectDoesntParse(`type X int | { foo: string }[]`, "Can't have a literal struct type inside a union at -:1:14. Give it a name.");
   });
 });
