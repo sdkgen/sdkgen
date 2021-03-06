@@ -24,7 +24,7 @@ class SdkgenErrorWithData<T> implements Exception {
 }
 
 class SdkgenHttpClient {
-  String baseUrl;
+  Uri baseUrl;
   Map<String, dynamic> extra = new Map<String, dynamic>();
   Map<String, String> headers = new Map<String, String>();
   Map<String, Object> typeTable;
@@ -35,7 +35,8 @@ class SdkgenHttpClient {
   BuildContext? context;
 
   SdkgenHttpClient(
-      this.baseUrl, this.context, this.typeTable, this.fnTable, this.errTable);
+      baseUrl, this.context, this.typeTable, this.fnTable, this.errTable)
+      : this.baseUrl = Uri.parse(baseUrl);
 
   _randomBytesHex(int bytes) {
     return hex.encode(List<int>.generate(bytes, (i) => random.nextInt(256)));
@@ -79,8 +80,12 @@ class SdkgenHttpClient {
         "deviceInfo": await getDeviceInfo(context, await _deviceId())
       };
 
-      var response = await http.post(Uri.parse(baseUrl),
-          headers: this.headers, body: jsonEncode(body));
+      var response = await http.post(
+        baseUrl,
+        headers: this.headers,
+        body: jsonEncode(body),
+      );
+
       var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (responseBody["error"] != null) {
