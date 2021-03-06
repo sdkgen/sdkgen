@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import type { Operation, Type } from "./ast";
+import type { AnnotationJson, Operation, Type } from "./ast";
 import {
-  PrimitiveType,
+  annotationFromJson,
+  annotationToJson,
+  ComplexType,
   UnionType,
   ArrayType,
   AstRoot,
@@ -11,11 +13,8 @@ import {
   ErrorNode,
   Field,
   FunctionOperation,
-  HiddenAnnotation,
   OptionalType,
-  RestAnnotation,
   StructType,
-  ThrowsAnnotation,
   TypeDefinition,
   TypeReference,
   VoidPrimitiveType,
@@ -24,50 +23,18 @@ import { analyse } from "./semantic/analyser";
 import type { DeepReadonly } from "./utils";
 import { primitiveToAstClass } from "./utils";
 
-export type TypeDescription =
-  | string
-  | Array<TypeDescription | string>
-  // Type instantiation is excessively deep and possibly infinite:
-  // | ["enum", ...string[]]
-  // | ["union", ...TypeDescription[]]
-  // | ["array" | "optional", TypeDescription]
-  | { [name: string]: TypeDescription };
+export type TypeDescription = string | ["enum", ...string[]] | ["union", ...string[]] | { [name: string]: string };
 
 type TypeTable = Record<string, TypeDescription | undefined>;
 
 type FunctionTable = Record<
   string,
   | {
-      args: Record<string, TypeDescription>;
+      args: Record<string, string>;
       ret: TypeDescription;
     }
   | undefined
 >;
-
-type AnnotationJson =
-  | {
-      type: "description";
-      value: string;
-    }
-  | {
-      type: "throws";
-      value: string;
-    }
-  | {
-      type: "hidden";
-      value: null;
-    }
-  | {
-      type: "rest";
-      value: {
-        bodyVariable: string | null;
-        headers: Array<[string, string]>;
-        method: string;
-        path: string;
-        pathVariables: string[];
-        queryVariables: string[];
-      };
-    };
 
 export interface AstJson {
   typeTable: TypeTable;
@@ -80,22 +47,16 @@ export function astToJson(ast: AstRoot): AstJson {
   const annotations: Record<string, AnnotationJson[]> = {};
   const typeTable: TypeTable = {};
 
-  function processType(type: Type): TypeDescription {
-    if (type instanceof StructType || type instanceof EnumType || type instanceof PrimitiveType || type instanceof TypeReference) {
-      return type.name;
-    } else if (type instanceof UnionType) {
-      return ["union", ...type.types.map(t => processType(t))];
-    } else if (type instanceof ArrayType) {
-      const inner = processType(type.base);
-
-      return typeof inner === "string" ? `${inner}[]` : ["array", processType(type.base)];
+  function processType(type: Type): string {
+    if (type instanceof ArrayType) {
+      return `${processType(type.base)}[]`;
     } else if (type instanceof OptionalType) {
-      const inner = processType(type.base);
-
-      return typeof inner === "string" ? `${inner}?` : ["optional", processType(type.base)];
+      return `${processType(type.base)}?`;
+    } else if (type instanceof ComplexType) {
+      throw new Error(`BUG: unexpected complex type ${type.constructor.name}: ${JSON.stringify(type)}`);
     }
 
-    throw new Error(type.constructor.name);
+    return type.name;
   }
 
   for (const { name, fields } of ast.structTypes) {
@@ -110,9 +71,7 @@ export function astToJson(ast: AstRoot): AstJson {
           const target = `type.${name}.${field.name}`;
 
           annotations[target] ||= [];
-          const list = annotations[target];
-
-          list.push({ type: "description", value: ann.text });
+          annotations[target].push(annotationToJson(ann));
         }
       }
     }
@@ -122,8 +81,12 @@ export function astToJson(ast: AstRoot): AstJson {
     typeTable[name] = ["enum", ...values.map(v => v.value)];
   }
 
+  for (const type of ast.unionTypes) {
+    typeTable[type.name] = ["union", ...type.types.map(t => processType(t))];
+  }
+
   for (const { name, type } of ast.typeDefinitions) {
-    if (!(type instanceof StructType || type instanceof EnumType)) {
+    if (!(type instanceof ComplexType)) {
       typeTable[name] = processType(type);
     }
   }
@@ -131,7 +94,7 @@ export function astToJson(ast: AstRoot): AstJson {
   const functionTable: FunctionTable = {};
 
   for (const op of ast.operations) {
-    const args: Record<string, TypeDescription> = {};
+    const args: Record<string, string> = {};
 
     for (const arg of op.args) {
       args[arg.name] = processType(arg.type);
@@ -140,9 +103,7 @@ export function astToJson(ast: AstRoot): AstJson {
           const target = `fn.${op.prettyName}.${arg.name}`;
 
           annotations[target] ||= [];
-          const list = annotations[target];
-
-          list.push({ type: "description", value: ann.text });
+          annotations[target].push(annotationToJson(ann));
         }
       }
     }
@@ -155,34 +116,8 @@ export function astToJson(ast: AstRoot): AstJson {
     for (const ann of op.annotations) {
       const target = `fn.${op.prettyName}`;
 
-      annotations[target] ||= [];
-      const list: Array<DeepReadonly<AnnotationJson>> = annotations[target];
-
-      if (ann instanceof DescriptionAnnotation) {
-        list.push({ type: "description", value: ann.text });
-      }
-
-      if (ann instanceof ThrowsAnnotation) {
-        list.push({ type: "throws", value: ann.error });
-      }
-
-      if (ann instanceof RestAnnotation) {
-        list.push({
-          type: "rest",
-          value: {
-            bodyVariable: ann.bodyVariable,
-            headers: [...ann.headers.entries()],
-            method: ann.method,
-            path: ann.path,
-            pathVariables: ann.pathVariables,
-            queryVariables: ann.queryVariables,
-          },
-        });
-      }
-
-      if (ann instanceof HiddenAnnotation) {
-        list.push({ type: "hidden", value: null });
-      }
+      annotations[target] ??= [];
+      annotations[target].push(annotationToJson(ann));
     }
   }
 
@@ -214,15 +149,11 @@ export function jsonToAst(json: DeepReadonly<AstJson>): AstRoot {
 
       return new TypeReference(description);
     } else if (Array.isArray(description)) {
-      switch (description[0] as "enum" | "union" | "array" | "optional") {
+      switch (description[0] as "enum" | "union") {
         case "enum":
           return new EnumType(description.slice(1).map(v => new EnumValue(v as string)));
         case "union":
           return new UnionType(description.slice(1).map(t => processType(t)));
-        case "array":
-          return new ArrayType(processType(description[1]));
-        case "optional":
-          return new OptionalType(processType(description[1]));
       }
     }
 
@@ -235,9 +166,7 @@ export function jsonToAst(json: DeepReadonly<AstJson>): AstRoot {
         const target = `type.${typeName}.${fieldName}`;
 
         for (const annotationJson of json.annotations[target] ?? []) {
-          if (annotationJson.type === "description") {
-            field.annotations.push(new DescriptionAnnotation(annotationJson.value));
-          }
+          field.annotations.push(annotationFromJson(annotationJson));
         }
       }
 
@@ -259,9 +188,7 @@ export function jsonToAst(json: DeepReadonly<AstJson>): AstRoot {
       const target = `fn.${functionName}.${argName}`;
 
       for (const annotationJson of json.annotations[target] ?? []) {
-        if (annotationJson.type === "description") {
-          field.annotations.push(new DescriptionAnnotation(annotationJson.value));
-        }
+        field.annotations.push(annotationFromJson(annotationJson));
       }
 
       return field;
@@ -271,17 +198,7 @@ export function jsonToAst(json: DeepReadonly<AstJson>): AstRoot {
     const target = `fn.${functionName}`;
 
     for (const annotationJson of json.annotations[target] ?? []) {
-      if (annotationJson.type === "description") {
-        op.annotations.push(new DescriptionAnnotation(annotationJson.value));
-      } else if (annotationJson.type === "throws") {
-        op.annotations.push(new ThrowsAnnotation(annotationJson.value));
-      } else if (annotationJson.type === "rest" && typeof annotationJson.value === "object") {
-        const { method, path, pathVariables, queryVariables, headers, bodyVariable } = annotationJson.value;
-
-        op.annotations.push(new RestAnnotation(method, path, pathVariables, queryVariables, new Map(headers), bodyVariable));
-      } else if (annotationJson.type === "hidden") {
-        op.annotations.push(new HiddenAnnotation());
-      }
+      op.annotations.push(annotationFromJson(annotationJson));
     }
 
     operations.push(op);

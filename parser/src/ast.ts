@@ -1,5 +1,6 @@
 import type { Token } from "./token";
 import { TokenLocation } from "./token";
+import type { DeepReadonly } from "./utils";
 
 export abstract class AstNode {
   public location = new TokenLocation();
@@ -26,6 +27,10 @@ export abstract class Type extends AstNode {
     const { name: _name, ...rest } = { ...this };
 
     return rest;
+  }
+
+  isEqual(other: Type) {
+    return other instanceof this.constructor;
   }
 }
 
@@ -142,6 +147,10 @@ export class OptionalType extends Type {
   get name(): string {
     return `${this.base.name}?`;
   }
+
+  isEqual(other: Type): boolean {
+    return other instanceof OptionalType && this.base.isEqual(other.base);
+  }
 }
 
 export class ArrayType extends Type {
@@ -152,6 +161,85 @@ export class ArrayType extends Type {
   get name(): string {
     return `${this.base.name}[]`;
   }
+
+  isEqual(other: Type): boolean {
+    return other instanceof ArrayType && this.base.isEqual(other.base);
+  }
+}
+export type AnnotationJson =
+  | {
+      type: "description";
+      value: string;
+    }
+  | {
+      type: "throws";
+      value: string;
+    }
+  | {
+      type: "hidden";
+      value: null;
+    }
+  | {
+      type: "rest";
+      value: {
+        bodyVariable: string | null;
+        headers: ReadonlyArray<[string, string]>;
+        method: string;
+        path: string;
+        pathVariables: readonly string[];
+        queryVariables: readonly string[];
+      };
+    };
+
+export function annotationToJson(ann: Annotation): AnnotationJson {
+  if (ann instanceof DescriptionAnnotation) {
+    return { type: "description", value: ann.text };
+  } else if (ann instanceof ThrowsAnnotation) {
+    return { type: "throws", value: ann.error };
+  } else if (ann instanceof RestAnnotation) {
+    return {
+      type: "rest",
+      value: {
+        bodyVariable: ann.bodyVariable,
+        headers: [...ann.headers.entries()].sort(([a], [b]) => a.localeCompare(b)),
+        method: ann.method,
+        path: ann.path,
+        pathVariables: [...ann.pathVariables].sort((a, b) => a.localeCompare(b)),
+        queryVariables: [...ann.queryVariables].sort((a, b) => a.localeCompare(b)),
+      },
+    };
+  } else if (ann instanceof HiddenAnnotation) {
+    return { type: "hidden", value: null };
+  }
+
+  throw new Error(`BUG: annotationToJson with ${ann.constructor.name}`);
+}
+
+export function annotationFromJson(json: AnnotationJson | DeepReadonly<AnnotationJson>): Annotation {
+  switch (json.type) {
+    case "description":
+      return new DescriptionAnnotation(json.value);
+    case "throws":
+      return new ThrowsAnnotation(json.value);
+    case "rest": {
+      const { method, path, pathVariables, queryVariables, headers, bodyVariable } = json.value;
+
+      return new RestAnnotation(method, path, pathVariables, queryVariables, new Map(headers), bodyVariable);
+    }
+
+    case "hidden":
+      return new HiddenAnnotation();
+
+    default:
+      throw new Error(`BUG: annotationFromJson with ${(json as { type: string }).type}`);
+  }
+}
+
+function areAnnotationsEqual(list1: Annotation[], list2: Annotation[]) {
+  const json1 = JSON.stringify(list1.map(ann => JSON.stringify(annotationToJson(ann))).sort((a, b) => a.localeCompare(b)));
+  const json2 = JSON.stringify(list2.map(ann => JSON.stringify(annotationToJson(ann))).sort((a, b) => a.localeCompare(b)));
+
+  return json1 === json2;
 }
 
 export class EnumValue extends AstNode {
@@ -159,6 +247,10 @@ export class EnumValue extends AstNode {
 
   constructor(public value: string) {
     super();
+  }
+
+  isEqual(other: EnumValue): boolean {
+    return other instanceof EnumValue && areAnnotationsEqual(this.annotations, other.annotations);
   }
 }
 
@@ -170,6 +262,32 @@ export class EnumType extends ComplexType {
   constructor(public values: EnumValue[]) {
     super();
   }
+
+  isEqual(other: Type): boolean {
+    if (!(other instanceof EnumType)) {
+      return false;
+    }
+
+    const map = new Map<string, EnumValue>();
+
+    for (const otherValue of other.values) {
+      map.set(otherValue.value, otherValue);
+    }
+
+    for (const thisValue of this.values) {
+      const otherValue = map.get(thisValue.value);
+
+      if (!otherValue) {
+        return false;
+      }
+
+      if (!thisValue.isEqual(otherValue)) {
+        return false;
+      }
+    }
+
+    return true;
+  }
 }
 
 export class Field extends AstNode {
@@ -177,6 +295,15 @@ export class Field extends AstNode {
 
   constructor(public name: string, public type: Type, public secret = false) {
     super();
+  }
+
+  isEqual(other: Field): boolean {
+    return (
+      other instanceof Field &&
+      this.secret === other.secret &&
+      this.type.isEqual(other.type) &&
+      areAnnotationsEqual(this.annotations, other.annotations)
+    );
   }
 }
 
@@ -186,11 +313,19 @@ export class TypeReference extends Type {
   constructor(public name: string) {
     super();
   }
+
+  isEqual(other: Type): boolean {
+    return other instanceof TypeReference && this.name === other.name;
+  }
 }
 
 export class UnionType extends ComplexType {
   constructor(public types: Type[]) {
     super();
+  }
+
+  isEqual(other: Type): boolean {
+    return other instanceof UnionType && this.types.every((type, index) => other.types[index].isEqual(type));
   }
 }
 
@@ -232,6 +367,8 @@ export class AstRoot {
   structTypes: StructType[] = [];
 
   enumTypes: EnumType[] = [];
+
+  unionTypes: UnionType[] = [];
 
   warnings: string[] = [];
 

@@ -527,8 +527,8 @@ describe(Parser, () => {
               value: {
                 bodyVariable: null,
                 headers: [
-                  ["user-agent", "userAgent"],
                   ["accept-language", "lang"],
+                  ["user-agent", "userAgent"],
                   ["x-token", "token"],
                 ],
                 method: "GET",
@@ -782,6 +782,7 @@ describe(Parser, () => {
         type Foo3 string[] | uint[]
         type Foo4 (string | int)[]
         type Foo5 (string | int)[] | (int | string) | (string | uint)[]
+        type Foo6 (string | int[])[]
       `,
       {
         annotations: {},
@@ -791,8 +792,12 @@ describe(Parser, () => {
           Foo1: ["union", "string", "uint"],
           Foo2: ["union", "bool?", "int", "string", "uint"],
           Foo3: ["union", "string[]", "uint[]"],
-          Foo4: ["array", ["union", "int", "string"]],
-          Foo5: ["union", ["array", ["union", "int", "string"]], ["array", ["union", "string", "uint"]], "int", "string"],
+          IntOrString: ["union", "int", "string"],
+          StringOrUint: ["union", "string", "uint"],
+          Foo4: "IntOrString[]",
+          Foo5: ["union", "int", "IntOrString[]", "string", "StringOrUint[]"],
+          Foo6: "IntArrayOrString[]",
+          IntArrayOrString: ["union", "int[]", "string"],
         },
       },
     );
