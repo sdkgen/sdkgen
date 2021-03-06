@@ -49,9 +49,9 @@ export class GiveComplexTypeNamesVisitor extends Visitor {
     } else if (type instanceof UnionType) {
       return type.types.map(t => this.generateStandaloneTypeName(t)).join("Or");
     } else if (type instanceof StructType) {
-      throw new SemanticError(`Can't have a literal struct type inside a union at ${type.location}. Give it a name.`);
+      throw new SemanticError(`Can't have an unnamed struct type at ${type.location}. Give it a name.`);
     } else if (type instanceof EnumType) {
-      throw new SemanticError(`Can't have a literal enum type inside a union at ${type.location}. Give it a name.`);
+      throw new SemanticError(`Can't have an unnamed enum type at ${type.location}. Give it a name.`);
     }
 
     throw new Error(`BUG: generateStandaloneTypeName with ${type.constructor.name}`);
@@ -84,7 +84,7 @@ export class GiveComplexTypeNamesVisitor extends Visitor {
     if (node instanceof TypeDefinition) {
       this.path = [node.name];
 
-      if (node.type instanceof ComplexType) {
+      if (node.type instanceof ComplexType || node.type instanceof ArrayType || node.type instanceof OptionalType) {
         super.visit(node);
       } else {
         this.canUseNameFromPath = false;
@@ -120,7 +120,9 @@ export class GiveComplexTypeNamesVisitor extends Visitor {
         node.base = this.makeReference(node.base);
       }
     } else if (node instanceof OptionalType) {
+      this.path.push("Optional");
       super.visit(node);
+      this.path.pop();
 
       if (node.base instanceof ComplexType) {
         node.base = this.makeReference(node.base);

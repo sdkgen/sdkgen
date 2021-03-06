@@ -793,11 +793,12 @@ describe(Parser, () => {
           Foo2: ["union", "bool?", "int", "string", "uint"],
           Foo3: ["union", "string[]", "uint[]"],
           IntOrString: ["union", "int", "string"],
+          Foo4Element: ["union", "int", "string"],
           StringOrUint: ["union", "string", "uint"],
-          Foo4: "IntOrString[]",
+          Foo4: "Foo4Element[]",
           Foo5: ["union", "int", "IntOrString[]", "string", "StringOrUint[]"],
-          Foo6: "IntArrayOrString[]",
-          IntArrayOrString: ["union", "int[]", "string"],
+          Foo6: "Foo6Element[]",
+          Foo6Element: ["union", "int[]", "string"],
         },
       },
     );
@@ -806,8 +807,89 @@ describe(Parser, () => {
   test("doesn't parse invalid unions", () => {
     expectDoesntParse(`type X string | string`, "Union can't have repeated types at -:1:8");
     expectDoesntParse(`type X (string | int)[] | (int | string)[]`, "Union can't have repeated types at -:1:8");
-    expectDoesntParse(`type X int | enum { a b }`, "Can't have a literal enum type inside a union at -:1:14. Give it a name.");
-    expectDoesntParse(`type X int | { foo: string }`, "Can't have a literal struct type inside a union at -:1:14. Give it a name.");
-    expectDoesntParse(`type X int | { foo: string }[]`, "Can't have a literal struct type inside a union at -:1:14. Give it a name.");
+    expectDoesntParse(`type X int | enum { a b }`, "Can't have an unnamed enum type at -:1:14. Give it a name.");
+    expectDoesntParse(`type X int | { foo: string }`, "Can't have an unnamed struct type at -:1:14. Give it a name.");
+    expectDoesntParse(`type X int | { foo: string }[]`, "Can't have an unnamed struct type at -:1:14. Give it a name.");
+  });
+
+  test("parses arrays and optionals of complex type", () => {
+    expectParses(
+      `
+        type Foo1 {
+          hello: string
+        }[]
+      `,
+      {
+        annotations: {},
+        errors: ["Fatal"],
+        functionTable: {},
+        typeTable: {
+          Foo1: "Foo1Element[]",
+          Foo1Element: {
+            hello: "string",
+          },
+        },
+      },
+    );
+
+    expectParses(
+      `
+        type Foo1 {
+          hello: string
+        }?
+      `,
+      {
+        annotations: {},
+        errors: ["Fatal"],
+        functionTable: {},
+        typeTable: {
+          Foo1: "Foo1Optional?",
+          Foo1Optional: {
+            hello: "string",
+          },
+        },
+      },
+    );
+
+    expectParses(
+      `
+        type Foo1 {
+          hello: string
+        }[]?
+      `,
+      {
+        annotations: {},
+        errors: ["Fatal"],
+        functionTable: {},
+        typeTable: {
+          Foo1: "Foo1OptionalElement[]?",
+          Foo1OptionalElement: {
+            hello: "string",
+          },
+        },
+      },
+    );
+
+    expectParses(
+      `
+        fn doSomething(hi: (string | uuid)[]): uuid | int
+      `,
+      {
+        annotations: {},
+        errors: ["Fatal"],
+        functionTable: {
+          doSomething: {
+            args: {
+              hi: "DoSomethingHiElement[]",
+            },
+            ret: "DoSomething",
+          },
+        },
+        typeTable: {
+          DoSomething: ["union", "int", "uuid"],
+          DoSomethingHiElement: ["union", "string", "uuid"],
+        },
+      },
+    );
   });
 });
