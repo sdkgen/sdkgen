@@ -29,9 +29,7 @@ export abstract class Type extends AstNode {
     return rest;
   }
 
-  isEqual(other: Type) {
-    return other instanceof this.constructor;
-  }
+  abstract isEqual(other: Type): boolean;
 }
 
 export class ErrorNode extends AstNode {
@@ -74,7 +72,11 @@ export class RestAnnotation extends Annotation {
 
 export class HiddenAnnotation extends Annotation {}
 
-export abstract class PrimitiveType extends Type {}
+export abstract class PrimitiveType extends Type {
+  isEqual(other: Type) {
+    return other instanceof this.constructor;
+  }
+}
 export class StringPrimitiveType extends PrimitiveType {
   name = "string";
 }
@@ -254,7 +256,7 @@ export class EnumValue extends AstNode {
   }
 }
 
-export class ComplexType extends Type {
+export abstract class ComplexType extends Type {
   private _name?: string;
 
   get name() {
@@ -366,6 +368,28 @@ export class UnionType extends ComplexType {
 export class StructType extends ComplexType {
   constructor(public fields: Field[], public spreads: TypeReference[]) {
     super();
+  }
+
+  isEqual(other: Type) {
+    if (!(other instanceof StructType)) {
+      return false;
+    }
+
+    const fieldMap1 = new Map(this.fields.map(f => [f.name, f]));
+    const fieldMap2 = new Map(other.fields.map(f => [f.name, f]));
+
+    if (fieldMap1.size !== fieldMap2.size || ![...fieldMap1.values()].every(f => fieldMap2.get(f.name)?.isEqual(f))) {
+      return false;
+    }
+
+    const spreads1 = new Set(this.spreads.map(s => s.name));
+    const spreads2 = new Set(other.spreads.map(s => s.name));
+
+    if (spreads1.size !== spreads2.size || ![...spreads1.values()].every(s => spreads2.has(s))) {
+      return false;
+    }
+
+    return true;
   }
 }
 
