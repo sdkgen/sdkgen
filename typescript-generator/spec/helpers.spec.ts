@@ -144,14 +144,4 @@ describe("helpers.ts", () => {
 
     expect(generateTypescriptTypeName(enumType)).toBe("string");
   });
-
-  test("generateTypescriptTypeName: unknown PrimitiveType error", () => {
-    class UnknownType extends parser.Type {
-      name = "UnknownType";
-    }
-
-    const newUnknownType = new UnknownType();
-
-    expect(() => generateTypescriptTypeName(newUnknownType)).toThrowError(`BUG: generateTypescriptTypeName with ${newUnknownType.name}`);
-  });
 });
