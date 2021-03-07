@@ -790,15 +790,15 @@ describe(Parser, () => {
         functionTable: {},
         typeTable: {
           Foo1: ["union", "string", "uint"],
-          Foo2: ["union", "bool?", "int", "string", "uint"],
+          Foo2: ["union", "int", "uint", "bool?", "string"],
           Foo3: ["union", "string[]", "uint[]"],
-          IntOrString: ["union", "int", "string"],
-          Foo4Element: ["union", "int", "string"],
+          StringOrInt: ["union", "string", "int"],
+          Foo4Element: ["union", "string", "int"],
           StringOrUint: ["union", "string", "uint"],
           Foo4: "Foo4Element[]",
-          Foo5: ["union", "int", "IntOrString[]", "string", "StringOrUint[]"],
+          Foo5: ["union", "StringOrInt[]", "int", "string", "StringOrUint[]"],
           Foo6: "Foo6Element[]",
-          Foo6Element: ["union", "int[]", "string"],
+          Foo6Element: ["union", "string", "int[]"],
         },
       },
     );
@@ -806,10 +806,11 @@ describe(Parser, () => {
 
   test("doesn't parse invalid unions", () => {
     expectDoesntParse(`type X string | string`, "Union can't have repeated types at -:1:8");
-    expectDoesntParse(`type X (string | int)[] | (int | string)[]`, "Union can't have repeated types at -:1:8");
+    expectDoesntParse(`type X (string | int)[] | (string | int)[]`, "Union can't have repeated types at -:1:8");
     expectDoesntParse(`type X int | enum { a b }`, "Can't have an unnamed enum type at -:1:14. Give it a name.");
     expectDoesntParse(`type X int | { foo: string }`, "Can't have an unnamed struct type at -:1:14. Give it a name.");
     expectDoesntParse(`type X int | { foo: string }[]`, "Can't have an unnamed struct type at -:1:14. Give it a name.");
+    expectDoesntParse(`type X int | X[]`, "Detected type recursion: X at -:1:14");
   });
 
   test("parses arrays and optionals of complex type", () => {
@@ -886,7 +887,7 @@ describe(Parser, () => {
           },
         },
         typeTable: {
-          DoSomething: ["union", "int", "uuid"],
+          DoSomething: ["union", "uuid", "int"],
           DoSomethingHiElement: ["union", "string", "uuid"],
         },
       },

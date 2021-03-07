@@ -255,7 +255,21 @@ export class EnumValue extends AstNode {
 }
 
 export class ComplexType extends Type {
-  name!: string;
+  private _name?: string;
+
+  get name() {
+    const value = this._name;
+
+    if (!value) {
+      throw new Error(`BUG: This type didn't receive a name yet at ${this.location}`);
+    }
+
+    return value;
+  }
+
+  set name(value: string) {
+    this._name = value;
+  }
 }
 
 export class EnumType extends ComplexType {
@@ -308,7 +322,21 @@ export class Field extends AstNode {
 }
 
 export class TypeReference extends Type {
-  type!: Type;
+  private _type?: Type;
+
+  get type() {
+    const value = this._type;
+
+    if (!value) {
+      throw new Error(`BUG: This type reference wasn't resolved to a type yet at ${this.location}`);
+    }
+
+    return value;
+  }
+
+  set type(value: Type) {
+    this._type = value;
+  }
 
   constructor(public name: string) {
     super();
@@ -325,7 +353,13 @@ export class UnionType extends ComplexType {
   }
 
   isEqual(other: Type): boolean {
-    return other instanceof UnionType && this.types.every((type, index) => other.types[index].isEqual(type));
+    if (!(other instanceof UnionType)) {
+      return false;
+    }
+
+    const myTypeNames = new Set(this.types.map(t => t.name));
+
+    return other.types.length === myTypeNames.size && other.types.every(t => myTypeNames.has(t.name));
   }
 }
 

@@ -47,7 +47,9 @@ export class GiveComplexTypeNamesVisitor extends Visitor {
     } else if (type instanceof OptionalType) {
       return `${this.generateStandaloneTypeName(type.base)}Optional`;
     } else if (type instanceof UnionType) {
-      return type.types.map(t => this.generateStandaloneTypeName(t)).join("Or");
+      const typeSet = new Set<string>(type.types.map(t => this.generateStandaloneTypeName(t)));
+
+      return [...typeSet.values()].join("Or");
     } else if (type instanceof StructType) {
       throw new SemanticError(`Can't have an unnamed struct type at ${type.location}. Give it a name.`);
     } else if (type instanceof EnumType) {
@@ -140,15 +142,12 @@ export class GiveComplexTypeNamesVisitor extends Visitor {
         super.visit(node);
       }
 
-      const typeMap = new Map<string, Type>(node.types.map(t => [this.generateStandaloneTypeName(t), t]));
-      const typeNames = [...typeMap.keys()].sort((a, b) => a.localeCompare(b));
+      const typeSet = new Set<string>(node.types.map(t => this.generateStandaloneTypeName(t)));
 
-      if (node.types.length !== typeMap.size) {
+      if (node.types.length !== typeSet.size) {
         throw new SemanticError(`Union can't have repeated types at ${node.location}.`);
       }
 
-      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-      node.types = typeNames.map(name => typeMap.get(name)!).map(type => (type instanceof ComplexType ? this.makeReference(type) : type));
       node.name = this.generateTypeName(node);
       this.validateAndSaveNodeName(node);
     } else {
