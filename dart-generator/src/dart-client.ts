@@ -1,5 +1,5 @@
-import { AstRoot, EnumType, StructType } from "@sdkgen/parser";
-import { HiddenAnnotation, VoidPrimitiveType } from "@sdkgen/parser";
+import type { AstRoot } from "@sdkgen/parser";
+import { EnumType, StructType, HiddenAnnotation, VoidPrimitiveType } from "@sdkgen/parser";
 
 import { cast, generateClass, generateEnum, generateErrorClass, generateTypeName } from "./helpers";
 
@@ -45,7 +45,7 @@ ${ast.operations
 
   code += `var _typeTable = {\n`;
 
-  for (const {name, type} of ast.typeDefinitions) {
+  for (const { name, type } of ast.typeDefinitions) {
     if (type instanceof StructType) {
       code += `  "${name}": StructTypeDescription(\n`;
       code += `    ${name},\n`;
@@ -69,9 +69,7 @@ ${ast.operations
       code += `    }),\n`;
       code += `  ),\n`;
     } else if (type instanceof EnumType) {
-      code += `  "${name}": EnumTypeDescription(${name}, ${name}.values, [\n    ${type.values
-        .map(x => `"${x.value}"`)
-        .join(",\n    ")}\n  ]),\n`;
+      code += `  "${name}": EnumTypeDescription(${name}, ${name}.values, [\n    ${type.values.map(x => `"${x.value}"`).join(",\n    ")}\n  ]),\n`;
     } else {
       code += `  "${name}": "${type.name}",\n`;
     }
