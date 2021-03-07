@@ -105,8 +105,8 @@ function simpleEncodeDecode(path: string, type: string, value: unknown) {
 export function encode(typeTable: DeepReadonly<TypeTable>, path: string, type: DeepReadonly<TypeDescription>, value: unknown): unknown {
   if (typeof type === "string" && !type.endsWith("?") && type !== "void" && (value === null || value === undefined)) {
     throw new Error(`Invalid type at '${path}', cannot be null`);
-  } else if (Array.isArray(type)) {
-    if (typeof value !== "string" || type.indexOf(value) < 0) {
+  } else if (Array.isArray(type) && type[0] === "enum") {
+    if (typeof value !== "string" || type.slice(1).indexOf(value) < 0) {
       throw new ParseError(path, type, value);
     }
 
@@ -193,8 +193,8 @@ export function encode(typeTable: DeepReadonly<TypeTable>, path: string, type: D
 export function decode(typeTable: DeepReadonly<TypeTable>, path: string, type: DeepReadonly<TypeDescription>, value: unknown): unknown {
   if (typeof type === "string" && !type.endsWith("?") && type !== "void" && (value === null || value === undefined)) {
     throw new Error(`Invalid type at '${path}', cannot be null`);
-  } else if (Array.isArray(type)) {
-    if (typeof value !== "string" || type.indexOf(value) < 0) {
+  } else if (Array.isArray(type) && type[0] === "enum") {
+    if (typeof value !== "string" || type.slice(1).indexOf(value) < 0) {
       throw new ParseError(path, type, value);
     }
 

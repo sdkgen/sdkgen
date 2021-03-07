@@ -1,4 +1,4 @@
-import type { AstRoot } from "@sdkgen/parser";
+import { AstRoot, EnumType, StructType } from "@sdkgen/parser";
 import { HiddenAnnotation, VoidPrimitiveType } from "@sdkgen/parser";
 
 import { cast, generateClass, generateEnum, generateErrorClass, generateTypeName } from "./helpers";
@@ -45,34 +45,36 @@ ${ast.operations
 
   code += `var _typeTable = {\n`;
 
-  for (const type of ast.structTypes) {
-    code += `  "${type.name}": StructTypeDescription(\n`;
-    code += `    ${type.name},\n`;
-    code += `    {\n`;
-    for (const field of type.fields) {
-      code += `      "${field.name}": "${field.type.name}",\n`;
+  for (const {name, type} of ast.typeDefinitions) {
+    if (type instanceof StructType) {
+      code += `  "${name}": StructTypeDescription(\n`;
+      code += `    ${name},\n`;
+      code += `    {\n`;
+      for (const field of type.fields) {
+        code += `      "${field.name}": "${field.type.name}",\n`;
+      }
+
+      code += `    },\n`;
+      code += `    (Map fields) => ${name}(\n`;
+      for (const field of type.fields) {
+        code += `      ${field.name}: ${cast(`fields["${field.name}"]`, field.type)},\n`;
+      }
+
+      code += `    ),\n`;
+      code += `    (${name} obj) => ({\n`;
+      for (const field of type.fields) {
+        code += `      "${field.name}": obj.${field.name},\n`;
+      }
+
+      code += `    }),\n`;
+      code += `  ),\n`;
+    } else if (type instanceof EnumType) {
+      code += `  "${name}": EnumTypeDescription(${name}, ${name}.values, [\n    ${type.values
+        .map(x => `"${x.value}"`)
+        .join(",\n    ")}\n  ]),\n`;
+    } else {
+      code += `  "${name}": "${type.name}",\n`;
     }
-
-    code += `    },\n`;
-    code += `    (Map fields) => ${type.name}(\n`;
-    for (const field of type.fields) {
-      code += `      ${field.name}: ${cast(`fields["${field.name}"]`, field.type)},\n`;
-    }
-
-    code += `    ),\n`;
-    code += `    (${type.name} obj) => ({\n`;
-    for (const field of type.fields) {
-      code += `      "${field.name}": obj.${field.name},\n`;
-    }
-
-    code += `    }),\n`;
-    code += `  ),\n`;
-  }
-
-  for (const type of ast.enumTypes) {
-    code += `  "${type.name}": EnumTypeDescription(${type.name}, ${type.name}.values, [\n    ${type.values
-      .map(x => `"${x.value}"`)
-      .join(",\n    ")}\n  ]),\n`;
   }
 
   code += `};\n\n`;

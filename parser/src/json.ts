@@ -23,7 +23,7 @@ import { analyse } from "./semantic/analyser";
 import type { DeepReadonly } from "./utils";
 import { primitiveToAstClass } from "./utils";
 
-export type TypeDescription = string | ["enum", ...string[]] | ["union", ...string[]] | { [name: string]: string };
+export type TypeDescription = string | ["enum", ...string[]] | ["union", ...string[]] | Record<string, string>;
 
 type TypeTable = Record<string, TypeDescription | undefined>;
 

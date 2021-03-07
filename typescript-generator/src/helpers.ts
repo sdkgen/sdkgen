@@ -1,5 +1,6 @@
 import type { ErrorNode, Type } from "@sdkgen/parser";
 import {
+  UnionType,
   ArrayType,
   Base64PrimitiveType,
   BigIntPrimitiveType,
@@ -70,11 +71,24 @@ export function generateTypescriptTypeName(type: Type): string {
     case OptionalType:
       return `${generateTypescriptTypeName((type as OptionalType).base)} | null`;
 
+    case UnionType:
+      return (type as UnionType).types
+        .map(t => {
+          const gen = generateTypescriptTypeName(t);
+
+          if (t instanceof OptionalType || t instanceof UnionType) {
+            return `(${gen})`;
+          }
+
+          return gen;
+        })
+        .join("|");
+
     case ArrayType: {
       const { base } = type as ArrayType;
       const baseGen = generateTypescriptTypeName(base);
 
-      if (base instanceof OptionalType) {
+      if (base instanceof OptionalType || base instanceof UnionType) {
         return `(${baseGen})[]`;
       }
 
@@ -107,52 +121,4 @@ export function generateTypescriptErrorClass(error: ErrorNode): string {
   return `export class ${error.name} extends ${
     error.dataType instanceof VoidPrimitiveType ? "SdkgenError" : `SdkgenErrorWithData<${generateTypescriptTypeName(error.dataType)}>`
   } {}\n`;
-}
-
-export function clearForLogging(path: string, type: Type): string {
-  switch (type.constructor) {
-    case TypeReference:
-      return clearForLogging(path, (type as TypeReference).type);
-
-    case OptionalType: {
-      const code = clearForLogging(path, (type as OptionalType).base);
-
-      if (code) {
-        return `if (${path} !== null && ${path} !== undefined) { ${code} }`;
-      }
-
-      return "";
-    }
-
-    case ArrayType: {
-      const code = clearForLogging("el", (type as ArrayType).base);
-
-      if (code) {
-        return `for (const el of ${path}) { ${code} }`;
-      }
-
-      return "";
-    }
-
-    case StructType: {
-      const codes: string[] = [];
-
-      for (const field of (type as StructType).fields) {
-        if (field.secret) {
-          codes.push(`${path}.${field.name} = "<secret>";`);
-        } else {
-          const code = clearForLogging(`${path}.${field.name}`, field.type);
-
-          if (code) {
-            codes.push(code);
-          }
-        }
-      }
-
-      return codes.join(" ");
-    }
-
-    default:
-      return "";
-  }
 }

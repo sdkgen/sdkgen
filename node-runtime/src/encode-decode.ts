@@ -35,10 +35,10 @@ type DecodedType<Type, Table extends object> = TypeDescription extends Type
   ? DecodedType<X, Table> | null
   : Type extends `${infer X}[]`
   ? Array<DecodedType<X, Table>>
-  : Type extends string[]
-  ? Type[number]
-  : Type extends readonly string[]
-  ? Type[number]
+  : Type extends ["union", ...Array<infer Options>]
+  ? Options
+  : Type extends readonly ["union", ...Array<infer Options>]
+  ? Options
   : Type extends object
   ? { -readonly [Key in keyof Type]: DecodedType<Type[Key], Table> }
   : object extends Table
@@ -65,10 +65,10 @@ type EncodedType<Type, Table extends object> = TypeDescription extends Type
   ? EncodedType<X, Table> | null
   : Type extends `${infer X}[]`
   ? Array<EncodedType<X, Table>>
-  : Type extends string[]
-  ? Type[number]
-  : Type extends readonly string[]
-  ? Type[number]
+  : Type extends ["union", ...Array<infer Options>]
+  ? Options
+  : Type extends readonly ["union", ...Array<infer Options>]
+  ? Options
   : Type extends object
   ? { -readonly [Key in keyof Type]: EncodedType<Type[Key], Table> }
   : object extends Table
@@ -183,8 +183,8 @@ export function encode<Table extends DeepReadonly<TypeTable>, Type extends DeepR
 ): EncodedType<Type, Table> {
   if (typeof type === "string" && !type.endsWith("?") && type !== "void" && (value === null || value === undefined)) {
     throw new Error(`Invalid type at '${path}', cannot be null`);
-  } else if (Array.isArray(type)) {
-    if (typeof value !== "string" || !type.includes(value)) {
+  } else if (Array.isArray(type) && type[0] === "enum") {
+    if (typeof value !== "string" || !type.slice(1).includes(value)) {
       throw new ParseError(path, type, value);
     }
 
@@ -206,13 +206,17 @@ export function encode<Table extends DeepReadonly<TypeTable>, Type extends DeepR
       return null as EncodedType<Type, Table>;
     }
 
-    return encode(typeTable, path, type.slice(0, type.length - 1), value) as EncodedType<Type, Table>;
+    const innerType = (type as string).slice(0, type.length - 1);
+
+    return encode(typeTable, path, innerType, value) as EncodedType<Type, Table>;
   } else if (typeof type === "string" && type.endsWith("[]")) {
     if (!Array.isArray(value)) {
       throw new ParseError(path, type, value);
     }
 
-    return value.map((entry, index) => encode(typeTable, `${path}[${index}]`, type.slice(0, type.length - 2), entry)) as EncodedType<Type, Table>;
+    const innerType = (type as string).slice(0, type.length - 2);
+
+    return value.map((entry, index) => encode(typeTable, `${path}[${index}]`, innerType, entry)) as EncodedType<Type, Table>;
   } else if (typeof type === "string" && simpleTypes.includes(type)) {
     return simpleEncodeDecode(path, type, value) as EncodedType<Type, Table>;
   } else if (type === "bytes") {
@@ -276,8 +280,8 @@ export function decode<Table extends DeepReadonly<TypeTable>, Type extends DeepR
 ): DecodedType<Type, Table> {
   if (typeof type === "string" && !type.endsWith("?") && type !== "void" && (value === null || value === undefined)) {
     throw new Error(`Invalid type at '${path}', cannot be null`);
-  } else if (Array.isArray(type)) {
-    if (typeof value !== "string" || !type.includes(value)) {
+  } else if (Array.isArray(type) && type[0] === "enum") {
+    if (typeof value !== "string" || !type.slice(1).includes(value)) {
       throw new ParseError(path, type, value);
     }
 
@@ -299,13 +303,17 @@ export function decode<Table extends DeepReadonly<TypeTable>, Type extends DeepR
       return null as DecodedType<Type, Table>;
     }
 
-    return decode(typeTable, path, type.slice(0, type.length - 1), value) as DecodedType<Type, Table>;
+    const innerType = (type as string).slice(0, type.length - 1);
+
+    return decode(typeTable, path, innerType, value) as DecodedType<Type, Table>;
   } else if (typeof type === "string" && type.endsWith("[]")) {
     if (!Array.isArray(value)) {
       throw new ParseError(path, type, value);
     }
 
-    return value.map((entry, index) => decode(typeTable, `${path}[${index}]`, type.slice(0, type.length - 2), entry)) as DecodedType<Type, Table>;
+    const innerType = (type as string).slice(0, type.length - 2);
+
+    return value.map((entry, index) => decode(typeTable, `${path}[${index}]`, innerType, entry)) as DecodedType<Type, Table>;
   } else if (typeof type === "string" && simpleTypes.includes(type)) {
     return simpleEncodeDecode(path, type, value) as DecodedType<Type, Table>;
   } else if (type === "bytes") {
