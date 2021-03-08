@@ -10,7 +10,7 @@ function scanHeaders(text: string) {
 
   while ((match = headerRegex.exec(text)) !== null) {
     if (match.groups?.header && match.groups.name) {
-      headers.set(match.groups.header, match.groups.name);
+      headers.set(match.groups.header.toLowerCase(), match.groups.name);
     }
   }
 
