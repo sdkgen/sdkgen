@@ -110,6 +110,8 @@ describe("Simple API", () => {
       struct: { aa: 42 },
       uint: 243,
       uuid: "f84c4d20-eed8-4004-b236-74aaa71fbeca",
+      union1: "sidwvfsw",
+      union2: { name: "woufh", age: 234 },
     };
 
     expect(await nodeClient.identity(null, { types })).toEqual(types);

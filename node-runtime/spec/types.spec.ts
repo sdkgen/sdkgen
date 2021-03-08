@@ -114,4 +114,25 @@ describe("Encode/Decode", () => {
       decode({}, "", "bigint", "hello world");
     }).toThrow();
   });
+
+  test("Process Unions", () => {
+    expect(encode({}, "", ["union", "int", "string"] as const, 10)).toEqual(["int", 10]);
+    expect(encode({}, "", ["union", "int", "string"] as const, "aa")).toEqual(["string", "aa"]);
+    expect(decode({}, "", ["union", "int", "string"] as const, ["int", 10])).toBe(10);
+    expect(decode({}, "", ["union", "int", "string"] as const, ["string", "aa"])).toEqual("aa");
+    expect(decode({}, "", ["union", "int?", "string"] as const, ["int", 10])).toBe(10);
+    expect(decode({}, "", ["union", "int", "string?"] as const, ["string", "aa"])).toEqual("aa");
+    expect(() => {
+      encode({}, "", ["union", "int", "string"] as const, BigInt(10));
+    }).toThrow();
+    expect(() => {
+      decode({}, "", ["union", "int", "string"] as const, ["hex", "aa"]);
+    }).toThrow();
+    expect(() => {
+      decode({}, "", ["union", "int", "string"] as const, ["string", 10]);
+    }).toThrow();
+    expect(() => {
+      decode({}, "", ["union", "int", "string"] as const, 10);
+    }).toThrow();
+  });
 });

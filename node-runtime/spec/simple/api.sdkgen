@@ -29,6 +29,8 @@ type AllTypes {
     bytes: bytes
     date: date
     datetime: datetime
+    union1: string | User
+    union2: string | User
 }
 
 error SomeError

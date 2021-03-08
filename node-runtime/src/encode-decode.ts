@@ -35,9 +35,9 @@ type DecodedType<Type, Table extends object> = TypeDescription extends Type
   ? DecodedType<X, Table> | null
   : Type extends `${infer X}[]`
   ? Array<DecodedType<X, Table>>
-  : Type extends ["union", ...Array<infer Options>]
+  : Type extends ["enum", ...Array<infer Options>]
   ? Options
-  : Type extends readonly ["union", ...Array<infer Options>]
+  : Type extends readonly ["enum", ...Array<infer Options>]
   ? Options
   : Type extends object
   ? { -readonly [Key in keyof Type]: DecodedType<Type[Key], Table> }
@@ -65,10 +65,14 @@ type EncodedType<Type, Table extends object> = TypeDescription extends Type
   ? EncodedType<X, Table> | null
   : Type extends `${infer X}[]`
   ? Array<EncodedType<X, Table>>
+  : Type extends ["enum", ...Array<infer Options>]
+  ? Options
+  : Type extends readonly ["enum", ...Array<infer Options>]
+  ? Options
   : Type extends ["union", ...Array<infer Options>]
-  ? Options
+  ? EncodedUnionType<Options, Table>
   : Type extends readonly ["union", ...Array<infer Options>]
-  ? Options
+  ? EncodedUnionType<Options, Table>
   : Type extends object
   ? { -readonly [Key in keyof Type]: EncodedType<Type[Key], Table> }
   : object extends Table
@@ -77,6 +81,7 @@ type EncodedType<Type, Table extends object> = TypeDescription extends Type
   ? EncodedType<Table[Type], Table>
   : never;
 
+type EncodedUnionType<Type, Table extends object> = Type extends string ? [Type, EncodedType<Type, Table>] : never;
 class ParseError extends Error {
   constructor(path: string, type: DeepReadonly<TypeDescription>, value: unknown) {
     let str: string;
@@ -189,6 +194,18 @@ export function encode<Table extends DeepReadonly<TypeTable>, Type extends DeepR
     }
 
     return value as EncodedType<Type, Table>;
+  } else if (Array.isArray(type) && type[0] === "union") {
+    const subtypes = type.slice(1) as string[];
+
+    for (const subtype of subtypes) {
+      try {
+        return [subtype, encode(typeTable, path, subtype, value)] as EncodedType<Type, Table>;
+      } catch {
+        //
+      }
+    }
+
+    throw new ParseError(path, subtypes.join(" or "), value);
   } else if (typeof type === "object") {
     if (typeof value !== "object") {
       throw new ParseError(path, type, value);
@@ -286,6 +303,14 @@ export function decode<Table extends DeepReadonly<TypeTable>, Type extends DeepR
     }
 
     return value as DecodedType<Type, Table>;
+  } else if (Array.isArray(type) && type[0] === "union") {
+    const subtypes = type.slice(1) as string[];
+
+    if (!Array.isArray(value) || value.length !== 2 || !(subtypes.includes(value[0]) || subtypes.includes(`${value[0]}?`))) {
+      throw new ParseError(path, subtypes.join(" or "), value);
+    }
+
+    return decode(typeTable, path, value[0], value[1]) as DecodedType<Type, Table>;
   } else if (typeof type === "object") {
     if (typeof value !== "object") {
       throw new ParseError(path, type, value);

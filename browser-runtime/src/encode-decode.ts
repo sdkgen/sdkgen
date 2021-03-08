@@ -111,6 +111,18 @@ export function encode(typeTable: DeepReadonly<TypeTable>, path: string, type: D
     }
 
     return value;
+  } else if (Array.isArray(type) && type[0] === "union") {
+    const subtypes = type.slice(1) as string[];
+
+    for (const subtype of subtypes) {
+      try {
+        return [subtype, encode(typeTable, path, subtype, value)] as unknown;
+      } catch {
+        //
+      }
+    }
+
+    throw new ParseError(path, subtypes.join(" or "), value);
   } else if (typeof type === "object") {
     if (typeof value !== "object") {
       throw new ParseError(path, type, value);
@@ -199,6 +211,14 @@ export function decode(typeTable: DeepReadonly<TypeTable>, path: string, type: D
     }
 
     return value;
+  } else if (Array.isArray(type) && type[0] === "union") {
+    const subtypes = type.slice(1) as string[];
+
+    if (!Array.isArray(value) || value.length !== 2 || !(subtypes.includes(value[0]) || subtypes.includes(`${value[0]}?`))) {
+      throw new ParseError(path, subtypes.join(" or "), value);
+    }
+
+    return decode(typeTable, path, value[0], value[1]);
   } else if (typeof type === "object") {
     if (typeof value !== "object") {
       throw new ParseError(path, type, value);
