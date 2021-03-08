@@ -53,7 +53,7 @@ function simpleEncodeDecode(path: string, type: string, value: unknown) {
     let isValidBase64 = true;
 
     try {
-      atob(type);
+      atob(value);
     } catch {
       isValidBase64 = false;
     }
