@@ -50,11 +50,10 @@ function simpleEncodeDecode(path: string, type: string, value: unknown) {
 
     return value.toLowerCase();
   } else if (type === "base64") {
-    let isValidBase64: boolean;
+    let isValidBase64 = true;
 
     try {
       atob(type);
-      isValidBase64 = true;
     } catch {
       isValidBase64 = false;
     }
