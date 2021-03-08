@@ -10,7 +10,7 @@ import 'types.dart';
 
 import 'deviceinfo_generic.dart'
     if (dart.library.io) 'deviceinfo_io.dart'
-    if (dart.library.js) 'deviceinfo_web.dart';
+    if (dart.library.html) 'deviceinfo_web.dart';
 
 class SdkgenError implements Exception {
   String message;
