@@ -4,6 +4,10 @@ import { ErrorNode, HiddenAnnotation, VoidPrimitiveType } from "@sdkgen/parser";
 import { generateClass, generateEnum, generateErrorClass, generateJsonAddRepresentation, generateKotlinTypeName, mangle } from "./helpers";
 
 export function generateAndroidClientSource(ast: AstRoot): string {
+  if (ast.unionTypes.length !== 0) {
+    throw new Error("Union types are not supported for Kotlin/Android yet");
+  }
+
   let code = `@file:Suppress("UNNECESSARY_SAFE_CALL")
 
 import android.os.Parcelable

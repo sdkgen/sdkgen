@@ -4,6 +4,10 @@ import { EnumType, StructType, HiddenAnnotation, VoidPrimitiveType } from "@sdkg
 import { cast, generateClass, generateEnum, generateErrorClass, generateTypeName } from "./helpers";
 
 export function generateDartClientSource(ast: AstRoot): string {
+  if (ast.unionTypes.length !== 0) {
+    throw new Error("Union types are not supported for Dart/Flutter yet");
+  }
+
   let code = "";
 
   code += `import 'package:flutter/widgets.dart';

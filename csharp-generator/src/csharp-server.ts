@@ -4,6 +4,10 @@ import { astToJson, OptionalType, VoidPrimitiveType } from "@sdkgen/parser";
 import { capitalize, decodeType, encodeType, generateEnum, generateStruct, generateTypeName, ident } from "./helpers";
 
 export function generateCSharpServerSource(ast: AstRoot): string {
+  if (ast.unionTypes.length !== 0) {
+    throw new Error("Union types are not supported for C#/.NET yet");
+  }
+
   let code = `using System;
 using System.Collections.Generic;
 using System.Globalization;
