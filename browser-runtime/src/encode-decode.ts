@@ -50,7 +50,15 @@ function simpleEncodeDecode(path: string, type: string, value: unknown) {
 
     return value.toLowerCase();
   } else if (type === "base64") {
-    if (typeof value !== "string" || Buffer.from(value, "base64").toString("base64") !== value) {
+    let isValidBase64 = true;
+
+    try {
+      atob(value as string);
+    } catch {
+      isValidBase64 = false;
+    }
+
+    if (typeof value !== "string" || !isValidBase64) {
       throw new ParseError(path, type, value);
     }
 
@@ -138,11 +146,11 @@ export function encode(typeTable: DeepReadonly<TypeTable>, path: string, type: D
   } else if (simpleTypes.indexOf(type) >= 0) {
     return simpleEncodeDecode(path, type, value);
   } else if (type === "bytes") {
-    if (!(value instanceof Buffer)) {
+    if (!(value instanceof ArrayBuffer)) {
       throw new ParseError(path, type, value);
     }
 
-    return value.toString("base64");
+    return btoa(String.fromCharCode(...((new Uint8Array(value) as unknown) as number[])));
   } else if (type === "bigint") {
     if (!(typeof value === "bigint")) {
       throw new ParseError(path, type, value);
@@ -230,13 +238,11 @@ export function decode(typeTable: DeepReadonly<TypeTable>, path: string, type: D
       throw new ParseError(path, `${type} (base 64)`, value);
     }
 
-    const buffer = Buffer.from(value, "base64");
-
-    if (buffer.toString("base64") !== value) {
+    try {
+      return Uint8Array.from(atob(value), c => c.charCodeAt(0));
+    } catch {
       throw new ParseError(path, `${type} (base 64)`, value);
     }
-
-    return buffer;
   } else if (type === "bigint") {
     if (typeof value !== "number" && (typeof value !== "string" || !/^-?[0-9]+$/u.test(value))) {
       throw new ParseError(path, type, value);

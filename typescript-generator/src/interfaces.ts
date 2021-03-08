@@ -12,7 +12,7 @@ export function generateTypescriptInterfaces(ast: AstRoot): string {
   code += "\n";
 
   for (const type of ast.structTypes) {
-    code += generateTypescriptInterface(type);
+    code += generateTypescriptInterface(type, false);
     code += "\n";
   }
 
