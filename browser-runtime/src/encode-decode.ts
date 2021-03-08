@@ -53,7 +53,7 @@ function simpleEncodeDecode(path: string, type: string, value: unknown) {
     let isValidBase64 = true;
 
     try {
-      atob(value);
+      atob(value as string);
     } catch {
       isValidBase64 = false;
     }
@@ -150,7 +150,7 @@ export function encode(typeTable: DeepReadonly<TypeTable>, path: string, type: D
       throw new ParseError(path, type, value);
     }
 
-    return btoa(String.fromCharCode(...(new Uint8Array(value) as unknown) as number[]));
+    return btoa(String.fromCharCode(...((new Uint8Array(value) as unknown) as number[])));
   } else if (type === "bigint") {
     if (!(typeof value === "bigint")) {
       throw new ParseError(path, type, value);
