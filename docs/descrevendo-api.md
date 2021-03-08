@@ -99,6 +99,10 @@ Enums podem aparecer em qualquer posição que um tipo pode, inclusive sendo opc
 }
 ```
 
+### União de tipos
+
+Por fim, todos os tipos descritos anteriormente podem aparecer como parte de uma união de tipos (formalmente ["tagged union types"](https://en.wikipedia.org/wiki/Tagged_union)). A sintaxe é expressa na forma de descrever os tipos que fazem parte da união separando com o caractere `|`. Alguns exemplos: `int | uuid` ou `string | int | string[]` ou `(cpf | cpnj)[]`. Caso tipos compostos ou enums sejam parte de uma união de tipos, eles devem necessáriamente ser tipos nomeados (ver abaixo).
+
 ## Estrutura de um arquivo `.sdkgen`.
 
 Em um arquivo `.sdkgen` você pode definir funções, tipos nomeados e erros.
