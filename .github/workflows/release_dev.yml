@@ -341,7 +341,7 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
-  dotnetcore-runtime:
+  dotnet-runtime:
     needs: [_version]
     runs-on: ubuntu-latest
     steps:
@@ -351,7 +351,7 @@ jobs:
           name: version
       - uses: actions/setup-dotnet@v1
       - uses: actions/setup-node@v1
-      - run: cp LICENSE dotnetcore-runtime/
+      - run: cp LICENSE dotnet-runtime/
       - run: npm install
         working-directory: ./playground
       - run: npm run build
@@ -359,8 +359,8 @@ jobs:
         env:
           NODE_ENV: production
       - run: dotnet pack -c:Release -p:PackageVersion=$(cat ../version/version.txt)
-        working-directory: ./dotnetcore-runtime
+        working-directory: ./dotnet-runtime
       - run: dotnet nuget push bin/**/*.nupkg -k $NUGET_TOKEN -s https://api.nuget.org/v3/index.json
-        working-directory: ./dotnetcore-runtime
+        working-directory: ./dotnet-runtime
         env:
           NUGET_TOKEN: ${{ secrets.NUGET_TOKEN }}

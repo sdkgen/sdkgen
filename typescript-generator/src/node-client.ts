@@ -23,7 +23,7 @@ export { Fatal } from "@sdkgen/node-runtime";
   }
 
   for (const type of ast.structTypes) {
-    code += generateTypescriptInterface(type);
+    code += generateTypescriptInterface(type, false);
     code += "\n";
   }
 
@@ -32,7 +32,7 @@ export { Fatal } from "@sdkgen/node-runtime";
       continue;
     }
 
-    code += generateTypescriptErrorClass(error);
+    code += generateTypescriptErrorClass(error, false);
     code += "\n";
   }
 
@@ -45,8 +45,8 @@ ${ast.operations
   .map(
     op => `
     ${op.prettyName}(ctx: Context | null, args: {${op.args
-      .map(arg => `${arg.name}${arg.type.name.endsWith("?") ? "?" : ""}: ${generateTypescriptTypeName(arg.type)}`)
-      .join(", ")}}): Promise<${generateTypescriptTypeName(op.returnType)}> { return this.makeRequest(ctx, "${op.prettyName}", args); }`,
+      .map(arg => `${arg.name}${arg.type.name.endsWith("?") ? "?" : ""}: ${generateTypescriptTypeName(arg.type, false)}`)
+      .join(", ")}}): Promise<${generateTypescriptTypeName(op.returnType, false)}> { return this.makeRequest(ctx, "${op.prettyName}", args); }`,
   )
   .join("")}
 }\n\n`;

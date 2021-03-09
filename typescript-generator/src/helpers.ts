@@ -29,7 +29,7 @@ import {
   XmlPrimitiveType,
 } from "@sdkgen/parser";
 
-export function generateTypescriptTypeName(type: Type): string {
+export function generateTypescriptTypeName(type: Type, isBrowser: boolean): string {
   switch (type.constructor) {
     case IntPrimitiveType:
     case UIntPrimitiveType:
@@ -48,7 +48,7 @@ export function generateTypescriptTypeName(type: Type): string {
       return "boolean";
 
     case BytesPrimitiveType:
-      return "Buffer";
+      return isBrowser ? "ArrayBuffer" : "Buffer";
 
     case StringPrimitiveType:
     case CpfPrimitiveType:
@@ -69,7 +69,7 @@ export function generateTypescriptTypeName(type: Type): string {
       return "any";
 
     case OptionalType:
-      return `${generateTypescriptTypeName((type as OptionalType).base)} | null`;
+      return `${generateTypescriptTypeName((type as OptionalType).base, isBrowser)} | null`;
 
     case UnionType:
       return (type as UnionType).types
@@ -86,7 +86,7 @@ export function generateTypescriptTypeName(type: Type): string {
 
     case ArrayType: {
       const { base } = type as ArrayType;
-      const baseGen = generateTypescriptTypeName(base);
+      const baseGen = generateTypescriptTypeName(base, isBrowser);
 
       if (base instanceof OptionalType || base instanceof UnionType) {
         return `(${baseGen})[]`;
@@ -100,16 +100,16 @@ export function generateTypescriptTypeName(type: Type): string {
       return type.name;
 
     case TypeReference:
-      return generateTypescriptTypeName((type as TypeReference).type);
+      return generateTypescriptTypeName((type as TypeReference).type, isBrowser);
 
     default:
       throw new Error(`BUG: generateTypescriptTypeName with ${type.constructor.name}`);
   }
 }
 
-export function generateTypescriptInterface(type: StructType): string {
+export function generateTypescriptInterface(type: StructType, isBrowser: boolean): string {
   return `export interface ${type.name} {
-${type.fields.map(field => `    ${field.name}: ${generateTypescriptTypeName(field.type)}`).join("\n")}
+${type.fields.map(field => `    ${field.name}: ${generateTypescriptTypeName(field.type, isBrowser)}`).join("\n")}
 }\n`;
 }
 
@@ -117,8 +117,8 @@ export function generateTypescriptEnum(type: EnumType): string {
   return `export type ${type.name} = ${type.values.map(x => `"${x.value}"`).join(" | ")};\n`;
 }
 
-export function generateTypescriptErrorClass(error: ErrorNode): string {
+export function generateTypescriptErrorClass(error: ErrorNode, isBrowser: boolean): string {
   return `export class ${error.name} extends ${
-    error.dataType instanceof VoidPrimitiveType ? "SdkgenError" : `SdkgenErrorWithData<${generateTypescriptTypeName(error.dataType)}>`
+    error.dataType instanceof VoidPrimitiveType ? "SdkgenError" : `SdkgenErrorWithData<${generateTypescriptTypeName(error.dataType, isBrowser)}>`
   } {}\n`;
 }

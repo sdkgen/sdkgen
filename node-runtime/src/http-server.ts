@@ -279,7 +279,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
         pathRegex += "/?$";
 
         for (const header of ann.headers.keys()) {
-          this.addHeader("Access-Control-Allow-Headers", header);
+          this.addHeader("Access-Control-Allow-Headers", header.toLowerCase());
         }
 
         // eslint-disable-next-line @typescript-eslint/no-misused-promises
@@ -314,7 +314,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
             }
 
             for (const [headerName, argName] of ann.headers) {
-              const argValue = req.headers[headerName] ?? null;
+              const argValue = req.headers[headerName.toLowerCase()] ?? null;
 
               simpleArgs.set(argName, Array.isArray(argValue) ? argValue.join("") : argValue);
             }

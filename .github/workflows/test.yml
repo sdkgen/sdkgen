@@ -181,7 +181,7 @@ jobs:
       - run: npm test
         working-directory: ./csharp-generator
 
-  dotnetcore-runtime:
+  dotnet-runtime:
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -192,7 +192,7 @@ jobs:
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
       - run: dotnet pack
-        working-directory: ./dotnetcore-runtime
+        working-directory: ./dotnet-runtime
 
   kotlin-generator:
     runs-on: ubuntu-latest
