@@ -25,8 +25,8 @@ class SdkgenErrorWithData<T> implements Exception {
 
 class SdkgenHttpClient {
   Uri baseUrl;
-  Map<String, dynamic> extra = new Map<String, dynamic>();
-  Map<String, String> headers = new Map<String, String>();
+  Map<String, dynamic> extra = <String, dynamic>{};
+  Map<String, String> headers = <String, String>{};
   Map<String, Object> typeTable;
   Map<String, FunctionDescription> fnTable;
   Map<String, SdkgenErrorDescription> errTable;
@@ -36,70 +36,72 @@ class SdkgenHttpClient {
 
   SdkgenHttpClient(
       baseUrl, this.context, this.typeTable, this.fnTable, this.errTable)
-      : this.baseUrl = Uri.parse(baseUrl);
+      : baseUrl = Uri.parse(baseUrl);
 
-  _randomBytesHex(int bytes) {
+  String _randomBytesHex(int bytes) {
     return hex.encode(List<int>.generate(bytes, (i) => random.nextInt(256)));
   }
 
-  _throwError(String type, String message, dynamic data) {
-    var description = errTable[type] ?? errTable["Fatal"]!;
+  dynamic _throwError(String type, String message, dynamic data) {
+    var description = errTable[type] ?? errTable['Fatal']!;
     var decodedData =
-        decode(this.typeTable, "$type.data", description.dataType, data);
+        decode(typeTable, '$type.data', description.dataType, data);
     throw Function.apply(description.create, [message, decodedData]);
   }
 
-  _deviceId() async {
+  Future<String> _deviceId() async {
     if (deviceId == null) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      if (prefs.containsKey("sdkgen_deviceId")) {
-        deviceId = prefs.getString("sdkgen_deviceId");
+      var prefs = await SharedPreferences.getInstance();
+      if (prefs.containsKey('sdkgen_deviceId')) {
+        deviceId = prefs.getString('sdkgen_deviceId');
       } else {
-        prefs.setString("sdkgen_deviceId", deviceId = _randomBytesHex(16));
+        await prefs.setString(
+            'sdkgen_deviceId', deviceId = _randomBytesHex(16));
       }
     }
-    return deviceId;
+    return deviceId!;
   }
 
   Future<Object> makeRequest(
       String functionName, Map<String, Object> args) async {
     try {
       var func = fnTable[functionName]!;
-      var encodedArgs = Map();
+      var encodedArgs = {};
       args.forEach((argName, argValue) {
-        encodedArgs[argName] = encode(typeTable, "$functionName.args.$argName",
+        encodedArgs[argName] = encode(typeTable, '$functionName.args.$argName',
             func.args[argName]!, argValue);
       });
 
       var body = {
-        "version": 3,
-        "requestId": _randomBytesHex(16),
-        "name": functionName,
-        "args": encodedArgs,
-        "extra": this.extra,
-        "deviceInfo": await getDeviceInfo(context, await _deviceId())
+        'version': 3,
+        'requestId': _randomBytesHex(16),
+        'name': functionName,
+        'args': encodedArgs,
+        'extra': extra,
+        'deviceInfo': await getDeviceInfo(context, await _deviceId())
       };
 
       var response = await http.post(
         baseUrl,
-        headers: this.headers,
+        headers: headers,
         body: jsonEncode(body),
       );
 
       var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
 
-      if (responseBody["error"] != null) {
-        throw _throwError(responseBody["error"]["type"],
-            responseBody["error"]["message"], responseBody["error"]["data"]);
+      if (responseBody['error'] != null) {
+        throw _throwError(responseBody['error']['type'],
+            responseBody['error']['message'], responseBody['error']['data']);
       } else {
         return decode(
-            typeTable, "$functionName.ret", func.ret, responseBody["result"]);
+            typeTable, '$functionName.ret', func.ret, responseBody['result']);
       }
     } catch (e) {
-      if (e is SdkgenError || e is SdkgenErrorWithData)
-        throw e;
-      else
-        throw _throwError("Fatal", e.toString(), null);
+      if (e is SdkgenError || e is SdkgenErrorWithData) {
+        rethrow;
+      } else {
+        throw _throwError('Fatal', e.toString(), null);
+      }
     }
   }
 }
