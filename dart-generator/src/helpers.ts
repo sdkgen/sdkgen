@@ -28,26 +28,83 @@ import {
   XmlPrimitiveType,
 } from "@sdkgen/parser";
 
-export function generateEnum(type: EnumType): string {
-  return `enum ${type.name} {\n  ${type.values.map(x => x.value).join(",\n  ")}\n}\n`;
+export function mangle(fieldName: string): string {
+  const mangleList = [
+    "abstract",
+    "as",
+    "assert",
+    "async",
+    "await",
+    "bool",
+    "break",
+    "case",
+    "catch",
+    "class",
+    "const",
+    "continue",
+    "covariant",
+    "default",
+    "deferred",
+    "do",
+    "double",
+    "dynamic",
+    "else",
+    "enum",
+    "export",
+    "extends",
+    "extension",
+    "external",
+    "factory",
+    "false",
+    "final",
+    "finally",
+    "for",
+    "Function",
+    "get",
+    "hide",
+    "if",
+    "implements",
+    "import",
+    "in",
+    "int",
+    "interface",
+    "is",
+    "library",
+    "mixin",
+    "new",
+    "null",
+    "on",
+    "operator",
+    "part",
+    "rethrow",
+    "return",
+    "set",
+    "show",
+    "static",
+    "super",
+    "switch",
+    "sync",
+    "this",
+    "throw",
+    "true",
+    "try",
+    "typedef",
+    "var",
+    "void",
+    "while",
+    "with",
+    "yield",
+  ];
+
+  if (mangleList.includes(fieldName)) {
+    return `$${fieldName}`;
+  }
+
+  return fieldName;
 }
 
-function generateConstructor(type: StructType): string {
-  const doubleSpace = "  ";
-  const fourSpaces = "    ";
-  let str = `${doubleSpace}${type.name}({\n`;
-
-  type.fields.forEach(field => {
-    if (field.type instanceof OptionalType) {
-      str = str.concat(fourSpaces);
-    } else {
-      str = str.concat(`${fourSpaces}required `);
-    }
-
-    str = str.concat(`this.${field.name},\n`);
-  });
-  str = str.concat(`${doubleSpace}});\n`);
-  return str;
+export function generateEnum(type: EnumType): string {
+  return `enum ${type.name} {\n  ${type.values.map(x => x.value).join(",\n  ")}\n}\n`;
 }
 
 export function generateTypeName(type: Type): string {
@@ -67,7 +124,7 @@ export function generateTypeName(type: Type): string {
     case BoolPrimitiveType:
       return "bool";
     case BytesPrimitiveType:
-      return "List<int>";
+      return "Uint8List";
     case MoneyPrimitiveType:
       return "int";
     case CpfPrimitiveType:
@@ -111,13 +168,13 @@ export function generateErrorClass(error: ErrorNode): string {
 
 export function cast(value: string, type: Type): string {
   if (type instanceof OptionalType) {
-    return cast(value, type.base);
+    return `${value} == null ? null : ${cast(value, type.base)}`;
   } else if (type instanceof ArrayType) {
-    return `(${value} as List)?.map((e) => ${cast("e", type.base)})?.toList()`;
+    return `(${value} as List).map((e) => ${cast("e", type.base)}).toList()`;
   } else if (type instanceof VoidPrimitiveType) {
     return value;
   } else if (type instanceof FloatPrimitiveType) {
-    return `(${value} as num)?.toDouble()`;
+    return `(${value} as num).toDouble()`;
   } else if (type instanceof MoneyPrimitiveType) {
     return `${value} as int`;
   }
@@ -125,8 +182,26 @@ export function cast(value: string, type: Type): string {
   return `${value} as ${generateTypeName(type)}`;
 }
 
+function generateConstructor(type: StructType): string {
+  const doubleSpace = "  ";
+  const fourSpaces = "    ";
+  let str = `${doubleSpace}${type.name}({\n`;
+
+  type.fields.forEach(field => {
+    if (field.type instanceof OptionalType) {
+      str = str.concat(fourSpaces);
+    } else {
+      str = str.concat(`${fourSpaces}required `);
+    }
+
+    str = str.concat(`this.${mangle(field.name)},\n`);
+  });
+  str = str.concat(`${doubleSpace}});\n`);
+  return str;
+}
+
 export function generateClass(type: StructType): string {
-  return `class ${type.name} {\n  ${type.fields.map(field => `${generateTypeName(field.type)} ${field.name};`).join("\n  ")}\n\n${generateConstructor(
-    type,
-  )}}\n`;
+  return `class ${type.name} {\n  ${type.fields
+    .map(field => `${generateTypeName(field.type)} ${mangle(field.name)};`)
+    .join("\n  ")}\n\n${generateConstructor(type)}}\n`;
 }
