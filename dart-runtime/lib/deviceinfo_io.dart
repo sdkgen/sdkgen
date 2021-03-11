@@ -1,25 +1,27 @@
 import 'dart:io';
+import 'dart:ui';
 import 'package:device_info/device_info.dart';
-import 'package:flutter/widgets.dart';
 import 'package:package_info/package_info.dart';
 
-Future<Map<String, Object?>> getDeviceInfo(
-    BuildContext? context, String deviceId) async {
-  var locale = context == null ? null : Localizations.localeOf(context);
-
+Future<Map<String, Object?>> getDeviceInfo(String deviceId) async {
   PackageInfo? packageInfo;
   try {
     packageInfo = await PackageInfo.fromPlatform();
     // ignore: empty_catches
   } catch (e) {}
 
+  final window = PlatformDispatcher.instance.views
+      .whereType<SingletonFlutterWindow>()
+      .first;
+  final screenSize = window.physicalSize / window.devicePixelRatio;
+
   final platform = {
     'os': Platform.operatingSystem,
     'osVersion': Platform.operatingSystemVersion,
     'dartVersion': Platform.version,
     'appId': packageInfo?.packageName,
-    'screenWidth': context == null ? 0 : MediaQuery.of(context).size.width,
-    'screenHeight': context == null ? 0 : MediaQuery.of(context).size.height
+    'screenWidth': screenSize.width,
+    'screenHeight': screenSize.height
   };
 
   final deviceInfo = DeviceInfoPlugin();
@@ -39,8 +41,7 @@ Future<Map<String, Object?>> getDeviceInfo(
 
   return {
     'id': deviceId,
-    'language':
-        locale == null ? null : '${locale.languageCode}-${locale.countryCode}',
+    'language': Platform.localeName.replaceAll('_', '-'),
     'platform': platform,
     'timezone': DateTime.now().timeZoneName,
     'type': Platform.isAndroid
