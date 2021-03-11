@@ -74,7 +74,7 @@ export function generateTypescriptTypeName(type: Type, isBrowser: boolean): stri
     case UnionType:
       return (type as UnionType).types
         .map(t => {
-          const gen = generateTypescriptTypeName(t);
+          const gen = generateTypescriptTypeName(t, isBrowser);
 
           if (t instanceof OptionalType || t instanceof UnionType) {
             return `(${gen})`;
