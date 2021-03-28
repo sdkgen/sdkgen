@@ -26,7 +26,9 @@ class SdkgenErrorWithData<T> implements Exception {
 class SdkgenHttpClient {
   Uri baseUrl;
   Map<String, dynamic> extra = <String, dynamic>{};
-  Map<String, String> headers = <String, String>{};
+  Map<String, String> headers = <String, String>{
+    "Content-Type": "application/sdkgen",
+  };
   Map<String, Object> typeTable;
   Map<String, FunctionDescription> fnTable;
   Map<String, SdkgenErrorDescription> errTable;
