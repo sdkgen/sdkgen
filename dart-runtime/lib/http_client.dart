@@ -27,7 +27,7 @@ class SdkgenHttpClient {
   Uri baseUrl;
   Map<String, dynamic> extra = <String, dynamic>{};
   Map<String, String> headers = <String, String>{
-    "Content-Type": "application/sdkgen",
+    'Content-Type': 'application/sdkgen',
   };
   Map<String, Object> typeTable;
   Map<String, FunctionDescription> fnTable;

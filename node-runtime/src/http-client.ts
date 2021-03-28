@@ -1,7 +1,8 @@
 /* eslint-disable prefer-promise-reject-errors */
 import { randomBytes } from "crypto";
 import { request as httpRequest } from "http";
-import { request as httpsRequest, RequestOptions } from "https";
+import { request as httpsRequest } from "https";
+import type { RequestOptions } from "https";
 import { hostname } from "os";
 import { URL } from "url";
 
@@ -58,7 +59,7 @@ export class SdkgenHttpClient {
       port: this.baseUrl.port,
       headers: {
         "content-type": "application/sdkgen",
-      }
+      },
     };
 
     const encodedRet = await new Promise<unknown>((resolve, reject) => {
