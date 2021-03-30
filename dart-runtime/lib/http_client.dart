@@ -2,7 +2,6 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:convert/convert.dart';
-import 'package:flutter/widgets.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -34,10 +33,8 @@ class SdkgenHttpClient {
   Map<String, SdkgenErrorDescription> errTable;
   String? deviceId;
   Random random = Random.secure();
-  BuildContext? context;
 
-  SdkgenHttpClient(
-      baseUrl, this.context, this.typeTable, this.fnTable, this.errTable)
+  SdkgenHttpClient(baseUrl, this.typeTable, this.fnTable, this.errTable)
       : baseUrl = Uri.parse(baseUrl);
 
   String _randomBytesHex(int bytes) {
@@ -80,7 +77,7 @@ class SdkgenHttpClient {
         'name': functionName,
         'args': encodedArgs,
         'extra': extra,
-        'deviceInfo': await getDeviceInfo(context, await _deviceId())
+        'deviceInfo': await getDeviceInfo(await _deviceId())
       };
 
       var response = await http.post(
