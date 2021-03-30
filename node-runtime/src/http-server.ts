@@ -379,7 +379,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
               const argName = ann.bodyVariable;
               const arg = op.args.find(x => x.name === argName);
 
-              if (req.headers["content-type"] === "application/json") {
+              if (/application\/json/iu.test(req.headers["content-type"] ?? "")) {
                 args[argName] = JSON.parse(body.toString());
               } else if (arg) {
                 let { type } = arg;
@@ -639,12 +639,14 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
       path = path.slice(this.ignoredUrlPrefix.length);
     }
 
-    const externalHandler = this.findBestHandler(path, req);
+    if (!req.headers["content-type"]?.match(/application\/sdkgen/iu)) {
+      const externalHandler = this.findBestHandler(path, req);
 
-    if (externalHandler) {
-      this.log(`HTTP ${req.method} ${path}${query ? `?${query}` : ""}`);
-      externalHandler.handler(req, res, body);
-      return;
+      if (externalHandler) {
+        this.log(`HTTP ${req.method} ${path}${query ? `?${query}` : ""}`);
+        externalHandler.handler(req, res, body);
+        return;
+      }
     }
 
     res.setHeader("Content-Type", "application/json; charset=utf-8");
