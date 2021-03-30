@@ -36,9 +36,9 @@ export class SdkgenHttpClient {
 
     const extra: Record<string, any> = {};
 
-    this.extra.forEach((value, key) => {
+    for (const [key, value] of this.extra) {
       extra[key] = value;
-    });
+    }
 
     const requestBody = JSON.stringify({
       args: encode(this.astJson.typeTable, `${functionName}.args`, func.args, args),
