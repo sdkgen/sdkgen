@@ -37,7 +37,7 @@ function generateConstructor(type: StructType): string {
   const fourSpaces = "    ";
   let str = `${doubleSpace}${type.name}({\n`;
 
-  type.fields.forEach(field => {
+  for (const field of type.fields) {
     if (field.type instanceof OptionalType) {
       str = str.concat(fourSpaces);
     } else {
@@ -45,7 +45,8 @@ function generateConstructor(type: StructType): string {
     }
 
     str = str.concat(`this.${field.name},\n`);
-  });
+  }
+
   str = str.concat(`${doubleSpace}});\n`);
   return str;
 }
