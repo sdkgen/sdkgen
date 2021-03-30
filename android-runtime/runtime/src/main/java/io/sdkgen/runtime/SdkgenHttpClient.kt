@@ -210,7 +210,7 @@ open class SdkgenHttpClient(
     @SuppressLint("HardwareIds")
     private fun makeDeviceObj(): JsonObject {
         return JsonObject().apply {
-            addProperty("id", getDeviceId())    
+            addProperty("id", getDeviceId())
             addProperty("fingerprint", Settings.Secure.getString(applicationContext.contentResolver, Settings.Secure.ANDROID_ID))
             addProperty("language", language())
             add("platform", JsonObject().apply {
@@ -255,7 +255,7 @@ open class SdkgenHttpClient(
 
             val request = Request.Builder()
                 .url("$baseUrl${if (baseUrl.last() == '/') "" else "/"}$functionName")
-                .post(body.toString().toRequestBody("application/json; charset=utf-8".toMediaType()))
+                .post(body.toString().toRequestBody("application/sdkgen".toMediaType()))
                 .build()
 
             val call = httpClient.newCall(request)
