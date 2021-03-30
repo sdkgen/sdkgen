@@ -379,7 +379,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
               const argName = ann.bodyVariable;
               const arg = op.args.find(x => x.name === argName);
 
-              if (req.headers["content-type"]?.match(/application\/json/iu)) {
+              if (/application\/json/iu.test(req.headers["content-type"])) {
                 args[argName] = JSON.parse(body.toString());
               } else if (arg) {
                 let { type } = arg;
