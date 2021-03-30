@@ -2,6 +2,7 @@
 import { randomBytes } from "crypto";
 import { request as httpRequest } from "http";
 import { request as httpsRequest } from "https";
+import type { RequestOptions } from "https";
 import { hostname } from "os";
 import { URL } from "url";
 
@@ -51,11 +52,14 @@ export class SdkgenHttpClient {
       version: 3,
     });
 
-    const options = {
+    const options: RequestOptions = {
       hostname: this.baseUrl.hostname,
       method: "POST",
       path: this.baseUrl.pathname,
       port: this.baseUrl.port,
+      headers: {
+        "content-type": "application/sdkgen",
+      },
     };
 
     const encodedRet = await new Promise<unknown>((resolve, reject) => {
