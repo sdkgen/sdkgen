@@ -183,26 +183,46 @@ export function cast(value: string, type: Type): string {
 }
 
 function generateConstructor(type: StructType): string {
-  const doubleSpace = "  ";
-  const fourSpaces = "    ";
-  let str = `${doubleSpace}${type.name}({\n`;
+  let str = `  ${type.name}({\n`;
 
   for (const field of type.fields) {
     if (field.type instanceof OptionalType) {
-      str = str.concat(fourSpaces);
+      str += "    ";
     } else {
-      str = str.concat(`${fourSpaces}required `);
+      str += `    required `;
     }
 
-    str = str.concat(`this.${field.name},\n`);
+    str += `this.${mangle(field.name)},\n`;
   }
 
-  str = str.concat(`${doubleSpace}});\n`);
+  str += `  });\n`;
   return str;
+}
+
+function generateEquality(type: StructType): string {
+  let str = `  bool operator ==(other){\n`;
+
+  str += `    if (identical(this, other)) return true;\n`;
+  str += `    return ${[`other is ${type.name}`, ...type.fields.map(field => `${mangle(field.name)} == other.${mangle(field.name)}`)].join(
+    " && ",
+  )};\n`;
+
+  str += `  }\n`;
+  return str;
+}
+
+function generateHashcode(type: StructType): string {
+  return `  @override\n  int get hashCode => hashList([${type.fields.map(field => mangle(field.name)).join(", ")}]);\n`;
+}
+
+function generateToString(type: StructType): string {
+  return `  String toString() {\n    return '${type.name} { ${type.fields
+    .map(field => `${field.name}: $${mangle(field.name).startsWith("$") ? `{${mangle(field.name)}}` : mangle(field.name)}`)
+    .join(", ")} }';\n  }\n`;
 }
 
 export function generateClass(type: StructType): string {
   return `class ${type.name} {\n  ${type.fields
-    .map(field => `${generateTypeName(field.type)} ${mangle(field.name)};`)
-    .join("\n  ")}\n\n${generateConstructor(type)}}\n`;
+    .map(field => `final ${generateTypeName(field.type)} ${mangle(field.name)};`)
+    .join("\n  ")}\n\n${generateConstructor(type)}\n${generateEquality(type)}\n${generateHashcode(type)}\n${generateToString(type)}}\n`;
 }

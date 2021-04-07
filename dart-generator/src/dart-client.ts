@@ -6,7 +6,9 @@ import { cast, generateClass, generateEnum, generateErrorClass, generateTypeName
 export function generateDartClientSource(ast: AstRoot): string {
   let code = "";
 
-  code += `import 'package:flutter/widgets.dart';
+  code += `import 'dart:typed_data';
+
+import 'package:flutter/widgets.dart';
 import 'package:sdkgen_runtime/types.dart';
 import 'package:sdkgen_runtime/http_client.dart';
 
