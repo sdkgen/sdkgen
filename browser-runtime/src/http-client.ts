@@ -62,6 +62,7 @@ export class SdkgenHttpClient {
 
     const extra: Record<string, any> = {};
 
+    // eslint-disable-next-line no-foreach/no-foreach
     this.extra.forEach((value, key) => {
       extra[key] = value;
     });
@@ -87,6 +88,7 @@ export class SdkgenHttpClient {
     const encodedRet = await new Promise<unknown>((resolve, reject) => {
       const req = new XMLHttpRequest();
 
+      req.setRequestHeader("Content-Type", "application/sdkgen");
       req.open("POST", `${this.baseUrl}/${functionName}`);
 
       req.onreadystatechange = () => {
