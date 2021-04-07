@@ -1,12 +1,14 @@
 import type { AstRoot } from "@sdkgen/parser";
-import { HiddenAnnotation, VoidPrimitiveType } from "@sdkgen/parser";
+import { OptionalType, HiddenAnnotation, VoidPrimitiveType } from "@sdkgen/parser";
 
-import { cast, generateClass, generateEnum, generateErrorClass, generateTypeName } from "./helpers";
+import { cast, generateClass, generateEnum, generateErrorClass, generateTypeName, mangle } from "./helpers";
 
 export function generateDartClientSource(ast: AstRoot): string {
   let code = "";
 
-  code += `import 'package:flutter/widgets.dart';
+  code += `import 'dart:typed_data';
+
+import 'package:flutter/widgets.dart';
 import 'package:sdkgen_runtime/types.dart';
 import 'package:sdkgen_runtime/http_client.dart';
 
@@ -28,15 +30,19 @@ import 'package:sdkgen_runtime/http_client.dart';
   }
 
   code += `class ApiClient extends SdkgenHttpClient {
-  ApiClient(String baseUrl, [BuildContext context]) : super(baseUrl, context, _typeTable, _fnTable, _errTable);
+  ApiClient(String baseUrl, [BuildContext? context]) : super(baseUrl, context, _typeTable, _fnTable, _errTable);
 ${ast.operations
   .filter(op => op.annotations.every(ann => !(ann instanceof HiddenAnnotation)))
   .map(
     op => `
   ${op.returnType instanceof VoidPrimitiveType ? "Future<void> " : `Future<${generateTypeName(op.returnType)}> `}${op.prettyName}(${
-      op.args.length === 0 ? "" : `{${op.args.map(arg => `${generateTypeName(arg.type)} ${arg.name}`).join(", ")}}`
+      op.args.length === 0
+        ? ""
+        : `{${op.args
+            .map(arg => `${arg.type instanceof OptionalType ? "" : "required "}${generateTypeName(arg.type)} ${mangle(arg.name)}`)
+            .join(", ")}}`
     }) async { ${op.returnType instanceof VoidPrimitiveType ? "" : "return "}${cast(
-      `await makeRequest("${op.prettyName}", {${op.args.map(arg => `"${arg.name}": ${arg.name}`).join(", ")}})`,
+      `await makeRequest('${op.prettyName}', {${op.args.map(arg => `'${arg.name}': ${mangle(arg.name)}`).join(", ")}})`,
       op.returnType,
     )}; }`,
   )
@@ -46,23 +52,23 @@ ${ast.operations
   code += `var _typeTable = {\n`;
 
   for (const type of ast.structTypes) {
-    code += `  "${type.name}": StructTypeDescription(\n`;
+    code += `  '${type.name}': StructTypeDescription(\n`;
     code += `    ${type.name},\n`;
     code += `    {\n`;
     for (const field of type.fields) {
-      code += `      "${field.name}": "${field.type.name}",\n`;
+      code += `      '${field.name}': '${field.type.name}',\n`;
     }
 
     code += `    },\n`;
     code += `    (Map fields) => ${type.name}(\n`;
     for (const field of type.fields) {
-      code += `      ${field.name}: ${cast(`fields["${field.name}"]`, field.type)},\n`;
+      code += `      ${mangle(field.name)}: ${cast(`fields['${field.name}']`, field.type)},\n`;
     }
 
     code += `    ),\n`;
     code += `    (${type.name} obj) => ({\n`;
     for (const field of type.fields) {
-      code += `      "${field.name}": obj.${field.name},\n`;
+      code += `      '${field.name}': obj.${mangle(field.name)},\n`;
     }
 
     code += `    }),\n`;
@@ -70,8 +76,8 @@ ${ast.operations
   }
 
   for (const type of ast.enumTypes) {
-    code += `  "${type.name}": EnumTypeDescription(${type.name}, ${type.name}.values, [\n    ${type.values
-      .map(x => `"${x.value}"`)
+    code += `  '${type.name}': EnumTypeDescription(${type.name}, ${type.name}.values, [\n    ${type.values
+      .map(x => `'${x.value}'`)
       .join(",\n    ")}\n  ]),\n`;
   }
 
@@ -79,9 +85,9 @@ ${ast.operations
 
   code += `var _fnTable = {\n`;
   for (const op of ast.operations) {
-    code += `  "${op.prettyName}": FunctionDescription("${op.returnType.name}", {\n`;
+    code += `  '${op.prettyName}': FunctionDescription('${op.returnType.name}', {\n`;
     for (const arg of op.args) {
-      code += `    "${arg.name}": "${arg.type.name}",\n`;
+      code += `    '${arg.name}': '${arg.type.name}',\n`;
     }
 
     code += `  }),\n`;
@@ -93,7 +99,7 @@ ${ast.operations
   for (const error of ast.errors) {
     const hasData = !(error.dataType instanceof VoidPrimitiveType);
 
-    code += `  "${error.name}": SdkgenErrorDescription("${error.dataType.name}", (msg, data) => ${error.name}(msg${hasData ? ", data" : ""})),\n`;
+    code += `  '${error.name}': SdkgenErrorDescription('${error.dataType.name}', (msg, data) => ${error.name}(msg${hasData ? ", data" : ""})),\n`;
   }
 
   code += `};\n`;

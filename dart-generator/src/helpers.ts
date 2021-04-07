@@ -28,27 +28,83 @@ import {
   XmlPrimitiveType,
 } from "@sdkgen/parser";
 
-export function generateEnum(type: EnumType): string {
-  return `enum ${type.name} {\n  ${type.values.map(x => x.value).join(",\n  ")}\n}\n`;
-}
+export function mangle(fieldName: string): string {
+  const mangleList = [
+    "abstract",
+    "as",
+    "assert",
+    "async",
+    "await",
+    "bool",
+    "break",
+    "case",
+    "catch",
+    "class",
+    "const",
+    "continue",
+    "covariant",
+    "default",
+    "deferred",
+    "do",
+    "double",
+    "dynamic",
+    "else",
+    "enum",
+    "export",
+    "extends",
+    "extension",
+    "external",
+    "factory",
+    "false",
+    "final",
+    "finally",
+    "for",
+    "Function",
+    "get",
+    "hide",
+    "if",
+    "implements",
+    "import",
+    "in",
+    "int",
+    "interface",
+    "is",
+    "library",
+    "mixin",
+    "new",
+    "null",
+    "on",
+    "operator",
+    "part",
+    "rethrow",
+    "return",
+    "set",
+    "show",
+    "static",
+    "super",
+    "switch",
+    "sync",
+    "this",
+    "throw",
+    "true",
+    "try",
+    "typedef",
+    "var",
+    "void",
+    "while",
+    "with",
+    "yield",
+  ];
 
-function generateConstructor(type: StructType): string {
-  const doubleSpace = "  ";
-  const fourSpaces = "    ";
-  let str = `${doubleSpace}${type.name}({\n`;
-
-  for (const field of type.fields) {
-    if (field.type instanceof OptionalType) {
-      str = str.concat(fourSpaces);
-    } else {
-      str = str.concat(`${fourSpaces}required `);
-    }
-
-    str = str.concat(`this.${field.name},\n`);
+  if (mangleList.includes(fieldName)) {
+    return `$${fieldName}`;
   }
 
-  str = str.concat(`${doubleSpace}});\n`);
-  return str;
+  return fieldName;
+}
+
+export function generateEnum(type: EnumType): string {
+  return `enum ${type.name} {\n  ${type.values.map(x => x.value).join(",\n  ")}\n}\n`;
 }
 
 export function generateTypeName(type: Type): string {
@@ -68,7 +124,7 @@ export function generateTypeName(type: Type): string {
     case BoolPrimitiveType:
       return "bool";
     case BytesPrimitiveType:
-      return "List<int>";
+      return "Uint8List";
     case MoneyPrimitiveType:
       return "int";
     case CpfPrimitiveType:
@@ -112,13 +168,13 @@ export function generateErrorClass(error: ErrorNode): string {
 
 export function cast(value: string, type: Type): string {
   if (type instanceof OptionalType) {
-    return cast(value, type.base);
+    return `${value} == null ? null : ${cast(value, type.base)}`;
   } else if (type instanceof ArrayType) {
-    return `(${value} as List)?.map((e) => ${cast("e", type.base)})?.toList()`;
+    return `(${value} as List).map((e) => ${cast("e", type.base)}).toList()`;
   } else if (type instanceof VoidPrimitiveType) {
     return value;
   } else if (type instanceof FloatPrimitiveType) {
-    return `(${value} as num)?.toDouble()`;
+    return `(${value} as num).toDouble()`;
   } else if (type instanceof MoneyPrimitiveType) {
     return `${value} as int`;
   }
@@ -126,8 +182,47 @@ export function cast(value: string, type: Type): string {
   return `${value} as ${generateTypeName(type)}`;
 }
 
+function generateConstructor(type: StructType): string {
+  let str = `  ${type.name}({\n`;
+
+  for (const field of type.fields) {
+    if (field.type instanceof OptionalType) {
+      str += "    ";
+    } else {
+      str += `    required `;
+    }
+
+    str += `this.${mangle(field.name)},\n`;
+  }
+
+  str += `  });\n`;
+  return str;
+}
+
+function generateEquality(type: StructType): string {
+  let str = `  bool operator ==(other){\n`;
+
+  str += `    if (identical(this, other)) return true;\n`;
+  str += `    return ${[`other is ${type.name}`, ...type.fields.map(field => `${mangle(field.name)} == other.${mangle(field.name)}`)].join(
+    " && ",
+  )};\n`;
+
+  str += `  }\n`;
+  return str;
+}
+
+function generateHashcode(type: StructType): string {
+  return `  @override\n  int get hashCode => hashList([${type.fields.map(field => mangle(field.name)).join(", ")}]);\n`;
+}
+
+function generateToString(type: StructType): string {
+  return `  String toString() {\n    return '${type.name} { ${type.fields
+    .map(field => `${field.name}: $${mangle(field.name).startsWith("$") ? `{${mangle(field.name)}}` : mangle(field.name)}`)
+    .join(", ")} }';\n  }\n`;
+}
+
 export function generateClass(type: StructType): string {
-  return `class ${type.name} {\n  ${type.fields.map(field => `${generateTypeName(field.type)} ${field.name};`).join("\n  ")}\n\n${generateConstructor(
-    type,
-  )}}\n`;
+  return `class ${type.name} {\n  ${type.fields
+    .map(field => `final ${generateTypeName(field.type)} ${mangle(field.name)};`)
+    .join("\n  ")}\n\n${generateConstructor(type)}\n${generateEquality(type)}\n${generateHashcode(type)}\n${generateToString(type)}}\n`;
 }
