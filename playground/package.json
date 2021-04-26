@@ -87,7 +87,7 @@
     "storage-factory": "^0.2.0",
     "style-loader": "^2.0.0",
     "ts-jest": "^26.5.4",
-    "ts-loader": "^8.1.0",
+    "ts-loader": "^9.1.1",
     "typescript": "^4.2.3",
     "url-loader": "^4.1.1",
     "use-debounce": "^6.0.0",
