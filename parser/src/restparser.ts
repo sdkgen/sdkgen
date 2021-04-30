@@ -3,7 +3,8 @@ import { parse as pathParse } from "path";
 import { RestAnnotation } from "./ast";
 
 function scanHeaders(text: string) {
-  const headerRegex = /\[header (?<header>[\w-]+): \{(?<name>\w+)\}\]/gu;
+  // Header name: https://tools.ietf.org/html/rfc2616#section-4.2
+  const headerRegex = /\[header (?<header>[^()<>@,;:\\"/[\]?={}\s\t]+): \{(?<name>\w+)\}\]/gu;
   const headers = new Map<string, string>();
 
   let match: RegExpExecArray | null;
