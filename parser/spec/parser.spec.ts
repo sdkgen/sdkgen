@@ -556,6 +556,45 @@ describe(Parser, () => {
 
     expectParses(
       `
+        @rest POST /insertCustomerLead [header api_key: {apiKey}] [header api_secret: {apiSecret}] [body {customerLead}]
+        fn insertCustomerLead(customerLead: string, apiKey: bigint, apiSecret: string)
+      `,
+      {
+        annotations: {
+          "fn.insertCustomerLead": [
+            {
+              type: "rest",
+              value: {
+                bodyVariable: "customerLead",
+                headers: [
+                  ["api_key", "apiKey"],
+                  ["api_secret", "apiSecret"],
+                ],
+                method: "POST",
+                path: "/insertCustomerLead",
+                pathVariables: [],
+                queryVariables: [],
+              },
+            },
+          ],
+        },
+        errors: ["Fatal"],
+        functionTable: {
+          insertCustomerLead: {
+            args: {
+              customerLead: "string",
+              apiKey: "bigint",
+              apiSecret: "string",
+            },
+            ret: "void",
+          },
+        },
+        typeTable: {},
+      },
+    );
+
+    expectParses(
+      `
         type NewUser {
             name: string
         }
