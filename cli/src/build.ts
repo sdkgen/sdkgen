@@ -4,6 +4,7 @@ import { writeFileSync } from "fs";
 import { generateCSharpServerSource } from "@sdkgen/csharp-generator";
 import { generateDartClientSource } from "@sdkgen/dart-generator";
 import { generateAndroidClientSource } from "@sdkgen/kotlin-generator";
+import { generateSwiftClientSource } from "@sdkgen/swift-generator";
 import { Parser } from "@sdkgen/parser";
 import {
   generateBrowserClientSource,
@@ -46,6 +47,7 @@ export function buildCmd(argv: string[]): void {
             "- flutter",
             "- csharp_server",
             "- kotlin_android",
+            "- swift_ios",
           ].join("\n"),
           header: "Available targets",
         },
@@ -115,6 +117,11 @@ export function buildCmd(argv: string[]): void {
 
     case "kotlin_android": {
       writeFileSync(options.output, generateAndroidClientSource(ast));
+      break;
+    }
+
+    case "swift_ios": {
+      writeFileSync(options.output, generateSwiftClientSource(ast));
       break;
     }
 

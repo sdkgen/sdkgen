@@ -54,6 +54,7 @@
     "@sdkgen/dart-generator": "file:../dart-generator",
     "@sdkgen/kotlin-generator": "file:../kotlin-generator",
     "@sdkgen/parser": "file:../parser",
+    "@sdkgen/swift-generator": "file:../swift-generator",
     "@sdkgen/typescript-generator": "file:../typescript-generator",
     "command-line-args": "^5.1.1",
     "command-line-usage": "^6.1.1"
