@@ -37,7 +37,7 @@ internal class Device {
             return localId
         }
         
-        let id = SdkHelper.randomBytesHex(len: 8)
+        let id = SdkgenHelper.randomBytesHex(len: 8)
         UserDefaults.standard.set(id, forKey: "device-id")
         UserDefaults.standard.synchronize()
         return id
@@ -46,7 +46,7 @@ internal class Device {
     private static func phoneFingerprint() -> String {
         let keychain = KeychainSwift()
         guard let phoneFingerprint = keychain.get("phoneFingerprint") else {
-            let newPhoneFingerprint = SdkHelper.randomBytesHex(len: 32)
+            let newPhoneFingerprint = SdkgenHelper.randomBytesHex(len: 32)
             keychain.set(newPhoneFingerprint, forKey: "phoneFingerprint")
             return newPhoneFingerprint
         }

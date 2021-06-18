@@ -1,0 +1,6 @@
+use_frameworks!
+target 'SdkgenRuntime_Tests' do
+  pod 'SdkgenRuntime', :path => '../'
+  
+  
+end

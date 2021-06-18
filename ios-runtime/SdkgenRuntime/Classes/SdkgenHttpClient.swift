@@ -1,7 +1,7 @@
 import Foundation
 import Alamofire
 
-open class SdkHttpClient {
+open class SdkgenHttpClient {
     
     public var baseUrl: String
        
@@ -9,12 +9,12 @@ open class SdkHttpClient {
         self.baseUrl = baseUrl
     }
     
-    public enum SdkResponse<T> {
+    public enum SdkgenResponse<T> {
         case success(Data)
-        case failure(SdkError)
+        case failure(SdkgenError)
     }
 
-    public class SdkError: Error {
+    public class SdkgenError: Error {
         public var message: String?
         public var code: Int?
         public var type: String?
@@ -26,11 +26,11 @@ open class SdkHttpClient {
         }
     }
     
-    public func makeRequest(_ name: String, _ args: [String: Any], _ timeoutSeconds: Double?, callback: @escaping (SdkResponse<Any?>) -> Void) throws {
+    public func makeRequest(_ name: String, _ args: [String: Any], _ timeoutSeconds: Double?, callback: @escaping (SdkgenResponse<Any?>) -> Void) throws {
 
         let body: [String : Any] = [
             "version": 3,
-            "requestId": SdkHelper.randomBytesHex(len: 8),
+            "requestId": SdkgenHelper.randomBytesHex(len: 8),
             "deviceInfo": Device.device(),
             "name": name,
             "args": args,
@@ -41,7 +41,7 @@ open class SdkHttpClient {
         guard let urlObj = URL(string: url) else { throw Errors.fatalError(error: Errors.getUrlCreationErrorMessage(url), code: nil) }
         var urlRequest = URLRequest(url: urlObj)
         urlRequest.method = .post
-        urlRequest.timeoutInterval = timeoutSeconds ?? 60;
+        urlRequest.timeoutInterval = timeoutSeconds ?? 35;
         
         do {
             urlRequest.httpBody = try JSONSerialization.data(withJSONObject: body, options: .prettyPrinted)
@@ -56,18 +56,18 @@ open class SdkHttpClient {
                     switch response.result {
                     case .success(let value):
                         if let responseJson = try JSONSerialization.jsonObject(with: value, options: []) as? [String: Any],
-                           let result = responseJson["result"] as? [String: Any],
+                           let resultJson = responseJson["result"],
                            response.response?.statusCode == 200 {
-                                let dataResult = try JSONSerialization.data(withJSONObject: result, options: .prettyPrinted)
-                                callback(SdkResponse.success(dataResult))
+                                let dataResult = try JSONSerialization.data(withJSONObject: resultJson, options: .prettyPrinted)
+                                callback(SdkgenResponse.success(dataResult))
                         } else {
-                            callback(SdkResponse.failure(Errors.fatalError(error: Errors.resultParseErrorMessage, code: nil)))
+                            callback(SdkgenResponse.failure(Errors.fatalError(error: Errors.resultParseErrorMessage, code: nil)))
                         }
                         
                         break
                     case .failure(let error):
                         if error.responseCode == nil && response.data == nil && response.response == nil {
-                            callback(SdkResponse.failure(Errors.timedOutOrConnectionError(error: error.localizedDescription)))
+                            callback(SdkgenResponse.failure(Errors.connectionError(error: error.localizedDescription)))
                             break
                         }
                         
@@ -75,16 +75,16 @@ open class SdkHttpClient {
                            let responseJson = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
                            let responseError = response.error,
                            let errorDict = responseJson["error"] as? [String: Any] {
-                                let apiError = SdkError(message: errorDict["message"] as? String, code: responseError.responseCode, type: errorDict["type"] as? String)
-                                callback(SdkResponse.failure(apiError))
+                                let apiError = SdkgenError(message: errorDict["message"] as? String, code: responseError.responseCode, type: errorDict["type"] as? String)
+                                callback(SdkgenResponse.failure(apiError))
                         } else {
-                            callback(SdkResponse.failure(Errors.fatalError(error: error.localizedDescription, code: error.responseCode)))
+                            callback(SdkgenResponse.failure(Errors.fatalError(error: error.localizedDescription, code: error.responseCode)))
                         }
                         
                         break
                     }
                 } catch {
-                    callback(SdkResponse.failure(Errors.jsonSerializationError(error: error.localizedDescription)))
+                    callback(SdkgenResponse.failure(Errors.jsonSerializationError(error: error.localizedDescription)))
                 }
                
             })

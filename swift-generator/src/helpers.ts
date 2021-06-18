@@ -212,16 +212,16 @@ export function generateJsonRepresentation(type: Type, fieldName: string): strin
       return `${mangle(fieldName)} == nil ? nil : ${generateJsonRepresentation((type as OptionalType).base, `${mangle(fieldName)}!`)}`
     case DatePrimitiveType:
     case DateTimePrimitiveType:
-      return `SdkHelper.encodeDateTime(date: ${fieldName})`
+      return `SdkgenHelper.encodeDateTime(date: ${fieldName})`
     case EnumType:
       return `${mangle(fieldName)}.rawValue`;
     case TypeReference:
       return `${generateJsonRepresentation((type as TypeReference).type, `${mangle(fieldName)}`)}`;
     case StructType:
-      return `try ${mangle(fieldName)}.toJson()`;
+      return `${mangle(fieldName)}.toJSON()`;
     case ArrayType:
     case JsonPrimitiveType:
-      return `try ${mangle(fieldName)}.map({ return ${generateJsonRepresentation((type as ArrayType).base, "$0")} })`;
+      return `${mangle(fieldName)}.map({ return ${generateJsonRepresentation((type as ArrayType).base, "$0")} })`;
     case VoidPrimitiveType:
       return `nil`;
     case BytesPrimitiveType:
@@ -266,10 +266,21 @@ function generateConstructor(type: StructType): string {
   return str;
 }
 
+function generateToJson(type: StructType): string {
+  let str = `        func toJSON() -> [String: Any] {\n`;
+  str += `            var json = [String: Any]()\n`;
+  str += type.fields.map(field => 
+    `            json[\"${mangle(field.name)}\"] = ${generateJsonRepresentation(field.type, field.name)}`
+  ).join("\n"); 
+  str += `\n            return json`;
+  str += `\n        }\n`;
+  return str;
+}
+
 export function generateClass(type: StructType): string {
   return `    public class ${type.name}: Codable {\n${type.fields
     .map(field => `        var ${mangle(field.name)}: ${generateSwiftTypeName(field.type)}`)
-    .join("\n")}\n\n${generateConstructor(type)}\n    }\n`;
+    .join("\n")}\n\n${generateConstructor(type)}\n${generateToJson(type)}\n    }\n`;
 }
 
 export function generateErrorClass(): string {

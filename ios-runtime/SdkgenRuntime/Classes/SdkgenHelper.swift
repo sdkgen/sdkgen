@@ -1,6 +1,6 @@
 import Foundation
 
-public final class SdkHelper {
+public final class SdkgenHelper {
     internal static func randomBytesHex(len: Int) -> String {
         var randomBytes = [UInt8](repeating: 0, count: len)
         let _ = SecRandomCopyBytes(kSecRandomDefault, len, &randomBytes)

@@ -1,7 +1,6 @@
 import type { AstRoot } from "@sdkgen/parser";
 import { ErrorNode, HiddenAnnotation, VoidPrimitiveType } from "@sdkgen/parser";
-
-import { generateClass, generateEnum, generateErrorClass, generateErrorType, generateSwiftTypeName, generateMethodSignature, generateJsonRepresentation, mangle } from "./helpers";
+import { generateClass, generateEnum, generateErrorClass, generateErrorType, generateMethodSignature, generateJsonRepresentation, mangle } from "./helpers";
 
 export function generateSwiftClientSource(ast: AstRoot): string {
   let code =`import Foundation\nimport SdkgenRuntime\n\n`;
@@ -42,8 +41,6 @@ export function generateSwiftClientSource(ast: AstRoot): string {
   const errorTypeEnumEntries: string[] = [];
   const connectionError = new ErrorNode("Connection", new VoidPrimitiveType());
   errorTypeEnumEntries.push(connectionError.name);
-  const timeOutError = new ErrorNode("TimedOut", new VoidPrimitiveType());
-  errorTypeEnumEntries.push(timeOutError.name);
   for (const error of ast.errors) {
     errorTypeEnumEntries.push(error.name); 
   }
@@ -61,52 +58,53 @@ export function generateSwiftClientSource(ast: AstRoot): string {
       case failure(Error)
     }\n\n`;
 
-  code += `    public class Calls: SdkHttpClient, APICallsProtocol {
+  code += `    public class Calls: SdkgenHttpClient, APICallsProtocol {
 
         override init(baseUrl: String) {
             super.init(baseUrl: baseUrl)
-        }\n`;
+        }\n\n`;
   
   code += ast.operations
     .filter(op => op.annotations.every(ann => !(ann instanceof HiddenAnnotation)))
     .map(op => {
       let impl = ``;
       impl += `    ${generateMethodSignature(op)} {\n`;
-     
-      impl += `            do {\n`;
-
       if (op.args.length > 0) {
-        impl += `                var jsonArgs = [String: Any]()\n`;
-        impl += op.args.map(arg => `                jsonArgs[\"${mangle(arg.name)}\"] = ${generateJsonRepresentation(arg.type, arg.name)}`).join("\n");
+        impl += `            var jsonArgs = [String: Any]()\n`;
+        impl += op.args.map(arg => `            jsonArgs[\"${mangle(arg.name)}\"] = ${generateJsonRepresentation(arg.type, arg.name)}`).join("\n");
       } else {
-        impl += `                let jsonArgs = [String: Any]()`;
+        impl += `            let jsonArgs = [String: Any]()`;
       }
-      impl += `\n`;
-      impl +=  `
-                try makeRequest("${op.prettyName}", jsonArgs, timeoutSeconds, callback: { [weak self] callResponse in
-                    guard let this = self else { return }
-
-                    let response: ${op.returnType instanceof VoidPrimitiveType ? "API.Result<API.NoReply>" : `API.Result<${generateSwiftTypeName(op.returnType)}>`} = this.handleResponse(response: callResponse)
-                    callback?(response)
-                })
-            } catch let apiError as SdkError {
-                callback?(Result.failure(handleError(apiError: apiError)))
-            } catch (let error) {
-                debugPrint(error.localizedDescription)
-            }`;
-      
+      impl += `\n\n`;
+      impl += `            request("${op.prettyName}", jsonArgs, timeoutSeconds, callback: callback)`;
       impl += `\n        }\n`;
       return impl;
     })
     .join("\n");
 
   code += `
-        private func handleError(apiError: SdkError) -> API.Error {
+        private func request<T: Codable>(_ name: String, _ args: [String: Any], _ timeoutSeconds: Double?, callback: ((API.Result<T>) -> Void)?) {
+            do {
+                try makeRequest(name, args, timeoutSeconds, callback: { [weak self] callResponse in
+                    guard let this = self else { return }
+
+                    let response: API.Result<T> = this.handleResponse(response: callResponse)
+                    callback?(response)
+                })
+            } catch let apiError as SdkgenError {
+                callback?(Result.failure(handleError(apiError: apiError)))
+            } catch (let error) {
+                debugPrint(error.localizedDescription)
+            }
+        }\n`;
+
+  code += `
+        private func handleError(apiError: SdkgenError) -> API.Error {
             return API.Error(message: apiError.message, code: apiError.code, type: apiError.type)
         }\n`;
 
   code += `
-        private func handleResponse<T: Codable>(response: SdkResponse<Any?>) -> Result<T> {
+        private func handleResponse<T: Codable>(response: SdkgenResponse<Any?>) -> Result<T> {
             switch response {
             case .failure(let error):
                 return Result.failure(self.handleError(apiError: error))
@@ -118,8 +116,10 @@ export function generateSwiftClientSource(ast: AstRoot): string {
                     } else {
                         return Result.failure(Error(message: "", code: nil, type: "Fatal"))
                     }
-                } catch {
-                    return Result.failure(Error(message: "", code: nil, type: "Fatal"))
+                } catch let apiError as SdkgenError {
+                    return Result.failure(handleError(apiError: apiError))
+                } catch (let error) {
+                    return Result.failure(Error(message: error.localizedDescription, code: nil, type: "Fatal"))
                 }
             }
         }\n\n`;
