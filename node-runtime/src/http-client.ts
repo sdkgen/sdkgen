@@ -27,7 +27,7 @@ export class SdkgenHttpClient {
     this.baseUrl = new URL(baseUrl);
   }
 
-  async makeRequest(ctx: Context | null, functionName: string, args: unknown): Promise<any> {
+  async makeRequest(ctx: Partial<Context> | null, functionName: string, args: unknown): Promise<any> {
     const func = this.astJson.functionTable[functionName];
 
     if (!func) {
@@ -46,6 +46,7 @@ export class SdkgenHttpClient {
       extra: {
         ...extra,
         ...(ctx?.request ? ctx.request.extra : {}),
+        ...(ctx?.extra ? ctx.extra : {}),
       },
       name: functionName,
       requestId: ctx?.request ? ctx.request.id + randomBytes(6).toString("hex") : randomBytes(16).toString("hex"),
