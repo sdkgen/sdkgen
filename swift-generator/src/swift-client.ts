@@ -1,9 +1,11 @@
 import type { AstRoot } from "@sdkgen/parser";
 import { ErrorNode, HiddenAnnotation, VoidPrimitiveType } from "@sdkgen/parser";
-import { generateClass, generateEnum, generateErrorClass, generateErrorType, generateMethodSignature, generateJsonRepresentation, mangle } from "./helpers";
+import { generateClass, generateEnum, generateErrorClass, generateErrorType, generateMethodSignature, generateJsonRepresentation, generateRxMethod, mangle } from "./helpers";
 
-export function generateSwiftClientSource(ast: AstRoot): string {
-  let code =`import Foundation\nimport SdkgenRuntime\n\n`;
+export function generateSwiftClientSource(ast: AstRoot, withRxExtension: boolean): string {
+  let code =`import Foundation\nimport SdkgenRuntime\n`;
+
+  code += withRxExtension ? `import RxSwift\nimport RxCocoa\n\n` : `\n`;
 
   code += `protocol APICallsProtocol: class {\n`;
   code += ast.operations
@@ -127,6 +129,18 @@ export function generateSwiftClientSource(ast: AstRoot): string {
   code += `    }\n`;
 
   code += `}\n`;
+
+  if (withRxExtension) {
+    code += `\n`;
+    code += `extension API: ReactiveCompatible {}\n\n`;
+    code += `extension Reactive where Base: API {\n`
+    code += ast.operations
+      .filter(op => op.annotations.every(ann => !(ann instanceof HiddenAnnotation)))
+      .map(op => {
+        return `${generateRxMethod(op)}`;
+      }).join("\n");
+    code += `}\n`;
+  }
 
   return code;
 }

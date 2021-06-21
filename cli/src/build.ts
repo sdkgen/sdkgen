@@ -48,6 +48,7 @@ export function buildCmd(argv: string[]): void {
             "- csharp_server",
             "- kotlin_android",
             "- swift_ios",
+            "- rxswift_ios",
           ].join("\n"),
           header: "Available targets",
         },
@@ -121,7 +122,12 @@ export function buildCmd(argv: string[]): void {
     }
 
     case "swift_ios": {
-      writeFileSync(options.output, generateSwiftClientSource(ast));
+      writeFileSync(options.output, generateSwiftClientSource(ast, false));
+      break;
+    }
+
+    case "rxswift_ios": {
+      writeFileSync(options.output, generateSwiftClientSource(ast, true));
       break;
     }
 

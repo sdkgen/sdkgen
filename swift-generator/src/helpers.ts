@@ -306,3 +306,20 @@ export function generateMethodSignature(op: Operation) {
 
   return `    func ${mangle(op.prettyName)}(${argsString.join(", ")})`
 }
+
+export function generateRxMethod(op: Operation) {
+  let argsString = op.args.map(arg => { return `${mangle(arg.name)}: ${generateSwiftTypeName(arg.type)}`})
+    .concat([`timeoutSeconds: Double? = nil`]);
+    
+  let str =`    static func ${mangle(op.prettyName)}(${argsString.join(", ")}) -> ${op.returnType instanceof VoidPrimitiveType ? "Observable<API.Result<API.NoReply>>" : `Observable<API.Result<${generateSwiftTypeName(op.returnType)}>>`} {\n`;
+  str += `        return Observable.create { observer -> Disposable in\n`;
+  str += `            API.calls.${mangle(op.prettyName)}(${op.args.map(arg => { return `${mangle(arg.name)}: ${mangle(arg.name)}`}).concat([`timeoutSeconds: timeoutSeconds`]).join(`, `)}) { result in \n`;
+  str += `                observer.on(.next(result))\n`;
+  str += `                observer.on(.completed)\n`;
+  str += `            }\n`;
+  str += `            return Disposables.create()\n`;
+  str += `        }\n`;
+  str += `    }\n`;
+  
+  return str;
+}
