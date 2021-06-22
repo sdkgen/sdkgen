@@ -79,7 +79,6 @@ jobs:
           PUB_CREDENTIALS: ${{ secrets.PUB_CREDENTIALS }}
 
   typescript-generator:
-
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -107,7 +106,6 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
   csharp-generator:
-
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -135,7 +133,6 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
   kotlin-generator:
-
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -163,7 +160,6 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
   dart-generator:
-
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
