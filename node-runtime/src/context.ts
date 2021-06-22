@@ -31,5 +31,4 @@ export interface ContextReply {
 
 export interface Context {
   request: ContextRequest;
-  extra?: Record<string, unknown>;
 }

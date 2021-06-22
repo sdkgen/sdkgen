@@ -6,6 +6,7 @@ import type { RequestOptions } from "https";
 import { hostname } from "os";
 import { URL } from "url";
 
+import type { PartialDeep } from "type-fest";
 import type { AstJson } from "@sdkgen/parser";
 
 import type { Context } from "./context";
@@ -27,7 +28,7 @@ export class SdkgenHttpClient {
     this.baseUrl = new URL(baseUrl);
   }
 
-  async makeRequest(ctx: Partial<Context> | null, functionName: string, args: unknown): Promise<any> {
+  async makeRequest(ctx: PartialDeep<Context> | null, functionName: string, args: unknown): Promise<any> {
     const func = this.astJson.functionTable[functionName];
 
     if (!func) {
@@ -42,14 +43,13 @@ export class SdkgenHttpClient {
 
     const requestBody = JSON.stringify({
       args: encode(this.astJson.typeTable, `${functionName}.args`, func.args, args),
-      deviceInfo: ctx?.request ? ctx.request.deviceInfo : { id: hostname(), type: "node" },
+      deviceInfo: ctx?.request?.deviceInfo ? ctx.request.deviceInfo : { id: hostname(), type: "node" },
       extra: {
         ...extra,
         ...(ctx?.request ? ctx.request.extra : {}),
-        ...(ctx?.extra ? ctx.extra : {}),
       },
       name: functionName,
-      requestId: ctx?.request ? ctx.request.id + randomBytes(6).toString("hex") : randomBytes(16).toString("hex"),
+      requestId: ctx?.request?.id ? ctx.request.id + randomBytes(6).toString("hex") : randomBytes(16).toString("hex"),
       version: 3,
     });
 
