@@ -6,8 +6,8 @@ import type { RequestOptions } from "https";
 import { hostname } from "os";
 import { URL } from "url";
 
-import type { PartialDeep } from "type-fest";
 import type { AstJson } from "@sdkgen/parser";
+import type { PartialDeep } from "type-fest";
 
 import type { Context } from "./context";
 import { decode, encode } from "./encode-decode";
