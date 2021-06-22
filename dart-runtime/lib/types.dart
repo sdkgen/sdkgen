@@ -273,8 +273,7 @@ dynamic decode(
           if (value is num) {
             return BigInt.from(value);
           } else {
-            if ((value is! String ||
-                !RegExp(r'^-?[0-9]+$').hasMatch(value))) {
+            if ((value is! String || !RegExp(r'^-?[0-9]+$').hasMatch(value))) {
               throw SdkgenTypeException(
                   'Invalid Type at \'$path\', expected ${jsonEncode(type)}, got ${jsonEncode(value)}');
             }
