@@ -185,12 +185,13 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        dotnet-version: ["3.1.x", "5.0.x"]
+        dotnet-version: ["3.1.x", "5.0.x", "6.0.x"]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
+          include-prerelease: true
       - run: dotnet pack
         working-directory: ./dotnet-runtime
 
