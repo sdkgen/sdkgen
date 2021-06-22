@@ -23,8 +23,7 @@ export abstract class Type extends AstNode {
   abstract get name(): string;
 
   toJSON() {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { name, ...rest } = { ...this };
+    const { name: _name, ...rest } = { ...this };
 
     return rest;
   }
