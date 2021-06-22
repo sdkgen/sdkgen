@@ -7,7 +7,7 @@
 
 ## Installing sdkgen
 
-First of all you need Node.js ready on your machine. Versions 10, 12, 14 or 15 are supported (all stable maintained release channels). Check for it here: https://nodejs.org/en/download/
+First of all you need Node.js ready on your machine. Versions 12, 14 or 16 are supported (all stable maintained release channels). Check for it here: https://nodejs.org/en/download/
 
 Install the global CLI:
 
