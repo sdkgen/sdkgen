@@ -59,7 +59,7 @@ export class RequestsStore {
       safehtml: "<body>Hello</body>",
       string: "string",
       uint: 123,
-      url: location.origin,
+      url: window.location.origin,
       uuid: uuidV4(),
       void: undefined,
       xml: "<aa></aa>",
