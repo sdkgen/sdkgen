@@ -258,7 +258,7 @@ export function encode<Table extends DeepReadonly<TypeTable>, Type extends DeepR
 
     return (typeof value === "string" ? new Date(value) : value).toISOString().replace("Z", "") as EncodedType<Type, Table>;
   } else {
-    const resolved = (typeTable as Record<string, TypeDescription>)[type as string];
+    const resolved = (typeTable as Record<string, TypeDescription>)[type];
 
     if (resolved) {
       return encode(typeTable, path, resolved, value) as EncodedType<Type, Table>;
@@ -360,7 +360,7 @@ export function decode<Table extends DeepReadonly<TypeTable>, Type extends DeepR
 
     return new Date(`${value.endsWith("Z") ? value : value.concat("Z")}`) as DecodedType<Type, Table>;
   } else {
-    const resolved = (typeTable as Record<string, TypeDescription>)[type as string];
+    const resolved = (typeTable as Record<string, TypeDescription>)[type];
 
     if (resolved) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return

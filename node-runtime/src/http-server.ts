@@ -556,7 +556,8 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
                       .then(() => {
                         res.write(buffer);
                         res.end();
-                      });
+                      })
+                      .catch(() => {});
                   } else {
                     res.setHeader("content-type", "application/json");
                     res.write(JSON.stringify(reply.result));
