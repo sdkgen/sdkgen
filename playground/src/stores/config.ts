@@ -3,7 +3,7 @@ import { observable } from "mobx";
 
 import type { RootStore } from ".";
 
-const endpointUrlFallback = process.env.NODE_ENV === "development" ? `http://localhost:${process.env.SERVER_PORT}` : location.origin;
+const endpointUrlFallback = process.env.NODE_ENV === "development" ? `http://localhost:${process.env.SERVER_PORT}` : window.location.origin;
 
 function randomBytesHex(len: number) {
   let hex = "";
