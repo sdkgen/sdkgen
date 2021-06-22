@@ -13,6 +13,7 @@ export function generateNodeClientSource(ast: AstRoot): string {
 import { Context, Fatal${hasErrorWithoutData ? ", SdkgenError" : ""}${
     hasErrorWithData ? ", SdkgenErrorWithData" : ""
   }, SdkgenHttpClient } from "@sdkgen/node-runtime";
+import { PartialDeep } from "type-fest";
 export { Fatal } from "@sdkgen/node-runtime";
 
 `;
