@@ -178,11 +178,9 @@ function simpleEncodeDecode(path: string, type: string, value: unknown) {
 export function encode<Table extends DeepReadonly<TypeTable>, Type extends DeepReadonly<TypeDescription>>(
   typeTable: Table,
   path: string,
-  typeArg: Type,
+  type: Type,
   value: unknown,
 ): EncodedType<Type, Table> {
-  const type = typeArg;
-
   if (typeof type === "string" && !type.endsWith("?") && type !== "void" && (value === null || value === undefined)) {
     throw new Error(`Invalid type at '${path}', cannot be null`);
   } else if (Array.isArray(type)) {
@@ -260,7 +258,8 @@ export function encode<Table extends DeepReadonly<TypeTable>, Type extends DeepR
 
     return (typeof value === "string" ? new Date(value) : value).toISOString().replace("Z", "") as EncodedType<Type, Table>;
   } else {
-    const resolved = (typeTable as Record<string, TypeDescription>)[type];
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+    const resolved = (typeTable as Record<string, TypeDescription>)[type as string];
 
     if (resolved) {
       return encode(typeTable, path, resolved, value) as EncodedType<Type, Table>;
@@ -273,11 +272,9 @@ export function encode<Table extends DeepReadonly<TypeTable>, Type extends DeepR
 export function decode<Table extends DeepReadonly<TypeTable>, Type extends DeepReadonly<TypeDescription>>(
   typeTable: Table,
   path: string,
-  typeArg: Type,
+  type: Type,
   value: unknown,
 ): DecodedType<Type, Table> {
-  const type = typeArg;
-
   if (typeof type === "string" && !type.endsWith("?") && type !== "void" && (value === null || value === undefined)) {
     throw new Error(`Invalid type at '${path}', cannot be null`);
   } else if (Array.isArray(type)) {
@@ -364,7 +361,8 @@ export function decode<Table extends DeepReadonly<TypeTable>, Type extends DeepR
 
     return new Date(`${value.endsWith("Z") ? value : value.concat("Z")}`) as DecodedType<Type, Table>;
   } else {
-    const resolved = (typeTable as Record<string, TypeDescription>)[type];
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
+    const resolved = (typeTable as Record<string, TypeDescription>)[type as string];
 
     if (resolved) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
