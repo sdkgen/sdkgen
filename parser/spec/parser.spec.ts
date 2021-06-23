@@ -797,28 +797,25 @@ describe(Parser, () => {
       },
     );
 
-    expectParses(
+    expectDoesntParse(
       `
         type Item Item[]
       `,
-      {
-        annotations: {},
-        errors: ["Fatal"],
-        functionTable: {},
-        typeTable: { Item: "Item[]" },
-      },
+      "Type 'Item' at -:2:9 is recursive but is not an struct",
     );
 
-    expectParses(
+    expectDoesntParse(
+      `
+        type Item Item?
+      `,
+      "Type 'Item' at -:2:9 is recursive but is not an struct",
+    );
+
+    expectDoesntParse(
       `
         type Item Item
       `,
-      {
-        annotations: {},
-        errors: ["Fatal"],
-        functionTable: {},
-        typeTable: { Item: "Item" },
-      },
+      "Type 'Item' at -:2:9 is recursive but is not an struct",
     );
   });
 });
