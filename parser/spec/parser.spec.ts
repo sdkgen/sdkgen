@@ -527,8 +527,8 @@ describe(Parser, () => {
               value: {
                 bodyVariable: null,
                 headers: [
-                  ["user-agent", "userAgent"],
                   ["accept-language", "lang"],
+                  ["user-agent", "userAgent"],
                   ["x-token", "token"],
                 ],
                 method: "GET",
