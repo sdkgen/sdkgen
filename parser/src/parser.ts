@@ -13,7 +13,6 @@ import {
   ErrorNode,
   Field,
   FunctionOperation,
-  GetOperation,
   HiddenAnnotation,
   OptionalType,
   StructType,
@@ -28,7 +27,6 @@ import { analyse } from "./semantic/analyser";
 import type {
   CurlyCloseSymbolToken,
   FalseKeywordToken,
-  FunctionKeywordToken,
   ImportKeywordToken,
   SpreadSymbolToken,
   Token,
@@ -43,7 +41,7 @@ import {
   EnumKeywordToken,
   ErrorKeywordToken,
   ExclamationMarkSymbolToken,
-  GetKeywordToken,
+  FunctionKeywordToken,
   IdentifierToken,
   OptionalSymbolToken,
   ParensCloseSymbolToken,
@@ -59,7 +57,6 @@ export class ParserError extends Error {}
 interface MultiExpectMatcher<T> {
   ImportKeywordToken?(token: ImportKeywordToken): T;
   TypeKeywordToken?(token: TypeKeywordToken): T;
-  GetKeywordToken?(token: GetKeywordToken): T;
   FunctionKeywordToken?(token: FunctionKeywordToken): T;
   ErrorKeywordToken?(token: ErrorKeywordToken): T;
   IdentifierToken?(token: IdentifierToken): T;
@@ -172,9 +169,6 @@ export class Parser {
           errors.push(this.parseError());
         },
         FunctionKeywordToken: () => {
-          operations.push(this.parseOperation());
-        },
-        GetKeywordToken: () => {
           operations.push(this.parseOperation());
         },
         ImportKeywordToken: () => {
@@ -306,16 +300,9 @@ export class Parser {
 
     this.annotations = [];
 
-    const openingToken: GetKeywordToken | FunctionKeywordToken = this.multiExpect({
-      FunctionKeywordToken: token => token,
-      GetKeywordToken: token => token,
-    });
+    this.expect(FunctionKeywordToken);
 
     this.nextToken();
-
-    if (["get", "function"].includes(openingToken.maybeAsIdentifier().value)) {
-      this.warnings.push(`Keyword '${openingToken.maybeAsIdentifier().value}' is deprecated at ${openingToken.location}. Use 'fn' instead.`);
-    }
 
     const name = this.expect(IdentifierToken).value;
 
@@ -369,7 +356,7 @@ export class Parser {
       returnType = this.parseType();
     }
 
-    const op = openingToken instanceof GetKeywordToken ? new GetOperation(name, args, returnType) : new FunctionOperation(name, args, returnType);
+    const op = new FunctionOperation(name, args, returnType);
 
     op.annotations = annotations;
 

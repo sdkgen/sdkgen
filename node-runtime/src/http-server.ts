@@ -679,10 +679,9 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
         return;
       }
 
-      let ok: boolean;
+      let ok = true;
 
       try {
-        ok = await this.apiConfig.hook.onHealthCheck();
         for (const healthCheck of this.healthChecks) {
           if (!ok) {
             break;

@@ -61,15 +61,9 @@ export class EnumKeywordToken extends Token {
   }
 }
 
-export class GetKeywordToken extends Token {
-  maybeAsIdentifier(): IdentifierToken {
-    return new IdentifierToken("get");
-  }
-}
-
 export class FunctionKeywordToken extends Token {
   maybeAsIdentifier(): IdentifierToken {
-    return new IdentifierToken(this.value);
+    return new IdentifierToken("fn");
   }
 }
 
