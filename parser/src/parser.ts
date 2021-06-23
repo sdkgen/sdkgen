@@ -24,14 +24,7 @@ import {
 import { Lexer } from "./lexer";
 import { parseRestAnnotation } from "./restparser";
 import { analyse } from "./semantic/analyser";
-import type {
-  CurlyCloseSymbolToken,
-  FalseKeywordToken,
-  ImportKeywordToken,
-  SpreadSymbolToken,
-  Token,
-  TrueKeywordToken,
-} from "./token";
+import type { CurlyCloseSymbolToken, FalseKeywordToken, ImportKeywordToken, SpreadSymbolToken, Token, TrueKeywordToken } from "./token";
 import {
   AnnotationToken,
   ArraySymbolToken,
