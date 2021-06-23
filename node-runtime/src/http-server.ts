@@ -310,11 +310,19 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
             for (const argName of ann.queryVariables) {
               const argValue = parsedQuery[argName] ?? null;
 
+              if (argValue === null) {
+                continue;
+              }
+
               simpleArgs.set(argName, Array.isArray(argValue) ? argValue.join("") : argValue);
             }
 
             for (const [headerName, argName] of ann.headers) {
               const argValue = req.headers[headerName.toLowerCase()] ?? null;
+
+              if (argValue === null) {
+                continue;
+              }
 
               simpleArgs.set(argName, Array.isArray(argValue) ? argValue.join("") : argValue);
             }
@@ -322,8 +330,14 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
             if (!ann.bodyVariable && req.headers["content-type"]?.match(/^application\/x-www-form-urlencoded/iu)) {
               const parsedBody = parseQuerystring(body.toString());
 
+              console.log("parsedBody", parsedBody);
+
               for (const argName of ann.queryVariables) {
                 const argValue = parsedBody[argName] ?? null;
+
+                if (argValue === null) {
+                  continue;
+                }
 
                 simpleArgs.set(argName, Array.isArray(argValue) ? argValue.join("") : argValue);
               }
