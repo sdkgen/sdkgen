@@ -781,4 +781,44 @@ describe(Parser, () => {
       },
     );
   });
+
+  test("handles recursive types", () => {
+    expectParses(
+      `
+        type Item {
+          children: Item[]
+        }
+      `,
+      {
+        annotations: {},
+        errors: ["Fatal"],
+        functionTable: {},
+        typeTable: { Item: { children: "Item[]" } },
+      },
+    );
+
+    expectParses(
+      `
+        type Item Item[]
+      `,
+      {
+        annotations: {},
+        errors: ["Fatal"],
+        functionTable: {},
+        typeTable: { Item: "Item[]" },
+      },
+    );
+
+    expectParses(
+      `
+        type Item Item
+      `,
+      {
+        annotations: {},
+        errors: ["Fatal"],
+        functionTable: {},
+        typeTable: { Item: "Item" },
+      },
+    );
+  });
 });
