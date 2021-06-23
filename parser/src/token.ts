@@ -61,7 +61,7 @@ export class EnumKeywordToken extends Token {
   }
 }
 
-export class FunctionKeywordToken extends Token {
+export class FnKeywordToken extends Token {
   maybeAsIdentifier(): IdentifierToken {
     return new IdentifierToken("fn");
   }

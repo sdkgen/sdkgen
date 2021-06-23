@@ -11,8 +11,7 @@ import {
   EqualSymbolToken,
   ErrorKeywordToken,
   ExclamationMarkSymbolToken,
-  FunctionKeywordToken,
-  GetKeywordToken,
+  FnKeywordToken,
   IdentifierToken,
   ImportKeywordToken,
   OptionalSymbolToken,
@@ -85,13 +84,9 @@ describe(Lexer, () => {
 
   itLexes("import", [new ImportKeywordToken()]);
 
-  itLexes("get", [new GetKeywordToken()]);
-
   itLexes("Get", [new IdentifierToken("Get")]);
 
-  itLexes("function", [new FunctionKeywordToken("function")]);
-
-  itLexes("fn", [new FunctionKeywordToken("fn")]);
+  itLexes("fn", [new FnKeywordToken("fn")]);
 
   itLexes("enuma", [new IdentifierToken("enuma")]);
 

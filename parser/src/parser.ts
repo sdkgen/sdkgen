@@ -34,7 +34,7 @@ import {
   EnumKeywordToken,
   ErrorKeywordToken,
   ExclamationMarkSymbolToken,
-  FunctionKeywordToken,
+  FnKeywordToken,
   IdentifierToken,
   OptionalSymbolToken,
   ParensCloseSymbolToken,
@@ -50,7 +50,7 @@ export class ParserError extends Error {}
 interface MultiExpectMatcher<T> {
   ImportKeywordToken?(token: ImportKeywordToken): T;
   TypeKeywordToken?(token: TypeKeywordToken): T;
-  FunctionKeywordToken?(token: FunctionKeywordToken): T;
+  FnKeywordToken?(token: FnKeywordToken): T;
   ErrorKeywordToken?(token: ErrorKeywordToken): T;
   IdentifierToken?(token: IdentifierToken): T;
   CurlyOpenSymbolToken?(token: CurlyOpenSymbolToken): T;
@@ -161,7 +161,7 @@ export class Parser {
         ErrorKeywordToken: () => {
           errors.push(this.parseError());
         },
-        FunctionKeywordToken: () => {
+        FnKeywordToken: () => {
           operations.push(this.parseOperation());
         },
         ImportKeywordToken: () => {
@@ -293,7 +293,7 @@ export class Parser {
 
     this.annotations = [];
 
-    this.expect(FunctionKeywordToken);
+    this.expect(FnKeywordToken);
 
     this.nextToken();
 
