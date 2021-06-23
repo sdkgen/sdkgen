@@ -86,7 +86,7 @@ describe(Lexer, () => {
 
   itLexes("Get", [new IdentifierToken("Get")]);
 
-  itLexes("fn", [new FnKeywordToken("fn")]);
+  itLexes("fn", [new FnKeywordToken()]);
 
   itLexes("enuma", [new IdentifierToken("enuma")]);
 
