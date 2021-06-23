@@ -24,7 +24,7 @@ export abstract class BaseApiConfig<ExtraContextT = unknown> {
   astJson!: DeepReadonly<AstJson>;
 
   fn: {
-    [name: string]: ((ctx: Context & ExtraContextT, args: any) => Promise<any>) | undefined;
+    [name: string]: ((args: any) => Promise<any>) | undefined;
   } = {};
 
   err: {

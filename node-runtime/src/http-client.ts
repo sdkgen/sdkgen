@@ -10,6 +10,7 @@ import type { AstJson } from "@sdkgen/parser";
 import type { PartialDeep } from "type-fest";
 
 import type { Context } from "./context";
+import { useSdkgenContext } from "./context-storage";
 import { decode, encode } from "./encode-decode";
 import type { SdkgenError, SdkgenErrorWithData } from "./error";
 import type { DeepReadonly } from "./utils";
@@ -28,8 +29,16 @@ export class SdkgenHttpClient {
     this.baseUrl = new URL(baseUrl);
   }
 
-  async makeRequest(ctx: PartialDeep<Context> | null, functionName: string, args: unknown): Promise<any> {
+  async makeRequest(ctxArg: PartialDeep<Context> | null, functionName: string, args: unknown): Promise<any> {
     const func = this.astJson.functionTable[functionName];
+
+    let ctx: PartialDeep<Context>;
+
+    try {
+      ctx = { ...useSdkgenContext(), ...ctxArg };
+    } catch {
+      ctx = { ...ctxArg };
+    }
 
     if (!func) {
       throw new Error(`Unknown function ${functionName}`);
@@ -43,13 +52,13 @@ export class SdkgenHttpClient {
 
     const requestBody = JSON.stringify({
       args: encode(this.astJson.typeTable, `${functionName}.args`, func.args, args),
-      deviceInfo: ctx?.request?.deviceInfo ? ctx.request.deviceInfo : { id: hostname(), type: "node" },
+      deviceInfo: ctx.request?.deviceInfo ?? { id: hostname(), type: "node" },
       extra: {
         ...extra,
-        ...(ctx?.request ? ctx.request.extra : {}),
+        ...ctx.request?.extra,
       },
       name: functionName,
-      requestId: ctx?.request?.id ? ctx.request.id + randomBytes(6).toString("hex") : randomBytes(16).toString("hex"),
+      requestId: ctx.request?.id ? ctx.request.id + randomBytes(6).toString("hex") : randomBytes(16).toString("hex"),
       version: 3,
     });
 

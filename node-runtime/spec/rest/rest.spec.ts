@@ -14,8 +14,7 @@ import { generateNodeClientSource, generateNodeServerSource } from "@sdkgen/type
 import axios from "axios";
 import FormData from "form-data";
 
-import type { Context } from "../../src";
-import { SdkgenHttpServer } from "../../src";
+import { useSdkgenContext, SdkgenHttpServer } from "../../src";
 
 const ast = new Parser(`${__dirname}/api.sdkgen`).parse();
 
@@ -24,19 +23,19 @@ const { api, TestError } = require(`${__dirname}/api.ts`);
 
 unlinkSync(`${__dirname}/api.ts`);
 
-api.fn.add = async (ctx: Context, { first, second }: { first: number; second: string }) => {
+api.fn.add = async ({ first, second }: { first: number; second: string }) => {
   return `${first}${second}`;
 };
 
-api.fn.maybe = async (ctx: Context, { bin }: { bin: string | null }) => {
+api.fn.maybe = async ({ bin }: { bin: string | null }) => {
   return bin === null ? null : Buffer.from(bin, "hex");
 };
 
-api.fn.hex = async (ctx: Context, { bin }: { bin: Buffer }) => {
+api.fn.hex = async ({ bin }: { bin: Buffer }) => {
   return bin.toString("hex");
 };
 
-api.fn.obj = async (ctx: Context, { obj }: { obj: { val: number } }) => {
+api.fn.obj = async ({ obj }: { obj: { val: number } }) => {
   if (obj.val === 0) {
     throw new Error("Value is zero ~ Fatal");
   }
@@ -48,7 +47,7 @@ api.fn.obj = async (ctx: Context, { obj }: { obj: { val: number } }) => {
   return obj;
 };
 
-api.fn.returnArg = async (ctx: Context, { arg }: { arg: string }) => {
+api.fn.returnArg = async ({ arg }: { arg: string }) => {
   return arg;
 };
 
@@ -56,7 +55,7 @@ api.fn.returnNoArg = async () => {
   return "no-arg";
 };
 
-api.fn.returnArgConcat = async (ctx: Context, { arg, arg2 }: { arg: string; arg2: string }) => {
+api.fn.returnArgConcat = async ({ arg, arg2 }: { arg: string; arg2: string }) => {
   return `${arg}${arg2}`;
 };
 
@@ -70,9 +69,9 @@ async function readAllStream(stream: Readable) {
   });
 }
 
-api.fn.uploadFile = async (ctx: Context) => {
+api.fn.uploadFile = async () => {
   return Promise.all(
-    ctx.request.files.map(async ({ name, contents }) => ({
+    useSdkgenContext().request.files.map(async ({ name, contents }) => ({
       data: await readAllStream(contents),
       name,
     })),
