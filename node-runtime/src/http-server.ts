@@ -636,9 +636,8 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
 
     req.on("data", chunk => body.push(chunk));
 
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     req.on("end", () => {
-      this.handleRequestWithBody(req, res, Buffer.concat(body), hrStart).catch(e => this.writeReply(res, null, { error: e }, hrStart));
+      this.handleRequestWithBody(req, res, Buffer.concat(body), hrStart).catch((e: unknown) => this.writeReply(res, null, { error: e }, hrStart));
     });
   }
 
@@ -779,17 +778,18 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
       {
         Request: {
           args: "json",
-          device: {
-            fingerprint: "string?",
-            id: "string?",
-            language: "string?",
-            platform: "json?",
-            timezone: "string?",
-            type: "string?",
-            version: "string?",
-          },
+          device: "RequestDevice",
           id: "string",
           name: "string",
+        },
+        RequestDevice: {
+          fingerprint: "string?",
+          id: "string?",
+          language: "string?",
+          platform: "json?",
+          timezone: "string?",
+          type: "string?",
+          version: "string?",
         },
       } as const,
       "root",
@@ -832,15 +832,16 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
           args: "json",
           deviceFingerprint: "string?",
           deviceId: "string",
-          info: {
-            browserUserAgent: "string?",
-            language: "string",
-            type: "string",
-          },
+          info: "RequestInfo",
           name: "string",
           partnerId: "string?",
           requestId: "string?",
           sessionId: "string?",
+        },
+        RequestInfo: {
+          browserUserAgent: "string?",
+          language: "string",
+          type: "string",
         },
       } as const,
       "root",
