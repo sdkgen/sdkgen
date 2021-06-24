@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import type { Operation, Type } from "./ast";
+import type { Annotation, Operation, Type } from "./ast";
 import {
   ArrayType,
   AstRoot,
@@ -22,22 +22,19 @@ import { analyse } from "./semantic/analyser";
 import type { DeepReadonly } from "./utils";
 import { primitiveToAstClass } from "./utils";
 
-export type TypeDescription = string | string[] | { [name: string]: TypeDescription };
+export type TypeDescription = string | string[] | Record<string, string>;
 
-interface TypeTable {
-  [name: string]: TypeDescription | undefined;
-}
+type TypeTable = Record<string, TypeDescription | undefined>;
 
-interface FunctionTable {
-  [name: string]:
-    | {
-        args: {
-          [arg: string]: TypeDescription;
-        };
-        ret: TypeDescription;
-      }
-    | undefined;
-}
+type FunctionTable = Record<
+  string,
+  | {
+      args: Record<string, string>;
+      ret: TypeDescription;
+    }
+  | undefined
+>;
+
 type AnnotationJson =
   | {
       type: "description";
@@ -55,13 +52,57 @@ type AnnotationJson =
       type: "rest";
       value: {
         bodyVariable: string | null;
-        headers: Array<[string, string]>;
+        headers: ReadonlyArray<[string, string]>;
         method: string;
         path: string;
-        pathVariables: string[];
-        queryVariables: string[];
+        pathVariables: readonly string[];
+        queryVariables: readonly string[];
       };
     };
+
+function annotationToJson(ann: Annotation): AnnotationJson {
+  if (ann instanceof DescriptionAnnotation) {
+    return { type: "description", value: ann.text };
+  } else if (ann instanceof ThrowsAnnotation) {
+    return { type: "throws", value: ann.error };
+  } else if (ann instanceof RestAnnotation) {
+    return {
+      type: "rest",
+      value: {
+        bodyVariable: ann.bodyVariable,
+        headers: [...ann.headers.entries()].sort(([a], [b]) => a.localeCompare(b)),
+        method: ann.method,
+        path: ann.path,
+        pathVariables: [...ann.pathVariables].sort((a, b) => a.localeCompare(b)),
+        queryVariables: [...ann.queryVariables].sort((a, b) => a.localeCompare(b)),
+      },
+    };
+  } else if (ann instanceof HiddenAnnotation) {
+    return { type: "hidden", value: null };
+  }
+
+  throw new Error(`BUG: annotationToJson with ${ann.constructor.name}`);
+}
+
+function annotationFromJson(json: AnnotationJson | DeepReadonly<AnnotationJson>): Annotation {
+  switch (json.type) {
+    case "description":
+      return new DescriptionAnnotation(json.value);
+    case "throws":
+      return new ThrowsAnnotation(json.value);
+    case "rest": {
+      const { method, path, pathVariables, queryVariables, headers, bodyVariable } = json.value;
+
+      return new RestAnnotation(method, path, pathVariables, queryVariables, new Map(headers), bodyVariable);
+    }
+
+    case "hidden":
+      return new HiddenAnnotation();
+
+    default:
+      throw new Error(`BUG: annotationFromJson with ${(json as { type: string }).type}`);
+  }
+}
 
 export interface AstJson {
   typeTable: TypeTable;
@@ -74,21 +115,29 @@ export function astToJson(ast: AstRoot): AstJson {
   const annotations: Record<string, AnnotationJson[]> = {};
   const typeTable: TypeTable = {};
 
+  function processType(type: Type): string {
+    if (type instanceof ArrayType) {
+      return `${processType(type.base)}[]`;
+    } else if (type instanceof OptionalType) {
+      return `${processType(type.base)}?`;
+    }
+
+    return type.name;
+  }
+
   for (const { name, fields } of ast.structTypes) {
     typeTable[name] = {};
     const obj = typeTable[name] as Record<string, TypeDescription>;
 
     for (const field of fields) {
-      obj[field.name] = field.type.name;
+      obj[field.name] = processType(field.type);
 
       for (const ann of field.annotations) {
         if (ann instanceof DescriptionAnnotation) {
           const target = `type.${name}.${field.name}`;
 
-          annotations[target] ||= [];
-          const list = annotations[target];
-
-          list.push({ type: "description", value: ann.text });
+          annotations[target] ??= [];
+          annotations[target].push(annotationToJson(ann));
         }
       }
     }
@@ -98,61 +147,41 @@ export function astToJson(ast: AstRoot): AstJson {
     typeTable[name] = values.map(v => v.value);
   }
 
+  for (const { name, type } of ast.typeDefinitions) {
+    if (type instanceof StructType || type instanceof EnumType) {
+      continue;
+    }
+
+    typeTable[name] = processType(type);
+  }
+
   const functionTable: FunctionTable = {};
 
   for (const op of ast.operations) {
-    const args: Record<string, TypeDescription> = {};
+    const args: Record<string, string> = {};
 
     for (const arg of op.args) {
-      args[arg.name] = arg.type.name;
+      args[arg.name] = processType(arg.type);
       for (const ann of arg.annotations) {
         if (ann instanceof DescriptionAnnotation) {
           const target = `fn.${op.prettyName}.${arg.name}`;
 
-          annotations[target] ||= [];
-          const list = annotations[target];
-
-          list.push({ type: "description", value: ann.text });
+          annotations[target] ??= [];
+          annotations[target].push(annotationToJson(ann));
         }
       }
     }
 
     functionTable[op.prettyName] = {
       args,
-      ret: op.returnType.name,
+      ret: processType(op.returnType),
     };
 
     for (const ann of op.annotations) {
       const target = `fn.${op.prettyName}`;
 
-      annotations[target] ||= [];
-      const list: Array<DeepReadonly<AnnotationJson>> = annotations[target];
-
-      if (ann instanceof DescriptionAnnotation) {
-        list.push({ type: "description", value: ann.text });
-      }
-
-      if (ann instanceof ThrowsAnnotation) {
-        list.push({ type: "throws", value: ann.error });
-      }
-
-      if (ann instanceof RestAnnotation) {
-        list.push({
-          type: "rest",
-          value: {
-            bodyVariable: ann.bodyVariable,
-            headers: [...ann.headers.entries()],
-            method: ann.method,
-            path: ann.path,
-            pathVariables: ann.pathVariables,
-            queryVariables: ann.queryVariables,
-          },
-        });
-      }
-
-      if (ann instanceof HiddenAnnotation) {
-        list.push({ type: "hidden", value: null });
-      }
+      annotations[target] ??= [];
+      annotations[target].push(annotationToJson(ann));
     }
   }
 
@@ -196,9 +225,7 @@ export function jsonToAst(json: DeepReadonly<AstJson>): AstRoot {
         const target = `type.${typeName}.${fieldName}`;
 
         for (const annotationJson of json.annotations[target] ?? []) {
-          if (annotationJson.type === "description") {
-            field.annotations.push(new DescriptionAnnotation(annotationJson.value));
-          }
+          field.annotations.push(annotationFromJson(annotationJson));
         }
       }
 
@@ -220,9 +247,7 @@ export function jsonToAst(json: DeepReadonly<AstJson>): AstRoot {
       const target = `fn.${functionName}.${argName}`;
 
       for (const annotationJson of json.annotations[target] ?? []) {
-        if (annotationJson.type === "description") {
-          field.annotations.push(new DescriptionAnnotation(annotationJson.value));
-        }
+        field.annotations.push(annotationFromJson(annotationJson));
       }
 
       return field;
@@ -232,17 +257,7 @@ export function jsonToAst(json: DeepReadonly<AstJson>): AstRoot {
     const target = `fn.${functionName}`;
 
     for (const annotationJson of json.annotations[target] ?? []) {
-      if (annotationJson.type === "description") {
-        op.annotations.push(new DescriptionAnnotation(annotationJson.value));
-      } else if (annotationJson.type === "throws") {
-        op.annotations.push(new ThrowsAnnotation(annotationJson.value));
-      } else if (annotationJson.type === "rest" && typeof annotationJson.value === "object") {
-        const { method, path, pathVariables, queryVariables, headers, bodyVariable } = annotationJson.value;
-
-        op.annotations.push(new RestAnnotation(method, path, pathVariables, queryVariables, new Map(headers), bodyVariable));
-      } else if (annotationJson.type === "hidden") {
-        op.annotations.push(new HiddenAnnotation());
-      }
+      op.annotations.push(annotationFromJson(annotationJson));
     }
 
     operations.push(op);

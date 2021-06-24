@@ -7,7 +7,15 @@ export class CheckDontReturnSecretVisitor extends Visitor {
 
   path: string[] = [];
 
+  visited = new Set<AstNode>();
+
   visit(node: AstNode): void {
+    if (this.visited.has(node)) {
+      return;
+    }
+
+    this.visited.add(node);
+
     if (node instanceof Operation) {
       this.isInReturn = true;
       this.path.push(`${node.name}(...)`);

@@ -496,8 +496,8 @@ describe(Parser, () => {
               value: {
                 bodyVariable: null,
                 headers: [
-                  ["user-agent", "userAgent"],
                   ["accept-language", "lang"],
+                  ["user-agent", "userAgent"],
                   ["x-token", "token"],
                 ],
                 method: "GET",
@@ -748,6 +748,43 @@ describe(Parser, () => {
         },
         typeTable: {},
       },
+    );
+  });
+
+  test("handles recursive types", () => {
+    expectParses(
+      `
+        type Item {
+          children: Item[]
+        }
+      `,
+      {
+        annotations: {},
+        errors: ["Fatal"],
+        functionTable: {},
+        typeTable: { Item: { children: "Item[]" } },
+      },
+    );
+
+    expectDoesntParse(
+      `
+        type Item Item[]
+      `,
+      "Type 'Item' at -:2:9 is recursive but is not an struct",
+    );
+
+    expectDoesntParse(
+      `
+        type Item Item?
+      `,
+      "Type 'Item' at -:2:9 is recursive but is not an struct",
+    );
+
+    expectDoesntParse(
+      `
+        type Item Item
+      `,
+      "Type 'Item' at -:2:9 is recursive but is not an struct",
     );
   });
 });
