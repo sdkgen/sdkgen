@@ -47,16 +47,6 @@ export { Fatal } from "@sdkgen/node-runtime";
       .join("")}
     }
 
-    /** @deprecated api.err shouldn't be used. Import and throw errors directly. */
-    err = {${ast.errors
-      .filter(err => err.dataType instanceof VoidPrimitiveType)
-      .map(
-        err => `
-        ${err.name}(message: string = "") { throw new ${err.name}(message); }`,
-      )
-      .join(",")}
-    }
-
     astJson = ${JSON.stringify(astToJson(ast), null, 4)
       .replace(/"(?<key>\w+)":/gu, "$<key>:")
       .replace(/\n/gu, "\n    ")} as const

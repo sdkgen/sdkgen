@@ -13,7 +13,6 @@ import {
   ErrorNode,
   Field,
   FunctionOperation,
-  GetOperation,
   HiddenAnnotation,
   OptionalType,
   StructType,
@@ -25,15 +24,7 @@ import {
 import { Lexer } from "./lexer";
 import { parseRestAnnotation } from "./restparser";
 import { analyse } from "./semantic/analyser";
-import type {
-  CurlyCloseSymbolToken,
-  FalseKeywordToken,
-  FunctionKeywordToken,
-  ImportKeywordToken,
-  SpreadSymbolToken,
-  Token,
-  TrueKeywordToken,
-} from "./token";
+import type { CurlyCloseSymbolToken, FalseKeywordToken, ImportKeywordToken, SpreadSymbolToken, Token, TrueKeywordToken } from "./token";
 import {
   AnnotationToken,
   ArraySymbolToken,
@@ -43,7 +34,7 @@ import {
   EnumKeywordToken,
   ErrorKeywordToken,
   ExclamationMarkSymbolToken,
-  GetKeywordToken,
+  FnKeywordToken,
   IdentifierToken,
   OptionalSymbolToken,
   ParensCloseSymbolToken,
@@ -59,8 +50,7 @@ export class ParserError extends Error {}
 interface MultiExpectMatcher<T> {
   ImportKeywordToken?(token: ImportKeywordToken): T;
   TypeKeywordToken?(token: TypeKeywordToken): T;
-  GetKeywordToken?(token: GetKeywordToken): T;
-  FunctionKeywordToken?(token: FunctionKeywordToken): T;
+  FnKeywordToken?(token: FnKeywordToken): T;
   ErrorKeywordToken?(token: ErrorKeywordToken): T;
   IdentifierToken?(token: IdentifierToken): T;
   CurlyOpenSymbolToken?(token: CurlyOpenSymbolToken): T;
@@ -171,10 +161,7 @@ export class Parser {
         ErrorKeywordToken: () => {
           errors.push(this.parseError());
         },
-        FunctionKeywordToken: () => {
-          operations.push(this.parseOperation());
-        },
-        GetKeywordToken: () => {
+        FnKeywordToken: () => {
           operations.push(this.parseOperation());
         },
         ImportKeywordToken: () => {
@@ -306,16 +293,9 @@ export class Parser {
 
     this.annotations = [];
 
-    const openingToken: GetKeywordToken | FunctionKeywordToken = this.multiExpect({
-      FunctionKeywordToken: token => token,
-      GetKeywordToken: token => token,
-    });
+    this.expect(FnKeywordToken);
 
     this.nextToken();
-
-    if (["get", "function"].includes(openingToken.maybeAsIdentifier().value)) {
-      this.warnings.push(`Keyword '${openingToken.maybeAsIdentifier().value}' is deprecated at ${openingToken.location}. Use 'fn' instead.`);
-    }
 
     const name = this.expect(IdentifierToken).value;
 
@@ -369,7 +349,7 @@ export class Parser {
       returnType = this.parseType();
     }
 
-    const op = openingToken instanceof GetKeywordToken ? new GetOperation(name, args, returnType) : new FunctionOperation(name, args, returnType);
+    const op = new FunctionOperation(name, args, returnType);
 
     op.annotations = annotations;
 

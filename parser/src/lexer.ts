@@ -11,8 +11,7 @@ import {
   ErrorKeywordToken,
   ExclamationMarkSymbolToken,
   FalseKeywordToken,
-  FunctionKeywordToken,
-  GetKeywordToken,
+  FnKeywordToken,
   IdentifierToken,
   ImportKeywordToken,
   OptionalSymbolToken,
@@ -308,14 +307,8 @@ export class Lexer {
             case "import":
               token = new ImportKeywordToken();
               break;
-            case "get":
-              token = new GetKeywordToken();
-              break;
-            case "function":
-              token = new FunctionKeywordToken("function");
-              break;
             case "fn":
-              token = new FunctionKeywordToken("fn");
+              token = new FnKeywordToken();
               break;
             case "true":
               token = new TrueKeywordToken();

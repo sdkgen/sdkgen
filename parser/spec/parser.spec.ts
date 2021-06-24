@@ -39,36 +39,6 @@ describe(Parser, () => {
         },
       );
     });
-
-    test(`handles simple get operations for primitive type '${p}'`, () => {
-      expectParses(
-        `
-          get ${p === "bool" ? "isFoo" : "foo"}(): ${p}
-          get bar(): ${p}?
-          fn getBaz(): ${p}[]
-        `,
-        {
-          annotations: {},
-          errors: ["Fatal"],
-          functionTable: {
-            [p === "bool" ? "isFoo" : "getFoo"]: {
-              args: {},
-              ret: p,
-            },
-            getBar: {
-              args: {},
-              ret: `${p}?`,
-            },
-            getBaz: {
-              args: {},
-              ret: `${p}[]`,
-            },
-          },
-          typeTable: {},
-        },
-        ["Keyword 'get' is deprecated at -:2:11. Use 'fn' instead.", "Keyword 'get' is deprecated at -:3:11. Use 'fn' instead."],
-      );
-    });
   }
 
   for (const kw of Lexer.KEYWORDS) {
@@ -286,7 +256,7 @@ describe(Parser, () => {
           aa: string
         }
 
-        function doIt(foo: int, bar: Bar): string
+        fn doIt(foo: int, bar: Bar): string
       `,
       {
         annotations: {},
@@ -306,7 +276,6 @@ describe(Parser, () => {
           },
         },
       },
-      ["Keyword 'function' is deprecated at -:6:9. Use 'fn' instead."],
     );
   });
 

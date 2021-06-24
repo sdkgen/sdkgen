@@ -69,30 +69,6 @@ describe("Middleware", () => {
     (api as BaseApiConfig).middlewares.pop();
   });
 
-  test("onRequestStart still work as expected", async () => {
-    const previous = (api as BaseApiConfig).hook.onRequestStart;
-
-    expect(await nodeClient.identity(null, { value: 1 })).toBe(1);
-    expect(await nodeClient.identity(null, { value: 2 })).toBe(2);
-    expect(await nodeClient.identity(null, { value: 3 })).toBe(3);
-
-    (api as BaseApiConfig).hook.onRequestStart = async ctx => {
-      if ((ctx.request.args as { value: number }).value === 2) {
-        return {
-          result: 17,
-        };
-      }
-
-      return null;
-    };
-
-    expect(await nodeClient.identity(null, { value: 1 })).toBe(1);
-    expect(await nodeClient.identity(null, { value: 2 })).toBe(17);
-    expect(await nodeClient.identity(null, { value: 3 })).toBe(3);
-
-    (api as BaseApiConfig).hook.onRequestStart = previous;
-  });
-
   test("Multiple middlewares stack", async () => {
     expect(await nodeClient.identity(null, { value: 1 })).toBe(1);
     expect(await nodeClient.identity(null, { value: 2 })).toBe(2);
