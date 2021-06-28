@@ -1,5 +1,4 @@
 import type { Operation, Type } from "@sdkgen/parser";
-
 import {
   ArrayType,
   Base64PrimitiveType,
@@ -32,9 +31,13 @@ import {
 export function generateSwiftTypeName(type: Type): string {
   switch (type.constructor) {
     case IntPrimitiveType:
-    case UIntPrimitiveType:
-    case MoneyPrimitiveType:
       return "Int";
+
+    case UIntPrimitiveType:
+      return "UInt";
+
+    case MoneyPrimitiveType:
+      return "Int64";
 
     case FloatPrimitiveType:
       return "Double";
@@ -50,16 +53,16 @@ export function generateSwiftTypeName(type: Type): string {
       return "Bool";
 
     case BytesPrimitiveType:
-      return "[UInt8]";
+      return "Data";
 
     case StringPrimitiveType:
     case CpfPrimitiveType:
     case CnpjPrimitiveType:
     case EmailPrimitiveType:
     case HtmlPrimitiveType:
-    case UrlPrimitiveType:
     case UuidPrimitiveType:
     case HexPrimitiveType:
+    case UrlPrimitiveType:
     case Base64PrimitiveType:
     case XmlPrimitiveType:
       return "String";
@@ -68,7 +71,7 @@ export function generateSwiftTypeName(type: Type): string {
       return "Void";
 
     case JsonPrimitiveType:
-      return "Data";
+      return "AnyObject";
 
     case OptionalType:
       return `${generateSwiftTypeName((type as OptionalType).base)}?`;
@@ -79,7 +82,7 @@ export function generateSwiftTypeName(type: Type): string {
 
     case StructType:
     case EnumType:
-      return "API." + type.name;
+      return `API.${type.name}`;
 
     case TypeReference:
       return generateSwiftTypeName((type as TypeReference).type);
@@ -173,14 +176,6 @@ export function mangle(fieldName: string): string {
     "unowned",
     "weak",
     "willSet",
-    "Double",
-    "Float",
-    "Bool",
-    "Int",
-    "String",
-    "Array",
-    "Data",
-    "Dictionary",
   ];
 
   if (mangleList.includes(fieldName)) {
@@ -207,71 +202,71 @@ export function generateJsonRepresentation(type: Type, fieldName: string): strin
     case MoneyPrimitiveType:
     case FloatPrimitiveType:
     case BoolPrimitiveType:
-      return `${mangle(fieldName)}`;
+      return `${fieldName}`;
     case OptionalType:
-      return `${mangle(fieldName)} == nil ? nil : ${generateJsonRepresentation((type as OptionalType).base, `${mangle(fieldName)}!`)}`
+      return `${fieldName} == nil ? nil : ${generateJsonRepresentation((type as OptionalType).base, `${fieldName}!`)}`;
     case DatePrimitiveType:
     case DateTimePrimitiveType:
-      return `SdkgenHelper.encodeDateTime(date: ${fieldName})`
+      return `SdkgenHelper.encodeDateTime(date: ${fieldName})`;
     case EnumType:
-      return `${mangle(fieldName)}.rawValue`;
+      return `${fieldName}.rawValue`;
     case TypeReference:
-      return `${generateJsonRepresentation((type as TypeReference).type, `${mangle(fieldName)}`)}`;
+      return `${generateJsonRepresentation((type as TypeReference).type, `${fieldName}`)}`;
     case StructType:
-      return `${mangle(fieldName)}.toJSON()`;
+      return `${fieldName}.toJSON()`;
     case ArrayType:
     case JsonPrimitiveType:
-      return `${mangle(fieldName)}.map({ return ${generateJsonRepresentation((type as ArrayType).base, "$0")} })`;
+      return `${fieldName}.map({ return ${generateJsonRepresentation((type as ArrayType).base, "$0")} })`;
     case VoidPrimitiveType:
       return `nil`;
     case BytesPrimitiveType:
-      return `String(bytes: ${mangle(fieldName)}, encoding: .utf8)`;
+      return `${fieldName}.base64EncodedString()`;
     default:
       throw new Error(`BUG: No result found for generateJsonRepresentation with ${type.constructor.name}`);
   }
 }
 
 export function generateEnum(type: EnumType): string {
-    let str = `    public enum ${type.name}: String, Codable {\n`;
-    type.values.map(x => {
-      str += `        case ${mangle(x.value)} = \"${x.value}\"\n`;
-    });
-    str += `    }\n`;
-    return str;
+  let str = `    public enum ${type.name}: String, Codable {\n`;
+
+  str += type.values
+    .map(x => {
+      return `        case ${mangle(x.value)} = "${x.value}"`;
+    })
+    .join(`\n`);
+  str += `\n    }\n`;
+  return str;
 }
 
 export function generateErrorType(types: string[]): string {
   let str = `    public enum ErrorType: String, Codable {\n`;
-  types.map(x => {
-    str += `        case ${mangle(x)} = \"${x}\"\n`;
-  });
-  str += `    }\n`;
+
+  str += types
+    .map(x => {
+      return `        case ${mangle(x)} = "${x}"`;
+    })
+    .join(`\n`);
+
+  str += `\n    }\n`;
   return str;
 }
 
 function generateConstructor(type: StructType): string {
   let str = `        init(`;
-  
-  str += type.fields.map(field => 
-    `${mangle(field.name)}: ${generateSwiftTypeName(field.type)}`
-  ).join(", ");
-  str += `) {\n`;
-  
-  str += type.fields.map(field => 
-    `            self.${mangle(field.name)} = ${mangle(field.name)}`
-  ).join("\n"); 
 
+  str += type.fields.map(field => `${mangle(field.name)}: ${generateSwiftTypeName(field.type)}`).join(", ");
+  str += `) {\n`;
+  str += type.fields.map(field => `            self.${mangle(field.name)} = ${mangle(field.name)}`).join("\n");
   str += `\n        }\n`;
-  
   return str;
 }
 
 function generateToJson(type: StructType): string {
   let str = `        func toJSON() -> [String: Any] {\n`;
+
   str += `            var json = [String: Any]()\n`;
-  str += type.fields.map(field => 
-    `            json[\"${mangle(field.name)}\"] = ${generateJsonRepresentation(field.type, field.name)}`
-  ).join("\n"); 
+
+  str += type.fields.map(field => `            json["${mangle(field.name)}"] = ${generateJsonRepresentation(field.type, field.name)}`).join("\n");
   str += `\n            return json`;
   str += `\n        }\n`;
   return str;
@@ -284,7 +279,7 @@ export function generateClass(type: StructType): string {
 }
 
 export function generateErrorClass(): string {
-  let str = `    public class Error {
+  return `    public class Error {
         var message: String?
         var code: Int?
         var type: ErrorType?
@@ -296,30 +291,49 @@ export function generateErrorClass(): string {
             }
         }
     }\n`;
-
-    return str;
 }
 
 export function generateMethodSignature(op: Operation) {
-  let argsString = op.args.map(arg => { return `${mangle(arg.name)}: ${generateSwiftTypeName(arg.type)}`})
-    .concat([`timeoutSeconds: Double?`, `callback: ((_ result: ${op.returnType instanceof VoidPrimitiveType ? "API.Result<API.NoReply>" : `API.Result<${generateSwiftTypeName(op.returnType)}>`}) -> Void)?`]);
+  const argsString = op.args
+    .map(arg => {
+      return `${mangle(arg.name)}: ${generateSwiftTypeName(arg.type)}`;
+    })
+    .concat([
+      `timeoutSeconds: Double?`,
+      `callback: ((_ result: ${
+        op.returnType instanceof VoidPrimitiveType ? "API.Result<API.NoReply>" : `API.Result<${generateSwiftTypeName(op.returnType)}>`
+      }) -> Void)?`,
+    ]);
 
-  return `    func ${mangle(op.prettyName)}(${argsString.join(", ")})`
+  return `    func ${mangle(op.prettyName)}(${argsString.join(", ")})`;
 }
 
 export function generateRxMethod(op: Operation) {
-  let argsString = op.args.map(arg => { return `${mangle(arg.name)}: ${generateSwiftTypeName(arg.type)}`})
+  const argsString = op.args
+    .map(arg => {
+      return `${mangle(arg.name)}: ${generateSwiftTypeName(arg.type)}`;
+    })
     .concat([`timeoutSeconds: Double? = nil`]);
-    
-  let str =`    static func ${mangle(op.prettyName)}(${argsString.join(", ")}) -> ${op.returnType instanceof VoidPrimitiveType ? "Observable<API.Result<API.NoReply>>" : `Observable<API.Result<${generateSwiftTypeName(op.returnType)}>>`} {\n`;
+
+  let str = `    static func ${mangle(op.prettyName)}(${argsString.join(", ")}) -> ${
+    op.returnType instanceof VoidPrimitiveType
+      ? "Observable<API.Result<API.NoReply>>"
+      : `Observable<API.Result<${generateSwiftTypeName(op.returnType)}>>`
+  } {\n`;
+
   str += `        return Observable.create { observer -> Disposable in\n`;
-  str += `            API.calls.${mangle(op.prettyName)}(${op.args.map(arg => { return `${mangle(arg.name)}: ${mangle(arg.name)}`}).concat([`timeoutSeconds: timeoutSeconds`]).join(`, `)}) { result in \n`;
+  str += `            API.calls.${mangle(op.prettyName)}(${op.args
+    .map(arg => {
+      return `${mangle(arg.name)}: ${mangle(arg.name)}`;
+    })
+    .concat([`timeoutSeconds: timeoutSeconds`])
+    .join(`, `)}) { result in \n`;
   str += `                observer.on(.next(result))\n`;
   str += `                observer.on(.completed)\n`;
   str += `            }\n`;
   str += `            return Disposables.create()\n`;
   str += `        }\n`;
   str += `    }\n`;
-  
+
   return str;
 }
