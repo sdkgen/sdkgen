@@ -18,5 +18,6 @@ Pod::Spec.new do |spec|
 
   spec.dependency 'Alamofire', '~> 5.4'
   spec.dependency 'KeychainSwift'
+  spec.dependency 'DeviceKit', '~> 4.0'
 
 end 

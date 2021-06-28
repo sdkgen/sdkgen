@@ -31,7 +31,7 @@ open class SdkgenHttpClient {
         let body: [String : Any] = [
             "version": 3,
             "requestId": SdkgenHelper.randomBytesHex(len: 8),
-            "deviceInfo": Device.device(),
+            "deviceInfo": SdkgenDevice.device(),
             "name": name,
             "args": args,
         ]
