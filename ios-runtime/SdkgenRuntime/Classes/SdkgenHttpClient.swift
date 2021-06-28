@@ -41,10 +41,11 @@ open class SdkgenHttpClient {
         guard let urlObj = URL(string: url) else { throw Errors.fatalError(error: Errors.getUrlCreationErrorMessage(url), code: nil) }
         var urlRequest = URLRequest(url: urlObj)
         urlRequest.method = .post
-        urlRequest.timeoutInterval = timeoutSeconds ?? 35;
+        urlRequest.timeoutInterval = timeoutSeconds ?? 35
+        urlRequest.setValue("application/sdkgen", forHTTPHeaderField: "Content-type")
         
         do {
-            urlRequest.httpBody = try JSONSerialization.data(withJSONObject: body, options: .prettyPrinted)
+            urlRequest.httpBody = try JSONSerialization.data(withJSONObject: body, options: [])
         } catch let error {
             throw Errors.jsonSerializationError(error: error.localizedDescription)
         }
@@ -63,14 +64,14 @@ open class SdkgenHttpClient {
                         } else {
                             callback(SdkgenResponse.failure(Errors.fatalError(error: Errors.resultParseErrorMessage, code: nil)))
                         }
-                        
+
                         break
                     case .failure(let error):
                         if error.responseCode == nil && response.data == nil && response.response == nil {
                             callback(SdkgenResponse.failure(Errors.connectionError(error: error.localizedDescription)))
                             break
                         }
-                        
+
                         if let data = response.data,
                            let responseJson = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
                            let responseError = response.error,
@@ -80,13 +81,13 @@ open class SdkgenHttpClient {
                         } else {
                             callback(SdkgenResponse.failure(Errors.fatalError(error: error.localizedDescription, code: error.responseCode)))
                         }
-                        
+
                         break
                     }
                 } catch {
                     callback(SdkgenResponse.failure(Errors.jsonSerializationError(error: error.localizedDescription)))
                 }
-               
+
             })
        
     }
