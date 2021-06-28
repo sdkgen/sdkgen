@@ -10,7 +10,7 @@ internal class Device {
         device["fingerprint"] = phoneFingerprint()
         device["language"] = Locale.preferredLanguages[0]
         device["platform"] = platformInfo()
-        device["type"] = "iOS"
+        device["type"] = "ios"
         device["screen"] = screenInfo()
         return device
     }
@@ -31,9 +31,7 @@ internal class Device {
     }
 
     private static var deviceID: String {
-        if let deviceId = UIDevice.current.identifierForVendor?.uuidString {
-            return deviceId
-        } else if let localId = UserDefaults.standard.value(forKey: "device-id") as? String {
+        if let localId = UserDefaults.standard.value(forKey: "device-id") as? String {
             return localId
         }
         
