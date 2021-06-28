@@ -7,6 +7,7 @@ import { hostname } from "os";
 import { URL } from "url";
 
 import type { AstJson } from "@sdkgen/parser";
+import merge from "deepmerge";
 import type { PartialDeep } from "type-fest";
 
 import type { Context } from "./context";
@@ -32,19 +33,21 @@ export class SdkgenHttpClient {
   async makeRequest(ctxArg: PartialDeep<Context> | null, functionName: string, args: unknown): Promise<any> {
     const func = this.astJson.functionTable[functionName];
 
-    let ctx: PartialDeep<Context>;
+    let ctx: PartialDeep<Context> = {};
 
-    try {
-      ctx = { ...useSdkgenContext(), ...ctxArg };
-    } catch {
-      ctx = { ...ctxArg };
+    if (ctxArg) {
+      try {
+        ctx = merge(useSdkgenContext(), ctxArg);
+      } catch {
+        ctx = { ...ctxArg };
+      }
     }
 
     if (!func) {
       throw new Error(`Unknown function ${functionName}`);
     }
 
-    const extra: Record<string, any> = {};
+    const extra: Record<string, unknown> = {};
 
     for (const [key, value] of this.extra) {
       extra[key] = value;
