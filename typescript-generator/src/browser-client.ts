@@ -36,9 +36,9 @@ ${ast.operations
   .filter(op => op.annotations.every(ann => !(ann instanceof HiddenAnnotation)))
   .map(
     op => `
-    ${op.prettyName}(args${op.args.length === 0 ? "?" : ""}: {${op.args
+    ${op.name}(args${op.args.length === 0 ? "?" : ""}: {${op.args
       .map(arg => `${arg.name}${arg.type.name.endsWith("?") ? "?" : ""}: ${generateTypescriptTypeName(arg.type, true)}`)
-      .join(", ")}}): Promise<${generateTypescriptTypeName(op.returnType, true)}> { return this.makeRequest("${op.prettyName}", args || {}); }`,
+      .join(", ")}}): Promise<${generateTypescriptTypeName(op.returnType, true)}> { return this.makeRequest("${op.name}", args || {}); }`,
   )
   .join("")}
 }\n\n`;

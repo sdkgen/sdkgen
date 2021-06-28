@@ -2,7 +2,7 @@
 import { readFileSync } from "fs";
 import { dirname, resolve } from "path";
 
-import type { Annotation, Operation, Type } from "./ast";
+import type { Annotation, Type } from "./ast";
 import {
   ArgDescriptionAnnotation,
   ArrayType,
@@ -149,7 +149,7 @@ export class Parser {
   }
 
   parse(): AstRoot {
-    const operations: Operation[] = [];
+    const operations: FunctionOperation[] = [];
     const typeDefinition: TypeDefinition[] = [];
     const errors: ErrorNode[] = [];
 
@@ -288,7 +288,7 @@ export class Parser {
     return new ErrorNode(name, type).at(errorToken);
   }
 
-  private parseOperation(): Operation {
+  private parseOperation() {
     let { annotations } = this;
 
     this.annotations = [];

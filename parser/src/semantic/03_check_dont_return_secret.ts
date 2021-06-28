@@ -1,5 +1,5 @@
 import type { AstNode } from "../ast";
-import { Field, Operation, TypeReference } from "../ast";
+import { FunctionOperation, Field, TypeReference } from "../ast";
 import { SemanticError, Visitor } from "./visitor";
 
 export class CheckDontReturnSecretVisitor extends Visitor {
@@ -16,7 +16,7 @@ export class CheckDontReturnSecretVisitor extends Visitor {
 
     this.visited.add(node);
 
-    if (node instanceof Operation) {
+    if (node instanceof FunctionOperation) {
       this.isInReturn = true;
       this.path.push(`${node.name}(...)`);
       this.visit(node.returnType);

@@ -45,9 +45,9 @@ ${ast.operations
   .filter(op => op.annotations.every(ann => !(ann instanceof HiddenAnnotation)))
   .map(
     op => `
-    ${op.prettyName}(ctx: PartialDeep<Context> | null, args: {${op.args
+    ${op.name}(ctx: PartialDeep<Context> | null, args: {${op.args
       .map(arg => `${arg.name}${arg.type.name.endsWith("?") ? "?" : ""}: ${generateTypescriptTypeName(arg.type, false)}`)
-      .join(", ")}}): Promise<${generateTypescriptTypeName(op.returnType, false)}> { return this.makeRequest(ctx, "${op.prettyName}", args); }`,
+      .join(", ")}}): Promise<${generateTypescriptTypeName(op.returnType, false)}> { return this.makeRequest(ctx, "${op.name}", args); }`,
   )
   .join("")}
 }\n\n`;

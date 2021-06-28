@@ -1,5 +1,6 @@
 import type { AstNode, Type } from "../ast";
 import {
+  FunctionOperation,
   Base64PrimitiveType,
   BigIntPrimitiveType,
   BoolPrimitiveType,
@@ -16,7 +17,6 @@ import {
   HiddenAnnotation,
   IntPrimitiveType,
   MoneyPrimitiveType,
-  Operation,
   OptionalType,
   RestAnnotation,
   StringPrimitiveType,
@@ -79,7 +79,7 @@ export class ValidateAnnotationsVisitor extends Visitor {
           throw new SemanticError(`Cannot have @${annotation.constructor.name.replace("Annotation", "").toLowerCase()} at ${annotation.location}`);
         }
       }
-    } else if (node instanceof Operation) {
+    } else if (node instanceof FunctionOperation) {
       for (const annotation of node.annotations) {
         if (annotation instanceof DescriptionAnnotation) {
           // Ok

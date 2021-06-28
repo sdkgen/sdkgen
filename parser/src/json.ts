@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import type { Annotation, Operation, Type } from "./ast";
+import type { Annotation, Type } from "./ast";
 import {
   ArrayType,
   AstRoot,
@@ -164,7 +164,7 @@ export function astToJson(ast: AstRoot): AstJson {
       args[arg.name] = processType(arg.type);
       for (const ann of arg.annotations) {
         if (ann instanceof DescriptionAnnotation) {
-          const target = `fn.${op.prettyName}.${arg.name}`;
+          const target = `fn.${op.name}.${arg.name}`;
 
           annotations[target] ??= [];
           annotations[target].push(annotationToJson(ann));
@@ -172,13 +172,13 @@ export function astToJson(ast: AstRoot): AstJson {
       }
     }
 
-    functionTable[op.prettyName] = {
+    functionTable[op.name] = {
       args,
       ret: processType(op.returnType),
     };
 
     for (const ann of op.annotations) {
-      const target = `fn.${op.prettyName}`;
+      const target = `fn.${op.name}`;
 
       annotations[target] ??= [];
       annotations[target].push(annotationToJson(ann));
@@ -196,7 +196,7 @@ export function astToJson(ast: AstRoot): AstJson {
 }
 
 export function jsonToAst(json: DeepReadonly<AstJson>): AstRoot {
-  const operations: Operation[] = [];
+  const operations: FunctionOperation[] = [];
   const typeDefinition: TypeDefinition[] = [];
 
   function processType(description: DeepReadonly<TypeDescription>, typeName?: string): Type {

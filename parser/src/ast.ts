@@ -202,25 +202,13 @@ export class TypeDefinition extends AstNode {
   }
 }
 
-export abstract class Operation extends AstNode {
+export class FunctionOperation extends AstNode {
   annotations: Annotation[] = [];
 
   constructor(public name: string, public args: Field[], public returnType: Type) {
     super();
   }
-
-  get prettyName(): string {
-    return this.name;
-  }
 }
-
-export class GetOperation extends Operation {
-  get prettyName(): string {
-    return this.returnType instanceof BoolPrimitiveType ? this.name : `get${this.name[0].toUpperCase()}${this.name.slice(1)}`;
-  }
-}
-
-export class FunctionOperation extends Operation {}
 
 export class AstRoot {
   structTypes: StructType[] = [];
@@ -229,5 +217,5 @@ export class AstRoot {
 
   warnings: string[] = [];
 
-  constructor(public typeDefinitions: TypeDefinition[] = [], public operations: Operation[] = [], public errors: ErrorNode[] = []) {}
+  constructor(public typeDefinitions: TypeDefinition[] = [], public operations: FunctionOperation[] = [], public errors: ErrorNode[] = []) {}
 }

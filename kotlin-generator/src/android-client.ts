@@ -83,7 +83,7 @@ class ApiClient(
         .map(arg => `${mangle(arg.name)}: ${generateKotlinTypeName(arg.type)}`)
         .concat([`timeoutMillis: Long? = null`, `callback: ((response: Response<${generateKotlinTypeName(op.returnType)}>) -> Unit)? = null`]);
 
-      opImpl += `    fun ${mangle(op.prettyName)}(\n        ${args.join(",\n        ")}\n    ): Deferred<Response<out ${generateKotlinTypeName(
+      opImpl += `    fun ${mangle(op.name)}(\n        ${args.join(",\n        ")}\n    ): Deferred<Response<out ${generateKotlinTypeName(
         op.returnType,
       )}>> = sdkgenIOScope.async {\n`;
 
@@ -96,7 +96,7 @@ class ApiClient(
       }
 
       opImpl += `\n`;
-      opImpl += `        val call = makeRequest("${op.prettyName}", bodyArgs, timeoutMillis)\n`;
+      opImpl += `        val call = makeRequest("${op.name}", bodyArgs, timeoutMillis)\n`;
       opImpl += `        val response: Response<${generateKotlinTypeName(op.returnType)}> = handleCallResponse(call)\n`;
       opImpl += `        withContext(Dispatchers.Main) { callback?.invoke(response) } \n`;
       opImpl += `        return@async response\n`;
