@@ -7,7 +7,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { unlinkSync, writeFileSync } from "fs";
-import type { Context } from "vm";
 
 import { Parser } from "@sdkgen/parser";
 import { generateNodeClientSource, generateNodeServerSource } from "@sdkgen/typescript-generator";
@@ -21,7 +20,7 @@ const { api, CustomError } = require(`${__dirname}/errors-api.ts`);
 
 unlinkSync(`${__dirname}/errors-api.ts`);
 
-api.fn.throwCustomError = async (ctx: Context, args: { value: number }) => {
+api.fn.throwCustomError = async (args: { value: number }) => {
   throw new CustomError("Some message", args);
 };
 
