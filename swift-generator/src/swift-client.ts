@@ -110,34 +110,29 @@ export function generateSwiftClientSource(ast: AstRoot, withRxExtension: boolean
                     callback?(response)
                 })
             } catch let apiError as SdkgenError {
-                callback?(Result.failure(handleError(apiError: apiError)))
+                callback?(Result.failure(API.Error(message: apiError.message, code: apiError.code, type: apiError.type)))
             } catch (let error) {
                 debugPrint(error.localizedDescription)
             }
         }\n`;
 
   code += `
-        private func handleError(apiError: SdkgenError) -> API.Error {
-            return API.Error(message: apiError.message, code: apiError.code, type: apiError.type)
-        }\n`;
-
-  code += `
-        private func handleResponse<T: Codable>(response: SdkgenResponse<Any?>) -> Result<T> {
+        private func handleResponse<T: Codable>(response: SdkgenResponse<Any?>) -> API.Result<T> {
             switch response {
             case .failure(let error):
-                return Result.failure(self.handleError(apiError: error))
+                return API.Result.failure(API.Error(message: error.message, code: error.code, type: error.type))
             case .success(let value):
                 do {
                     let dataString = String(data: value, encoding: .utf8)
                     if let result = try dataString?.fromJson(returningType: T.self) {
-                        return Result.success(result)
+                        return API.Result.success(result)
                     } else {
-                        return Result.failure(Error(message: "", code: nil, type: "Fatal"))
+                        return API.Result.failure(API.Error(message: "", code: nil, type: "Fatal"))
                     }
                 } catch let apiError as SdkgenError {
-                    return Result.failure(handleError(apiError: apiError))
+                    return API.Result.failure(API.Error(message: apiError.message, code: apiError.code, type: apiError.type))
                 } catch (let error) {
-                    return Result.failure(Error(message: error.localizedDescription, code: nil, type: "Fatal"))
+                    return API.Result.failure(API.Error(message: error.localizedDescription, code: nil, type: "Fatal"))
                 }
             }
         }\n\n`;
