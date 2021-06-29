@@ -14,7 +14,7 @@ import { generateNodeClientSource, generateNodeServerSource } from "@sdkgen/type
 import axios from "axios";
 
 import type { Context } from "../../src";
-import { SdkgenHttpServer } from "../../src";
+import { useSdkgenContext, SdkgenHttpServer } from "../../src";
 
 const ast = new Parser(`${__dirname}/api.sdkgen`).parse();
 
@@ -25,16 +25,16 @@ unlinkSync(`${__dirname}/api.ts`);
 
 let lastCallCtx: Context & { aaa: boolean } = null as any;
 
-api.fn.getUser = async (ctx: Context & { aaa: boolean }, { id }: { id: string }) => {
-  lastCallCtx = ctx;
+api.fn.getUser = async ({ id }: { id: string }) => {
+  lastCallCtx = useSdkgenContext();
   return {
     age: 1,
     name: id,
   };
 };
 
-api.fn.identity = async (ctx: Context & { aaa: boolean }, { types }: { types: any }) => {
-  lastCallCtx = ctx;
+api.fn.identity = async ({ types }: { types: any }) => {
+  lastCallCtx = useSdkgenContext();
   return types;
 };
 

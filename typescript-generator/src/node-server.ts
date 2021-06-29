@@ -40,7 +40,7 @@ export { Fatal } from "@sdkgen/node-runtime";
     fn!: {${ast.operations
       .map(
         op => `
-        ${op.name}: (ctx: Context & ExtraContextT, args: {${op.args
+        ${op.name}: (args: {${op.args
           .map(arg => `${arg.name}: ${generateTypescriptTypeName(arg.type, false)}`)
           .join(", ")}}) => Promise<${generateTypescriptTypeName(op.returnType, false)}>`,
       )
