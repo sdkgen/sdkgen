@@ -8,6 +8,7 @@ import {
   generateErrorType,
   generateMethodSignature,
   generateJsonRepresentation,
+  generateSwiftTypeName,
   generateRxMethod,
   mangle,
 } from "./helpers";
@@ -94,51 +95,20 @@ export function generateSwiftClientSource(ast: AstRoot, withRxExtension: boolean
       }
 
       impl += `\n\n`;
-      impl += `            request("${op.prettyName}", jsonArgs, timeoutSeconds, callback: callback)`;
+      impl += `            request("${op.prettyName}", jsonArgs, timeoutSeconds, completion: { (value: ${
+        op.returnType instanceof VoidPrimitiveType ? "API.NoReply" : generateSwiftTypeName(op.returnType)
+      }) in\n`;
+      impl += `                callback?(API.Result.success(value))\n`;
+      impl += `            }, onError: { error in\n`;
+      impl += `                callback?(API.Result.failure(API.Error(message: error.message, code: error.code, type: error.type)))\n`;
+      impl += `            })`;
       impl += `\n        }\n`;
+
       return impl;
     })
     .join("\n");
 
-  code += `
-        private func request<T: Codable>(_ name: String, _ args: [String: Any], _ timeoutSeconds: Double?, callback: ((API.Result<T>) -> Void)?) {
-            do {
-                try makeRequest(name, args, timeoutSeconds, callback: { [weak self] callResponse in
-                    guard let this = self else { return }
-
-                    let response: API.Result<T> = this.handleResponse(response: callResponse)
-                    callback?(response)
-                })
-            } catch let apiError as SdkgenError {
-                callback?(Result.failure(API.Error(message: apiError.message, code: apiError.code, type: apiError.type)))
-            } catch (let error) {
-                debugPrint(error.localizedDescription)
-            }
-        }\n`;
-
-  code += `
-        private func handleResponse<T: Codable>(response: SdkgenResponse<Any?>) -> API.Result<T> {
-            switch response {
-            case .failure(let error):
-                return API.Result.failure(API.Error(message: error.message, code: error.code, type: error.type))
-            case .success(let value):
-                do {
-                    let dataString = String(data: value, encoding: .utf8)
-                    if let result = try dataString?.fromJson(returningType: T.self) {
-                        return API.Result.success(result)
-                    } else {
-                        return API.Result.failure(API.Error(message: "", code: nil, type: "Fatal"))
-                    }
-                } catch let apiError as SdkgenError {
-                    return API.Result.failure(API.Error(message: apiError.message, code: apiError.code, type: apiError.type))
-                } catch (let error) {
-                    return API.Result.failure(API.Error(message: error.localizedDescription, code: nil, type: "Fatal"))
-                }
-            }
-        }\n\n`;
-
   code += `    }\n`;
-
   code += `}\n`;
 
   if (withRxExtension) {

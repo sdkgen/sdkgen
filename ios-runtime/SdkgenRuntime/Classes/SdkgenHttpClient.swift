@@ -9,7 +9,7 @@ open class SdkgenHttpClient {
         self.baseUrl = baseUrl
     }
     
-    public enum SdkgenResponse<T> {
+    internal enum SdkgenResponse<T> {
         case success(Data)
         case failure(SdkgenError)
     }
@@ -26,7 +26,7 @@ open class SdkgenHttpClient {
         }
     }
     
-    public func makeRequest(_ name: String, _ args: [String: Any], _ timeoutSeconds: Double?, callback: @escaping (SdkgenResponse<Any?>) -> Void) throws {
+    internal func makeRequest(_ name: String, _ args: [String: Any], _ timeoutSeconds: Double?, callback: @escaping (SdkgenResponse<Any?>) -> Void) throws {
 
         let body: [String : Any] = [
             "version": 3,
@@ -90,5 +90,35 @@ open class SdkgenHttpClient {
 
             })
        
+    }
+}
+
+extension SdkgenHttpClient {
+    public func request<T: Codable>(_ name: String, _ args: [String: Any], _ timeoutSeconds: Double? = nil, completion: @escaping (T) -> Void, onError: @escaping (SdkgenError) -> Void) {
+        do {
+            try makeRequest(name, args, timeoutSeconds, callback: { callResponse in
+                switch callResponse {
+                case .failure(let error):
+                    onError(SdkgenError(message: error.message, code: error.code, type: error.type))
+                case .success(let value):
+                    do {
+                        let dataString = String(data: value, encoding: .utf8)
+                        if let result = try dataString?.fromJson(returningType: T.self) {
+                            completion(result)
+                        } else {
+                            onError(Errors.fatalError(error: Errors.resultParseErrorMessage, code: nil))
+                        }
+                    } catch let apiError as SdkgenError {
+                        onError(apiError)
+                    } catch (let error) {
+                        onError(SdkgenError(message: error.localizedDescription, code: nil, type: "Fatal"))
+                    }
+                }
+            })
+        } catch let apiError as SdkgenError {
+            onError(apiError)
+        } catch (let error) {
+            debugPrint(error.localizedDescription)
+        }
     }
 }

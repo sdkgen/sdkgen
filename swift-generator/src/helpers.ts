@@ -215,8 +215,9 @@ export function generateJsonRepresentation(type: Type, fieldName: string): strin
     case StructType:
       return `${fieldName}.toJSON()`;
     case ArrayType:
-    case JsonPrimitiveType:
       return `${fieldName}.map({ return ${generateJsonRepresentation((type as ArrayType).base, "$0")} })`;
+    case JsonPrimitiveType:
+      return `String(data: ${fieldName}, encoding: .utf8)`;
     case VoidPrimitiveType:
       return `nil`;
     case BytesPrimitiveType:
