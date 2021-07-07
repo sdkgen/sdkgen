@@ -1,5 +1,5 @@
 import type { AstNode, AstRoot } from "../ast";
-import { ArrayType, ErrorNode, Field, Operation, OptionalType, StructType, TypeDefinition } from "../ast";
+import { FunctionOperation, ArrayType, ErrorNode, Field, OptionalType, StructType, TypeDefinition } from "../ast";
 
 export class SemanticError extends Error {}
 
@@ -21,7 +21,7 @@ export abstract class Visitor {
   }
 
   visit(node: AstNode): void {
-    if (node instanceof Operation) {
+    if (node instanceof FunctionOperation) {
       for (const arg of node.args) {
         this.visit(arg);
       }

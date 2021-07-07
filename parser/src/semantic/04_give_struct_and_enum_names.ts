@@ -1,5 +1,5 @@
 import type { AstNode, Type } from "../ast";
-import { EnumType, ErrorNode, Field, Operation, StructType, TypeDefinition } from "../ast";
+import { FunctionOperation, EnumType, ErrorNode, Field, StructType, TypeDefinition } from "../ast";
 import { SemanticError, Visitor } from "./visitor";
 
 export class GiveStructAndEnumNamesVisitor extends Visitor {
@@ -14,7 +14,7 @@ export class GiveStructAndEnumNamesVisitor extends Visitor {
     } else if (node instanceof ErrorNode) {
       this.path = [`${node.name}Data`];
       super.visit(node);
-    } else if (node instanceof Operation) {
+    } else if (node instanceof FunctionOperation) {
       this.path = [node.name];
       super.visit(node);
     } else if (node instanceof Field) {

@@ -35,14 +35,14 @@ ${ast.operations
   .filter(op => op.annotations.every(ann => !(ann instanceof HiddenAnnotation)))
   .map(
     op => `
-  ${op.returnType instanceof VoidPrimitiveType ? "Future<void> " : `Future<${generateTypeName(op.returnType)}> `}${op.prettyName}(${
+  ${op.returnType instanceof VoidPrimitiveType ? "Future<void> " : `Future<${generateTypeName(op.returnType)}> `}${op.name}(${
       op.args.length === 0
         ? ""
         : `{${op.args
             .map(arg => `${arg.type instanceof OptionalType ? "" : "required "}${generateTypeName(arg.type)} ${mangle(arg.name)}`)
             .join(", ")}}`
     }) async { ${op.returnType instanceof VoidPrimitiveType ? "" : "return "}${cast(
-      `await makeRequest('${op.prettyName}', {${op.args.map(arg => `'${arg.name}': ${mangle(arg.name)}`).join(", ")}})`,
+      `await makeRequest('${op.name}', {${op.args.map(arg => `'${arg.name}': ${mangle(arg.name)}`).join(", ")}})`,
       op.returnType,
     )}; }`,
   )
@@ -85,7 +85,7 @@ ${ast.operations
 
   code += `var _fnTable = {\n`;
   for (const op of ast.operations) {
-    code += `  '${op.prettyName}': FunctionDescription('${op.returnType.name}', {\n`;
+    code += `  '${op.name}': FunctionDescription('${op.returnType.name}', {\n`;
     for (const arg of op.args) {
       code += `    '${arg.name}': '${arg.type.name}',\n`;
     }

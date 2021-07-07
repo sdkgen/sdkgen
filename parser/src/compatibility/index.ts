@@ -224,14 +224,14 @@ export function compatibilityIssues(ast1: AstRoot, ast2: AstRoot): string[] {
   const issues: string[] = [];
 
   for (const op1 of ast1.operations) {
-    const op2 = ast2.operations.find(x => x.prettyName === op1.prettyName);
+    const op2 = ast2.operations.find(x => x.name === op1.name);
 
     if (!op2) {
-      issues.push(`function ${op1.prettyName} used to exist, but it's now missing. Add it back.`);
+      issues.push(`function ${op1.name} used to exist, but it's now missing. Add it back.`);
       continue;
     }
 
-    checkServerToClient(`${op1.prettyName}.ret`, issues, op1.returnType, op2.returnType);
+    checkServerToClient(`${op1.name}.ret`, issues, op1.returnType, op2.returnType);
     for (const arg2 of op2.args) {
       const arg1 = op1.args.find(x => x.name === arg2.name);
 
@@ -239,12 +239,12 @@ export function compatibilityIssues(ast1: AstRoot, ast2: AstRoot): string[] {
         if (arg2.type instanceof OptionalType) {
           continue;
         } else {
-          issues.push(`${op1.prettyName}.args.${arg2.name} didn't exist before and isn't optional. Make it optional.`);
+          issues.push(`${op1.name}.args.${arg2.name} didn't exist before and isn't optional. Make it optional.`);
           continue;
         }
       }
 
-      checkClientToServer(`${op1.prettyName}.args.${arg1.name}`, issues, arg1.type, arg2.type);
+      checkClientToServer(`${op1.name}.args.${arg1.name}`, issues, arg1.type, arg2.type);
     }
   }
 
