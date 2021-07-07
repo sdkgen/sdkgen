@@ -114,11 +114,25 @@ export function encode(typeTable: DeepReadonly<TypeTable>, path: string, type: D
   if (typeof type === "string" && !type.endsWith("?") && type !== "void" && (value === null || value === undefined)) {
     throw new Error(`Invalid type at '${path}', cannot be null`);
   } else if (Array.isArray(type)) {
-    if (typeof value !== "string" || type.indexOf(value) < 0) {
-      throw new ParseError(path, type, value);
+    for (const entry of type) {
+      if (entry === value) {
+        return value;
+      }
+
+      if (Array.isArray(value) && value.length === 2 && entry === value[0]) {
+        return value[0];
+      }
+
+      if (Array.isArray(entry) && entry.length === 2) {
+        if (entry[0] === value) {
+          return [value, encode(typeTable, `${path}.${entry[0]}`, entry[1], {})];
+        } else if (Array.isArray(value) && value.length === 2 && entry[0] === value[0]) {
+          return [value[0], encode(typeTable, `${path}.${entry[0]}`, entry[1], value[1])] as unknown;
+        }
+      }
     }
 
-    return value;
+    throw new ParseError(path, type, value);
   } else if (typeof type === "object") {
     if (typeof value !== "object") {
       throw new ParseError(path, type, value);
@@ -202,11 +216,25 @@ export function decode(typeTable: DeepReadonly<TypeTable>, path: string, type: D
   if (typeof type === "string" && !type.endsWith("?") && type !== "void" && (value === null || value === undefined)) {
     throw new Error(`Invalid type at '${path}', cannot be null`);
   } else if (Array.isArray(type)) {
-    if (typeof value !== "string" || type.indexOf(value) < 0) {
-      throw new ParseError(path, type, value);
+    for (const entry of type) {
+      if (entry === value) {
+        return value;
+      }
+
+      if (Array.isArray(value) && value.length === 2 && entry === value[0]) {
+        return value[0];
+      }
+
+      if (Array.isArray(entry) && entry.length === 2) {
+        if (entry[0] === value) {
+          return [value, decode(typeTable, `${path}.${entry[0]}`, entry[1], {})];
+        } else if (Array.isArray(value) && value.length === 2 && entry[0] === value[0]) {
+          return [value[0], decode(typeTable, `${path}.${entry[0]}`, entry[1], value[1])] as unknown;
+        }
+      }
     }
 
-    return value;
+    throw new ParseError(path, type, value);
   } else if (typeof type === "object") {
     if (typeof value !== "object") {
       throw new ParseError(path, type, value);

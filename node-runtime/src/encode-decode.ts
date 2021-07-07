@@ -35,16 +35,22 @@ type DecodedType<Type, Table extends object> = TypeDescription extends Type
   ? DecodedType<X, Table> | null
   : Type extends `${infer X}[]`
   ? Array<DecodedType<X, Table>>
-  : Type extends string[]
-  ? Type[number]
-  : Type extends readonly string[]
-  ? Type[number]
+  : Type extends unknown[]
+  ? EnumDecodedValueType<Type[number], Table>
+  : Type extends readonly unknown[]
+  ? EnumDecodedValueType<Type[number], Table>
   : Type extends object
   ? { -readonly [Key in keyof Type]: DecodedType<Type[Key], Table> }
   : object extends Table
   ? never
   : Type extends keyof Table
   ? DecodedType<Table[Type], Table>
+  : never;
+
+type EnumDecodedValueType<EnumValue, Table extends object> = EnumValue extends string
+  ? EnumValue
+  : EnumValue extends [infer Label, infer Struct]
+  ? [Label, DecodedType<Struct, Table>]
   : never;
 
 type EncodedType<Type, Table extends object> = TypeDescription extends Type
@@ -65,16 +71,22 @@ type EncodedType<Type, Table extends object> = TypeDescription extends Type
   ? EncodedType<X, Table> | null
   : Type extends `${infer X}[]`
   ? Array<EncodedType<X, Table>>
-  : Type extends string[]
-  ? Type[number]
-  : Type extends readonly string[]
-  ? Type[number]
+  : Type extends unknown[]
+  ? EnumEncodedValueType<Type[number], Table>
+  : Type extends readonly unknown[]
+  ? EnumEncodedValueType<Type[number], Table>
   : Type extends object
   ? { -readonly [Key in keyof Type]: EncodedType<Type[Key], Table> }
   : object extends Table
   ? never
   : Type extends keyof Table
   ? EncodedType<Table[Type], Table>
+  : never;
+
+type EnumEncodedValueType<EnumValue, Table extends object> = EnumValue extends string
+  ? EnumValue
+  : EnumValue extends [infer Label, infer Struct]
+  ? [Label, EncodedType<Struct, Table>]
   : never;
 
 class ParseError extends Error {
@@ -184,11 +196,25 @@ export function encode<Table extends DeepReadonly<TypeTable>, Type extends DeepR
   if (typeof type === "string" && !type.endsWith("?") && type !== "void" && (value === null || value === undefined)) {
     throw new Error(`Invalid type at '${path}', cannot be null`);
   } else if (Array.isArray(type)) {
-    if (typeof value !== "string" || !type.includes(value)) {
-      throw new ParseError(path, type, value);
+    for (const entry of type) {
+      if (entry === value) {
+        return value as EncodedType<Type, Table>;
+      }
+
+      if (Array.isArray(value) && value.length === 2 && entry === value[0]) {
+        return value[0] as EncodedType<Type, Table>;
+      }
+
+      if (Array.isArray(entry) && entry.length === 2) {
+        if (entry[0] === value) {
+          return [value, encode(typeTable, `${path}.${entry[0]}`, entry[1], {})] as EncodedType<Type, Table>;
+        } else if (Array.isArray(value) && value.length === 2 && entry[0] === value[0]) {
+          return [value[0], encode(typeTable, `${path}.${entry[0]}`, entry[1], value[1])] as EncodedType<Type, Table>;
+        }
+      }
     }
 
-    return value as EncodedType<Type, Table>;
+    throw new ParseError(path, type, value);
   } else if (typeof type === "object") {
     if (typeof value !== "object") {
       throw new ParseError(path, type, value);
@@ -278,11 +304,25 @@ export function decode<Table extends DeepReadonly<TypeTable>, Type extends DeepR
   if (typeof type === "string" && !type.endsWith("?") && type !== "void" && (value === null || value === undefined)) {
     throw new Error(`Invalid type at '${path}', cannot be null`);
   } else if (Array.isArray(type)) {
-    if (typeof value !== "string" || !type.includes(value)) {
-      throw new ParseError(path, type, value);
+    for (const entry of type) {
+      if (entry === value) {
+        return value as DecodedType<Type, Table>;
+      }
+
+      if (Array.isArray(value) && value.length === 2 && entry === value[0]) {
+        return value[0] as DecodedType<Type, Table>;
+      }
+
+      if (Array.isArray(entry) && entry.length === 2) {
+        if (entry[0] === value) {
+          return [value, decode(typeTable, `${path}.${entry[0]}`, entry[1], {})] as DecodedType<Type, Table>;
+        } else if (Array.isArray(value) && value.length === 2 && entry[0] === value[0]) {
+          return [value[0], decode(typeTable, `${path}.${entry[0]}`, entry[1], value[1])] as DecodedType<Type, Table>;
+        }
+      }
     }
 
-    return value as DecodedType<Type, Table>;
+    throw new ParseError(path, type, value);
   } else if (typeof type === "object") {
     if (typeof value !== "object") {
       throw new ParseError(path, type, value);
