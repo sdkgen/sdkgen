@@ -321,7 +321,17 @@
 						{
 							"name": "variable.parameter",
 							"match": "(\\w+)"
-						}
+						},
+						{
+							"name": "variable.parameter",
+							"begin": "(\\w+)\\(",
+							"end": "\\)",
+							"patterns": [
+								{
+									"include": "#fields"
+								}
+							]
+						},
 					]
 				}
 			]
