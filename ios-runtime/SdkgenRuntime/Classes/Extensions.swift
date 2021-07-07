@@ -20,8 +20,8 @@ public extension Encodable {
         
         do {
             let encodedData = try encoder.encode(self)
-            let endodedJSON = String(data: encodedData, encoding: .utf8)!
-            return endodedJSON
+            let encodedJSON = String(data: encodedData, encoding: .utf8)!
+            return encodedJSON
         } catch {
             throw Errors.jsonSerializationError(error: error.localizedDescription)
         }

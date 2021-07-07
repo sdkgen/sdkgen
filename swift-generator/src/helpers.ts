@@ -71,7 +71,7 @@ export function generateSwiftTypeName(type: Type): string {
       return "Void";
 
     case JsonPrimitiveType:
-      return "AnyObject";
+      return "AnyCodable";
 
     case OptionalType:
       return `${generateSwiftTypeName((type as OptionalType).base)}?`;
@@ -217,7 +217,7 @@ export function generateJsonRepresentation(type: Type, fieldName: string): strin
     case ArrayType:
       return `${fieldName}.map({ return ${generateJsonRepresentation((type as ArrayType).base, "$0")} })`;
     case JsonPrimitiveType:
-      return `String(data: ${fieldName}, encoding: .utf8)`;
+      return `try? ${fieldName}.toJson()`;
     case VoidPrimitiveType:
       return `nil`;
     case BytesPrimitiveType:
