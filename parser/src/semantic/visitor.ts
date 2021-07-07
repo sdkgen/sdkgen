@@ -1,5 +1,5 @@
 import type { AstNode, AstRoot } from "../ast";
-import { FunctionOperation, ArrayType, ErrorNode, Field, OptionalType, StructType, TypeDefinition } from "../ast";
+import { EnumValue, EnumType, FunctionOperation, ArrayType, ErrorNode, Field, OptionalType, StructType, TypeDefinition } from "../ast";
 
 export class SemanticError extends Error {}
 
@@ -36,6 +36,14 @@ export abstract class Visitor {
 
       for (const spread of node.spreads) {
         this.visit(spread);
+      }
+    } else if (node instanceof EnumType) {
+      for (const enumValue of node.values) {
+        this.visit(enumValue);
+      }
+    } else if (node instanceof EnumValue) {
+      if (node.struct) {
+        this.visit(node.struct);
       }
     } else if (node instanceof ArrayType || node instanceof OptionalType) {
       this.visit(node.base);

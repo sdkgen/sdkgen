@@ -385,6 +385,37 @@ export class Parser {
           this.annotations = [];
           enumType.values.push(enumValue);
           this.nextToken();
+
+          if (!(this.token instanceof ParensOpenSymbolToken)) {
+            return;
+          }
+
+          this.nextToken();
+          const fieldNames = new Set<string>();
+          const fields = [];
+
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          while (this.token && this.token.maybeAsIdentifier() instanceof IdentifierToken) {
+            const field = this.parseField();
+
+            if (fieldNames.has(field.name)) {
+              throw new ParserError(`Cannot redeclare argument '${field.name}'`);
+            }
+
+            fieldNames.add(field.name);
+            fields.push(field);
+
+            if (this.token instanceof CommaSymbolToken) {
+              this.nextToken();
+            } else {
+              break;
+            }
+          }
+
+          enumValue.struct = new StructType(fields, []).atLocation(enumValue.location);
+
+          this.expect(ParensCloseSymbolToken);
+          this.nextToken();
         },
       });
     }

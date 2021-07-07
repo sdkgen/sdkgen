@@ -157,6 +157,8 @@ export class ArrayType extends Type {
 export class EnumValue extends AstNode {
   annotations: Annotation[] = [];
 
+  struct: StructType | null = null;
+
   constructor(public value: string) {
     super();
   }

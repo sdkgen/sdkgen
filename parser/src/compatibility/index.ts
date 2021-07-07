@@ -110,7 +110,11 @@ function checkClientToServer(path: string, issues: string[], t1: Type, t2: Type)
 
   if (t1 instanceof EnumType && t2 instanceof EnumType) {
     for (const value of t1.values) {
-      if (!t2.values.map(v => v.value).includes(value.value)) {
+      const other = t2.values.find(v => v.value === value.value);
+
+      if (other) {
+        checkClientToServer(`${path}.${value.value}`, issues, value.struct ?? new StructType([], []), other.struct ?? new StructType([], []));
+      } else {
         issues.push(`The enum at ${path} used to accept the value "${value.value}" that doesn't exist now. Clients that send it will fail.`);
       }
     }
@@ -205,7 +209,11 @@ function checkServerToClient(path: string, issues: string[], t1: Type, t2: Type)
 
   if (t1 instanceof EnumType && t2 instanceof EnumType) {
     for (const value of t2.values) {
-      if (!t1.values.map(v => v.value).includes(value.value)) {
+      const other = t1.values.find(v => v.value === value.value);
+
+      if (other) {
+        checkServerToClient(`${path}.${value.value}`, issues, other.struct ?? new StructType([], []), value.struct ?? new StructType([], []));
+      } else {
         issues.push(`The enum at ${path} now has the value "${value.value}" that didn't exist before. Client will crash if it receives it`);
       }
     }
