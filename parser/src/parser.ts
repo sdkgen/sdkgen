@@ -73,7 +73,7 @@ export class Parser {
   private warnings: string[] = [];
 
   // eslint-disable-next-line
-  constructor(source: Lexer | string, private readFileSync = require("fs").readFileSync as typeof import("fs")["readFileSync"]) {
+  constructor(source: Lexer | string, private readFileSync = require("fs").readFileSync as (path: string) => {toString(): string}) {
     if (source instanceof Lexer) {
       this.lexers = [source];
     } else {
