@@ -1,6 +1,5 @@
+/* eslint-disable no-sync */
 /* eslint-disable no-loop-func */
-import { readFileSync } from "fs";
-import { dirname, resolve } from "path";
 
 import type { Annotation, Operation, Type } from "./ast";
 import {
@@ -83,11 +82,12 @@ export class Parser {
 
   private warnings: string[] = [];
 
-  constructor(source: Lexer | string) {
+  // eslint-disable-next-line
+  constructor(source: Lexer | string, private readFileSync = require("fs").readFileSync as typeof import("fs")["readFileSync"]) {
     if (source instanceof Lexer) {
       this.lexers = [source];
     } else {
-      this.lexers = [new Lexer(readFileSync(source).toString(), source)];
+      this.lexers = [new Lexer(this.readFileSync(source).toString(), source)];
     }
 
     this.nextToken();
@@ -102,10 +102,6 @@ export class Parser {
 
       this.lexers.pop();
     }
-  }
-
-  private get currentFileName() {
-    return this.token === null ? null : this.token.location.filename;
   }
 
   private multiExpect<T>(matcher: MultiExpectMatcher<T>) {
@@ -181,9 +177,9 @@ export class Parser {
           this.checkCannotHaveAnnotationsHere();
           this.nextToken();
           const pathToken = this.expect(StringLiteralToken);
-          const resolvedPath = resolve(dirname(pathToken.location.filename), `${pathToken.value}.sdkgen`);
+          const resolvedPath = pathToken.location.filename.replace(/[^/\\]+$/u, `${pathToken.value}.sdkgen`);
 
-          this.lexers.push(new Lexer(readFileSync(resolvedPath).toString(), resolvedPath));
+          this.lexers.push(new Lexer(this.readFileSync(resolvedPath).toString(), resolvedPath));
           this.nextToken();
         },
         TypeKeywordToken: () => {
