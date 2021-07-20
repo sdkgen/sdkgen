@@ -1,10 +1,8 @@
 {
-  "name": "@sdkgen/cli",
+  "name": "@sdkgen/swift-generator",
   "version": "0.0.0",
   "description": "",
-  "bin": {
-    "sdkgen": "dist/src/index.js"
-  },
+  "main": "src/index.ts",
   "scripts": {
     "test": "jest --passWithNoTests",
     "eslint:fix": "eslint --fix '**/*.ts'",
@@ -25,14 +23,12 @@
   },
   "homepage": "https://github.com/sdkgen/sdkgen#readme",
   "devDependencies": {
-    "@cubos/eslint-config": "^1.0.532516",
-    "@types/command-line-args": "^5.0.0",
-    "@types/command-line-usage": "^5.0.1",
-    "@types/jest": "^26.0.23",
-    "@types/node": "^15.12.4",
-    "jest": "^27.0.5",
-    "ts-jest": "^27.0.3",
-    "typescript": "^4.3.4"
+    "@cubos/eslint-config": "^1.0.504804",
+    "@types/jest": "^26.0.22",
+    "@types/node": "^14.14.37",
+    "jest": "^26.6.3",
+    "ts-jest": "^26.5.4",
+    "typescript": "^4.2.3"
   },
   "jest": {
     "transform": {
@@ -50,13 +46,6 @@
     ]
   },
   "dependencies": {
-    "@sdkgen/csharp-generator": "file:../csharp-generator",
-    "@sdkgen/dart-generator": "file:../dart-generator",
-    "@sdkgen/kotlin-generator": "file:../kotlin-generator",
-    "@sdkgen/parser": "file:../parser",
-    "@sdkgen/swift-generator": "file:../swift-generator",
-    "@sdkgen/typescript-generator": "file:../typescript-generator",
-    "command-line-args": "^5.1.1",
-    "command-line-usage": "^6.1.1"
+    "@sdkgen/parser": "file:../parser"
   }
 }
