@@ -4,8 +4,8 @@ import { writeFileSync } from "fs";
 import { generateCSharpServerSource } from "@sdkgen/csharp-generator";
 import { generateDartClientSource } from "@sdkgen/dart-generator";
 import { generateAndroidClientSource } from "@sdkgen/kotlin-generator";
-import { generateSwiftClientSource } from "@sdkgen/swift-generator";
 import { Parser } from "@sdkgen/parser";
+import { generateSwiftClientSource } from "@sdkgen/swift-generator";
 import {
   generateBrowserClientSource,
   generateNodeClientSource,
