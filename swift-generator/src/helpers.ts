@@ -1,4 +1,4 @@
-import type { Operation, Type } from "@sdkgen/parser";
+import type { FunctionOperation, Field, Type } from "@sdkgen/parser";
 import {
   ArrayType,
   Base64PrimitiveType,
@@ -294,9 +294,9 @@ export function generateErrorClass(): string {
     }\n`;
 }
 
-export function generateMethodSignature(op: Operation) {
+export function generateMethodSignature(op: FunctionOperation) {
   const argsString = op.args
-    .map(arg => {
+    .map((arg: Field) => {
       return `${mangle(arg.name)}: ${generateSwiftTypeName(arg.type)}`;
     })
     .concat([
@@ -306,25 +306,25 @@ export function generateMethodSignature(op: Operation) {
       }) -> Void)?`,
     ]);
 
-  return `    func ${mangle(op.prettyName)}(${argsString.join(", ")})`;
+  return `    func ${mangle(op.name)}(${argsString.join(", ")})`;
 }
 
-export function generateRxMethod(op: Operation) {
+export function generateRxMethod(op: FunctionOperation) {
   const argsString = op.args
-    .map(arg => {
+    .map((arg: Field) => {
       return `${mangle(arg.name)}: ${generateSwiftTypeName(arg.type)}`;
     })
     .concat([`timeoutSeconds: Double? = nil`]);
 
-  let str = `    static func ${mangle(op.prettyName)}(${argsString.join(", ")}) -> ${
+  let str = `    static func ${mangle(op.name)}(${argsString.join(", ")}) -> ${
     op.returnType instanceof VoidPrimitiveType
       ? "Observable<API.Result<API.NoReply>>"
       : `Observable<API.Result<${generateSwiftTypeName(op.returnType)}>>`
   } {\n`;
 
   str += `        return Observable.create { observer -> Disposable in\n`;
-  str += `            API.calls.${mangle(op.prettyName)}(${op.args
-    .map(arg => {
+  str += `            API.calls.${mangle(op.name)}(${op.args
+    .map((arg: Field) => {
       return `${mangle(arg.name)}: ${mangle(arg.name)}`;
     })
     .concat([`timeoutSeconds: timeoutSeconds`])
