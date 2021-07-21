@@ -8,6 +8,11 @@ public final class SdkgenHelper {
     }
     
     public static func encodeDateTime(date: Date) -> String {
+        let formatter = DateFormatter.dateTimeFormatter
+        return formatter.string(from: date)
+    }
+    
+    public static func encodeDate(date: Date) -> String {
         let formatter = DateFormatter.dateFormatter
         return formatter.string(from: date)
     }

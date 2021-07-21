@@ -8,15 +8,15 @@ internal class Errors {
         return "Error: url creation ended in error \(url)"
     }
     
-    public static func jsonSerializationError(error: String) -> SdkgenHttpClient.SdkgenError {
-        return SdkgenHttpClient.SdkgenError(message: "Error: json serialization: \(error)", code: nil, type: "Fatal")
+    public static func jsonSerializationError(error: String) -> SdkgenResponse.SdkgenError {
+        return SdkgenResponse.SdkgenError(message: "Error: json serialization: \(error)", code: nil, type: "Fatal")
     }
     
-    public static func fatalError(error: String, code: Int?) -> SdkgenHttpClient.SdkgenError {
-        return SdkgenHttpClient.SdkgenError(message: error, code: code, type: "Fatal")
+    public static func fatalError(error: String, code: Int?) -> SdkgenResponse.SdkgenError {
+        return SdkgenResponse.SdkgenError(message: error, code: code, type: "Fatal")
     }
     
-    public static func connectionError(error: String) -> SdkgenHttpClient.SdkgenError {
-        return SdkgenHttpClient.SdkgenError(message: error, code: nil, type: "Connection")
+    public static func connectionError(error: String) -> SdkgenResponse.SdkgenError {
+        return SdkgenResponse.SdkgenError(message: error, code: nil, type: "Connection")
     }
 }
