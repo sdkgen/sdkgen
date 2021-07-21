@@ -1,5 +1,3 @@
-import { parse as pathParse } from "path";
-
 import { RestAnnotation } from "./ast";
 
 function scanHeaders(text: string) {
@@ -51,22 +49,19 @@ export function parseRestAnnotation(text: string): RestAnnotation {
     throw new Error(`Unsupported method '${method}'`);
   }
 
-  const parsedPath = pathParse(fragments[1]);
+  // eslint-disable-next-line prefer-destructuring
+  let path = fragments[1];
 
-  if (parsedPath.root !== "/") {
+  if (!path.startsWith("/")) {
     throw new Error(`Invalid path`);
-  }
-
-  if (parsedPath.dir === "/") {
-    parsedPath.dir = "";
   }
 
   let queryVariables: string[] = [];
 
-  if (parsedPath.base.includes("?")) {
-    const [base, ...queryArray] = parsedPath.base.split("?");
+  if (path.includes("?")) {
+    const [base, ...queryArray] = path.split("?");
 
-    parsedPath.base = base;
+    path = base;
     const query = queryArray.join("?");
 
     if (!/^\{\w+\}(?:&\{\w+\})*$/u.test(query)) {
@@ -76,7 +71,6 @@ export function parseRestAnnotation(text: string): RestAnnotation {
     queryVariables = scanVariables(query);
   }
 
-  const path = `${parsedPath.dir}/${parsedPath.base}`;
   const pathVariables = scanVariables(path);
 
   const remaining = fragments.slice(2).join(" ");
