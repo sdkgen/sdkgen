@@ -206,6 +206,7 @@ export function generateJsonRepresentation(type: Type, fieldName: string): strin
     case OptionalType:
       return `${fieldName} == nil ? nil : ${generateJsonRepresentation((type as OptionalType).base, `${fieldName}!`)}`;
     case DatePrimitiveType:
+      return `SdkgenHelper.encodeDate(date: ${fieldName})`;
     case DateTimePrimitiveType:
       return `SdkgenHelper.encodeDateTime(date: ${fieldName})`;
     case EnumType:
@@ -274,13 +275,13 @@ function generateToJson(type: StructType): string {
 }
 
 export function generateClass(type: StructType): string {
-  return `    public class ${type.name}: Codable {\n${type.fields
+  return `    public struct ${type.name}: Codable {\n${type.fields
     .map(field => `        var ${mangle(field.name)}: ${generateSwiftTypeName(field.type)}`)
     .join("\n")}\n\n${generateConstructor(type)}\n${generateToJson(type)}\n    }\n`;
 }
 
 export function generateErrorClass(): string {
-  return `    public class Error {
+  return `    public class Failure: Error {
         var message: String?
         var code: Int?
         var type: ErrorType?

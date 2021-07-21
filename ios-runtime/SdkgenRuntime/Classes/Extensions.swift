@@ -2,12 +2,21 @@ import Foundation
 import Alamofire
 
 public extension DateFormatter {
-    static let dateFormatter: DateFormatter = {
+    static let dateTimeFormatter: DateFormatter = {
         let formatter = DateFormatter()
         formatter.calendar = Calendar(identifier: .gregorian)
         formatter.timeZone = TimeZone(abbreviation: "UTC")
         formatter.locale = Locale(identifier: "en_US_POSIX")
         formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS"
+        return formatter
+    }()
+    
+    static let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.calendar = Calendar(identifier: .gregorian)
+        formatter.timeZone = TimeZone(abbreviation: "UTC")
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.dateFormat = "yyyy-MM-dd"
         return formatter
     }()
     

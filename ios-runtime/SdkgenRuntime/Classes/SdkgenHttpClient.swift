@@ -9,24 +9,7 @@ open class SdkgenHttpClient {
         self.baseUrl = baseUrl
     }
     
-    internal enum SdkgenResponse<T> {
-        case success(Data)
-        case failure(SdkgenError)
-    }
-
-    public class SdkgenError: Error {
-        public var message: String?
-        public var code: Int?
-        public var type: String?
-        
-        public init(message: String?, code: Int?, type: String?) {
-            self.message = message
-            self.code = code
-            self.type = type
-        }
-    }
-    
-    internal func makeRequest(_ name: String, _ args: [String: Any], _ timeoutSeconds: Double?, callback: @escaping (SdkgenResponse<Any?>) -> Void) throws {
+    public func request<T: Codable>(_ name: String, _ args: [String: Any], _ timeoutSeconds: Double? = nil, completion: @escaping (T) -> Void, onError: @escaping (SdkgenResponse.SdkgenError) -> Void) {
 
         let body: [String : Any] = [
             "version": 3,
@@ -38,7 +21,7 @@ open class SdkgenHttpClient {
         
         let url = baseUrl.last != "/" ? baseUrl.appending("/\(name)") : baseUrl.appending(name)
         
-        guard let urlObj = URL(string: url) else { throw Errors.fatalError(error: Errors.getUrlCreationErrorMessage(url), code: nil) }
+        guard let urlObj = URL(string: url) else { return onError(Errors.fatalError(error: Errors.getUrlCreationErrorMessage(url), code: nil)) }
         var urlRequest = URLRequest(url: urlObj)
         urlRequest.method = .post
         urlRequest.timeoutInterval = timeoutSeconds ?? 35
@@ -47,28 +30,32 @@ open class SdkgenHttpClient {
         do {
             urlRequest.httpBody = try JSONSerialization.data(withJSONObject: body, options: [])
         } catch let error {
-            throw Errors.jsonSerializationError(error: error.localizedDescription)
+             onError(Errors.jsonSerializationError(error: error.localizedDescription))
         }
         
         AF.request(urlRequest, interceptor: nil)
             .validate()
-            .responseData(completionHandler: { response in
+            .responseData { response in
                 do {
                     switch response.result {
                     case .success(let value):
-                        if let responseJson = try JSONSerialization.jsonObject(with: value, options: []) as? [String: Any],
-                           let resultJson = responseJson["result"],
-                           response.response?.statusCode == 200 {
-                                let dataResult = try JSONSerialization.data(withJSONObject: resultJson, options: .prettyPrinted)
-                                callback(SdkgenResponse.success(dataResult))
-                        } else {
-                            callback(SdkgenResponse.failure(Errors.fatalError(error: Errors.resultParseErrorMessage, code: nil)))
+                        if let jsonObject = try JSONSerialization.jsonObject(with: value, options: []) as? [String: Any] {
+                            let httpResponse = SdkgenResponse.HTTPResponse(jsonObject: jsonObject)
+                            if let result = httpResponse.result, JSONSerialization.isValidJSONObject(result) {
+                                let dataResult = try JSONSerialization.data(withJSONObject: result, options: [])
+                                let dataString = String(data: dataResult, encoding: .utf8)
+                                if let result = try dataString?.fromJson(returningType: T.self) {
+                                    completion(result)
+                                } else {
+                                    onError(Errors.fatalError(error: Errors.resultParseErrorMessage, code: nil))
+                                }
+                            } else {
+                                try SdkgenResponse.handleResult(of: T.self, value: value, completion: completion)
+                            }
                         }
-
-                        break
                     case .failure(let error):
                         if error.responseCode == nil && response.data == nil && response.response == nil {
-                            callback(SdkgenResponse.failure(Errors.connectionError(error: error.localizedDescription)))
+                            onError(Errors.connectionError(error: error.localizedDescription))
                             break
                         }
 
@@ -76,49 +63,17 @@ open class SdkgenHttpClient {
                            let responseJson = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any],
                            let responseError = response.error,
                            let errorDict = responseJson["error"] as? [String: Any] {
-                                let apiError = SdkgenError(message: errorDict["message"] as? String, code: responseError.responseCode, type: errorDict["type"] as? String)
-                                callback(SdkgenResponse.failure(apiError))
+                            let apiError = SdkgenResponse.SdkgenError(message: errorDict["message"] as? String, code: responseError.responseCode, type: errorDict["type"] as? String)
+                            onError(apiError)
                         } else {
-                            callback(SdkgenResponse.failure(Errors.fatalError(error: error.localizedDescription, code: error.responseCode)))
+                            onError(Errors.fatalError(error: error.localizedDescription, code: error.responseCode))
                         }
 
                         break
                     }
                 } catch {
-                    callback(SdkgenResponse.failure(Errors.jsonSerializationError(error: error.localizedDescription)))
+                    onError(Errors.jsonSerializationError(error: error.localizedDescription))
                 }
-
-            })
-       
-    }
-}
-
-extension SdkgenHttpClient {
-    public func request<T: Codable>(_ name: String, _ args: [String: Any], _ timeoutSeconds: Double? = nil, completion: @escaping (T) -> Void, onError: @escaping (SdkgenError) -> Void) {
-        do {
-            try makeRequest(name, args, timeoutSeconds, callback: { callResponse in
-                switch callResponse {
-                case .failure(let error):
-                    onError(SdkgenError(message: error.message, code: error.code, type: error.type))
-                case .success(let value):
-                    do {
-                        let dataString = String(data: value, encoding: .utf8)
-                        if let result = try dataString?.fromJson(returningType: T.self) {
-                            completion(result)
-                        } else {
-                            onError(Errors.fatalError(error: Errors.resultParseErrorMessage, code: nil))
-                        }
-                    } catch let apiError as SdkgenError {
-                        onError(apiError)
-                    } catch (let error) {
-                        onError(SdkgenError(message: error.localizedDescription, code: nil, type: "Fatal"))
-                    }
-                }
-            })
-        } catch let apiError as SdkgenError {
-            onError(apiError)
-        } catch (let error) {
-            debugPrint(error.localizedDescription)
-        }
+            }
     }
 }

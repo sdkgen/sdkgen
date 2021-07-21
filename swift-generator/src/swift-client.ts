@@ -27,7 +27,7 @@ export function generateSwiftClientSource(ast: AstRoot, withRxExtension: boolean
     .join("\n");
   code += `\n}\n\n`;
 
-  code += `class API {
+  code += `class API: SdkgenResponse {
 
     static var calls: APICallsProtocol = Calls(baseUrl: "")
     static var baseUrl: String? {
@@ -36,7 +36,9 @@ export function generateSwiftClientSource(ast: AstRoot, withRxExtension: boolean
         }
     }
     
-    init() {}\n\n`;
+    override init() {
+      super.init()
+    }\n\n`;
 
   for (const type of ast.enumTypes) {
     code += generateEnum(type);
@@ -47,10 +49,6 @@ export function generateSwiftClientSource(ast: AstRoot, withRxExtension: boolean
     code += generateClass(type);
     code += "\n";
   }
-
-  code += `    public struct NoReply: Codable {
-        public init() {}
-    }\n\n`;
 
   const errorTypeEnumEntries: string[] = [];
   const connectionError = new ErrorNode("Connection", new VoidPrimitiveType());
@@ -70,7 +68,7 @@ export function generateSwiftClientSource(ast: AstRoot, withRxExtension: boolean
 
   code += `    public enum Result<T> {
       case success(T)
-      case failure(Error)
+      case failure(Failure)
     }\n\n`;
 
   code += `    public class Calls: SdkgenHttpClient, APICallsProtocol {
@@ -100,7 +98,7 @@ export function generateSwiftClientSource(ast: AstRoot, withRxExtension: boolean
       }) in\n`;
       impl += `                callback?(API.Result.success(value))\n`;
       impl += `            }, onError: { error in\n`;
-      impl += `                callback?(API.Result.failure(API.Error(message: error.message, code: error.code, type: error.type)))\n`;
+      impl += `                callback?(API.Result.failure(API.Failure(message: error.message, code: error.code, type: error.type)))\n`;
       impl += `            })`;
       impl += `\n        }\n`;
 
