@@ -21,7 +21,7 @@ internal class SdkgenDevice {
         platform["version"] = UIDevice.current.systemVersion
         platform["brand"] = "Apple"
         platform["model"] = Device.current.name
-         return platform
+        return platform
     }
     
     private static func screenInfo() -> [String: Any] {
