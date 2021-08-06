@@ -35,7 +35,7 @@
     "jest": "^27.0.5",
     "json-schema-typed": "^7.0.3",
     "ts-jest": "^27.0.3",
-    "type-fest": "^1.2.1",
+    "type-fest": "^2.0.0",
     "typescript": "^4.3.4"
   },
   "jest": {
