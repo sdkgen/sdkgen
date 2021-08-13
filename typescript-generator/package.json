@@ -24,7 +24,7 @@
   "homepage": "https://github.com/sdkgen/sdkgen#readme",
   "devDependencies": {
     "@cubos/eslint-config": "^1.0.532516",
-    "@types/jest": "^26.0.23",
+    "@types/jest": "^27.0.1",
     "@types/node": "^15.12.4",
     "jest": "^27.0.5",
     "ts-jest": "^27.0.3",
