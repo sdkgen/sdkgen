@@ -75,7 +75,7 @@
     "offline-plugin": "^5.0.7",
     "postcss-cli": "^8.1.0",
     "postcss-loader": "^4.0.4",
-    "postcss-scss": "^3.0.5",
+    "postcss-scss": "^4.0.0",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-json-view": "^1.21.3",
