@@ -10,9 +10,8 @@ Future<Map<String, Object?>> getDeviceInfo(String deviceId) async {
     // ignore: empty_catches
   } catch (e) {}
 
-  final window = PlatformDispatcher.instance.views
-      .whereType<SingletonFlutterWindow>()
-      .first;
+  final window =
+      PlatformDispatcher.instance.views.whereType<FlutterWindow>().first;
   final screenSize = window.physicalSize / window.devicePixelRatio;
 
   final platform = {
