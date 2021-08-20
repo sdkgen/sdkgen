@@ -23,20 +23,20 @@
   },
   "homepage": "https://github.com/sdkgen/sdkgen#readme",
   "devDependencies": {
-    "@cubos/eslint-config": "^1.0.532516",
-    "@types/busboy": "^0.2.3",
-    "@types/jest": "^26.0.23",
-    "@types/node": "^15.12.4",
-    "@types/request-ip": "0.0.36",
-    "@types/serve-handler": "^6.1.0",
-    "@types/swagger-ui-dist": "^3.30.0",
+    "@cubos/eslint-config": "^1.0.536820",
+    "@types/busboy": "^0.2.4",
+    "@types/jest": "^27.0.1",
+    "@types/node": "^16.7.0",
+    "@types/request-ip": "0.0.37",
+    "@types/serve-handler": "^6.1.1",
+    "@types/swagger-ui-dist": "^3.30.1",
     "axios": "^0.21.1",
     "form-data": "^4.0.0",
-    "jest": "^27.0.5",
+    "jest": "^27.0.6",
     "json-schema-typed": "^7.0.3",
-    "ts-jest": "^27.0.3",
-    "type-fest": "^1.2.1",
-    "typescript": "^4.3.4"
+    "ts-jest": "^27.0.5",
+    "type-fest": "^2.0.0",
+    "typescript": "^4.3.5"
   },
   "jest": {
     "transform": {
@@ -63,9 +63,9 @@
     "@sdkgen/typescript-generator": "file:../typescript-generator",
     "busboy": "^0.3.1",
     "deepmerge": "^4.2.2",
-    "file-type": "^16.5.0",
+    "file-type": "^16.5.3",
     "request-ip": "^2.1.3",
     "serve-handler": "^6.1.3",
-    "swagger-ui-dist": "^3.50.0"
+    "swagger-ui-dist": "^3.52.0"
   }
 }
