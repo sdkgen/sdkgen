@@ -88,8 +88,8 @@ export class SdkgenHttpClient {
     const encodedRet = await new Promise<unknown>((resolve, reject) => {
       const req = new XMLHttpRequest();
 
-      req.setRequestHeader("Content-Type", "application/sdkgen");
       req.open("POST", `${this.baseUrl}/${functionName}`);
+      req.setRequestHeader("Content-Type", "application/sdkgen");
 
       req.onreadystatechange = () => {
         if (req.readyState !== 4) {
