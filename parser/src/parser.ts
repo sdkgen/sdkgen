@@ -77,9 +77,11 @@ export class Parser {
   };
 
   constructor(source: Lexer | string) {
-    if (typeof require === "function") {
+    try {
       // eslint-disable-next-line
       this.readFileSync = require("fs").readFileSync;
+    } catch (e) {
+      // do nothing
     }
 
     if (source instanceof Lexer) {
