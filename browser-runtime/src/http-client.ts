@@ -122,7 +122,6 @@ export class SdkgenHttpClient {
 
       req.send(JSON.stringify(request));
     }).catch((error: object) => {
-      console.error(error);
       this.errorHook(error, functionName, args);
       if (has(error, "type") && has(error, "message") && typeof error.type === "string" && typeof error.message === "string") {
         const errClass = this.errClasses[error.type];
