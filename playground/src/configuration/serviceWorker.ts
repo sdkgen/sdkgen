@@ -16,7 +16,7 @@ export function setupServiceWorker(configEnvs: ConfigEnvs): void {
 
   runtime.install({
     onUpdateReady: () => runtime.applyUpdate(),
-    onUpdated: () => window.location.reload(true),
+    onUpdated: () => window.location.reload(),
   });
 
   try {
