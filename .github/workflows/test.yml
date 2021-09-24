@@ -62,7 +62,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        flutter-version: [2.0.x, 2.2.x]
+        flutter-version: [2.0.x, 2.2.x, 2.5.x]
         flutter-channel: [stable]
     steps:
       - uses: actions/checkout@v2
