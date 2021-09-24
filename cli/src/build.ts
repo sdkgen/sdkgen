@@ -1,5 +1,5 @@
 /* eslint-disable no-process-exit */
-import { writeFileSync } from "fs";
+import { writeFileSync, unlinkSync } from "fs";
 
 import { generateCSharpServerSource } from "@sdkgen/csharp-generator";
 import { generateDartClientSource } from "@sdkgen/dart-generator";
@@ -14,6 +14,7 @@ import {
 } from "@sdkgen/typescript-generator";
 import commandLineArgs from "command-line-args";
 import commandLineUsage from "command-line-usage";
+import readline from "readline"
 
 const optionDefinitions = [
   { defaultOption: true, description: "Specifies the source file", name: "source" },
@@ -22,7 +23,14 @@ const optionDefinitions = [
   { alias: "h", description: "Display this usage guide.", name: "help", type: Boolean },
 ];
 
+
 export function buildCmd(argv: string[]): void {
+  
+  const readlineInterface = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+  });
+  
   const options = commandLineArgs(optionDefinitions, { argv }) as {
     source?: string;
     output?: string;
@@ -117,8 +125,25 @@ export function buildCmd(argv: string[]): void {
     }
 
     case "kotlin_android": {
-      writeFileSync(options.output, generateAndroidClientSource(ast));
-      break;
+      readlineInterface.question("Do you want callback implementation on your endpoint methods? (y/n)", (response) => {
+        switch (response.toLowerCase()) {
+          case "y": {
+            writeFileSync(options.output!!, generateAndroidClientSource(ast, true));
+            readlineInterface.close();
+            break;
+          }
+          case "n": {
+            writeFileSync(options.output!!, generateAndroidClientSource(ast, false));
+            readlineInterface.close();
+            break;
+          }
+          default: {
+            console.error(`Error: Invalid response '${response}'`);
+            unlinkSync(options.output!!)
+            process.exit(1);
+          }
+        }
+      }) 
     }
 
     case "swift_ios": {
