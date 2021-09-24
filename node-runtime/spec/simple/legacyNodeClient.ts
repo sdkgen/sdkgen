@@ -87,13 +87,13 @@ export class ApiClient {
               }
             } catch (e) {
               console.error(e);
-              reject({ type: "Fatal", message: e.toString() });
+              reject({ type: "Fatal", message: `${e}` });
             }
           } catch (e) {
             console.error(e);
             reject({
               type: "BadFormattedResponse",
-              message: `Response couldn't be parsed as JSON (${data}):\n${e.toString()}`,
+              message: `Response couldn't be parsed as JSON (${data}):\n${e}`,
             });
           }
         });
