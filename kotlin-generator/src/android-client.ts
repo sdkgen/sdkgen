@@ -3,7 +3,7 @@ import { ErrorNode, HiddenAnnotation, VoidPrimitiveType } from "@sdkgen/parser";
 
 import { generateClass, generateEnum, generateErrorClass, generateJsonAddRepresentation, generateKotlinTypeName, mangle } from "./helpers";
 
-export function generateAndroidClientSource(ast: AstRoot): string {
+export function generateAndroidClientSource(ast: AstRoot, shouldImplementCallbacks: boolean): string {
   let code = `@file:Suppress("UNNECESSARY_SAFE_CALL")
 
 import android.os.Parcelable
@@ -79,9 +79,14 @@ class ApiClient(
     .filter(op => op.annotations.every(ann => !(ann instanceof HiddenAnnotation)))
     .map(op => {
       let opImpl = "";
+      let defaultArguments: Array<string> = []
+      defaultArguments.push(`timeoutMillis: Long? = null`)
+      if(shouldImplementCallbacks) {
+        defaultArguments.push(`callback: ((response: Response<${generateKotlinTypeName(op.returnType)}>) -> Unit)? = null`)
+      }
       const args = op.args
         .map(arg => `${mangle(arg.name)}: ${generateKotlinTypeName(arg.type)}`)
-        .concat([`timeoutMillis: Long? = null`, `callback: ((response: Response<${generateKotlinTypeName(op.returnType)}>) -> Unit)? = null`]);
+        .concat(defaultArguments);
 
       opImpl += `    fun ${mangle(op.name)}(\n        ${args.join(",\n        ")}\n    ): Deferred<Response<out ${generateKotlinTypeName(
         op.returnType,
@@ -98,7 +103,9 @@ class ApiClient(
       opImpl += `\n`;
       opImpl += `        val call = makeRequest("${op.name}", bodyArgs, timeoutMillis)\n`;
       opImpl += `        val response: Response<${generateKotlinTypeName(op.returnType)}> = handleCallResponse(call)\n`;
-      opImpl += `        withContext(Dispatchers.Main) { callback?.invoke(response) } \n`;
+      if(shouldImplementCallbacks) {
+        opImpl += `        withContext(Dispatchers.Main) { callback?.invoke(response) } \n`;
+      }
       opImpl += `        return@async response\n`;
       opImpl += `    }\n`;
       return opImpl;
