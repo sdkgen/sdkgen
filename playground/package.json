@@ -73,7 +73,7 @@
     "monaco-editor-webpack-plugin": "^2.0.0",
     "node-sass": "^6.0.0",
     "offline-plugin": "^5.0.7",
-    "postcss-cli": "^8.1.0",
+    "postcss-cli": "^9.0.0",
     "postcss-loader": "^4.0.4",
     "postcss-scss": "^3.0.5",
     "react": "^16.14.0",
