@@ -62,7 +62,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        flutter-version: [2.0.x, 2.2.x]
+        flutter-version: [2.0.x, 2.2.x, 2.5.x]
         flutter-channel: [stable]
     steps:
       - uses: actions/checkout@v2
@@ -77,11 +77,11 @@ jobs:
         working-directory: ./dart-runtime
       - run: flutter test
         working-directory: ./dart-runtime
-      - run: if [ "${{ matrix.flutter-version }}" == "2.2.x" ]; then flutter analyze; fi
+      - run: if [ "${{ matrix.flutter-version }}" == "2.5.x" ]; then flutter analyze; fi
         working-directory: ./dart-runtime
-      - run: if [ "${{ matrix.flutter-version }}" == "2.2.x" ]; then flutter format . --set-exit-if-changed; fi
+      - run: if [ "${{ matrix.flutter-version }}" == "2.5.x" ]; then flutter format . --set-exit-if-changed; fi
         working-directory: ./dart-runtime
-      - run: if [ "${{ matrix.flutter-version }}" == "2.2.x" ]; then flutter pub pub publish --dry-run; fi
+      - run: if [ "${{ matrix.flutter-version }}" == "2.5.x" ]; then flutter pub pub publish --dry-run; fi
         working-directory: ./dart-runtime
 
   node-runtime:
