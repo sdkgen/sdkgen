@@ -21,12 +21,12 @@ export default class ErrorBoundary extends React.Component<Props, State> {
   }
 
   private reloadPage = () => {
-    window.location.reload(true);
+    window.location.reload();
   };
 
   private clearSiteData = () => {
     window.localStorage.clear();
-    window.location.reload(true);
+    window.location.reload();
   };
 
   private toogleErrorDisplay() {

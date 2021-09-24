@@ -93,7 +93,7 @@ export class requestModel {
           callBack("error");
         }
       }
-    } catch (err) {
+    } catch (err: any) {
       this.status = "error";
       this.error = err.message;
       if (callBack) {
