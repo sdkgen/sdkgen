@@ -4,8 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classnames from "classnames";
 import { observer } from "mobx-react";
 import * as React from "react";
-import { Link } from "react-router-dom";
-import RootStore from "stores";
+import { Link, useLocation } from "react-router-dom";
 
 import s from "./header.scss";
 
@@ -16,17 +15,16 @@ interface LinkInfo {
 }
 
 const links: LinkInfo[] = [
-  { icon: faClone, label: "Endpoints", to: "/playground" },
-  { icon: faCog, label: "Configuration", to: "/playground/configuration" },
+  { icon: faClone, label: "Endpoints", to: "/playground/" },
+  { icon: faCog, label: "Configuration", to: "/playground/configuration/" },
 ];
 
 function Header() {
-  const { routerStore } = React.useContext(RootStore);
+  const { pathname } = useLocation();
 
-  const activePath = routerStore.location.pathname;
   const linkElements = links.map(l => (
     <Link key={l.to} to={l.to}>
-      <div className={classnames(s.link, l.to === activePath && s.active)}>
+      <div className={classnames(s.link, l.to === pathname ? s.active : "")}>
         <FontAwesomeIcon size="xs" icon={l.icon} className={s.icon} />
         {l.label}
       </div>
