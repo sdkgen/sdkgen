@@ -77,11 +77,11 @@ jobs:
         working-directory: ./dart-runtime
       - run: flutter test
         working-directory: ./dart-runtime
-      - run: if [ "${{ matrix.flutter-version }}" == "2.2.x" ]; then flutter analyze; fi
+      - run: if [ "${{ matrix.flutter-version }}" == "2.5.x" ]; then flutter analyze; fi
         working-directory: ./dart-runtime
-      - run: if [ "${{ matrix.flutter-version }}" == "2.2.x" ]; then flutter format . --set-exit-if-changed; fi
+      - run: if [ "${{ matrix.flutter-version }}" == "2.5.x" ]; then flutter format . --set-exit-if-changed; fi
         working-directory: ./dart-runtime
-      - run: if [ "${{ matrix.flutter-version }}" == "2.2.x" ]; then flutter pub pub publish --dry-run; fi
+      - run: if [ "${{ matrix.flutter-version }}" == "2.5.x" ]; then flutter pub pub publish --dry-run; fi
         working-directory: ./dart-runtime
 
   node-runtime:
