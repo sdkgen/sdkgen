@@ -25,14 +25,14 @@
   },
   "homepage": "https://github.com/sdkgen/sdkgen#readme",
   "devDependencies": {
-    "@cubos/eslint-config": "^1.0.532516",
-    "@types/command-line-args": "^5.0.0",
-    "@types/command-line-usage": "^5.0.1",
-    "@types/jest": "^26.0.23",
-    "@types/node": "^15.12.4",
-    "jest": "^27.0.5",
-    "ts-jest": "^27.0.3",
-    "typescript": "^4.3.4"
+    "@cubos/eslint-config": "^1.0.536820",
+    "@types/command-line-args": "^5.2.0",
+    "@types/command-line-usage": "^5.0.2",
+    "@types/jest": "^27.0.1",
+    "@types/node": "^16.7.0",
+    "jest": "^27.0.6",
+    "ts-jest": "^27.0.5",
+    "typescript": "^4.3.5"
   },
   "jest": {
     "transform": {
@@ -54,8 +54,9 @@
     "@sdkgen/dart-generator": "file:../dart-generator",
     "@sdkgen/kotlin-generator": "file:../kotlin-generator",
     "@sdkgen/parser": "file:../parser",
+    "@sdkgen/swift-generator": "file:../swift-generator",
     "@sdkgen/typescript-generator": "file:../typescript-generator",
-    "command-line-args": "^5.1.1",
+    "command-line-args": "^5.2.0",
     "command-line-usage": "^6.1.1"
   }
 }

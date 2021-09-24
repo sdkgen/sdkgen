@@ -88,8 +88,8 @@ export class SdkgenHttpClient {
     const encodedRet = await new Promise<unknown>((resolve, reject) => {
       const req = new XMLHttpRequest();
 
-      req.setRequestHeader("Content-Type", "application/sdkgen");
       req.open("POST", `${this.baseUrl}/${functionName}`);
+      req.setRequestHeader("Content-Type", "application/sdkgen");
 
       req.onreadystatechange = () => {
         if (req.readyState !== 4) {
@@ -122,7 +122,7 @@ export class SdkgenHttpClient {
 
       req.send(JSON.stringify(request));
     }).catch((error: object) => {
-      console.error(error);
+      this.errorHook(error, functionName, args);
       if (has(error, "type") && has(error, "message") && typeof error.type === "string" && typeof error.message === "string") {
         const errClass = this.errClasses[error.type];
 

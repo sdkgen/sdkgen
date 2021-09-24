@@ -215,6 +215,37 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
+  swift-generator:
+    needs: [_version]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v1
+        with:
+          name: version
+      - uses: actions/setup-node@v1
+        with:
+          registry-url: https://registry.npmjs.org
+      - run: cp LICENSE swift-generator/
+      - run: npm install
+        working-directory: ./swift-generator
+      - run: |
+          npm install -g json && json -I -f package.json -e '
+            this.version = "'$(cat ../version/version.txt)'";
+            this.main = "dist/src/index.js";
+            this.types = "dist/src/index.d.ts";
+            for (const pkg in this.dependencies)
+              if (this.dependencies[pkg].startsWith("file:../"))
+                this.dependencies[pkg] = this.version;
+          '
+        working-directory: ./swift-generator
+      - run: npm run build
+        working-directory: ./swift-generator
+      - run: npm publish --tag dev
+        working-directory: ./swift-generator
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+
   dart-generator:
     needs: [_version]
     runs-on: ubuntu-latest
