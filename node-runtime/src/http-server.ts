@@ -559,6 +559,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
                     const buffer = Buffer.from(reply.result as string, "base64");
 
                     // eslint-disable-next-line @typescript-eslint/no-floating-promises
+                    // eslint-disable-next-line promise/catch-or-return
                     FileType.fromBuffer(buffer)
                       .then(fileType => {
                         res.setHeader("content-type", fileType?.mime ?? "application/octet-stream");
