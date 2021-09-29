@@ -37,6 +37,8 @@ export class CurlyCloseSymbolToken extends Token {}
 export class ParensOpenSymbolToken extends Token {}
 export class ParensCloseSymbolToken extends Token {}
 export class PipeSymbolToken extends Token {}
+export class LessThanSymbolToken extends Token {}
+export class GreaterThanSymbolToken extends Token {}
 export class ColonSymbolToken extends Token {}
 export class OptionalSymbolToken extends Token {}
 export class ArraySymbolToken extends Token {}

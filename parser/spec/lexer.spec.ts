@@ -23,6 +23,8 @@ import {
   SpreadSymbolToken,
   StringLiteralToken,
   TypeKeywordToken,
+  LessThanSymbolToken,
+  GreaterThanSymbolToken,
 } from "../src/token";
 
 function itLexes(source: string, expectedTokens: Token[]) {
@@ -247,4 +249,6 @@ describe(Lexer, () => {
   itLexes("@\\\n  cc   ", [new AnnotationToken("cc")]);
 
   itLexes("|", [new PipeSymbolToken()]);
+
+  itLexes("< >", [new LessThanSymbolToken(), new GreaterThanSymbolToken()]);
 });

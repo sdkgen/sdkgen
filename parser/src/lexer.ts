@@ -1,3 +1,4 @@
+import { GreaterThanSymbolToken, LessThanSymbolToken } from ".";
 import type { Token } from "./token";
 import {
   AnnotationToken,
@@ -178,6 +179,14 @@ export class Lexer {
       case "|":
         this.nextChar();
         token = new PipeSymbolToken();
+        break;
+      case "<":
+        this.nextChar();
+        token = new LessThanSymbolToken();
+        break;
+      case ">":
+        this.nextChar();
+        token = new GreaterThanSymbolToken();
         break;
       case "?":
         this.nextChar();
