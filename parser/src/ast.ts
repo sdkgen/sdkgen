@@ -156,27 +156,6 @@ export class OptionalType extends Type {
   }
 }
 
-function areIdentifiersEqual(list1: IdentifierToken[], list2: IdentifierToken[]) {
-  const json1 = JSON.stringify(list1.map(id => JSON.stringify(id.toString())).sort((a, b) => a.localeCompare(b)));
-  const json2 = JSON.stringify(list2.map(id => JSON.stringify(id.toString())).sort((a, b) => a.localeCompare(b)));
-
-  return json1 === json2;
-}
-
-export class GenericsType extends Type {
-  identifiers: IdentifierToken[] = [];
-  constructor(identifiers: IdentifierToken[]){
-    super();
-    this.identifiers = identifiers;
-  }
-  get name(): string {
-    return `<${this.identifiers}>`;
-  }
-  isEqual(other: GenericsType): boolean {
-    return other instanceof GenericsType && areIdentifiersEqual(this.identifiers, other.identifiers);
-  }
-}
-
 export class ArrayType extends Type {
   constructor(public base: Type) {
     super();
