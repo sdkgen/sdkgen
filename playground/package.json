@@ -36,7 +36,7 @@
     "postcss-preset-env": "^6.7.0"
   },
   "devDependencies": {
-    "@cubos/eslint-config": "^1.0.504804",
+    "@cubos/eslint-config": "1.0.480297",
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
     "@fortawesome/free-solid-svg-icons": "^5.15.3",
     "@fortawesome/react-fontawesome": "^0.1.8",
@@ -88,7 +88,7 @@
     "style-loader": "^2.0.0",
     "ts-jest": "^26.5.4",
     "ts-loader": "^8.1.0",
-    "typescript": "^4.2.3",
+    "typescript": "4.2.3",
     "url-loader": "^4.1.1",
     "use-debounce": "^6.0.0",
     "uuid": "^8.3.1",
