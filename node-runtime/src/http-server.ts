@@ -1,12 +1,3 @@
-import { randomBytes } from "crypto";
-import { createReadStream, createWriteStream, unlink } from "fs";
-import type { IncomingMessage, Server, ServerResponse } from "http";
-import { createServer } from "http";
-import { hostname } from "os";
-import { parse as parseQuerystring } from "querystring";
-import { parse as parseUrl } from "url";
-import { promisify } from "util";
-
 import { generateDartClientSource } from "@sdkgen/dart-generator";
 import {
   Base64PrimitiveType,
@@ -28,15 +19,22 @@ import {
   UIntPrimitiveType,
   UuidPrimitiveType,
   VoidPrimitiveType,
-  XmlPrimitiveType,
+  XmlPrimitiveType
 } from "@sdkgen/parser";
 import { PLAYGROUND_PUBLIC_PATH } from "@sdkgen/playground";
 import { generateBrowserClientSource, generateNodeClientSource, generateNodeServerSource } from "@sdkgen/typescript-generator";
 import Busboy from "busboy";
+import { randomBytes } from "crypto";
 import FileType from "file-type";
+import { createReadStream, createWriteStream, unlink } from "fs";
+import type { IncomingMessage, Server, ServerResponse } from "http";
+import { createServer } from "http";
+import { hostname } from "os";
+import { parse as parseQuerystring } from "querystring";
 import { getClientIp } from "request-ip";
 import staticFilesHandler from "serve-handler";
-
+import { parse as parseUrl } from "url";
+import { promisify } from "util";
 import type { BaseApiConfig } from "./api-config";
 import type { Context, ContextReply, ContextRequest } from "./context";
 import { decode, encode } from "./encode-decode";
@@ -44,6 +42,8 @@ import { Fatal } from "./error";
 import { executeRequest } from "./execute";
 import { setupSwagger } from "./swagger";
 import { has } from "./utils";
+
+
 
 export class SdkgenHttpServer<ExtraContextT = unknown> {
   public httpServer: Server;
@@ -559,7 +559,6 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
                     const buffer = Buffer.from(reply.result as string, "base64");
 
                     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-                    // eslint-disable-next-line promise/catch-or-return
                     FileType.fromBuffer(buffer)
                       .then(fileType => {
                         res.setHeader("content-type", fileType?.mime ?? "application/octet-stream");
