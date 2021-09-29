@@ -396,7 +396,7 @@ export class StructType extends ComplexType {
 
 export class TypeDefinition extends AstNode {
   annotations: Annotation[] = [];
-
+  generics: Set<string> = new Set<string>();
   constructor(public name: string, public type: Type) {
     super();
   }
@@ -404,7 +404,7 @@ export class TypeDefinition extends AstNode {
 
 export abstract class Operation extends AstNode {
   annotations: Annotation[] = [];
-
+  generics: Set<string> = new Set<string>();
   constructor(public name: string, public args: Field[], public returnType: Type) {
     super();
   }

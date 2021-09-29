@@ -52,6 +52,8 @@ import {
   ParensOpenSymbolToken,
   PrimitiveTypeToken,
   StringLiteralToken,
+  LessThanSymbolToken,
+  GreaterThanSymbolToken,
   TypeKeywordToken,
 } from "./token";
 import { primitiveToAstClass } from "./utils";
@@ -71,6 +73,9 @@ interface MultiExpectMatcher<T> {
   ArraySymbolToken?(token: ArraySymbolToken): T;
   OptionalSymbolToken?(token: OptionalSymbolToken): T;
   CurlyCloseSymbolToken?(token: CurlyCloseSymbolToken): T;
+  LessThanSymbolToken?(token: LessThanSymbolToken): T;
+  GreaterThanSymbolToken?(token: GreaterThanSymbolToken): T;
+  CommaSymbolToken?(token: CommaSymbolToken): T;
   SpreadSymbolToken?(token: SpreadSymbolToken): T;
   TrueKeywordToken?(token: TrueKeywordToken): T;
   FalseKeywordToken?(token: FalseKeywordToken): T;
@@ -260,9 +265,13 @@ export class Parser {
     if (!/[A-Z]/u.test(name[0])) {
       throw new ParserError(`The custom type name must start with an uppercase letter, but found '${JSON.stringify(name)}' at ${nameToken.location}`);
     }
-
     this.nextToken();
 
+    let generics: Set<string> = new Set<string>();
+    if(this.token instanceof LessThanSymbolToken){
+      generics = this.parseGenerics();
+    }
+    
     const { annotations } = this;
 
     this.annotations = [];
@@ -271,7 +280,7 @@ export class Parser {
     const definitions = new TypeDefinition(name, type).at(typeToken);
 
     definitions.annotations = annotations;
-
+    definitions.generics = generics;
     return definitions;
   }
 
@@ -321,8 +330,13 @@ export class Parser {
     }
 
     const name = this.expect(IdentifierToken).value;
-
+    
     this.nextToken();
+
+    let generics: Set<string> = new Set<string>();
+    if(this.token instanceof LessThanSymbolToken){
+      generics = this.parseGenerics();
+    }
 
     this.expect(ParensOpenSymbolToken);
     this.nextToken();
@@ -339,7 +353,6 @@ export class Parser {
 
       argNames.add(field.name);
       args.push(field);
-
       if (this.token instanceof CommaSymbolToken) {
         this.nextToken();
       } else {
@@ -375,6 +388,7 @@ export class Parser {
     const op = openingToken instanceof GetKeywordToken ? new GetOperation(name, args, returnType) : new FunctionOperation(name, args, returnType);
 
     op.annotations = annotations;
+    op.generics = generics;
 
     return op;
   }
@@ -446,6 +460,33 @@ export class Parser {
     }
 
     return field;
+  }
+
+  private parseGenerics(): Set<string> {
+    let identifiers: Set<string> = new Set<string>();
+    let finished = false;
+    // must be the beginning of generic declaration < .... > & have atleast 1 identifier
+    this.expect(LessThanSymbolToken);
+    this.nextToken();
+    this.expect(IdentifierToken);
+
+    while(!finished){
+      this.multiExpect<void>({
+        IdentifierToken: token => {
+          if(!/[A-Z]/u.test(token.value[0])){
+            throw new ParserError(`Generic type must start with an uppercase letter, but found '${token.value}' at ${token.location}`);
+          }
+          if(identifiers.has(token.value)){
+            throw new ParserError(`Expected new generic type, found repeated '${token.value}' at ${token.location}`);
+          }
+          identifiers.add(token.value)
+        },
+        CommaSymbolToken: _ => {},
+        GreaterThanSymbolToken: _ => {finished = true},
+      });
+      this.nextToken();
+    }
+    return identifiers;
   }
 
   private parseStruct(): StructType {
