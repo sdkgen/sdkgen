@@ -62,7 +62,6 @@ export class SdkgenHttpClient {
 
     const extra: Record<string, any> = {};
 
-    // eslint-disable-next-line no-foreach/no-foreach
     this.extra.forEach((value, key) => {
       extra[key] = value;
     });
