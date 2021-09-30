@@ -5,7 +5,7 @@
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
-    "dev": "webpack-dev-server --progress --host 0.0.0.0 --config webpack.config.js",
+    "dev": "webpack serve --progress --host 0.0.0.0 --config webpack.config.js",
     "build": "webpack",
     "test": "jest",
     "test:w": "jest --watchAll",

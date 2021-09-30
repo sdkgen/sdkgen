@@ -6,11 +6,10 @@ import { createBrowserHistory } from "history";
 import { observer } from "mobx-react";
 import { syncHistoryWithStore } from "mobx-react-router";
 import * as React from "react";
-import { Router } from "react-router";
-import { Route, Switch } from "react-router-dom";
+import { Route, Switch, BrowserRouter } from "react-router-dom";
 import { rootStore } from "stores";
 
-const history = syncHistoryWithStore(createBrowserHistory(), rootStore.routerStore);
+syncHistoryWithStore(createBrowserHistory(), rootStore.routerStore);
 
 const asyncOptions: Options<any> = {
   fallback: <PageLoading />,
@@ -19,17 +18,19 @@ const asyncOptions: Options<any> = {
 const NotFound = loadable(async () => import("pages/notfound"), asyncOptions);
 const Home = loadable(async () => import("pages/home"), asyncOptions);
 const Configuration = loadable(async () => import("pages/condiguration"), asyncOptions);
+const Download = loadable(async () => import("pages/downloads"), asyncOptions);
 
 export const Routes = observer(() => {
   return (
-    <Router history={history}>
+    <BrowserRouter>
       <MainWrapper>
         <Switch>
-          <Route path="/playground/" exact component={Home} />
+          <Route path="/playground/downloads" component={Download} />
           <Route path="/playground/configuration" component={Configuration} />
+          <Route path="/playground" component={Home} />
           <Route component={NotFound} />
         </Switch>
       </MainWrapper>
-    </Router>
+    </BrowserRouter>
   );
 });
