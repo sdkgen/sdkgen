@@ -23,6 +23,7 @@ jobs:
           name: version
       - uses: actions/setup-node@v1
         with:
+          node-version: 14.x
           registry-url: https://registry.npmjs.org
       - run: cp LICENSE parser/
       - run: npm install
@@ -54,6 +55,7 @@ jobs:
           name: version
       - uses: actions/setup-node@v1
         with:
+          node-version: 14.x
           registry-url: https://registry.npmjs.org
       - run: cp LICENSE browser-runtime/
       - run: npm install
@@ -88,6 +90,7 @@ jobs:
           java-version: 12.x
       - uses: subosito/flutter-action@v1
         with:
+          flutter-version: 1.22.x
           channel: stable
       - run: cp LICENSE dart-runtime/
       - run: flutter pub get
@@ -132,6 +135,7 @@ jobs:
           name: version
       - uses: actions/setup-node@v1
         with:
+          node-version: 14.x
           registry-url: https://registry.npmjs.org
       - run: cp LICENSE typescript-generator/
       - run: npm install
@@ -163,6 +167,7 @@ jobs:
           name: version
       - uses: actions/setup-node@v1
         with:
+          node-version: 14.x
           registry-url: https://registry.npmjs.org
       - run: cp LICENSE csharp-generator/
       - run: npm install
@@ -194,6 +199,7 @@ jobs:
           name: version
       - uses: actions/setup-node@v1
         with:
+          node-version: 14.x
           registry-url: https://registry.npmjs.org
       - run: cp LICENSE kotlin-generator/
       - run: npm install
@@ -256,6 +262,7 @@ jobs:
           name: version
       - uses: actions/setup-node@v1
         with:
+          node-version: 14.x
           registry-url: https://registry.npmjs.org
       - run: cp LICENSE dart-generator/
       - run: npm install
@@ -287,6 +294,7 @@ jobs:
           name: version
       - uses: actions/setup-node@v1
         with:
+          node-version: 14.x
           registry-url: https://registry.npmjs.org
       - run: cp LICENSE cli/
       - run: npm install
@@ -318,6 +326,7 @@ jobs:
           name: version
       - uses: actions/setup-node@v1
         with:
+          node-version: 14.x
           registry-url: https://registry.npmjs.org
       - run: cp LICENSE playground/
       - run: npm install
@@ -351,6 +360,7 @@ jobs:
           name: version
       - uses: actions/setup-node@v1
         with:
+          node-version: 14.x
           registry-url: https://registry.npmjs.org
       - run: cp LICENSE node-runtime/
       - run: npm install
@@ -381,7 +391,11 @@ jobs:
         with:
           name: version
       - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: 5.0.x
       - uses: actions/setup-node@v1
+        with:
+          node-version: 14.x
       - run: cp LICENSE dotnet-runtime/
       - run: npm install
         working-directory: ./playground
