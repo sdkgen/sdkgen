@@ -1,5 +1,14 @@
 # Releases
 
+## 1.6.0 / 1.6.1 (2021-09-29)
+
+- Atualização de dependências.
+- Suporte ao .NET 6.0.
+- Agora é possivel o cliente enviar parâmetros extras em requisições ([#378])](https://github.com/sdkgen/sdkgen/pull/378)).
+- Novo hook no browser-client para intercepção de erros ([#428])](https://github.com/sdkgen/sdkgen/pull/428)).
+- Torna os HTTP Headers case insensitive.
+- Remove console.error que estava aparecendo no runtime ([#556])](https://github.com/sdkgen/sdkgen/pull/556)).
+
 ## 1.5.5 (2021-02-22)
 
 **Correções:**
