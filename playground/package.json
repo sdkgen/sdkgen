@@ -5,7 +5,7 @@
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
-    "dev": "webpack-dev-server --progress --host 0.0.0.0 --config webpack.config.js",
+    "dev": "webpack serve --progress --host 0.0.0.0 --config webpack.config.js",
     "build": "webpack",
     "test": "jest",
     "test:w": "jest --watchAll",
@@ -75,7 +75,7 @@
     "offline-plugin": "^5.0.7",
     "postcss-cli": "^8.1.0",
     "postcss-loader": "^4.0.4",
-    "postcss-scss": "^3.0.5",
+    "postcss-scss": "^4.0.1",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",
     "react-json-view": "^1.21.3",
