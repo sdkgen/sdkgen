@@ -1,0 +1,29 @@
+.buttonsContainer{
+  display: flex;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.downloadButton{
+  background-color: #1760dd;
+  border-radius: 6px;
+  padding: 12px;
+  text-decoration: none;
+  display: flex;
+  width: 45%;
+  margin-bottom: 24px;
+  align-items: center;
+  color: aliceblue;
+  font-weight: bold;
+  svg{
+    margin-right: 10px;
+  }
+
+  &:hover{
+    filter: brightness(0.9);
+    transition: 0.2s;
+  }
+}

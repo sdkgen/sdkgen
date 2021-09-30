@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:ui';
+import 'package:flutter/foundation.dart';
 import 'package:device_info/device_info.dart';
 import 'package:package_info/package_info.dart';
 
@@ -43,11 +44,27 @@ Future<Map<String, Object?>> getDeviceInfo(String deviceId) async {
     'language': Platform.localeName.replaceAll('_', '-'),
     'platform': platform,
     'timezone': DateTime.now().timeZoneName,
-    'type': Platform.isAndroid
-        ? 'android'
-        : Platform.isIOS
-            ? 'ios'
-            : 'flutter',
+    'type': _getDeviceTypeString(),
     'version': packageInfo?.version
   };
+}
+
+String _getDeviceTypeString() {
+  if (kIsWeb) {
+    return 'web';
+  } else if (Platform.isAndroid) {
+    return 'android';
+  } else if (Platform.isFuchsia) {
+    return 'fuchsia';
+  } else if (Platform.isIOS) {
+    return 'ios';
+  } else if (Platform.isLinux) {
+    return 'linux';
+  } else if (Platform.isMacOS) {
+    return 'macos';
+  } else if (Platform.isWindows) {
+    return 'windows';
+  } else {
+    return 'flutter';
+  }
 }

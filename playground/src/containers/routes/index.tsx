@@ -13,14 +13,16 @@ const asyncOptions: Options<any> = {
 const NotFound = loadable(async () => import("pages/notfound"), asyncOptions);
 const Home = loadable(async () => import("pages/home"), asyncOptions);
 const Configuration = loadable(async () => import("pages/condiguration"), asyncOptions);
+const Download = loadable(async () => import("pages/downloads"), asyncOptions);
 
 export const Routes = observer(() => {
   return (
     <BrowserRouter>
       <MainWrapper>
         <Switch>
-          <Route path="/playground/" exact component={Home} />
+          <Route path="/playground/downloads" component={Download} />
           <Route path="/playground/configuration" component={Configuration} />
+          <Route path="/playground" component={Home} />
           <Route component={NotFound} />
         </Switch>
       </MainWrapper>
