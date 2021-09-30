@@ -10,19 +10,19 @@ function Download() {
     <div className={s.buttonsContainer}>
       <a href="/targets/web/client.ts" className={s.downloadButton} download="client.ts">
         <FontAwesomeIcon size="xs" icon={faCode} />
-        WEB
+        Web Client
       </a>
       <a className={s.downloadButton} href="/targets/node/client.ts" download="client.ts">
         <FontAwesomeIcon size="xs" icon={faCubes} />
-        Node client
+        Node.js Client
       </a>
       <a className={s.downloadButton} href="/targets/node/api.ts" download="api.ts">
         <FontAwesomeIcon size="xs" icon={faServer} />
-        Node api
+        Node.js API
       </a>
       <a className={s.downloadButton} href="/targets/flutter/client.dart" download="client.dart">
         <FontAwesomeIcon size="xs" icon={faMobile} />
-        Flutter
+        Flutter Client
       </a>
     </div>
   );
