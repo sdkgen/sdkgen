@@ -4,7 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classnames from "classnames";
 import { observer } from "mobx-react";
 import * as React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, withRouter } from "react-router-dom";
 
 import s from "./header.scss";
 
@@ -48,4 +48,4 @@ function Header() {
   );
 }
 
-export const MainHeader = observer(Header);
+export const MainHeader = withRouter(observer(Header));
