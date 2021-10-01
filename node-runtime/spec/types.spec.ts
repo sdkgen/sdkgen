@@ -123,13 +123,15 @@ describe("Encode/Decode", () => {
         func({}, "", ["a", "b"], "c");
       }).toThrow();
 
-      expect(func({ X: { v: "int" } }, "", ["a", ["b", "X"]], "a")).toBe("a");
-      expect(func({ X: { v: "int" } }, "", ["a", ["b", "X"]], ["b", { v: 4 }])).toEqual(["b", { v: 4 }]);
-      expect(func({}, "", ["a", "b"], ["b", { v: 4 }])).toBe("b");
-
       expect(() => {
         func({ X: { v: "int" } }, "", ["a", ["b", "X"]], "b");
       }).toThrow();
     }
+
+    expect(encode({ X: { v: "int" } }, "", ["a", ["b", "X"]], { tag: "a" })).toBe("a");
+    expect(encode({ X: { v: "int" } }, "", ["a", ["b", "X"]], { tag: "b", v: 4 })).toEqual(["b", { v: 4 }]);
+
+    expect(decode({ X: { v: "int" } }, "", ["a", ["b", "X"]], "a")).toEqual({ tag: "a" });
+    expect(decode({ X: { v: "int" } }, "", ["a", ["b", "X"]], ["b", { v: 4 }])).toEqual({ tag: "b", v: 4 });
   });
 });

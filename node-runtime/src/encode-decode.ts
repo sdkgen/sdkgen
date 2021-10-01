@@ -9,6 +9,8 @@ type TypeTable = AstJson["typeTable"];
 const simpleStringTypes = ["string", "email", "html", "xml"];
 const simpleTypes = ["json", "bool", "url", "int", "uint", "float", "money", "hex", "uuid", "base64", "void", ...simpleStringTypes];
 
+type ExpandRecursively<T> = T extends object ? (T extends infer O ? { [K in keyof O]: ExpandRecursively<O[K]> } : never) : T;
+
 type JsonType = number | string | boolean | null | JsonType[] | { [Key in string]: JsonType };
 
 type AnyDecodedType = number | string | boolean | null | bigint | Buffer | Date | AnyDecodedType[] | { [Key in string]: AnyDecodedType };
@@ -35,10 +37,10 @@ type DecodedType<Type, Table extends object> = TypeDescription extends Type
   ? DecodedType<X, Table> | null
   : Type extends `${infer X}[]`
   ? Array<DecodedType<X, Table>>
-  : Type extends unknown[]
-  ? EnumDecodedValueType<Type[number], Table>
-  : Type extends readonly unknown[]
-  ? EnumDecodedValueType<Type[number], Table>
+  : Type extends Array<string | [string, string]>
+  ? DecodedEnumType<Type, Table>
+  : Type extends ReadonlyArray<string | readonly [string, string]>
+  ? DecodedEnumType<Type, Table>
   : Type extends object
   ? { -readonly [Key in keyof Type]: DecodedType<Type[Key], Table> }
   : object extends Table
@@ -47,10 +49,20 @@ type DecodedType<Type, Table extends object> = TypeDescription extends Type
   ? DecodedType<Table[Type], Table>
   : never;
 
-type EnumDecodedValueType<EnumValue, Table extends object> = EnumValue extends string
-  ? EnumValue
-  : EnumValue extends [infer Label, infer Struct]
-  ? [Label, DecodedType<Struct, Table>]
+type DecodedEnumType<
+  Type extends Array<string | [string, string]> | ReadonlyArray<string | readonly [string, string]>,
+  Table extends object,
+> = Type[number] extends string ? Type[number] : DecodeTaggedEnumValueType<Type[number], Table>;
+
+type DecodeTaggedEnumValueType<
+  ValueType extends string | [string, string] | readonly [string, string],
+  Table extends object,
+> = ValueType extends string
+  ? { tag: ValueType }
+  : ValueType extends [infer Tag, infer Struct]
+  ? ExpandRecursively<{ tag: Tag } & DecodedType<Struct, Table>>
+  : ValueType extends readonly [infer Tag, infer Struct]
+  ? ExpandRecursively<{ tag: Tag } & DecodedType<Struct, Table>>
   : never;
 
 type EncodedType<Type, Table extends object> = TypeDescription extends Type
@@ -71,9 +83,9 @@ type EncodedType<Type, Table extends object> = TypeDescription extends Type
   ? EncodedType<X, Table> | null
   : Type extends `${infer X}[]`
   ? Array<EncodedType<X, Table>>
-  : Type extends unknown[]
+  : Type extends Array<string | [string, string]>
   ? EnumEncodedValueType<Type[number], Table>
-  : Type extends readonly unknown[]
+  : Type extends ReadonlyArray<string | readonly [string, string]>
   ? EnumEncodedValueType<Type[number], Table>
   : Type extends object
   ? { -readonly [Key in keyof Type]: EncodedType<Type[Key], Table> }
@@ -83,10 +95,12 @@ type EncodedType<Type, Table extends object> = TypeDescription extends Type
   ? EncodedType<Table[Type], Table>
   : never;
 
-type EnumEncodedValueType<EnumValue, Table extends object> = EnumValue extends string
-  ? EnumValue
-  : EnumValue extends [infer Label, infer Struct]
-  ? [Label, EncodedType<Struct, Table>]
+type EnumEncodedValueType<ValueType extends string | [string, string] | readonly [string, string], Table extends object> = ValueType extends string
+  ? ValueType
+  : ValueType extends [infer Tag, infer Struct]
+  ? [Tag, EncodedType<Struct, Table>]
+  : ValueType extends readonly [infer Tag, infer Struct]
+  ? [Tag, EncodedType<Struct, Table>]
   : never;
 
 class ParseError extends Error {
@@ -196,20 +210,33 @@ export function encode<Table extends DeepReadonly<TypeTable>, Type extends DeepR
   if (typeof type === "string" && !type.endsWith("?") && type !== "void" && (value === null || value === undefined)) {
     throw new Error(`Invalid type at '${path}', cannot be null`);
   } else if (Array.isArray(type)) {
-    for (const entry of type) {
-      if (entry === value) {
-        return value as EncodedType<Type, Table>;
+    if (type.every(tag => typeof tag === "string")) {
+      for (const tag of type) {
+        if (tag === value) {
+          return tag as EncodedType<Type, Table>;
+        }
       }
+    } else if (typeof value === "object" && value && "tag" in value) {
+      const { tag: tagValue, ...restValue } = value as object & { tag: unknown };
 
-      if (Array.isArray(value) && value.length === 2 && entry === value[0]) {
-        return value[0] as EncodedType<Type, Table>;
-      }
+      for (const entry of type) {
+        if (typeof entry === "string") {
+          if (entry === tagValue) {
+            return entry as EncodedType<Type, Table>;
+          }
+        } else {
+          const [tag, valueType] = entry as [string, string];
 
-      if (Array.isArray(entry) && entry.length === 2) {
-        if (entry[0] === value) {
-          return [value, encode(typeTable, `${path}.${entry[0]}`, entry[1], {})] as EncodedType<Type, Table>;
-        } else if (Array.isArray(value) && value.length === 2 && entry[0] === value[0]) {
-          return [value[0], encode(typeTable, `${path}.${entry[0]}`, entry[1], value[1])] as EncodedType<Type, Table>;
+          if (tag === tagValue) {
+            const encodedValues = encode(typeTable, `${path}.${tag}`, valueType, restValue) as object;
+
+            // eslint-disable-next-line max-depth
+            if (Object.values(encodedValues).every(v => v === null)) {
+              return tag as EncodedType<Type, Table>;
+            }
+
+            return [tag, encodedValues] as EncodedType<Type, Table>;
+          }
         }
       }
     }
@@ -304,20 +331,30 @@ export function decode<Table extends DeepReadonly<TypeTable>, Type extends DeepR
   if (typeof type === "string" && !type.endsWith("?") && type !== "void" && (value === null || value === undefined)) {
     throw new Error(`Invalid type at '${path}', cannot be null`);
   } else if (Array.isArray(type)) {
-    for (const entry of type) {
-      if (entry === value) {
-        return value as DecodedType<Type, Table>;
+    if (type.every(tag => typeof tag === "string")) {
+      for (const tag of type) {
+        if (tag === value) {
+          return tag as DecodedType<Type, Table>;
+        }
       }
+    } else {
+      for (const entry of type) {
+        if (typeof entry === "string") {
+          if (entry === value) {
+            return { tag: entry } as DecodedType<Type, Table>;
+          }
+        } else {
+          const [tag, valueType] = entry as [string, string];
 
-      if (Array.isArray(value) && value.length === 2 && entry === value[0]) {
-        return value[0] as DecodedType<Type, Table>;
-      }
+          if (tag === value) {
+            const decodedValues = decode(typeTable, `${path}.${tag}`, valueType, {}) as object;
 
-      if (Array.isArray(entry) && entry.length === 2) {
-        if (entry[0] === value) {
-          return [value, decode(typeTable, `${path}.${entry[0]}`, entry[1], {})] as DecodedType<Type, Table>;
-        } else if (Array.isArray(value) && value.length === 2 && entry[0] === value[0]) {
-          return [value[0], decode(typeTable, `${path}.${entry[0]}`, entry[1], value[1])] as DecodedType<Type, Table>;
+            return { ...decodedValues, tag } as DecodedType<Type, Table>;
+          } else if (Array.isArray(value) && value.length === 2 && tag === value[0]) {
+            const decodedValues = decode(typeTable, `${path}.${tag}`, valueType, value[1]) as object;
+
+            return { ...decodedValues, tag } as DecodedType<Type, Table>;
+          }
         }
       }
     }

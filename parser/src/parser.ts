@@ -404,6 +404,11 @@ export class Parser {
           while (this.token && this.token.maybeAsIdentifier() instanceof IdentifierToken) {
             const field = this.parseField();
 
+            // "tag" is a reserved name on tagged enum fields and can't be used.
+            if (field.name === "tag") {
+              field.name = "_tag";
+            }
+
             if (fieldNames.has(field.name)) {
               throw new ParserError(`Cannot redeclare argument '${field.name}'`);
             }

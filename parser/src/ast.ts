@@ -170,6 +170,10 @@ export class EnumType extends Type {
   constructor(public values: EnumValue[]) {
     super();
   }
+
+  get hasStructValues() {
+    return this.values.some(v => v.struct !== null);
+  }
 }
 
 export class Field extends AstNode {

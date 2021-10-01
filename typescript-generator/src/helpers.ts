@@ -100,7 +100,13 @@ ${type.fields.map(field => `    ${field.name}: ${generateTypescriptTypeName(fiel
 }
 
 export function generateTypescriptEnum(type: EnumType): string {
-  return `export type ${type.name} = ${type.values.map(x => (x.struct ? `["${x.value}", ${x.struct.name}]` : `"${x.value}"`)).join(" | ")};\n`;
+  if (type.hasStructValues) {
+    return `export type ${type.name} = ${type.values
+      .map(x => (x.struct ? `({tag: "${x.value}"} & ${x.struct.name})` : `{tag: "${x.value}"}`))
+      .join(" | ")};\n`;
+  }
+
+  return `export type ${type.name} = ${type.values.map(x => `"${x.value}"`).join(" | ")};\n`;
 }
 
 export function generateTypescriptErrorClass(error: ErrorNode, isBrowser: boolean): string {
