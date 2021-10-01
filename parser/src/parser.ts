@@ -34,6 +34,7 @@ import type {
   SpreadSymbolToken,
   Token,
   TrueKeywordToken,
+  GreaterThanSymbolToken,
 } from "./token";
 import {
   PipeSymbolToken,
@@ -53,7 +54,6 @@ import {
   PrimitiveTypeToken,
   StringLiteralToken,
   LessThanSymbolToken,
-  GreaterThanSymbolToken,
   TypeKeywordToken,
 } from "./token";
 import { primitiveToAstClass } from "./utils";
@@ -265,13 +265,15 @@ export class Parser {
     if (!/[A-Z]/u.test(name[0])) {
       throw new ParserError(`The custom type name must start with an uppercase letter, but found '${JSON.stringify(name)}' at ${nameToken.location}`);
     }
+
     this.nextToken();
 
     let generics: Set<string> = new Set<string>();
-    if(this.token instanceof LessThanSymbolToken){
+
+    if (this.token instanceof LessThanSymbolToken) {
       generics = this.parseGenerics();
     }
-    
+
     const { annotations } = this;
 
     this.annotations = [];
@@ -330,11 +332,12 @@ export class Parser {
     }
 
     const name = this.expect(IdentifierToken).value;
-    
+
     this.nextToken();
 
     let generics: Set<string> = new Set<string>();
-    if(this.token instanceof LessThanSymbolToken){
+
+    if (this.token instanceof LessThanSymbolToken) {
       generics = this.parseGenerics();
     }
 
@@ -463,29 +466,35 @@ export class Parser {
   }
 
   private parseGenerics(): Set<string> {
-    let identifiers: Set<string> = new Set<string>();
+    const identifiers: Set<string> = new Set<string>();
     let finished = false;
+
     // must be the beginning of generic declaration < .... > & have atleast 1 identifier
     this.expect(LessThanSymbolToken);
     this.nextToken();
     this.expect(IdentifierToken);
 
-    while(!finished){
+    while (!finished) {
       this.multiExpect<void>({
         IdentifierToken: token => {
-          if(!/[A-Z]/u.test(token.value[0])){
+          if (!/[A-Z]/u.test(token.value[0])) {
             throw new ParserError(`Generic type must start with an uppercase letter, but found '${token.value}' at ${token.location}`);
           }
-          if(identifiers.has(token.value)){
+
+          if (identifiers.has(token.value)) {
             throw new ParserError(`Expected new generic type, found repeated '${token.value}' at ${token.location}`);
           }
-          identifiers.add(token.value)
+
+          identifiers.add(token.value);
         },
         CommaSymbolToken: _ => {},
-        GreaterThanSymbolToken: _ => {finished = true},
+        GreaterThanSymbolToken: _ => {
+          finished = true;
+        },
       });
       this.nextToken();
     }
+
     return identifiers;
   }
 

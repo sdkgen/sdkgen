@@ -1,4 +1,3 @@
-import { IdentifierToken } from ".";
 import type { Token } from "./token";
 import { TokenLocation } from "./token";
 import type { DeepReadonly } from "./utils";
@@ -324,6 +323,16 @@ export class Field extends AstNode {
   }
 }
 
+export class GenericType extends Type {
+  constructor(public name: string) {
+    super();
+  }
+
+  isEqual(other: Type): boolean {
+    return other instanceof GenericType && this.name === other.name;
+  }
+}
+
 export class TypeReference extends Type {
   private _type?: Type;
 
@@ -396,7 +405,9 @@ export class StructType extends ComplexType {
 
 export class TypeDefinition extends AstNode {
   annotations: Annotation[] = [];
+
   generics: Set<string> = new Set<string>();
+
   constructor(public name: string, public type: Type) {
     super();
   }
@@ -404,7 +415,9 @@ export class TypeDefinition extends AstNode {
 
 export abstract class Operation extends AstNode {
   annotations: Annotation[] = [];
+
   generics: Set<string> = new Set<string>();
+
   constructor(public name: string, public args: Field[], public returnType: Type) {
     super();
   }
