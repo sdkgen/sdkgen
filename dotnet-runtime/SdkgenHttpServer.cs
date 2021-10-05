@@ -93,7 +93,6 @@ namespace Sdkgen.Runtime
         {
             var host = new WebHostBuilder()
                 .UseKestrel()
-                .UseContentRoot("sdkgen.runtime.static")
                 .UseWebRoot("")
                 .Configure(app =>
                 {
