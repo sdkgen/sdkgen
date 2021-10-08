@@ -28,13 +28,16 @@ Future<Map<String, Object?>> getDeviceInfo(String deviceId) async {
 
   if (Platform.isAndroid) {
     final androidInfo = await deviceInfo.androidInfo;
-    platform['model'] = androidInfo.model; // Ex: SM-1234
-    platform['brand'] = androidInfo.brand; // Ex: Samsung
+    platform['model'] = androidInfo.model; // Ex: 'SM-G973F' for Samsung S10
+    platform['brand'] = androidInfo.brand; // Ex: 'Samsung'
     platform['version'] = androidInfo.version.release; // 10
     platform['sdkVersion'] = androidInfo.version.sdkInt; // 29
   } else if (Platform.isIOS) {
     final iosInfo = await deviceInfo.iosInfo;
-    platform['model'] = iosInfo.name; // Ex: iPhone 11 Pro Max
+    // Ex: 'iPhone7,1' for iPhone 6 Plus
+    // List of possible hardware type strings for iOS:
+    // https://gist.github.com/adamawolf/3048717
+    platform['model'] = iosInfo.utsname.machine;
     platform['brand'] = 'Apple';
     platform['version'] = iosInfo.systemVersion; // 13.1
   }
