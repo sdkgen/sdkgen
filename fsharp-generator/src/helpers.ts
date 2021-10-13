@@ -110,6 +110,7 @@ const reservedWords = [
   "while",
   "type",
   "end",
+  "id"
 ];
 
 const typesWithNativeNullable: Function[] = [
@@ -136,6 +137,7 @@ const needsTempVarForNullable: Function[] = [
   IntPrimitiveType,
   MoneyPrimitiveType,
   UIntPrimitiveType,
+  ArrayType
 ];
 
 export function ident(name: string): string {
@@ -167,12 +169,13 @@ export function generateTypeName(type: Type): string {
       return "byte[]";
     case MoneyPrimitiveType:
       return "decimal";
+    case UuidPrimitiveType:
+      return "Guid";
     case CpfPrimitiveType:
     case CnpjPrimitiveType:
     case EmailPrimitiveType:
     case HtmlPrimitiveType:
     case UrlPrimitiveType:
-    case UuidPrimitiveType:
     case HexPrimitiveType:
     case Base64PrimitiveType:
     case XmlPrimitiveType:
@@ -200,7 +203,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
   switch (type.constructor) {
     case IntPrimitiveType: {
       return `
-                if (${jsonElementVar}.ValueKind <> JsonValueKind.Number || not (${jsonElementVar}.TryGetInt32(&${targetVar}))) then raise (FatalException($"'${path}' must be an integer"))
+              decodeInt32 ${jsonElementVar} ${path}
             `
         .replace(/\n {16}/gu, "\n")
         .trim();
@@ -208,7 +211,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
 
     case UIntPrimitiveType: {
       return `
-                if (${jsonElementVar}.ValueKind <> JsonValueKind.Number || not (${jsonElementVar}.TryGetUInt32(&${targetVar}))) then raise (FatalException($"'${path}' must be an unsigned integer."))
+              decodeUInt32 ${jsonElementVar} ${path}
             `
         .replace(/\n {16}/gu, "\n")
         .trim();
@@ -216,8 +219,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
 
     case MoneyPrimitiveType: {
       return `
-                if (${jsonElementVar}.ValueKind <> JsonValueKind.Number || not (${jsonElementVar}.TryGetDecimal(&${targetVar})) || ${targetVar} % 1m <> 0m) then raise (FatalException($"'${path}' must be an integer amount of cents."))
-                ${targetVar} <- ${targetVar} / 100m;
+                (decodeMoney ${jsonElementVar} ${path}) / 100m
             `
         .replace(/\n {16}/gu, "\n")
         .trim();
@@ -225,7 +227,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
 
     case FloatPrimitiveType: {
       return `
-                if (${jsonElementVar}.ValueKind <> JsonValueKind.Number || not (${jsonElementVar}.TryGetDouble(&${targetVar}))) then raise (FatalException($"'${path}' must be a floating-point number."))
+                decodeFloat ${jsonElementVar} ${path}
             `
         .replace(/\n {16}/gu, "\n")
         .trim();
@@ -233,7 +235,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
 
     case BigIntPrimitiveType: {
       return `
-                if (${jsonElementVar}.ValueKind <> JsonValueKind.String || not (bigint.TryParse(${jsonElementVar}.GetString(), &${targetVar}))) then raise (FatalException($"'${path}' must be an arbitrarily large integer in a string."))
+                decodeBigInt ${jsonElementVar} ${path}
             `
         .replace(/\n {16}/gu, "\n")
         .trim();
@@ -241,9 +243,8 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
 
     case StringPrimitiveType: {
       return `
-                if (${jsonElementVar}.ValueKind <> JsonValueKind.String) then raise (FatalException($"'${path}' must be a string."))
-                ${targetVar} <- (${jsonElementVar}.GetString())
-              `
+                decodeString ${jsonElementVar} ${path}
+            `
         .replace(/\n {16}/gu, "\n")
         .trim();
     }
@@ -251,8 +252,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
     case HtmlPrimitiveType: {
       // TODO: validate HTML
       return `
-                if (${jsonElementVar}.ValueKind <> JsonValueKind.String) then raise (FatalException($"'${path}' must be a valid HTML string."))
-                ${targetVar} <- (${jsonElementVar}.GetString())
+                decodeHtml ${jsonElementVar} ${path}
             `
         .replace(/\n {16}/gu, "\n")
         .trim();
@@ -261,8 +261,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
     case CpfPrimitiveType: {
       // TODO: validate CPF
       return `
-                if (${jsonElementVar}.ValueKind <> JsonValueKind.String) then raise (FatalException($"'${path}' must be a valid CPF string."))
-                ${targetVar} <- (${jsonElementVar}.GetString())
+                decodeCpf ${jsonElementVar} ${path}
             `
         .replace(/\n {16}/gu, "\n")
         .trim();
@@ -271,8 +270,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
     case CnpjPrimitiveType: {
       // TODO: validate CNPJ
       return `
-                if (${jsonElementVar}.ValueKind <> JsonValueKind.String) then raise (FatalException($"'${path}' must be a valid CNPJ string."))
-                ${targetVar} <- (${jsonElementVar}.GetString())
+                decodeCnpj ${jsonElementVar} ${path}
             `
         .replace(/\n {16}/gu, "\n")
         .trim();
@@ -281,8 +279,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
     case EmailPrimitiveType: {
       // TODO: validate Email
       return `
-                if (${jsonElementVar}.ValueKind <> JsonValueKind.String) then raise (FatalException($"'${path}' must be a valid email."))
-                ${targetVar} <- (${jsonElementVar}.GetString())
+                decodeEmail ${jsonElementVar} ${path}
             `
         .replace(/\n {16}/gu, "\n")
         .trim();
@@ -291,8 +288,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
     case UrlPrimitiveType: {
       // TODO: validate URL
       return `
-                if (${jsonElementVar}.ValueKind <> JsonValueKind.String) then raise (FatalException($"'${path}' must be a valid URL string."))
-                ${targetVar} <- (${jsonElementVar}.GetString())
+                decodeUrl ${jsonElementVar} ${path}
             `
         .replace(/\n {16}/gu, "\n")
         .trim();
@@ -301,8 +297,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
     case UuidPrimitiveType: {
       // TODO: validate UUID
       return `
-                if (${jsonElementVar}.ValueKind <> JsonValueKind.String) then raise (FatalException($"'${path}' must be a valid UUID."))
-                ${targetVar} <- (${jsonElementVar}.GetString())
+                decodeUuid ${jsonElementVar} ${path}
             `
         .replace(/\n {16}/gu, "\n")
         .trim();
@@ -311,8 +306,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
     case HexPrimitiveType: {
       // TODO: validate Hex
       return `
-                if (${jsonElementVar}.ValueKind <> JsonValueKind.String) then raise (FatalException($"'${path}' must be a valid hex string."))
-                ${targetVar} <- (${jsonElementVar}.GetString())
+                decodeHex ${jsonElementVar} ${path}
             `
         .replace(/\n {16}/gu, "\n")
         .trim();
@@ -321,8 +315,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
     case Base64PrimitiveType: {
       // TODO: validate Base64
       return `
-                if (${jsonElementVar}.ValueKind <> JsonValueKind.String) then raise (FatalException($"'${path}' must be a base64 string."))
-                ${targetVar} <- (${jsonElementVar}.GetString())
+                decodeBase64 ${jsonElementVar} ${path}
             `
         .replace(/\n {16}/gu, "\n")
         .trim();
@@ -331,8 +324,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
     case XmlPrimitiveType: {
       // TODO: validate XML
       return `
-                if (${jsonElementVar}.ValueKind <> JsonValueKind.String) then raise (FatalException($"'${path}' must be a XML string."))
-                ${targetVar} <- (${jsonElementVar}.GetString())
+                decodeXml ${jsonElementVar} ${path}
             `
         .replace(/\n {16}/gu, "\n")
         .trim();
@@ -340,8 +332,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
 
     case BoolPrimitiveType: {
       return `
-                if (${jsonElementVar}.ValueKind <> JsonValueKind.True && ${jsonElementVar}.ValueKind <> JsonValueKind.False) then raise (FatalException($"'${path}' must be either true or false."))
-                ${targetVar} <- (${jsonElementVar}.GetBoolean())
+                decodeBool ${jsonElementVar} ${path}
             `
         .replace(/\n {16}/gu, "\n")
         .trim();
@@ -349,11 +340,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
 
     case BytesPrimitiveType: {
       return `
-                if (${jsonElementVar}.ValueKind <> JsonValueKind.String) then raise (FatalException($"'${path}' must be a string."))
-                try
-                    ${targetVar} <- (Convert.FromBase64String(${jsonElementVar}.GetString()))
-                with
-                | _ -> raise (FatalException($"'${path}' must be a base64 string."))
+                decodeBytes ${jsonElementVar} ${path}
             `
         .replace(/\n {16}/gu, "\n")
         .trim();
@@ -363,34 +350,19 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
       return decodeType((type as TypeReference).type, jsonElementVar, path, targetVar, suffix);
     case OptionalType:
       if (needsTempVarForNullable.includes((type as OptionalType).base.constructor)) {
-        const tempVar = `${targetVar.replace(/[^0-9a-zA-Z]/gu, "")}Tmp`;
-
-        return `
-                if (${jsonElementVar}.ValueKind = JsonValueKind.Null || ${jsonElementVar}.ValueKind = JsonValueKind.Undefined) then
-                  ${targetVar} <- None
-                else
-                  let mutable ${tempVar}: ${generateTypeName((type as OptionalType).base)} = Unchecked.defaultof<${generateTypeName(
-          (type as OptionalType).base,
-        )}>;
-                  ${decodeType((type as OptionalType).base, jsonElementVar, path, tempVar, suffix, false).replace(/\n/gu, "\n")}
-                  ${targetVar} <- Some(${tempVar})
-                `
-          .replace(/\n {16}/gu, "\n")
-          .trim();
+        return `match ${jsonElementVar}.ValueKind with
+                  | JsonValueKind.Null | JsonValueKind.Undefined -> None
+                  | _ -> ${decodeType((type as OptionalType).base, jsonElementVar, path, targetVar, suffix, false).replace(/\n/gu, "\n")} |> Some
+              `.replace(/\n {16}/gu, "\n").trim();
       }
-
       return `
-                if (${jsonElementVar}.ValueKind = JsonValueKind.Null || ${jsonElementVar}.ValueKind = JsonValueKind.Undefined) then
-                  ${targetVar} <- None
-                else
-                  ${decodeType((type as OptionalType).base, jsonElementVar, path, targetVar, suffix, false).replace(/\n/gu, "\n")} |> Some
-                `
+                decodeOptional ${decodeType((type as OptionalType).base, jsonElementVar, path, targetVar, suffix, false).replace(/\n/gu, "\n")}
+            `
         .replace(/\n {16}/gu, "\n")
         .trim();
-
     case EnumType:
     case StructType:
-      return `${targetVar} <- Decode${type.name}(${jsonElementVar}, $"${path}")`;
+      return `Decode${type.name} ${jsonElementVar} ${path}`;
     case JsonPrimitiveType:
       if (maybeNull) {
         return `
@@ -405,7 +377,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
 
     case DateTimePrimitiveType: {
       return `
-                if (${jsonElementVar}.ValueKind <> JsonValueKind.String || not (DateTime.TryParseExact(${jsonElementVar}.GetString(), "yyyy-MM-ddTHH:mm:ss.FFFFFFF", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal ||| DateTimeStyles.AssumeUniversal, &${targetVar}) || DateTime.TryParseExact(${jsonElementVar}.GetString(), "yyyy-MM-ddTHH:mm:ss.FFFFFFF'Z'", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal ||| DateTimeStyles.AssumeUniversal, &${targetVar}))) then raise (FatalException($"'${path}' must be a datetime."))
+                decodeDateTime ${jsonElementVar} ${path}
             `
         .replace(/\n {16}/gu, "\n")
         .trim();
@@ -413,8 +385,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
 
     case DatePrimitiveType: {
       return `
-                if (${jsonElementVar}.ValueKind <> JsonValueKind.String || not (DateTime.TryParseExact(${jsonElementVar}.GetString(), "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal ||| DateTimeStyles.AssumeUniversal, &${targetVar}))) then
-                  raise (FatalException($"'${path}' must be a date."))
+                decodeDate ${jsonElementVar} ${path}
             `
         .replace(/\n {16}/gu, "\n")
         .trim();
@@ -422,20 +393,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
 
     case ArrayType: {
       return `
-                if (${jsonElementVar}.ValueKind <> JsonValueKind.Array) then raise (FatalException($"'${path}' must be a array."))
-                ${targetVar} <- Array.empty
-                for i1 in 1 .. ((${jsonElementVar}.GetArrayLength())) do
-                  let mutable element${suffix}: ${generateTypeName((type as ArrayType).base)} = Unchecked.defaultof<${generateTypeName(
-        (type as ArrayType).base,
-      )}>
-                  ${decodeType(
-                    (type as ArrayType).base,
-                    `${jsonElementVar}.[i${suffix}]`,
-                    `${path}.[{i${suffix}}]`,
-                    `element${suffix}`,
-                    suffix + 1,
-                  ).replace(/\n/gu, "\n                  ")}
-                  ${targetVar} <- ${targetVar} |> Array.append [|element${suffix}|]
+                decodeArray ${decodeType((type as ArrayType).base, jsonElementVar, path, targetVar, suffix, false).replace(/\n/gu, "\n")}
             `
         .replace(/\n {16}/gu, "\n")
         .trim();
@@ -505,27 +463,28 @@ export function encodeType(type: Type, valueVar: string, path: string, suffix = 
       }
 
       return `
-        if (${valueVar}.IsNone) then
-    resultWriter_.${valueRef}WriteNullValue()
-  else 
-    ${encodeType(realBaseType, `${valueVar}.Value`, path, suffix, isRef)}\n\n
-      `.trim();
+      if (${valueVar}.IsNone) then
+        resultWriter_.${valueRef}WriteNullValue()
+      else
+        ${encodeType(realBaseType, `${valueVar}.Value`, path, suffix, isRef)}
+      `.replace(/\n {6}/gu, "\n").trim();
     }
 
     case TypeReference:
       return encodeType((type as TypeReference).type, valueVar, path, suffix, isRef);
     case EnumType:
-      return `Encode${type.name}(${valueVar}, ref resultWriter_, ${path})`;
+      return `(Encode${type.name} ${valueVar} resultWriter_, ${path}) |> ignore`;
     case StructType:
-      return `Encode${type.name}(${valueVar}, ref resultWriter_, ${path})`;
+      return `(Encode${type.name} ${valueVar}, resultWriter_, ${path}) |> ignore`;
     case JsonPrimitiveType:
       return `${valueVar}.${valueRef}WriteTo(resultWriter_.Value)`;
     case ArrayType: {
-      return `resultWriter_.${valueRef}WriteStartArray()
-      for i${suffix} in 1..${valueVar}.Length do
-        ${encodeType((type as ArrayType).base, `${valueVar}.[i${suffix}]`, `$"{${path}}.[{i${suffix}}]"`, suffix + 1)}
-      resultWriter_.${valueRef}WriteEndArray()
-    \n`.trim();
+      return `
+              resultWriter_.${valueRef}WriteStartArray()
+                for i${suffix} in 1..${valueVar}.Length do
+                  ${encodeType((type as ArrayType).base, `${valueVar}.[i${suffix}]`, `${path}`, suffix + 1)}
+                resultWriter_.${valueRef}WriteEndArray()
+              `.replace(/\n {16}/gu, "\n").trim();
     }
 
     default:
@@ -539,33 +498,23 @@ type ${struct.name} = {
   ${struct.fields.map(field => `${capitalize(field.name)}: ${generateTypeName(field.type)}`).join(";\n  ")}
 }
 
-let Decode${struct.name}(json_: JsonElement, path_: string): ${struct.name} =
+let Decode${struct.name} (json_: JsonElement) (path_: string): ${struct.name} =
   if (json_.ValueKind <> JsonValueKind.Object) then raise (FatalException($"'{path_}' must be an object."))
-  \n${struct.fields
-    .map(
-      field => `  let mutable ${field.name}Json_ = Unchecked.defaultof<JsonElement>
-  if not (json_.TryGetProperty(${JSON.stringify(field.name)}, &${field.name}Json_)) then
-    ${
-      field.type instanceof OptionalType
-        ? `${field.name}Json_ <- new JsonElement()`
-        : `raise (FatalException($"'{path_}.${field.name}' must be set to a value of type ${field.type.name}."))`
-    }
-
-  let mutable ${ident(field.name)}: ${generateTypeName(field.type)} = Unchecked.defaultof<${generateTypeName(field.type)}>
-  ${decodeType(field.type, `${field.name}Json_`, `{path_}.${field.name}`, ident(field.name)).replace(/\n/gu, "\n  ")}`,
-    )
-    .join("\n")}
-
+  ${struct.fields.map(field =>
+    `
+  let ${field.name}Json_ = decodeJsonElement ${JSON.stringify(field.name)} json_ $"{path_}.${field.name}"
+  let ${ident(field.name)} = ${decodeType(field.type, `${field.name}Json_`, `$"{path_}.${field.name}"`, ident(field.name))}
+  `).join("")}
   { ${struct.fields.map(field => `${capitalize(field.name)} = ${ident(field.name)}`).join("; ")} }
 
-let Encode${struct.name}(obj_: ${struct.name} , resultWriter_: Utf8JsonWriter ref, path_: string) =
+let Encode${struct.name} (obj_: ${struct.name}) (resultWriter_: Utf8JsonWriter ref) (path_: string) =
   resultWriter_.Value.WriteStartObject()
   ${struct.fields
     .map(
       field =>
         `
   resultWriter_.Value.WritePropertyName(${JSON.stringify(field.name)})
-  ${encodeType(field.type, `obj_.${capitalize(field.name)}`, `$"{path_}.${field.name}"`)}`,
+  ${encodeType(field.type, `obj_.${capitalize(field.name)}`, `$"{path_}.${field.name}"`).replace(/\n/gu, "\n  ")}`,
     )
     .join("\n")}
   resultWriter_.Value.WriteEndObject()`;
@@ -576,13 +525,13 @@ export function generateEnum(type: EnumType): string {
 type ${type.name} =
   ${type.values.map(({ value }) => `| ${capitalize(value)}`).join("\n  ")}
 
-let Decode${type.name}(json_: JsonElement, path_: string): ${type.name} =
+let Decode${type.name} (json_: JsonElement) (path_: string): ${type.name} =
   if (json_.ValueKind <> JsonValueKind.String) then raise (FatalException($"'{path_}' must be a string."))
   match json_.GetString() with
   ${type.values.map(({ value }) => `| "${value}" -> ${type.name}.${capitalize(value)}`).join("\n  ")}
   | _ -> raise (FatalException($"'{path_}' must be one of: (${type.values.map(({ value }) => `'${value}'`).join(", ")})."))
 
-let Encode${type.name}(obj_: ${type.name}, resultWriter_: Utf8JsonWriter ref, path_: string) =
+let Encode${type.name} (obj_: ${type.name}) (resultWriter_: Utf8JsonWriter ref) (path_: string) =
   match obj_ with
   ${type.values.map(({ value }) => `| ${type.name}.${capitalize(value)} -> resultWriter_.Value.WriteStringValue("${value}")`).join("\n  ")}
 
