@@ -110,7 +110,7 @@ const reservedWords = [
   "while",
   "type",
   "end",
-  "id"
+  "id",
 ];
 
 const typesWithNativeNullable: Function[] = [
@@ -137,7 +137,7 @@ const needsTempVarForNullable: Function[] = [
   IntPrimitiveType,
   MoneyPrimitiveType,
   UIntPrimitiveType,
-  ArrayType
+  ArrayType,
 ];
 
 export function ident(name: string): string {
@@ -352,11 +352,14 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
       if (needsTempVarForNullable.includes((type as OptionalType).base.constructor)) {
         return `match ${jsonElementVar}.ValueKind with
                   | JsonValueKind.Null | JsonValueKind.Undefined -> None
-                  | _ -> ${decodeType((type as OptionalType).base, jsonElementVar, path, targetVar, suffix, false).replace(/\n/gu, "\n")} |> Some
-              `.replace(/\n {16}/gu, "\n").trim();
+                  | _ -> ${decodeType((type as OptionalType).base, jsonElementVar, path, targetVar, suffix, false)} |> Some
+                `
+          .replace(/\n {16}/gu, "\n")
+          .trim();
       }
+
       return `
-                decodeOptional ${decodeType((type as OptionalType).base, jsonElementVar, path, targetVar, suffix, false).replace(/\n/gu, "\n")}
+                decodeOptional ${decodeType((type as OptionalType).base, jsonElementVar, path, targetVar, suffix, false)}
             `
         .replace(/\n {16}/gu, "\n")
         .trim();
@@ -393,7 +396,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
 
     case ArrayType: {
       return `
-                decodeArray ${decodeType((type as ArrayType).base, jsonElementVar, path, targetVar, suffix, false).replace(/\n/gu, "\n")}
+                decodeArray ${decodeType((type as ArrayType).base, jsonElementVar, path, targetVar, suffix, false)}
             `
         .replace(/\n {16}/gu, "\n")
         .trim();
@@ -467,7 +470,9 @@ export function encodeType(type: Type, valueVar: string, path: string, suffix = 
         resultWriter_.${valueRef}WriteNullValue()
       else
         ${encodeType(realBaseType, `${valueVar}.Value`, path, suffix, isRef)}
-      `.replace(/\n {6}/gu, "\n").trim();
+      `
+        .replace(/\n {6}/gu, "\n")
+        .trim();
     }
 
     case TypeReference:
@@ -484,7 +489,9 @@ export function encodeType(type: Type, valueVar: string, path: string, suffix = 
                 for i${suffix} in 1..${valueVar}.Length do
                   ${encodeType((type as ArrayType).base, `${valueVar}.[i${suffix}]`, `${path}`, suffix + 1)}
                 resultWriter_.${valueRef}WriteEndArray()
-              `.replace(/\n {16}/gu, "\n").trim();
+              `
+        .replace(/\n {16}/gu, "\n")
+        .trim();
     }
 
     default:
@@ -500,11 +507,16 @@ type ${struct.name} = {
 
 let Decode${struct.name} (json_: JsonElement) (path_: string): ${struct.name} =
   if (json_.ValueKind <> JsonValueKind.Object) then raise (FatalException($"'{path_}' must be an object."))
-  ${struct.fields.map(field =>
-    `
+  ${struct.fields
+    .map(
+      field =>
+        `
   let ${field.name}Json_ = decodeJsonElement ${JSON.stringify(field.name)} json_ $"{path_}.${field.name}"
-  let ${ident(field.name)} = ${decodeType(field.type, `${field.name}Json_`, `$"{path_}.${field.name}"`, ident(field.name))}
-  `).join("")}
+  let ${ident(field.name)} = 
+    ${decodeType(field.type, `${field.name}Json_`, `$"{path_}.${field.name}"`, ident(field.name)).replace(/\n/gu, "\n  ")}
+  `,
+    )
+    .join("")}
   { ${struct.fields.map(field => `${capitalize(field.name)} = ${ident(field.name)}`).join("; ")} }
 
 let Encode${struct.name} (obj_: ${struct.name}) (resultWriter_: Utf8JsonWriter ref) (path_: string) =

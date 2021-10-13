@@ -1,0 +1,16 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+    <WarnOn>3390;$(WarnOn)</WarnOn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Helpers.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\dotnet-runtime.csproj" />
+  </ItemGroup>
+
+</Project>
