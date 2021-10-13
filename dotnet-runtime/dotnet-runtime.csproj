@@ -17,8 +17,7 @@
     <PackageReference Include="System.Text.Json" Version="4.7.1" />
     <Content Include="../playground/dist/**/*">
       <Pack>true</Pack>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <PackagePath>contentFiles/any/any/sdkgen.runtime.static/playground/;contentFiles\any\any\sdkgen.runtime.static\playground\</PackagePath>
+      <PackagePath>contentFiles/any/any/sdkgen.runtime.static/playground/</PackagePath>
       <PackageCopyToOutput>true</PackageCopyToOutput>
     </Content>
   </ItemGroup>
