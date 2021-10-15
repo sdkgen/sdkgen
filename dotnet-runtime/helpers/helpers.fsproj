@@ -9,8 +9,4 @@
     <Compile Include="Helpers.fs" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\dotnet-runtime.csproj" />
-  </ItemGroup>
-
 </Project>

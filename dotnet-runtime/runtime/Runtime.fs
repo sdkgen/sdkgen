@@ -16,49 +16,10 @@ open Microsoft.Extensions.Primitives
 open System.Net
 open System.Buffers
 open System.Text
-open System.IO
-open System.Text.Json.Serialization
+open Sdkgen.Context
 
-let options = JsonSerializerOptions()
-options.Converters.Add(JsonFSharpConverter())
-
-let randomBytes bytes =
-  let rnd (x: byte array) =
-    Random().NextBytes x
-    x
-
-  bytes
-  |> Array.zeroCreate
-  |> rnd
-  |> Array.map (fun x -> x.ToString("x2"))
-  |> String.Concat
-
-[<JsonFSharpConverter>]
-type ContextDeviceInfo =
-  { Id: string
-    Language: string option
-    Platform: Dictionary<string, JsonElement>
-    Timezone: string option
-    Type: string option
-    Version: string option
-    Fingerprint: string option }
-  static member defaultId = randomBytes (16)
-  static member defaultType = "api"
-
-[<JsonFSharpConverter>]
-type Context =
-  { Name: string
-    Args: Dictionary<string, JsonElement>
-    DeviceInfo: ContextDeviceInfo
-    Extra: IHeaderDictionary
-    mutable Headers: IHeaderDictionary
-    Id: string
-    mutable Ip: string }
-
-
-[<AbstractClass>]
-type BaseApi() =
-  abstract member ExecuteFunction : Context -> Utf8JsonWriter -> Task
+type BaseApi =
+  abstract member ExecuteFunction : Context * Utf8JsonWriter -> Task
   abstract member GetAstJson : unit -> string
 
 type SdkgenHttpServer(api: BaseApi) =
@@ -68,7 +29,6 @@ type SdkgenHttpServer(api: BaseApi) =
   let Headers = HeaderDictionary()
   let OnHealthCheck = (fun () -> Task.FromResult(true))
   let OnRequestError: Action<Context, SdkgenException> option = None
-
 
   let handleRequest: HttpHandler =
     fun (next: HttpFunc) (httpContext: HttpContext) ->
@@ -135,37 +95,34 @@ type SdkgenHttpServer(api: BaseApi) =
               return None
             | _ ->
               let! bodyDocument = JsonDocument.ParseAsync(httpContext.Request.Body)
-              let! context = JsonSerializer.DeserializeAsync<Context>(httpContext.Request.Body, options)
-
+              let context = DecodeContext bodyDocument.RootElement "body"
 
               context.Headers <- httpContext.Request.Headers
               context.Ip <- httpContext.Connection.RemoteIpAddress.ToString()
 
               let duration = stopWatch.Elapsed.TotalSeconds
               let bufferWriter = new ArrayBufferWriter<byte>()
-              let resultWriter = new Utf8JsonWriter(bufferWriter)
+              use resultWriter = new Utf8JsonWriter(bufferWriter)
 
               resultWriter.WriteStartObject()
               resultWriter.WritePropertyName("result")
-
-              do! Api.ExecuteFunction context resultWriter
-
+              do! Api.ExecuteFunction (context, resultWriter)
               resultWriter.WriteNull("error")
               resultWriter.WriteNumber("duration", duration)
               let host = (Dns.GetHostName())
               resultWriter.WriteString("host", host.ToString())
               resultWriter.WriteEndObject()
+              do! resultWriter.FlushAsync()
 
               let finalDuration = duration.ToString("0.000000")
 
               Console.WriteLine($"{context.Id} [{finalDuration}s] {context.Name}() -> OK")
 
               do! httpContext.Response.WriteAsync(Encoding.UTF8.GetString(bufferWriter.WrittenSpan))
-              return None
+              return! next httpContext
       }
 
-
-  let Listen port =
+  member this.Listen port =
     WebHost
       .CreateDefaultBuilder()
       .UseKestrel()

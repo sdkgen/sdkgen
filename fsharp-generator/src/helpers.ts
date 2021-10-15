@@ -187,7 +187,7 @@ export function generateTypeName(type: Type): string {
     case OptionalType:
       return `${generateTypeName((type as OptionalType).base)} option`;
     case ArrayType:
-      return `${generateTypeName((type as ArrayType).base)} array`;
+      return `${generateTypeName((type as ArrayType).base)} list`;
     case StructType:
       return type.name;
     case EnumType:
@@ -369,8 +369,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
     case JsonPrimitiveType:
       if (maybeNull) {
         return `
-                if (${jsonElementVar}.ValueKind = JsonValueKind.Null || ${jsonElementVar}.ValueKind = JsonValueKind.Undefined) then raise (FatalException($"'${path}' can't be null."))
-                ${targetVar} <- ${jsonElementVar};
+                ${jsonElementVar}
             `
           .replace(/\n {16}/gu, "\n")
           .trim();
@@ -408,41 +407,39 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
 }
 
 export function encodeType(type: Type, valueVar: string, path: string, suffix = 1, isRef = true): string {
-  const valueRef = isRef ? `Value.` : ``;
-
   switch (type.constructor) {
     case StringPrimitiveType: {
-      return `resultWriter_.${valueRef}WriteStringValue(${valueVar})`;
+      return `resultWriter_.WriteStringValue(${valueVar})`;
     }
 
     case FloatPrimitiveType:
     case UIntPrimitiveType:
     case IntPrimitiveType: {
-      return `resultWriter_.${valueRef}WriteNumberValue(${valueVar})`;
+      return `resultWriter_.WriteNumberValue(${valueVar})`;
     }
 
     case MoneyPrimitiveType: {
-      return `resultWriter_.${valueRef}WriteNumberValue(int (Math.Round(${valueVar} * 100m)))`;
+      return `resultWriter_.WriteNumberValue(int (Math.Round(${valueVar} * 100m)))`;
     }
 
     case BigIntPrimitiveType: {
-      return `resultWriter_.${valueRef}WriteStringValue(${valueVar}.ToString())`;
+      return `resultWriter_.WriteStringValue(${valueVar}.ToString())`;
     }
 
     case BoolPrimitiveType: {
-      return `resultWriter_.${valueRef}WriteBooleanValue(${valueVar})`;
+      return `resultWriter_.WriteBooleanValue(${valueVar})`;
     }
 
     case BytesPrimitiveType: {
-      return `resultWriter_.${valueRef}WriteStringValue(Convert.ToBase64String(${valueVar}))`;
+      return `resultWriter_.WriteStringValue(Convert.ToBase64String(${valueVar}))`;
     }
 
     case DateTimePrimitiveType: {
-      return `resultWriter_.${valueRef}WriteStringValue(${valueVar}.ToString("yyyy-MM-ddTHH:mm:ss.FFFFFF'Z'"))`;
+      return `resultWriter_.WriteStringValue(${valueVar}.ToString("yyyy-MM-ddTHH:mm:ss.FFFFFF'Z'"))`;
     }
 
     case DatePrimitiveType: {
-      return `resultWriter_.${valueRef}WriteStringValue(${valueVar}.ToString("yyyy-MM-dd"))`;
+      return `resultWriter_.WriteStringValue(${valueVar}.ToString("yyyy-MM-dd"))`;
     }
 
     // TODO: format those
@@ -455,7 +452,7 @@ export function encodeType(type: Type, valueVar: string, path: string, suffix = 
     case Base64PrimitiveType:
     case HexPrimitiveType:
     case XmlPrimitiveType: {
-      return `resultWriter_.${valueRef}WriteStringValue(${valueVar})`;
+      return `resultWriter_.WriteStringValue(${valueVar})`;
     }
 
     case OptionalType: {
@@ -467,7 +464,7 @@ export function encodeType(type: Type, valueVar: string, path: string, suffix = 
 
       return `
       if (${valueVar}.IsNone) then
-        resultWriter_.${valueRef}WriteNullValue()
+        resultWriter_.WriteNullValue()
       else
         ${encodeType(realBaseType, `${valueVar}.Value`, path, suffix, isRef)}
       `
@@ -478,17 +475,17 @@ export function encodeType(type: Type, valueVar: string, path: string, suffix = 
     case TypeReference:
       return encodeType((type as TypeReference).type, valueVar, path, suffix, isRef);
     case EnumType:
-      return `(Encode${type.name} ${valueVar} resultWriter_, ${path}) |> ignore`;
+      return `Encode${type.name} ${valueVar} resultWriter_, ${path}`;
     case StructType:
-      return `(Encode${type.name} ${valueVar}, resultWriter_, ${path}) |> ignore`;
+      return `Encode${type.name} ${valueVar} resultWriter_ ${path}`;
     case JsonPrimitiveType:
-      return `${valueVar}.${valueRef}WriteTo(resultWriter_.Value)`;
+      return `${valueVar}.WriteTo(resultWriter_)`;
     case ArrayType: {
       return `
-              resultWriter_.${valueRef}WriteStartArray()
-                for i${suffix} in 1..${valueVar}.Length do
+              resultWriter_.WriteStartArray()
+                for i${suffix} in 0..${valueVar}.Length - 1 do
                   ${encodeType((type as ArrayType).base, `${valueVar}.[i${suffix}]`, `${path}`, suffix + 1)}
-                resultWriter_.${valueRef}WriteEndArray()
+                resultWriter_.WriteEndArray()
               `
         .replace(/\n {16}/gu, "\n")
         .trim();
@@ -511,7 +508,7 @@ let Decode${struct.name} (json_: JsonElement) (path_: string): ${struct.name} =
     .map(
       field =>
         `
-  let ${field.name}Json_ = decodeJsonElement ${JSON.stringify(field.name)} json_ $"{path_}.${field.name}"
+  let ${field.name}Json_ = decodeJsonElementStrict ${JSON.stringify(field.name)} json_ $"{path_}.${field.name}"
   let ${ident(field.name)} = 
     ${decodeType(field.type, `${field.name}Json_`, `$"{path_}.${field.name}"`, ident(field.name)).replace(/\n/gu, "\n  ")}
   `,
@@ -519,17 +516,17 @@ let Decode${struct.name} (json_: JsonElement) (path_: string): ${struct.name} =
     .join("")}
   { ${struct.fields.map(field => `${capitalize(field.name)} = ${ident(field.name)}`).join("; ")} }
 
-let Encode${struct.name} (obj_: ${struct.name}) (resultWriter_: Utf8JsonWriter ref) (path_: string) =
-  resultWriter_.Value.WriteStartObject()
+let Encode${struct.name} (obj_: ${struct.name}) (resultWriter_: Utf8JsonWriter) (path_: string) =
+  resultWriter_.WriteStartObject()
   ${struct.fields
     .map(
       field =>
         `
-  resultWriter_.Value.WritePropertyName(${JSON.stringify(field.name)})
+  resultWriter_.WritePropertyName(${JSON.stringify(field.name)})
   ${encodeType(field.type, `obj_.${capitalize(field.name)}`, `$"{path_}.${field.name}"`).replace(/\n/gu, "\n  ")}`,
     )
     .join("\n")}
-  resultWriter_.Value.WriteEndObject()`;
+  resultWriter_.WriteEndObject()`;
 }
 
 export function generateEnum(type: EnumType): string {
@@ -543,9 +540,9 @@ let Decode${type.name} (json_: JsonElement) (path_: string): ${type.name} =
   ${type.values.map(({ value }) => `| "${value}" -> ${type.name}.${capitalize(value)}`).join("\n  ")}
   | _ -> raise (FatalException($"'{path_}' must be one of: (${type.values.map(({ value }) => `'${value}'`).join(", ")})."))
 
-let Encode${type.name} (obj_: ${type.name}) (resultWriter_: Utf8JsonWriter ref) (path_: string) =
+let Encode${type.name} (obj_: ${type.name}) (resultWriter_: Utf8JsonWriter) (path_: string) =
   match obj_ with
-  ${type.values.map(({ value }) => `| ${type.name}.${capitalize(value)} -> resultWriter_.Value.WriteStringValue("${value}")`).join("\n  ")}
+  ${type.values.map(({ value }) => `| ${type.name}.${capitalize(value)} -> resultWriter_.WriteStringValue("${value}")`).join("\n  ")}
 
 `;
 }

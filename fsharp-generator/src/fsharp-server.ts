@@ -7,6 +7,7 @@ export function generateFSharpServerSource(ast: AstRoot): string {
   let code = `module rec SdkgenGenerated
 open Sdkgen.Runtime
 open Sdkgen.Helpers
+open Sdkgen.Context
 open System.Threading.Tasks
 open System.Text.Json
 open System

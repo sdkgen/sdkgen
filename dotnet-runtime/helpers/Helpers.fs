@@ -24,10 +24,16 @@ type FatalException =
     inherit SdkgenException("Fatal", message, inner) 
   }
 
-let decodeJsonElement (propety_: string) (json_:JsonElement) (path_: string) = 
+let decodeJsonElementStrict (propety_: string) (json_:JsonElement) (path_: string) = 
   match (json_.TryGetProperty(propety_)) with
   | true, value -> value
   | false, _ -> raise (FatalException($"'{path_}' must be set to a value of type string."))
+  
+
+let decodeJsonElementWeak (propety_: string) (json_:JsonElement) (path_: string) = 
+  match (json_.TryGetProperty(propety_)) with
+  | true, value -> value
+  | false, _ -> JsonElement()
 
 let decodeUInt32 (json_:JsonElement) (path_: string) = 
   match json_.ValueKind, json_.TryGetUInt32() with
@@ -133,10 +139,23 @@ let decodeDate (json_:JsonElement) (path_: string) =
 let decodeArray<'T> (decode_: JsonElement -> string -> 'T) (json_:JsonElement) (path_: string) = 
   match json_.ValueKind with
   | JsonValueKind.Array -> 
-    let mutable array = Array.empty
+    let mutable list_ = List.empty
     for i1 in 0 .. (json_.GetArrayLength() - 1) do
       let item = json_.[i1]
       let partialResult = decode_ item ($"{path_}{i1}")
-      array <- array |> Array.append [| partialResult |]
-    array
+      list_ <- list_ |> List.append [ partialResult ]
+    list_
   | _ -> raise (FatalException($"'{path_}' must be an array."))
+
+let randomBytes bytes =
+  let rnd (x: byte array) =
+    Random().NextBytes x
+    x
+
+  bytes
+  |> Array.zeroCreate
+  |> rnd
+  |> Array.map (fun x -> x.ToString("x2"))
+  |> String.Concat
+  
+  

@@ -1,22 +1,16 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <WarnOn>3390;$(WarnOn)</WarnOn>
   </PropertyGroup>
-
   <ItemGroup>
+    <Compile Include="Context.fs" />
     <Compile Include="Runtime.fs" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\helpers\helpers.fsproj" />
   </ItemGroup>
-
-
   <ItemGroup>
-    <PackageReference Include="FSharp.SystemTextJson" Version="0.17.4" />
     <PackageReference Include="Giraffe" Version="5.0.0" />
   </ItemGroup>
-
 </Project>
