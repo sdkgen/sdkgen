@@ -500,7 +500,9 @@ export function generateStruct(struct: StructType): string {
   return `
 type ${struct.name} = {
   ${struct.fields.map(field => `${capitalize(field.name)}: ${generateTypeName(field.type)}`).join(";\n  ")}
-}
+} with 
+  static member Create (${struct.fields.map(field => `${ident(field.name)}: ${generateTypeName(field.type)}`).join(", ")}): ${struct.name} =
+    { ${struct.fields.map(field => `${capitalize(field.name)} = ${ident(field.name)}`).join("; ")} }
 
 let Decode${struct.name} (json_: JsonElement) (path_: string): ${struct.name} =
   if (json_.ValueKind <> JsonValueKind.Object) then raise (FatalException($"'{path_}' must be an object."))
