@@ -1,10 +1,17 @@
 module Sdkgen.Helpers
 
-open Sdkgen.Runtime
 open System.Threading.Tasks
 open System.Text.Json
 open System
 open System.Globalization
+
+type SdkgenException =
+  inherit Exception
+  val Type: string
+
+  new(type': string, message: string, inner: Exception) = { 
+    inherit Exception(message, inner); Type = type'
+  }
 
 type FatalException =
   inherit SdkgenException
