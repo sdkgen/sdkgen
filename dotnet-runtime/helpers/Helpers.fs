@@ -29,35 +29,106 @@ let decodeJsonElementStrict (propety_: string) (json_:JsonElement) (path_: strin
   | true, value -> value
   | false, _ -> raise (FatalException($"'{path_}' must be set to a value of type string."))
   
-
 let decodeJsonElementWeak (propety_: string) (json_:JsonElement) (path_: string) = 
   match (json_.TryGetProperty(propety_)) with
   | true, value -> value
   | false, _ -> JsonElement()
 
+let (|UInt32|_|) (a: JsonElement) = 
+  match a.TryGetUInt32() with
+  | (true, value) -> Some value
+  | _ -> None
+
+let (|Int32|_|) (a: JsonElement) = 
+  match a.TryGetInt32() with
+  | (true, value) -> Some value
+  | _ -> None
+
+let (|String|_|) (a: JsonElement) = 
+  try
+    a.GetString() |> Some
+  with
+  | _ -> None
+
+let (|Double|_|) (a: JsonElement) = 
+  match a.TryGetDouble() with
+  | (true, value) -> Some value
+  | _ -> None
+
+let (|Decimal|_|) (a: JsonElement) = 
+  match a.TryGetDecimal() with
+  | (true, value) -> Some value
+  | _ -> None
+
+let (|BigInt|_|) (a: JsonElement) =
+  let v = try a.GetString() |> Some with | _ -> None
+  if v.IsSome then
+    match bigint.TryParse(v.Value) with
+    | (true, value) -> Some value
+    | _ -> None
+  else
+    None
+  
+let (|Uri|_|) (a: JsonElement) =
+  let v = try a.GetString() |> Some with | _ -> None
+  if v.IsSome then
+    match Uri.TryCreate(v.Value, UriKind.Absolute) with
+    | (true, value) -> Some value
+    | _ -> None
+  else
+    None
+
+let (|Guid|_|) (a: JsonElement) =
+  let v = try a.GetString() |> Some with | _ -> None
+  if v.IsSome then
+    match Guid.TryParse(v.Value) with
+    | (true, value) -> Some value
+    | _ -> None
+  else
+    None
+
+let (|DateTime|_|) (a: JsonElement) =
+  let v = try a.GetString() |> Some with | _ -> None
+  if v.IsSome then
+    match (DateTime.TryParseExact(v.Value, "yyyy-MM-ddTHH:mm:ss.FFFFFFF", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal ||| DateTimeStyles.AssumeUniversal)), (DateTime.TryParseExact(v.Value, "yyyy-MM-ddTHH:mm:ss.FFFFFFF'Z'", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal ||| DateTimeStyles.AssumeUniversal)) with
+    | (true, value), (_,_) -> Some value
+    | (_,_), (true, value) -> Some value
+    | _ -> None
+  else
+    None
+
+let (|Date|_|) (a: JsonElement) =
+  let v = try a.GetString() |> Some with | _ -> None
+  if v.IsSome then
+    match (DateTime.TryParseExact(v.Value, "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal ||| DateTimeStyles.AssumeUniversal)) with
+    | (true, value) -> Some value
+    | _ -> None
+  else
+    None
+    
 let decodeUInt32 (json_:JsonElement) (path_: string) = 
-  match json_.ValueKind, json_.TryGetUInt32() with
-  | JsonValueKind.Number, (true, value) -> value
+  match json_.ValueKind, json_ with
+  | JsonValueKind.Number, UInt32 value -> value
   | _ -> raise (FatalException($"'{path_}' must be set to a value of type uint."))
 
 let decodeInt32 (json_:JsonElement) (path_: string) = 
-  match json_.ValueKind, json_.TryGetInt32() with
-  | JsonValueKind.Number, (true, value) -> value
+  match json_.ValueKind, json_ with
+  | JsonValueKind.Number, Int32 value -> value
   | _ -> raise (FatalException($"'{path_}' must be set to a value of type integer."))
 
 let decodeMoney (json_:JsonElement) (path_: string) = 
-  match json_.ValueKind, json_.TryGetDecimal() with
-  | JsonValueKind.Number, (true, value) when value % 1m <> 0m -> value
+  match json_.ValueKind, json_ with
+  | JsonValueKind.Number, Decimal value when value % 1m <> 0m -> value
   | _ -> raise (FatalException($"'{path_}' must be an integer amount of cents."))
 
 let decodeFloat (json_:JsonElement) (path_: string) = 
-  match json_.ValueKind, json_.TryGetDouble() with
-  | JsonValueKind.Number, (true, value) -> value
+  match json_.ValueKind, json_ with
+  | JsonValueKind.Number, Double value -> value
   | _ -> raise (FatalException($"'{path_}' must be a floating-point number."))
 
 let decodeBigInteger (json_:JsonElement) (path_: string) = 
-  match json_.ValueKind, bigint.TryParse(json_.GetString()) with
-  | JsonValueKind.String, (true, value) -> value
+  match json_.ValueKind, json_ with
+  | JsonValueKind.String, BigInt value -> value
   | _ -> raise (FatalException($"'{path_}' must be an arbitrarily large integer in a string."))
 
 let decodeString (json_:JsonElement) (path_: string) = 
@@ -86,13 +157,13 @@ let decodeEmail (json_:JsonElement) (path_: string) =
   | _ -> raise (FatalException($"'{path_}' must be a valid Email."))
 
 let decodeUrl (json_:JsonElement) (path_: string) = 
-  match json_.ValueKind, Uri.TryCreate(json_.GetString(), UriKind.Absolute) with
-  | JsonValueKind.String, (true, value) -> value
+  match json_.ValueKind, json_ with
+  | JsonValueKind.String, Uri value -> value
   | _ -> raise (FatalException($"'{path_}' must be a valid URL."))
 
 let decodeUuid (json_:JsonElement) (path_: string) = 
-  match json_.ValueKind, Guid.TryParse(json_.GetString()) with
-  | JsonValueKind.String, (true, value) -> value
+  match json_.ValueKind, json_ with
+  | JsonValueKind.String, Guid value -> value
   | _ -> raise (FatalException($"'{path_}' must be a valid URL."))
 
 let decodeHex (json_:JsonElement) (path_: string) = 
@@ -126,14 +197,14 @@ let decodeOptional<'T> (decode_: JsonElement -> string -> 'T) (json_:JsonElement
   | _ -> Some(decode_ json_ path_)
 
 let decodeDateTime (json_:JsonElement) (path_: string) = 
-  match json_.ValueKind, (DateTime.TryParseExact(json_.GetString(), "yyyy-MM-ddTHH:mm:ss.FFFFFFF", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal ||| DateTimeStyles.AssumeUniversal)), (DateTime.TryParseExact(json_.GetString(), "yyyy-MM-ddTHH:mm:ss.FFFFFFF'Z'", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal ||| DateTimeStyles.AssumeUniversal)) with
-  | JsonValueKind.String, (true, value), (_,_) -> value
-  | JsonValueKind.String, (_,_), (true, value) -> value
+  match json_.ValueKind, json_ with
+  | JsonValueKind.String, DateTime value -> value
+  | JsonValueKind.String, DateTime value -> value
   | _ -> raise (FatalException($"'{path_}' must be a datetime."))
 
 let decodeDate (json_:JsonElement) (path_: string) = 
-  match json_.ValueKind, (DateTime.TryParseExact(json_.GetString(), "yyyy-MM-dd", CultureInfo.InvariantCulture, DateTimeStyles.AdjustToUniversal ||| DateTimeStyles.AssumeUniversal)) with
-  | JsonValueKind.String, (true, value) -> value
+  match json_.ValueKind, json_ with
+  | JsonValueKind.String, Date value -> value
   | _ -> raise (FatalException($"'{path_}' must be a date."))
 
 let decodeArray<'T> (decode_: JsonElement -> string -> 'T) (json_:JsonElement) (path_: string) = 
