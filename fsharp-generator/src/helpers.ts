@@ -358,6 +358,14 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
           .trim();
       }
 
+      if ((type as ArrayType).base instanceof OptionalType || (type as ArrayType).base instanceof ArrayType) {
+        return `
+                (>.>) decodeOptional ${decodeType((type as OptionalType).base, jsonElementVar, path, targetVar, suffix, false)}
+            `
+          .replace(/\n {16}/gu, "\n")
+          .trim();
+      }
+
       return `
                 decodeOptional ${decodeType((type as OptionalType).base, jsonElementVar, path, targetVar, suffix, false)}
             `
@@ -395,7 +403,22 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
 
     case ArrayType: {
       return `
-                decodeArray ${decodeType((type as ArrayType).base, jsonElementVar, path, targetVar, suffix, false)}
+                match ${jsonElementVar}.ValueKind with
+                  | JsonValueKind.Array ->
+                    let mutable list_ = List.empty
+                    for i1 in 0 .. (${jsonElementVar}.GetArrayLength() - 1) do
+                      let item = ${jsonElementVar}.[i1]
+                      let partialResult = ${decodeType(
+                        (type as ArrayType).base,
+                        `${jsonElementVar}.[i1]`,
+                        `${path.slice(0, -1)}.{i1}"`,
+                        targetVar,
+                        suffix,
+                        false,
+                      )}
+                      list_ <- list_ |> List.append [ partialResult ]
+                    list_
+                  | _ -> raise (FatalException(${path.slice(0, -1)} must be an array."))
             `
         .replace(/\n {16}/gu, "\n")
         .trim();
@@ -463,12 +486,12 @@ export function encodeType(type: Type, valueVar: string, path: string, suffix = 
       }
 
       return `
-      if (${valueVar}.IsNone) then
-        resultWriter_.WriteNullValue()
-      else
-        ${encodeType(realBaseType, `${valueVar}.Value`, path, suffix, isRef)}
-      `
-        .replace(/\n {6}/gu, "\n")
+              if (${valueVar}.IsNone) then
+                resultWriter_.WriteNullValue()
+              else
+                ${encodeType(realBaseType, `${valueVar}.Value`, path, suffix, isRef)}
+              `
+        .replace(/\n {14}/gu, "\n")
         .trim();
     }
 
@@ -483,11 +506,11 @@ export function encodeType(type: Type, valueVar: string, path: string, suffix = 
     case ArrayType: {
       return `
               resultWriter_.WriteStartArray()
-                for i${suffix} in 0..${valueVar}.Length - 1 do
-                  ${encodeType((type as ArrayType).base, `${valueVar}.[i${suffix}]`, `${path}`, suffix + 1)}
-                resultWriter_.WriteEndArray()
+              for i${suffix} in 0..${valueVar}.Length - 1 do
+                ${encodeType((type as ArrayType).base, `${valueVar}.[i${suffix}]`, `${path}`, suffix + 1).replace(/\n/gu, "\n                  ")}
+              resultWriter_.WriteEndArray()
               `
-        .replace(/\n {16}/gu, "\n")
+        .replace(/\n {14}/gu, "\n")
         .trim();
     }
 
@@ -500,7 +523,7 @@ export function generateStruct(struct: StructType): string {
   return `
 type ${struct.name} = {
   ${struct.fields.map(field => `${capitalize(field.name)}: ${generateTypeName(field.type)}`).join(";\n  ")}
-} with 
+} with
   static member Create (${struct.fields.map(field => `${ident(field.name)}: ${generateTypeName(field.type)}`).join(", ")}): ${struct.name} =
     { ${struct.fields.map(field => `${capitalize(field.name)} = ${ident(field.name)}`).join("; ")} }
 
@@ -511,7 +534,7 @@ let Decode${struct.name} (json_: JsonElement) (path_: string): ${struct.name} =
       field =>
         `
   let ${field.name}Json_ = decodeJsonElementStrict ${JSON.stringify(field.name)} json_ $"{path_}.${field.name}"
-  let ${ident(field.name)} = 
+  let ${ident(field.name)} =
     ${decodeType(field.type, `${field.name}Json_`, `$"{path_}.${field.name}"`, ident(field.name)).replace(/\n/gu, "\n  ")}
   `,
     )

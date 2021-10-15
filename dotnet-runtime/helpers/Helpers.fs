@@ -105,7 +105,9 @@ let (|Date|_|) (a: JsonElement) =
     | _ -> None
   else
     None
-    
+
+let (>.>) op1 op2 op3 json_ path_ = op1 (fun p1 p2 -> op2 op3 p1 p2) json_ path_
+
 let decodeUInt32 (json_:JsonElement) (path_: string) = 
   match json_.ValueKind, json_ with
   | JsonValueKind.Number, UInt32 value -> value
@@ -228,5 +230,5 @@ let randomBytes bytes =
   |> rnd
   |> Array.map (fun x -> x.ToString("x2"))
   |> String.Concat
-  
-  
+
+
