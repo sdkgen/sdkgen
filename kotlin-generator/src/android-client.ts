@@ -79,14 +79,14 @@ class ApiClient(
     .filter(op => op.annotations.every(ann => !(ann instanceof HiddenAnnotation)))
     .map(op => {
       let opImpl = "";
-      let defaultArguments: Array<string> = []
-      defaultArguments.push(`timeoutMillis: Long? = null`)
-      if(shouldImplementCallbacks) {
-        defaultArguments.push(`callback: ((response: Response<${generateKotlinTypeName(op.returnType)}>) -> Unit)? = null`)
+      const defaultArguments: string[] = [];
+
+      defaultArguments.push(`timeoutMillis: Long? = null`);
+      if (shouldImplementCallbacks) {
+        defaultArguments.push(`callback: ((response: Response<${generateKotlinTypeName(op.returnType)}>) -> Unit)? = null`);
       }
-      const args = op.args
-        .map(arg => `${mangle(arg.name)}: ${generateKotlinTypeName(arg.type)}`)
-        .concat(defaultArguments);
+
+      const args = op.args.map(arg => `${mangle(arg.name)}: ${generateKotlinTypeName(arg.type)}`).concat(defaultArguments);
 
       opImpl += `    fun ${mangle(op.name)}(\n        ${args.join(",\n        ")}\n    ): Deferred<Response<out ${generateKotlinTypeName(
         op.returnType,
@@ -103,9 +103,10 @@ class ApiClient(
       opImpl += `\n`;
       opImpl += `        val call = makeRequest("${op.name}", bodyArgs, timeoutMillis)\n`;
       opImpl += `        val response: Response<${generateKotlinTypeName(op.returnType)}> = handleCallResponse(call)\n`;
-      if(shouldImplementCallbacks) {
+      if (shouldImplementCallbacks) {
         opImpl += `        withContext(Dispatchers.Main) { callback?.invoke(response) } \n`;
       }
+
       opImpl += `        return@async response\n`;
       opImpl += `    }\n`;
       return opImpl;

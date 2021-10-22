@@ -22,9 +22,7 @@ const optionDefinitions = [
   { alias: "h", description: "Display this usage guide.", name: "help", type: Boolean },
 ];
 
-
 export function buildCmd(argv: string[]): void {
-  
   const options = commandLineArgs(optionDefinitions, { argv }) as {
     source?: string;
     output?: string;
