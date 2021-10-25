@@ -214,7 +214,7 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
     res.end();
   });
 
-  server.addHttpHandler("GET", /^\/swagger/u, (req, res) => {
+  server.addHttpHandler("GET", /^\/swagger.*/u, (req, res) => {
     if (!server.introspection) {
       res.statusCode = 404;
       res.end();
