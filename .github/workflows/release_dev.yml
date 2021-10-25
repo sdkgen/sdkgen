@@ -345,6 +345,8 @@ jobs:
         working-directory: ./playground
         env:
           NODE_ENV: production
+      - run: sed -i -E 's_(<base href=")/(">)_\1/playground/\2_' dist/index.html
+        working-directory: ./playground
       - run: npm publish --tag dev
         working-directory: ./playground
         env:
