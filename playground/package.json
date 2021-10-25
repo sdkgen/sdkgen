@@ -1,7 +1,9 @@
 {
   "name": "@sdkgen/playground",
   "version": "0.0.0",
-  "private": true,
+  "description": "",
+  "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "eslint:fix": "eslint --fix 'src/**/*.{t,j}s'",
     "eslint:check": "eslint 'src/**/*.{t,j}s'",
