@@ -2,6 +2,7 @@ import type { Type } from "@sdkgen/parser";
 import {
   ArrayType,
   Base64PrimitiveType,
+  BigIntPrimitiveType,
   BoolPrimitiveType,
   BytesPrimitiveType,
   CnpjPrimitiveType,
@@ -125,6 +126,10 @@ function typeToSchema(definitions: Record<string, JSONSchema | undefined>, type:
       type: "number",
     };
   } else if (type instanceof EmailPrimitiveType) {
+    return {
+      type: "string",
+    };
+  } else if (type instanceof BigIntPrimitiveType) {
     return {
       type: "string",
     };

@@ -8,7 +8,21 @@ import { v4 as uuidV4 } from "uuid";
 import type { RootStore } from ".";
 
 export const simpleStringTypes = ["string", "cep", "cnpj", "cpf", "email", "html", "phone", "url", "xml"];
-export const simpleTypes = ["json", "bool", "hex", "uuid", "base64", "int", "uint", "float", "money", "void", "latlng", ...simpleStringTypes];
+export const simpleTypes = [
+  "json",
+  "bool",
+  "hex",
+  "uuid",
+  "base64",
+  "bigint",
+  "int",
+  "uint",
+  "float",
+  "money",
+  "void",
+  "latlng",
+  ...simpleStringTypes,
+];
 
 export class RequestsStore {
   public rootStore: RootStore;
@@ -51,6 +65,7 @@ export class RequestsStore {
       email: "hello@example.com",
       float: 12.3,
       hex: "deadbeef",
+      bigint: "123456789",
       int: 123,
       json: { anything: [1, 2, 3] },
       latlng: undefined,
@@ -110,7 +125,7 @@ export class RequestsStore {
       return this.encodeTransform(typeTable, resolved);
     }
 
-    throw new Error(`Unknown type '${type}'`);
+    return null;
   }
 
   public getAnotations = (AST: AstJson, functionName: string): ModelAnotations => {
