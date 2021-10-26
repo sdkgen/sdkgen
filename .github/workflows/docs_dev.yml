@@ -20,6 +20,7 @@ jobs:
       - run: |
           cd playground
           npm install
+          bash .ci.sh
           npm run build
           sed -i -E 's_(<base href=")/(">)_\1/dev/playground/\2_' dist/index.html
           mv dist/ ../sdkgen.github.io/dev/playground/

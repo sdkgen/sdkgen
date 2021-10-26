@@ -4,6 +4,13 @@
   "description": "",
   "main": "index.js",
   "types": "index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sdkgen/sdkgen.git"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "eslint:fix": "eslint --fix 'src/**/*.{t,j}s'",
     "eslint:check": "eslint 'src/**/*.{t,j}s'",

@@ -332,6 +332,7 @@ jobs:
       - run: npm install
         working-directory: ./playground
       - run: |
+          bash .ci.sh
           npm install -g json && json -I -f package.json -e '
             this.version = "'$(cat ../version/version.txt)'";
             this.main = "dist/src/index.js";
