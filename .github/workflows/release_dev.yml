@@ -329,10 +329,13 @@ jobs:
           node-version: 16.x
           registry-url: https://registry.npmjs.org
       - run: cp LICENSE playground/
-      - run: npm install
+      - run: npm install && bash .ci.sh
         working-directory: ./playground
+      - run: npm run build
+        working-directory: ./playground
+        env:
+          NODE_ENV: production
       - run: |
-          bash .ci.sh
           npm install -g json && json -I -f package.json -e '
             this.version = "'$(cat ../version/version.txt)'";
             this.main = "dist/src/index.js";
@@ -343,10 +346,6 @@ jobs:
                 this.dependencies[pkg] = this.version;
           '
         working-directory: ./playground
-      - run: npm run build
-        working-directory: ./playground
-        env:
-          NODE_ENV: production
       - run: sed -i -E 's_(<base href=")/(">)_\1/playground/\2_' dist/index.html
         working-directory: ./playground
       - run: npm publish --tag dev
