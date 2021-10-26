@@ -1,0 +1,114 @@
+<as-split [direction]="isBelowMd ? 'vertical' : 'horizontal'" unit="pixel">
+  <as-split-area [size]="isBelowMd ? 130 : 350">
+    <aside>
+      <nav>
+        <form>
+          <input type="search" placeholder="Buscar&#8230;" [(ngModel)]="searchText" [ngModelOptions]="{ standalone: true }" />
+        </form>
+
+        <ul>
+          <li
+            *ngFor="let fn of fnTable | appFilter: searchText"
+            (click)="this.selectedFunction = fn"
+            [ngClass]="{ active: this.selectedFunction?.name === fn.name }"
+          >
+            <span class="fn-call">{{ fn.name }}</span>
+            <span class="fn-description" *ngIf="fn.description">{{ fn.description }}</span>
+          </li>
+        </ul>
+      </nav>
+    </aside>
+  </as-split-area>
+
+  <as-split-area>
+    <article *ngIf="this.selectedFunction">
+      <header>
+        <h1 class="container">
+          <span class="mono hide-overflow"><span class="k-fn">fn</span>&nbsp;<span class="k-name">{{ this.selectedFunction.name }}</span>(<span *ngFor="let arg of this.selectedFunction.args; let i = index"><br>&nbsp;&nbsp;<span class="k-arg-name">{{ arg.name }}</span><span class="k-sym">:</span>&nbsp;<u class="k-type" [matTooltip]="getTooltip(arg.rawType)" (click)="showDocumentation(arg.rawType)">{{ arg.type }}</u><span *ngIf="i != this.selectedFunction.args.length - 1; then comma else lineBreak"></span></span>)<span class="k-sym">:</span>&nbsp;<u class="k-type" [matTooltip]="getTooltip(this.selectedFunction.returns.rawType)" (click)="showDocumentation(this.selectedFunction.returns.rawType)">{{ this.selectedFunction.returns.type }}</u></span>
+
+          <ng-template #comma>,</ng-template>
+          <ng-template #lineBreak><br></ng-template>
+
+          <s></s>
+          <button mat-raised-button color="primary" (click)="addSimpleCallTab()">
+            <mat-icon>play_arrow</mat-icon>&nbsp;EXECUTAR
+          </button>
+        </h1>
+      </header>
+
+      <section class="container" id="labels" *ngIf="this.selectedFunction.labels.length > 0">
+        <mat-chip-list [selectable]="false">
+          <mat-chip *ngFor="let label of this.selectedFunction.labels" [disableRipple]="true" color="primary">
+            <span class="mono">{{ label.name }}</span><i></i>
+            <span class="mono">{{ label.type }} <u *ngIf="label.dataType && label.dataType.name !== 'void'" [matTooltip]="getTooltip(label.dataType)" (click)="showDocumentation(label.dataType)">({{ label.dataType.name }})</u></span>
+          </mat-chip>
+        </mat-chip-list>
+      </section>
+
+      <section class="container">
+        <h2 id="description">Descrição</h2>
+        <div [ngSwitch]="!!this.selectedFunction.description">
+          <p *ngSwitchCase="true">{{ this.selectedFunction.description }}</p>
+          <p class="no-content" *ngSwitchCase="false">Não há descrição para esta função.</p>
+        </div>
+
+        <h2 id="parameters">Parâmetros</h2>
+        <div [ngSwitch]="this.selectedFunction.args.length">
+          <p class="no-content" *ngSwitchCase="0">Esta função não possui argumentos.</p>
+
+          <div class="table-responsive mat-elevation-z8">
+            <table mat-table [dataSource]="this.selectedFunction.args" *ngSwitchDefault>
+              <ng-container matColumnDef="name">
+                <th mat-header-cell *matHeaderCellDef>Nome</th>
+                <td class="mono" mat-cell *matCellDef="let arg">{{ arg.name }}</td>
+              </ng-container>
+
+              <ng-container matColumnDef="type">
+                <th mat-header-cell *matHeaderCellDef>Tipo</th>
+                <td class="mono" mat-cell *matCellDef="let arg">
+                  <u [matTooltip]="getTooltip(arg.rawType)" (click)="showDocumentation(arg.rawType)">{{ arg.type }}</u>
+                </td>
+              </ng-container>
+
+              <ng-container matColumnDef="description">
+                <th mat-header-cell *matHeaderCellDef>Descrição</th>
+                <td mat-cell *matCellDef="let arg">{{ arg.description || "-" }}</td>
+              </ng-container>
+
+              <tr mat-header-row *matHeaderRowDef="argumentsTableColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: argumentsTableColumns"></tr>
+            </table>
+          </div>
+        </div>
+
+        <h2 id="returns">Retorno</h2>
+        <div>
+          <p class="mono">
+            <u [matTooltip]="getTooltip(this.selectedFunction.returns.rawType)" (click)="showDocumentation(this.selectedFunction.returns.rawType)">{{ this.selectedFunction.returns.type }}</u>
+          </p>
+        </div>
+
+        <h2 id="sample-calls">Exemplo de Requisição</h2>
+        <mat-tab-group animationDuration="0ms">
+          <mat-tab label="TypeScript">
+            <ngx-monaco-editor [options]="{theme:'vs-dark',language:'javascript'}" [ngModel]="this.selectedFunction.examples.typeScript"></ngx-monaco-editor>
+          </mat-tab>
+
+          <mat-tab label="Kotlin">
+            <ngx-monaco-editor [options]="{theme:'vs-dark',language:'kotlin'}" [ngModel]="this.selectedFunction.examples.kotlin"></ngx-monaco-editor>
+          </mat-tab>
+
+          <mat-tab disabled>
+            <ng-template mat-tab-label><span matTooltip="Em breve!">Dart</span></ng-template>
+            <ngx-monaco-editor [options]="{theme:'vs-dark',language:'dart'}" [ngModel]="this.selectedFunction.examples.dart"></ngx-monaco-editor>
+          </mat-tab>
+
+          <mat-tab disabled>
+            <ng-template mat-tab-label><span matTooltip="Em breve!">Swift</span></ng-template>
+            <ngx-monaco-editor [options]="{theme:'vs-dark',language:'swift'}" [ngModel]="this.selectedFunction.examples.swift"></ngx-monaco-editor>
+          </mat-tab>
+        </mat-tab-group>
+      </section>
+    </article>
+  </as-split-area>
+</as-split>

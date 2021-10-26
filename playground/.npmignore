@@ -1,22 +1,45 @@
-node_modules
-coverage
-src
+# source files
+/src
+
+# compiled output temporary files
+/tmp
+/out-tsc
+# Only exists if Bazel was run
+/bazel-out
+
+# dependencies
+/node_modules
+
+# profiling files
+chrome-profiler-events*.json
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# IDE - VSCode
+.vscode/
+.history/
+
+# misc
+/.sass-cache
+/connect.lock
+/coverage
+/libpeerconnection.log
 npm-debug.log
-.awcache
 yarn-error.log
-.cache-loader
-/.gtm/
-.idea
-.DS_Store
-*.snap
-tsconfig.json
-tslint.json
-webpack.config.js
-_redirects
+testem.log
+/typings
+/.github
 .prettierrc
-.prettierignore
-postcss.config.js
-jest.config.js
-.vscode
-.github
-__mocks__
+.eslintrc.json
+.browserslistrc
+
+# System Files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,164 @@
+@use "~@angular/material" as mat;
+@include mat.core();
+
+$my-primary: mat.define-palette(mat.$orange-palette, 500);
+$my-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+$my-theme: mat.define-dark-theme(
+  (
+    color: (
+      primary: $my-primary,
+      accent: $my-accent,
+    ),
+  )
+);
+
+@include mat.core-theme($my-theme);
+@include mat.button-theme($my-theme);
+@include mat.chips-theme($my-theme);
+@include mat.dialog-theme($my-theme);
+@include mat.menu-theme($my-theme);
+@include mat.table-theme($my-theme);
+@include mat.tabs-theme($my-theme);
+@include mat.tooltip-theme($my-theme);
+
+@import "~ngx-toastr/toastr";
+@import "variables.scss";
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  display: block;
+
+  margin: 0;
+  padding: 0;
+
+  width: 100%;
+  height: 100%;
+
+  background-color: $color-primary;
+  color: #bfbfbf;
+
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+// angular-split
+.as-split-gutter {
+  background-color: lighten($color-primary, 15%) !important;
+}
+
+// ngx-json-viewer
+.segment-key {
+  color: #68a7de !important;
+}
+
+.run-fab {
+  display: block;
+  z-index: 9999;
+
+  position: absolute !important;
+  top: 10px;
+  right: min(13vw, 140px); // Monaco minimap (hack)
+}
+
+.mat-tab-label {
+  user-select: none;
+}
+
+.dialog-no-border-radius .mat-dialog-container {
+  border-radius: 0 !important;
+}
+
+.mat-tab-group {
+  height: calc(100% - #{$navbar-height});
+}
+
+.mat-tab-body-wrapper {
+  height: 100%;
+}
+
+@media (max-width: 767px) {
+  .dialog-responsive {
+    width: 100vw !important;
+    max-width: 100vw !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .dialog-responsive {
+    $width: max(500px, 30vw);
+    width: $width !important;
+    max-width: $width !important;
+  }
+}
+
+@supports (-webkit-marquee-repetition: infinite) and (object-fit: fill) {
+  html,
+  body {
+    overflow: hidden;
+  }
+}
+
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+
+  th,
+  td {
+    padding-right: 25px !important;
+  }
+}
+
+/*! @see https://codepen.io/davidlazar/pen/dcxou !*/
+body:after {
+  content: "beta";
+  position: fixed;
+  width: 80px;
+  height: 25px;
+  background: #ff4136;
+  top: 7px;
+  right: -20px;
+  text-align: center;
+  font-size: 14px;
+  text-transform: uppercase;
+  font-weight: bold;
+  color: #fff;
+  line-height: 28px;
+  transform: rotate(45deg);
+}
+
+.mono {
+  font-family: "Roboto Mono", monospace;
+}
+
+.tt-none {
+  text-transform: none;
+}
+
+.container {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-right: auto;
+  margin-left: auto;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .container {
+    max-width: 750px;
+  }
+}
+
+@media (min-width: 992px) {
+  .container {
+    max-width: 970px;
+  }
+}
+
+@media (min-width: 1200px) {
+  .container {
+    max-width: 1170px;
+  }
+}

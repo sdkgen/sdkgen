@@ -17,6 +17,13 @@ jobs:
       - run: cd sdkgen.github.io && rm -rf $(ls | grep -vE "^(pr|dev)$")
       - run: mv site/* sdkgen.github.io/
       - run: |
+          cd playground
+          npm install
+          bash .ci.sh
+          npm run build
+          sed -i -E 's_(<base href=")/(">)_\1/playground/\2_' dist/index.html
+          mv dist/ ../sdkgen.github.io/playground/
+      - run: |
           cd sdkgen.github.io
           git config --global user.name "$GITHUB_ACTOR"
           git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
