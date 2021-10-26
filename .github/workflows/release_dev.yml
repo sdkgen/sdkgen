@@ -400,7 +400,7 @@ jobs:
         with:
           node-version: 16.x
       - run: cp LICENSE dotnet-runtime/
-      - run: npm install
+      - run: npm install && bash .ci.sh
         working-directory: ./playground
       - run: npm run build
         working-directory: ./playground
