@@ -1,0 +1,21 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+mat-tab-group {
+  height: 100%;
+
+  ::ng-deep .mat-tab-body-wrapper {
+    height: 100%;
+  }
+
+  ::ng-deep .mat-tab-body-content {
+    overflow-y: hidden !important;
+  }
+
+  ngx-monaco-editor {
+    display: block;
+    height: 100%;
+  }
+}

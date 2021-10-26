@@ -1,3 +1,4 @@
+// eslint-disable-next-line
 const path = require("path");
 
 Object.defineProperty(exports, "__esModule", { value: true });
