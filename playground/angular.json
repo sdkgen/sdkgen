@@ -61,7 +61,7 @@
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              { "glob": "**/*", "input": "node_modules/monaco-editor", "output": "assets/monaco-editor/" },
+              { "glob": "**/*", "input": "node_modules/monaco-editor/min/vs", "output": "assets/vs" },
               "src/favicon.ico",
               "src/assets"
             ],
