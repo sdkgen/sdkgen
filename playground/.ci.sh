@@ -6,7 +6,7 @@ for folder in browser-runtime csharp-generator dart-generator kotlin-generator p
   cd "$folder"
   npm i
   npm run build
-  npx json -I -f package.json -e '
+  json -I -f package.json -e '
     this.main = "dist/src/index.js";
     this.types = "dist/src/index.d.ts";
   '

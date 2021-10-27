@@ -257,7 +257,7 @@ jobs:
           node-version: 16.x
           registry-url: https://registry.npmjs.org
       - run: cp LICENSE playground/
-      - run: npm install && bash .ci.sh
+      - run: npm install && npm install -g json && bash .ci.sh
         working-directory: ./playground
       - run: npm run build
         working-directory: ./playground
