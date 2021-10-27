@@ -12,13 +12,13 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm install
-        working-directory: ./browser-runtime
+      - run: npx lerna bootstrap
       - run: npm run eslint:check
-        working-directory: ./browser-runtime
+        working-directory: ./packages/browser-runtime
       - run: npm run build
-        working-directory: ./browser-runtime
+        working-directory: ./packages/browser-runtime
       - run: npm test
-        working-directory: ./browser-runtime
+        working-directory: ./packages/browser-runtime
 
   cli:
     runs-on: ubuntu-latest
@@ -31,13 +31,13 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm install
-        working-directory: ./cli
+      - run: npx lerna bootstrap
       - run: npm run eslint:check
-        working-directory: ./cli
+        working-directory: ./packages/cli
       - run: npm run build
-        working-directory: ./cli
+        working-directory: ./packages/cli
       - run: npm test
-        working-directory: ./cli
+        working-directory: ./packages/cli
 
   dart-generator:
     runs-on: ubuntu-latest
@@ -50,13 +50,13 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm install
-        working-directory: ./dart-generator
+      - run: npx lerna bootstrap
       - run: npm run eslint:check
-        working-directory: ./dart-generator
+        working-directory: ./packages/dart-generator
       - run: npm run build
-        working-directory: ./dart-generator
+        working-directory: ./packages/dart-generator
       - run: npm test
-        working-directory: ./dart-generator
+        working-directory: ./packages/dart-generator
 
   dart-runtime:
     runs-on: ubuntu-latest
@@ -74,15 +74,15 @@ jobs:
           flutter-version: ${{ matrix.flutter-version }}
           channel: ${{ matrix.flutter-channel }}
       - run: flutter pub get
-        working-directory: ./dart-runtime
+        working-directory: ./packages/dart-runtime
       - run: flutter test
-        working-directory: ./dart-runtime
+        working-directory: ./packages/dart-runtime
       - run: if [ "${{ matrix.flutter-version }}" == "2.5.x" ]; then flutter analyze; fi
-        working-directory: ./dart-runtime
+        working-directory: ./packages/dart-runtime
       - run: if [ "${{ matrix.flutter-version }}" == "2.5.x" ]; then flutter format . --set-exit-if-changed; fi
-        working-directory: ./dart-runtime
+        working-directory: ./packages/dart-runtime
       - run: if [ "${{ matrix.flutter-version }}" == "2.5.x" ]; then flutter pub pub publish --dry-run; fi
-        working-directory: ./dart-runtime
+        working-directory: ./packages/dart-runtime
 
   node-runtime:
     runs-on: ubuntu-latest
@@ -95,17 +95,13 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm install
-        working-directory: ./node-runtime
-      - run: npm install
-        working-directory: ./dart-generator
-      - run: npm install
-        working-directory: ./typescript-generator
+      - run: npx lerna bootstrap
       - run: npm run eslint:check
-        working-directory: ./node-runtime
+        working-directory: ./packages/node-runtime
       - run: npm run build
-        working-directory: ./node-runtime
+        working-directory: ./packages/node-runtime
       - run: npm test
-        working-directory: ./node-runtime
+        working-directory: ./packages/node-runtime
 
   parser:
     runs-on: ubuntu-latest
@@ -118,13 +114,13 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm install
-        working-directory: ./parser
+      - run: npx lerna bootstrap
       - run: npm run eslint:check
-        working-directory: ./parser
+        working-directory: ./packages/parser
       - run: npm run build
-        working-directory: ./parser
+        working-directory: ./packages/parser
       - run: npm test
-        working-directory: ./parser
+        working-directory: ./packages/parser
 
   playground:
     runs-on: ubuntu-latest
@@ -136,12 +132,14 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm install && npm install -g json && bash .ci.sh
-        working-directory: ./playground
+      - run: npm install
+      - run: npx lerna bootstrap
+      - run: npm install -g json && bash .ci.sh
+        working-directory: ./packages/playground
       - run: npm run eslint:check
-        working-directory: ./playground
+        working-directory: ./packages/playground
       - run: npm run build
-        working-directory: ./playground
+        working-directory: ./packages/playground
 
   typescript-generator:
     runs-on: ubuntu-latest
@@ -154,13 +152,13 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm install
-        working-directory: ./typescript-generator
+      - run: npx lerna bootstrap
       - run: npm run eslint:check
-        working-directory: ./typescript-generator
+        working-directory: ./packages/typescript-generator
       - run: npm run build
-        working-directory: ./typescript-generator
+        working-directory: ./packages/typescript-generator
       - run: npm test
-        working-directory: ./typescript-generator
+        working-directory: ./packages/typescript-generator
 
   csharp-generator:
     runs-on: ubuntu-latest
@@ -173,13 +171,13 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm install
-        working-directory: ./csharp-generator
+      - run: npx lerna bootstrap
       - run: npm run eslint:check
-        working-directory: ./csharp-generator
+        working-directory: ./packages/csharp-generator
       - run: npm run build
-        working-directory: ./csharp-generator
+        working-directory: ./packages/csharp-generator
       - run: npm test
-        working-directory: ./csharp-generator
+        working-directory: ./packages/csharp-generator
 
   dotnet-runtime:
     runs-on: ubuntu-latest
@@ -193,7 +191,7 @@ jobs:
           dotnet-version: ${{ matrix.dotnet-version }}
           include-prerelease: true
       - run: dotnet pack
-        working-directory: ./dotnet-runtime
+        working-directory: ./packages/dotnet-runtime
 
   kotlin-generator:
     runs-on: ubuntu-latest
@@ -206,13 +204,13 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm install
-        working-directory: ./kotlin-generator
+      - run: npx lerna bootstrap
       - run: npm run eslint:check
-        working-directory: ./kotlin-generator
+        working-directory: ./packages/kotlin-generator
       - run: npm run build
-        working-directory: ./kotlin-generator
+        working-directory: ./packages/kotlin-generator
       - run: npm test
-        working-directory: ./kotlin-generator
+        working-directory: ./packages/kotlin-generator
 
   swift-generator:
     runs-on: ubuntu-latest
@@ -225,13 +223,13 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
       - run: npm install
-        working-directory: ./swift-generator
+      - run: npx lerna bootstrap
       - run: npm run eslint:check
-        working-directory: ./swift-generator
+        working-directory: ./packages/swift-generator
       - run: npm run build
-        working-directory: ./swift-generator
+        working-directory: ./packages/swift-generator
       - run: npm test
-        working-directory: ./swift-generator
+        working-directory: ./packages/swift-generator
 
   android-runtime:
     runs-on: ubuntu-latest
@@ -239,7 +237,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: giorgosneokleous93/docker-multicommand-android@v1.0.0
         with:
-          workingdir: "./android-runtime/"
+          workingdir: "./packages/android-runtime/"
           command1: "./gradlew test assembleRelease"
 
   vscode-ext:
