@@ -257,22 +257,23 @@ jobs:
           node-version: 16.x
           registry-url: https://registry.npmjs.org
       - run: cp LICENSE playground/
-      - run: npm install
-        working-directory: ./playground
-      - run: |
-          npm install -g json && json -I -f package.json -e '
-            this.version = "${{ github.ref }}".replace("refs/tags/", "");
-            this.main = "dist/src/index.js";
-            this.types = "dist/src/index.d.ts";
-            for (const pkg in this.dependencies)
-              if (this.dependencies[pkg].startsWith("file:../"))
-                this.dependencies[pkg] = this.version;
-          '
+      - run: npm install && npm install -g json && bash .ci.sh
         working-directory: ./playground
       - run: npm run build
         working-directory: ./playground
         env:
           NODE_ENV: production
+      - run: |
+          npm install -g json && json -I -f package.json -e '
+            this.version = "${{ github.ref }}".replace("refs/tags/", "");
+            this.main = "dist/src/index.js";
+            this.types = "dist/src/index.d.ts";
+            delete this.dependencies.tslib;
+            for (const pkg in this.dependencies)
+              if (this.dependencies[pkg].startsWith("file:../"))
+                this.dependencies[pkg] = this.version;
+          '
+        working-directory: ./playground
       - run: npm publish
         working-directory: ./playground
         env:

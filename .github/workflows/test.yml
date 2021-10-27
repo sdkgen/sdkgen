@@ -136,7 +136,7 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version }}
-      - run: npm install
+      - run: npm install && npm install -g json && bash .ci.sh
         working-directory: ./playground
       - run: npm run eslint:check
         working-directory: ./playground

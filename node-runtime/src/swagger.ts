@@ -2,6 +2,7 @@ import type { Type } from "@sdkgen/parser";
 import {
   ArrayType,
   Base64PrimitiveType,
+  BigIntPrimitiveType,
   BoolPrimitiveType,
   BytesPrimitiveType,
   CnpjPrimitiveType,
@@ -128,6 +129,10 @@ function typeToSchema(definitions: Record<string, JSONSchema | undefined>, type:
     return {
       type: "string",
     };
+  } else if (type instanceof BigIntPrimitiveType) {
+    return {
+      type: "string",
+    };
   } else if (type instanceof OptionalType) {
     return {
       oneOf: [typeToSchema(definitions, type.base), { type: "null" }],
@@ -214,7 +219,7 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
     res.end();
   });
 
-  server.addHttpHandler("GET", /^\/swagger/u, (req, res) => {
+  server.addHttpHandler("GET", /^\/swagger.*/u, (req, res) => {
     if (!server.introspection) {
       res.statusCode = 404;
       res.end();
