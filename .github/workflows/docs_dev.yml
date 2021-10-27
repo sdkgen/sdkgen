@@ -20,6 +20,7 @@ jobs:
       - run: |
           cd playground
           npm install
+          npm install -g json
           bash .ci.sh
           npm run build
           sed -i -E 's_(<base href=")/(">)_\1/dev/playground/\2_' dist/index.html
