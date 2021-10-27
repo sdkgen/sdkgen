@@ -10,6 +10,10 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: "3.x"
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+          registry-url: https://registry.npmjs.org
       - run: pip install mkdocs-material
       - run: mkdocs build
       - run: git clone --depth 1 -b master https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/sdkgen/sdkgen.github.io.git
