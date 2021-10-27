@@ -5,7 +5,7 @@ on:
       - master
 jobs:
   _version:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - run: echo -n 0.0.0-dev.$(date -u +'%Y%m%d%H%M%S') > version.txt
       - uses: actions/upload-artifact@v1
@@ -15,7 +15,7 @@ jobs:
 
   parser:
     needs: [_version]
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v1
@@ -47,7 +47,7 @@ jobs:
 
   browser-runtime:
     needs: [_version]
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v1
@@ -79,7 +79,7 @@ jobs:
 
   dart-runtime:
     needs: [_version]
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v1
@@ -105,7 +105,7 @@ jobs:
 
   android-runtime:
     needs: [_version]
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v1
@@ -127,7 +127,7 @@ jobs:
 
   typescript-generator:
     needs: [_version]
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v1
@@ -159,7 +159,7 @@ jobs:
 
   csharp-generator:
     needs: [_version]
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v1
@@ -191,7 +191,7 @@ jobs:
 
   kotlin-generator:
     needs: [_version]
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v1
@@ -223,7 +223,7 @@ jobs:
 
   swift-generator:
     needs: [_version]
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v1
@@ -254,7 +254,7 @@ jobs:
 
   dart-generator:
     needs: [_version]
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v1
@@ -286,7 +286,7 @@ jobs:
 
   cli:
     needs: [_version]
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v1
@@ -318,7 +318,7 @@ jobs:
 
   playground:
     needs: [_version]
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v1
@@ -355,7 +355,7 @@ jobs:
 
   node-runtime:
     needs: [_version]
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v1
@@ -387,7 +387,7 @@ jobs:
 
   dotnet-runtime:
     needs: [_version]
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v1

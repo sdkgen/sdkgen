@@ -4,7 +4,7 @@ on:
     types: [published]
 jobs:
   docs:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2

@@ -2,7 +2,7 @@ name: test
 on: [push, pull_request]
 jobs:
   browser-runtime:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     strategy:
       matrix:
         node-version: [12.x, 14.x, 16.x]
@@ -21,7 +21,7 @@ jobs:
         working-directory: ./browser-runtime
 
   cli:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     strategy:
       matrix:
         node-version: [12.x, 14.x, 16.x]
@@ -40,7 +40,7 @@ jobs:
         working-directory: ./cli
 
   dart-generator:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     strategy:
       matrix:
         node-version: [12.x, 14.x, 16.x]
@@ -59,7 +59,7 @@ jobs:
         working-directory: ./dart-generator
 
   dart-runtime:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     strategy:
       matrix:
         flutter-version: [2.0.x, 2.2.x, 2.5.x]
@@ -85,7 +85,7 @@ jobs:
         working-directory: ./dart-runtime
 
   node-runtime:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     strategy:
       matrix:
         node-version: [12.x, 14.x, 16.x]
@@ -114,7 +114,7 @@ jobs:
         working-directory: ./node-runtime
 
   parser:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     strategy:
       matrix:
         node-version: [12.x, 14.x, 16.x]
@@ -133,7 +133,7 @@ jobs:
         working-directory: ./parser
 
   playground:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     strategy:
       matrix:
         node-version: [12.x, 14.x, 16.x]
@@ -150,7 +150,7 @@ jobs:
         working-directory: ./playground
 
   typescript-generator:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     strategy:
       matrix:
         node-version: [12.x, 14.x, 16.x]
@@ -169,7 +169,7 @@ jobs:
         working-directory: ./typescript-generator
 
   csharp-generator:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     strategy:
       matrix:
         node-version: [12.x, 14.x, 16.x]
@@ -188,7 +188,7 @@ jobs:
         working-directory: ./csharp-generator
 
   dotnet-runtime:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     strategy:
       matrix:
         dotnet-version: ["3.1.x", "5.0.x", "6.0.x"]
@@ -202,7 +202,7 @@ jobs:
         working-directory: ./dotnet-runtime
 
   kotlin-generator:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     strategy:
       matrix:
         node-version: [12.x, 14.x, 16.x]
@@ -221,7 +221,7 @@ jobs:
         working-directory: ./kotlin-generator
 
   swift-generator:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     strategy:
       matrix:
         node-version: [12.x, 14.x, 16.x]
@@ -240,7 +240,7 @@ jobs:
         working-directory: ./swift-generator
 
   android-runtime:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v2
       - uses: giorgosneokleous93/docker-multicommand-android@v1.0.0
@@ -249,7 +249,7 @@ jobs:
           command1: "./gradlew test assembleRelease"
 
   vscode-ext:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
