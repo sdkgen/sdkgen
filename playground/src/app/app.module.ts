@@ -11,7 +11,7 @@ import { MatTabsModule } from "@angular/material/tabs";
 import { MatTooltipModule } from "@angular/material/tooltip";
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
-import { MonacoEditorModule } from "@materia-ui/ngx-monaco-editor";
+import { MonacoEditorModule, MONACO_PATH } from "@materia-ui/ngx-monaco-editor";
 import { AngularSplitModule } from "angular-split";
 import { NgxJsonViewerModule } from "ngx-json-viewer";
 import { ToastrModule } from "ngx-toastr";
@@ -56,7 +56,12 @@ import { TypeDetailsComponent } from "./type-details/type-details.component";
     MatTabsModule,
     MatTooltipModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: MONACO_PATH,
+      useValue: "assets/vs",
+    },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
