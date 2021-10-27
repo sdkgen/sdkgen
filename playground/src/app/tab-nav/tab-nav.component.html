@@ -1,0 +1,10 @@
+<img src="assets/polvinho.png">
+
+<form (submit)="loadUrl($event)">
+  <input [formControl]="url" [readonly]="loading" placeholder="Digite uma URL aqui para conectar" />
+
+  <button type="submit" [disabled]="loading" [ngSwitch]="loading">
+    <ng-container *ngSwitchCase="true"><mat-icon class="loader">loop</mat-icon></ng-container>
+    <ng-container *ngSwitchCase="false"><mat-icon>arrow_forward</mat-icon></ng-container>
+  </button>
+</form>

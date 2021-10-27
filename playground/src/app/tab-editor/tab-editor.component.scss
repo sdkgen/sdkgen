@@ -1,0 +1,17 @@
+:host {
+  $margin-top: 4px;
+
+  display: flex;
+  flex-direction: column;
+  height: calc(100% - #{$margin-top});
+  margin-top: $margin-top;
+}
+
+::ng-deep .scroll-decoration {
+  // Monaco scroll box-shadow
+  display: none;
+}
+
+.o-hidden {
+  overflow: hidden !important;
+}

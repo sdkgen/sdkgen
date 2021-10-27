@@ -1,0 +1,50 @@
+:host {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+::ng-deep #main-tabs > .mat-tab-header {
+  .mat-tab-label {
+    text-transform: uppercase;
+    user-select: none;
+
+    &.mat-ripple:not(#mat-tab-label-0-0) {
+      padding-right: 0;
+
+      button {
+        border-radius: 0;
+        display: inline-block;
+        margin-left: 10px;
+      }
+    }
+  }
+
+  .mat-tab-labels .mat-tab-label:nth-last-child(-n+2) {
+    min-width: 0;
+    padding: 0 12px;
+    color: unset;
+    opacity: unset;
+
+    button {
+      margin-left: 0 !important;
+    }
+  }
+
+  .mat-tab-labels .mat-tab-label:last-child {
+    margin-left: auto;
+
+    button {
+      padding: 0 5px !important;
+      display: block;
+      box-sizing: content-box;
+      margin-right: 5px !important;
+    }
+  }
+}
+
+::ng-deep #download-menu-size-flow {
+  width: 185px;
+  display: block;
+  max-width: 90vw;
+}
