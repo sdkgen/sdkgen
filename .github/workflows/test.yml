@@ -97,7 +97,13 @@ jobs:
       - run: npm install
         working-directory: ./node-runtime
       - run: npm install
+        working-directory: ./csharp-generator
+      - run: npm install
         working-directory: ./dart-generator
+      - run: npm install
+        working-directory: ./kotlin-generator
+      - run: npm install
+        working-directory: ./swift-generator
       - run: npm install
         working-directory: ./typescript-generator
       - run: npm run eslint:check
