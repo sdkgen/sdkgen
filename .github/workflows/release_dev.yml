@@ -104,28 +104,6 @@ jobs:
           PUB_CACHE: ../pub-cache
           PUB_CREDENTIALS: ${{ secrets.PUB_CREDENTIALS }}
 
-  android-runtime:
-    needs: [_version]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
-        with:
-          name: version
-      - run: sed -i -e "s/versionName \"1.0\"/versionName \"$(cat ../../version.txt)\"/g" build.gradle
-        working-directory: ./android-runtime/runtime
-      - run: sed -i -e "s/version = '1.0.0'/version = '$(cat ../../version.txt)'/g" bintray.gradle
-        working-directory: ./android-runtime/runtime
-      - run: sed -i -e "s/versionCode 1/versionCode $(date +%s)/g" build.gradle
-        working-directory: ./android-runtime/runtime
-      - uses: giorgosneokleous93/docker-multicommand-android@v1.0.0
-        with:
-          workingdir: "./android-runtime/"
-          command1: "./gradlew test install bintrayUpload"
-        env:
-          BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
-          BINTRAY_API_KEY: ${{ secrets.BINTRAY_API_KEY }}
-
   typescript-generator:
     needs: [_version]
     runs-on: ubuntu-latest
