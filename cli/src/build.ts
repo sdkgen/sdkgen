@@ -47,6 +47,7 @@ export function buildCmd(argv: string[]): void {
             "- flutter",
             "- csharp_server",
             "- kotlin_android",
+            "- kotlin_android_without_callbacks",
             "- swift_ios",
             "- rxswift_ios",
           ].join("\n"),
@@ -117,7 +118,12 @@ export function buildCmd(argv: string[]): void {
     }
 
     case "kotlin_android": {
-      writeFileSync(options.output, generateAndroidClientSource(ast));
+      writeFileSync(options.output, generateAndroidClientSource(ast, true));
+      break;
+    }
+
+    case "kotlin_android_without_callbacks": {
+      writeFileSync(options.output, generateAndroidClientSource(ast, false));
       break;
     }
 
