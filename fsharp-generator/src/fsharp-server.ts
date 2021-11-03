@@ -1,4 +1,4 @@
-import type { AstRoot } from "@sdkgen/parser";
+import { AstRoot, astToJson } from "@sdkgen/parser";
 import { VoidPrimitiveType } from "@sdkgen/parser";
 
 import { capitalize, decodeType, encodeType, generateEnum, generateStruct, generateTypeName, ident } from "./helpers";
@@ -20,12 +20,12 @@ open System.Globalization
 type ${error.name}Exception =
   inherit SdkgenException
 
-  new(message: string) = { 
+  new(message: string) = {
     inherit SdkgenException("${error.name}", message, null)
   }
 
-  new(message: string, inner: Exception) = { 
-    inherit SdkgenException("${error.name}", message, inner) 
+  new(message: string, inner: Exception) = {
+    inherit SdkgenException("${error.name}", message, inner)
   }\n`;
   }
 
@@ -46,15 +46,15 @@ type Api() =`;
     const argsInRecord = op.args.length > 0 ? `{| ${op.args.map(arg => `${arg.name}: ${generateTypeName(arg.type)};`).join("")} |} ->` : "";
 
     code += `
-  member val ${capitalize(op.name)}: Context -> ${argsInRecord} Task${returnTypeAngle} = 
+  member val ${capitalize(op.name)}: Context -> ${argsInRecord} Task${returnTypeAngle} =
     fun _ -> (raise (FatalException("Function '${op.name}' not implemented.")))
-    with get, set 
+    with get, set
     `;
   }
 
   code += `
   interface BaseApi with
-    member __.ExecuteFunction(context_: Context, resultWriter_: Utf8JsonWriter) : Task = 
+    member __.ExecuteFunction(context_: Context, resultWriter_: Utf8JsonWriter) : Task =
         task {
           match context_.Name with`;
 
@@ -63,12 +63,12 @@ type Api() =`;
           | ${JSON.stringify(op.name)} ->`;
     for (const arg of op.args) {
       code += `
-            let ${arg.name}Json_ = 
+            let ${arg.name}Json_ =
               match context_.Args.TryGetValue(${JSON.stringify(arg.name)}) with
               | true, v -> v
               | _ -> raise (FatalException("'${op.name}().args.${arg.name}' must be set to a value of type ${arg.type.name}."))
 
-            let ${ident(arg.name)} = 
+            let ${ident(arg.name)} =
               ${decodeType(arg.type, `${arg.name}Json_`, `"${op.name}().args.${arg.name}"`, ident(arg.name)).replace(/\n/gu, "\n            ")}`;
     }
 
@@ -81,7 +81,7 @@ type Api() =`;
       `;
     } else {
       code += `
-      
+
             let! result_ = (__.${capitalize(op.name)} context_ ${op.args.length > 0 ? "{|" : ""} ${op.args
         .map(arg => `${arg.name} = ${ident(arg.name)}`)
         .join("; ")} ${op.args.length > 0 ? "|}" : ""})
@@ -90,15 +90,12 @@ type Api() =`;
   }
 
   code += `
-  
+
           | _ -> raise (FatalException($"Unknown function '{context_.Name}'."))
         } :> Task`;
 
   code += `
-    member __.GetAstJson() = ""`;
-
-  // code += `
-  //   member __.GetAstJson() = """${JSON.stringify(astToJson(ast), null, 4).replace(/"/gu, '""').replace(/\n/gu, "\n        ")}""";`;
+    member __.GetAstJson() = """${JSON.stringify(astToJson(ast), null, 4).replace(/"/gu, '""').replace(/\n/gu, "\n        ")}""";`;
 
   return code;
 }

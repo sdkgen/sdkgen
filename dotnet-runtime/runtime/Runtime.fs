@@ -8,7 +8,6 @@ open Microsoft.AspNetCore.Http
 open Giraffe
 open FSharp.Control.Tasks
 open System.Text.Json
-open System.Collections.Generic
 open System.Threading.Tasks
 open Sdkgen.Helpers
 open System.Diagnostics
@@ -17,8 +16,6 @@ open System.Net
 open System.Buffers
 open System.Text
 open Sdkgen.Context
-open Microsoft.Extensions.DependencyInjection
-open Microsoft.Extensions.Logging.Console
 open Microsoft.Extensions.Logging
 open System.Text.RegularExpressions
 
@@ -30,13 +27,10 @@ type Matcher =
   | Reg of Regex
   | Str of string
 
-type Handler = {
-  Method: string;
-  Matcher: Matcher;
-  Handler: string option;
-}
-
-
+type Handler =
+  { Method: string
+    Matcher: Matcher
+    Handler: string option }
 
 type SdkgenHttpServer(api: BaseApi) =
   let Api = api
@@ -46,7 +40,7 @@ type SdkgenHttpServer(api: BaseApi) =
   let IgnoredUrlPrefix = ""
   let Headers = HeaderDictionary()
   let OnHealthCheck = (fun () -> Task.FromResult(true))
-  let OnRequestError : Action<Context, SdkgenException> option = None
+  let OnRequestError: Action<Context, SdkgenException> option = None
   let Handlers: (HttpRequest -> HttpResponse -> Buffer -> unit) list = List.empty
 
   let isAst (next: HttpFunc) (httpContext: HttpContext) =
@@ -55,17 +49,26 @@ type SdkgenHttpServer(api: BaseApi) =
     && httpContext.Request.Method.ToUpperInvariant() = "GET"
 
   let enableCors (httpContext: HttpContext) =
-    httpContext.Response.Headers.Add("Access-Control-Allow-Methods", StringValues "DELETE, HEAD, PUT, POST, PATCH, GET, OPTIONS");
-    httpContext.Response.Headers.Add("Access-Control-Allow-Headers", StringValues "Content-Type");
-    httpContext.Response.Headers.Add("Access-Control-Max-Age", StringValues "86400");
+    httpContext.Response.Headers.Add(
+      "Access-Control-Allow-Methods",
+      StringValues "DELETE, HEAD, PUT, POST, PATCH, GET, OPTIONS"
+    )
 
-  let addHeader (header: string) (value:string) =
+    httpContext.Response.Headers.Add("Access-Control-Allow-Headers", StringValues "Content-Type")
+    httpContext.Response.Headers.Add("Access-Control-Max-Age", StringValues "86400")
+
+  let addHeader (header: string) (value: string) =
     let cleanHeader = header.ToLower().Trim()
-    let existing = Headers.Keys |> Seq.tryFind (fun x -> x.ToLowerInvariant().Trim().Equals(cleanHeader))
+
+    let existing =
+      Headers.Keys
+      |> Seq.tryFind (fun x -> x.ToLowerInvariant().Trim().Equals(cleanHeader))
+
     match existing with
     | Some a when a.Contains(value) -> Headers.Add(cleanHeader, StringValues value)
     | None -> Headers.Add(cleanHeader, StringValues $"{existing.Value}, {value}")
     | _ -> ()
+
     ()
 
   let checkOrigin (httpContext: HttpContext) =
@@ -106,13 +109,12 @@ type SdkgenHttpServer(api: BaseApi) =
         )
     }
 
-  let handleRequest : HttpHandler =
+  let handleRequest: HttpHandler =
     fun (next: HttpFunc) (httpContext: HttpContext) ->
       task {
-        httpContext.Request
         let stopWatch = Stopwatch()
         stopWatch.Start()
-        let mutable context : Context option = None
+        let mutable context: Context option = None
 
         try
           if isAst next httpContext then
@@ -177,10 +179,8 @@ type SdkgenHttpServer(api: BaseApi) =
 
           let error =
             match e with
-            | :? SdkgenException as e ->
-              e
-            | error ->
-              SdkgenException("Fatal", error.Message, error)
+            | :? SdkgenException as e -> e
+            | error -> SdkgenException("Fatal", error.Message, error)
 
           let duration = stopWatch.Elapsed.TotalSeconds
           let finalDuration = (duration.ToString("0.000000"))
@@ -216,6 +216,7 @@ type SdkgenHttpServer(api: BaseApi) =
     WebHost
       .CreateDefaultBuilder()
       .UseKestrel()
+      .UseContentRoot("sdkgen.runtime.static")
       .Configure(fun (appBuilder: IApplicationBuilder) ->
         appBuilder
           .UseDefaultFiles()

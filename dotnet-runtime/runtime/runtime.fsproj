@@ -13,4 +13,12 @@
   <ItemGroup>
     <PackageReference Include="Giraffe" Version="5.0.0" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="../../playground/dist/**/*">
+      <PackagePath>contentFiles/any/any/sdkgen.runtime.static/playground/</PackagePath>
+      <Pack>true</Pack>
+      <PackageCopyToOutput>true</PackageCopyToOutput>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
 </Project>

@@ -352,7 +352,8 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
       if (needsTempVarForNullable.includes((type as OptionalType).base.constructor)) {
         return `match ${jsonElementVar}.ValueKind with
                   | JsonValueKind.Null | JsonValueKind.Undefined -> None
-                  | _ -> ${decodeType((type as OptionalType).base, jsonElementVar, path, targetVar, suffix, false)} |> Some
+                  | _ ->
+                    (${decodeType((type as OptionalType).base, jsonElementVar, path, targetVar, suffix, false).replace(/\n/gu, "\n                    ")}) |> Some
                 `
           .replace(/\n {16}/gu, "\n")
           .trim();
@@ -408,14 +409,15 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
                     let mutable list_ = List.empty
                     for i1 in 0 .. (${jsonElementVar}.GetArrayLength() - 1) do
                       let item = ${jsonElementVar}.[i1]
-                      let partialResult = ${decodeType(
+                      let partialResult =
+                        ${decodeType(
                         (type as ArrayType).base,
                         `${jsonElementVar}.[i1]`,
                         `${path.slice(0, -1)}.{i1}"`,
                         targetVar,
                         suffix,
                         false,
-                      )}
+                      ).replace(/\n/gu, "\n                      ")}
                       list_ <- list_ |> List.append [ partialResult ]
                     list_
                   | _ -> raise (FatalException(${path.slice(0, -1)} must be an array."))
@@ -498,7 +500,7 @@ export function encodeType(type: Type, valueVar: string, path: string, suffix = 
     case TypeReference:
       return encodeType((type as TypeReference).type, valueVar, path, suffix, isRef);
     case EnumType:
-      return `Encode${type.name} ${valueVar} resultWriter_, ${path}`;
+      return `Encode${type.name} ${valueVar} resultWriter_ ${path}`;
     case StructType:
       return `Encode${type.name} ${valueVar} resultWriter_ ${path}`;
     case JsonPrimitiveType:
@@ -507,7 +509,7 @@ export function encodeType(type: Type, valueVar: string, path: string, suffix = 
       return `
               resultWriter_.WriteStartArray()
               for i${suffix} in 0..${valueVar}.Length - 1 do
-                ${encodeType((type as ArrayType).base, `${valueVar}.[i${suffix}]`, `${path}`, suffix + 1).replace(/\n/gu, "\n                  ")}
+                ${encodeType((type as ArrayType).base, `${valueVar}.[i${suffix}]`, `${path}`, suffix + 1).replace(/\n/gu, "\n                ")}
               resultWriter_.WriteEndArray()
               `
         .replace(/\n {14}/gu, "\n")
