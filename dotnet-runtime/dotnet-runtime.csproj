@@ -14,7 +14,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Server.Kestrel" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
-    <PackageReference Include="System.Text.Json" Version="4.7.1" />
+    <PackageReference Include="System.Text.Json" Version="6.0.0" />
     <Content Include="../playground/dist/**/*">
       <Pack>true</Pack>
       <PackagePath>contentFiles/any/any/sdkgen.runtime.static/playground/</PackagePath>
