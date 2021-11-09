@@ -347,7 +347,7 @@ open class SdkgenHttpClient(
         }
     }
 
-    fun setHttpClient(client: OkHttpClient){
+    fun setHttpClient(client: OkHttpClient) {
         httpClient = client
     }
 }
