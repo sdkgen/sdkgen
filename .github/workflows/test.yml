@@ -251,6 +251,8 @@ jobs:
 
   vscode-ext:
     runs-on: ubuntu-latest
+    container:
+      image: docker://fabernovel/android:api-29-v1.1.0
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
