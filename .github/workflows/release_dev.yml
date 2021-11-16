@@ -407,21 +407,21 @@ jobs:
         working-directory: ./android-runtime/runtime
       - run: sed -i -e "s/VERSION_NAME=0.0.0/VERSION_NAME=$(cat ../../version.txt)/g" gradle.properties
         working-directory: ./android-runtime/
-      - run: echo "mavenCentralUsername=$NEXUS_MAVEN_USER" >> gradle.properties
+      - run: echo "mavenCentralUsername=${{ secrets.NEXUS_MAVEN_USER }}" >> gradle.properties
         working-directory: ./android-runtime/
-      - run: echo "mavenCentralPassword=$NEXUS_MAVEN_PASSWORD" >> gradle.properties
+      - run: echo "mavenCentralPassword=${{ secrets.NEXUS_MAVEN_PASSWORD }}" >> gradle.properties
         working-directory: ./android-runtime/
-      - run: echo "SONATYPE_NEXUS_USERNAME=$NEXUS_MAVEN_USER" >> gradle.properties
+      - run: echo "SONATYPE_NEXUS_USERNAME=${{ secrets.NEXUS_MAVEN_USER }}" >> gradle.properties
         working-directory: ./android-runtime/
-      - run: echo "SONATYPE_NEXUS_PASSWORD=$NEXUS_MAVEN_PASSWORD" >> gradle.properties
+      - run: echo "SONATYPE_NEXUS_PASSWORD=${{ secrets.NEXUS_MAVEN_PASSWORD }}" >> gradle.properties
         working-directory: ./android-runtime/
-      - run: echo "signing.keyId=$MAVEN_GPG_KEY_ID" >> gradle.properties
+      - run: echo "signing.keyId=${{ secrets.MAVEN_GPG_KEY_ID }}" >> gradle.properties
         working-directory: ./android-runtime/
-      - run: echo "signing.password=$MAVEN_GPG_KEY_PASSWORD" >> gradle.properties
+      - run: echo "signing.password=${{ secrets.MAVEN_GPG_KEY_PASSWORD }}" >> gradle.properties
         working-directory: ./android-runtime/
-      - run: echo "signing.secretKeyRingFile=$MAVEN_GPG_KEY_FILE_PATH" >> gradle.properties
+      - run: echo "signing.secretKeyRingFile=${{ secrets.MAVEN_GPG_KEY_FILE_PATH }}" >> gradle.properties
         working-directory: ./android-runtime/
-      - run: echo "$MAVEN_GPG_FILE_CONTENT" | base64 -d > "$MAVEN_GPG_KEY_FILE_PATH"
+      - run: echo "${{ secrets.MAVEN_GPG_FILE_CONTENT }}" | base64 -d > "${{ secrets.MAVEN_GPG_KEY_FILE_PATH }}"
         working-directory: ./android-runtime/
       - uses: actions/setup-java@v2
         with:
