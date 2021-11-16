@@ -54,7 +54,7 @@
     "json": "^11.0.0",
     "monaco-editor": "^0.29.1",
     "ngx-json-viewer": "^3.0.2",
-    "ngx-toastr": "^14.1.3",
+    "ngx-toastr": "~14.1.3",
     "rxjs": "~6.6.0",
     "typescript": "~4.3.5",
     "webpack-bundle-analyzer": "^4.5.0",
