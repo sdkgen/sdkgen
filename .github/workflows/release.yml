@@ -369,7 +369,7 @@ jobs:
       - run: echo "\nsigning.password=$(echo $MAVEN_GPG_KEY_PASSWORD)" >> gradle.properties
         working-directory: ./android-runtime/
       - run: echo "\nsigning.secretKeyRingFile=$(echo $MAVEN_GPG_KEY_FILE_PATH)" >> gradle.properties
-        working-directory: ./android-runtime/   
+        working-directory: ./android-runtime/
       - uses: giorgosneokleous93/docker-multicommand-android@v1.0.0
         with:
           workingdir: "./android-runtime/"
