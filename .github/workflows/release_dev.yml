@@ -210,6 +210,7 @@ jobs:
           name: version
       - uses: actions/setup-node@v2
         with:
+          node-version: 16.x
           registry-url: https://registry.npmjs.org
       - run: cp LICENSE swift-generator/
       - run: npm install
