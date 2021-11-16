@@ -172,6 +172,7 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
         with:
+          node-version: 16.x
           registry-url: https://registry.npmjs.org
       - run: cp LICENSE swift-generator/
       - run: npm install
@@ -356,19 +357,19 @@ jobs:
         working-directory: ./android-runtime/runtime
       - run: sed -i -e "s/VERSION_NAME=0.0.0/VERSION_NAME=$(echo ${{ github.ref }} | cut -d'/' -f3)/g" gradle.properties
         working-directory: ./android-runtime/
-      - run: echo "\nmavenCentralUsername=$(echo $NEXUS_MAVEN_USER)" >> gradle.properties
+      - run: echo "mavenCentralUsername=$NEXUS_MAVEN_USER" >> gradle.properties
         working-directory: ./android-runtime/
-      - run: echo "\nmavenCentralPassword=$(echo $NEXUS_MAVEN_PASSWORD)" >> gradle.properties
+      - run: echo "mavenCentralPassword=$NEXUS_MAVEN_PASSWORD" >> gradle.properties
         working-directory: ./android-runtime/
-      - run: echo "\nSONATYPE_NEXUS_USERNAME=$(echo $NEXUS_MAVEN_USER)" >> gradle.properties
+      - run: echo "SONATYPE_NEXUS_USERNAME=$NEXUS_MAVEN_USER" >> gradle.properties
         working-directory: ./android-runtime/
-      - run: echo "\nSONATYPE_NEXUS_PASSWORD=$(echo $NEXUS_MAVEN_PASSWORD)" >> gradle.properties
+      - run: echo "SONATYPE_NEXUS_PASSWORD=$NEXUS_MAVEN_PASSWORD" >> gradle.properties
         working-directory: ./android-runtime/
-      - run: echo "\nsigning.keyId=$(echo $MAVEN_GPG_KEY_ID)" >> gradle.properties
+      - run: echo "signing.keyId=$MAVEN_GPG_KEY_ID" >> gradle.properties
         working-directory: ./android-runtime/
-      - run: echo "\nsigning.password=$(echo $MAVEN_GPG_KEY_PASSWORD)" >> gradle.properties
+      - run: echo "signing.password=$MAVEN_GPG_KEY_PASSWORD" >> gradle.properties
         working-directory: ./android-runtime/
-      - run: echo "\nsigning.secretKeyRingFile=$(echo $MAVEN_GPG_KEY_FILE_PATH)" >> gradle.properties
+      - run: echo "signing.secretKeyRingFile=$MAVEN_GPG_KEY_FILE_PATH" >> gradle.properties
         working-directory: ./android-runtime/   
       - run: echo $MAVEN_GPG_FILE_CONTENT | base64 -d > $MAVEN_GPG_KEY_FILE_PATH
         working-directory: ./android-runtime/
