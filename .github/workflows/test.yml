@@ -255,7 +255,6 @@ jobs:
 
   vscode-ext:
     runs-on: ubuntu-latest
-    - uses: actions/checkout@v2
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
