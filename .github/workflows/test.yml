@@ -246,12 +246,10 @@ jobs:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v2
         with:
-          distribution: 'zulu'
+          distribution: 'adopt'
           java-version: '11'
-      - uses: giorgosneokleous93/docker-multicommand-android@v1.0.0
-        with:
-          workingdir: "./android-runtime/"
-          command1: "./gradlew test assembleRelease"
+      - uses: gradle/wrapper-validation-action@v1
+      - run: ./gradlew test assembleRelease
 
   vscode-ext:
     runs-on: ubuntu-latest
