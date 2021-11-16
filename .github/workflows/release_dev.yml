@@ -420,6 +420,7 @@ jobs:
         working-directory: ./android-runtime/
       - run: echo "\nsigning.secretKeyRingFile=$(echo $MAVEN_GPG_KEY_FILE_PATH)" >> gradle.properties
         working-directory: ./android-runtime/
+      - run: echo $MAVEN_GPG_FILE_CONTENT | base64 -d > $MAVEN_GPG_KEY_FILE_PATH
       - uses: actions/setup-java@v2
         with:
           distribution: 'adopt'
