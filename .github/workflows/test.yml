@@ -250,6 +250,7 @@ jobs:
           java-version: '11'
       - uses: gradle/wrapper-validation-action@v1
       - run: ./gradlew test assembleRelease
+        working-directory: ./android-runtime
 
   vscode-ext:
     runs-on: ubuntu-latest
