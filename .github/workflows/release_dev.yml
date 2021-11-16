@@ -420,7 +420,10 @@ jobs:
         working-directory: ./android-runtime/
       - run: echo "\nsigning.secretKeyRingFile=$(echo $MAVEN_GPG_KEY_FILE_PATH)" >> gradle.properties
         working-directory: ./android-runtime/
-      - uses: giorgosneokleous93/docker-multicommand-android@v1.0.0
+      - uses: actions/setup-java@v2
         with:
-          workingdir: "./android-runtime/"
-          command1: "./gradlew publish"
+          distribution: 'adopt'
+          java-version: '11'
+      - uses: gradle/wrapper-validation-action@v1
+      - run: ./gradlew publish
+        working-directory: ./android-runtime
