@@ -244,10 +244,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: giorgosneokleous93/docker-multicommand-android@v1.0.0
+      - uses: actions/setup-java@v2
         with:
-          workingdir: "./android-runtime/"
-          command1: "./gradlew test assembleRelease"
+          distribution: 'adopt'
+          java-version: '11'
+      - uses: gradle/wrapper-validation-action@v1
+      - run: ./gradlew test assembleRelease
+        working-directory: ./android-runtime
 
   vscode-ext:
     runs-on: ubuntu-latest

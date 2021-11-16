@@ -391,3 +391,39 @@ jobs:
         working-directory: ./dotnet-runtime
         env:
           NUGET_TOKEN: ${{ secrets.NUGET_TOKEN }}
+
+  android-runtime:
+    needs: [_version]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: version
+      - run: sed -i -e "s/versionName \"1.0\"/versionName \"$(cat ../../version.txt)\"/g" build.gradle
+        working-directory: ./android-runtime/runtime
+      - run: sed -i -e "s/versionCode 1/versionCode $(date +%s)/g" build.gradle
+        working-directory: ./android-runtime/runtime
+      - run: sed -i -e "s/VERSION_NAME=0.0.0/VERSION_NAME=$(cat ../../version.txt)/g" gradle.properties
+        working-directory: ./android-runtime/
+      - run: echo "\nmavenCentralUsername=$(echo $NEXUS_MAVEN_USER)" >> gradle.properties
+        working-directory: ./android-runtime/
+      - run: echo "\nmavenCentralPassword=$(echo $NEXUS_MAVEN_PASSWORD)" >> gradle.properties
+        working-directory: ./android-runtime/
+      - run: echo "\nSONATYPE_NEXUS_USERNAME=$(echo $NEXUS_MAVEN_USER)" >> gradle.properties
+        working-directory: ./android-runtime/
+      - run: echo "\nSONATYPE_NEXUS_PASSWORD=$(echo $NEXUS_MAVEN_PASSWORD)" >> gradle.properties
+        working-directory: ./android-runtime/
+      - run: echo "\nsigning.keyId=$(echo $MAVEN_GPG_KEY_ID)" >> gradle.properties
+        working-directory: ./android-runtime/
+      - run: echo "\nsigning.password=$(echo $MAVEN_GPG_KEY_PASSWORD)" >> gradle.properties
+        working-directory: ./android-runtime/
+      - run: echo "\nsigning.secretKeyRingFile=$(echo $MAVEN_GPG_KEY_FILE_PATH)" >> gradle.properties
+        working-directory: ./android-runtime/
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+      - uses: gradle/wrapper-validation-action@v1
+      - run: ./gradlew publish
+        working-directory: ./android-runtime
