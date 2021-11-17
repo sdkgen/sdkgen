@@ -405,7 +405,7 @@ jobs:
         working-directory: ./android-runtime/runtime
       - run: sed -i -e "s/versionCode 1/versionCode $(date +%s)/g" build.gradle
         working-directory: ./android-runtime/runtime
-      - run: sed -i -e "s/VERSION_NAME=0.0.0/VERSION_NAME=$(cat ../../version.txt)/g" gradle.properties
+      - run: sed -i -e "s/VERSION_NAME=0.0.0/VERSION_NAME=$(cat ../version.txt)/g" gradle.properties
         working-directory: ./android-runtime/
       - run: echo "mavenCentralUsername=${{ secrets.NEXUS_MAVEN_USER }}" >> gradle.properties
         working-directory: ./android-runtime/
