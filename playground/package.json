@@ -49,7 +49,7 @@
     "@materia-ui/ngx-monaco-editor": "^5.1.0",
     "@types/file-saver": "^2.0.3",
     "@types/node": "^16.0.0",
-    "angular-split": "^5.0.0",
+    "angular-split": "^13.0.0",
     "file-saver": "^2.0.5",
     "json": "^11.0.0",
     "monaco-editor": "^0.29.1",
