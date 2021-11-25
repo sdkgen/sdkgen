@@ -58,7 +58,7 @@ namespace Sdkgen.Runtime
       {
         throw new SdkgenException("Fatal", $"'{path_}.name' must be set to a value of type string");
       }
-      name = nameJson_.getboo()!;
+      name = nameJson_.GetString()!;
 
       JsonElement requestIdJson_;
       if (!json_.TryGetProperty("requestId", out requestIdJson_))
