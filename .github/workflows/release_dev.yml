@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo -n 0.0.0-dev.$(date -u +'%Y%m%d%H%M%S') > version.txt
-      - uses: actions/upload-artifact@v1
+      - uses: actions/upload-artifact@v2
         with:
           name: version
           path: version.txt
@@ -18,10 +18,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v1
+      - uses: actions/download-artifact@v2
         with:
           name: version
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
           node-version: 16.x
           registry-url: https://registry.npmjs.org
@@ -30,7 +30,7 @@ jobs:
         working-directory: ./parser
       - run: |
           npm install -g json && json -I -f package.json -e '
-            this.version = "'$(cat ../version/version.txt)'";
+            this.version = "'$(cat ../version.txt)'";
             this.main = "dist/src/index.js";
             this.types = "dist/src/index.d.ts";
             for (const pkg in this.dependencies)
@@ -50,10 +50,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v1
+      - uses: actions/download-artifact@v2
         with:
           name: version
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
           node-version: 16.x
           registry-url: https://registry.npmjs.org
@@ -62,7 +62,7 @@ jobs:
         working-directory: ./browser-runtime
       - run: |
           npm install -g json && json -I -f package.json -e '
-            this.version = "'$(cat ../version/version.txt)'";
+            this.version = "'$(cat ../version.txt)'";
             this.main = "dist/src/index.js";
             this.types = "dist/src/index.d.ts";
             for (const pkg in this.dependencies)
@@ -82,12 +82,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v1
+      - uses: actions/download-artifact@v2
         with:
           name: version
-      - uses: actions/setup-java@v1
+      - uses: actions/setup-java@v2
         with:
           java-version: 12.x
+          distribution: zulu
       - uses: subosito/flutter-action@v1
         with:
           flutter-version: 2.5.x
@@ -95,7 +96,7 @@ jobs:
       - run: cp LICENSE dart-runtime/
       - run: flutter pub get
         working-directory: ./dart-runtime
-      - run: "sed 's/version: 0.0.0/version: '$(cat ../version/version.txt)'/' -i pubspec.yaml"
+      - run: "sed 's/version: 0.0.0/version: '$(cat ../version.txt)'/' -i pubspec.yaml"
         working-directory: ./dart-runtime
       - run: mkdir -p $PUB_CACHE && echo "$PUB_CREDENTIALS" > $PUB_CACHE/credentials.json && flutter pub pub publish -v -f
         working-directory: ./dart-runtime
@@ -103,37 +104,15 @@ jobs:
           PUB_CACHE: ../pub-cache
           PUB_CREDENTIALS: ${{ secrets.PUB_CREDENTIALS }}
 
-  android-runtime:
-    needs: [_version]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v1
-        with:
-          name: version
-      - run: sed -i -e "s/versionName \"1.0\"/versionName \"$(cat ../../version/version.txt)\"/g" build.gradle
-        working-directory: ./android-runtime/runtime
-      - run: sed -i -e "s/version = '1.0.0'/version = '$(cat ../../version/version.txt)'/g" bintray.gradle
-        working-directory: ./android-runtime/runtime
-      - run: sed -i -e "s/versionCode 1/versionCode $(date +%s)/g" build.gradle
-        working-directory: ./android-runtime/runtime
-      - uses: giorgosneokleous93/docker-multicommand-android@v1.0.0
-        with:
-          workingdir: "./android-runtime/"
-          command1: "./gradlew test install bintrayUpload"
-        env:
-          BINTRAY_USER: ${{ secrets.BINTRAY_USER }}
-          BINTRAY_API_KEY: ${{ secrets.BINTRAY_API_KEY }}
-
   typescript-generator:
     needs: [_version]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v1
+      - uses: actions/download-artifact@v2
         with:
           name: version
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
           node-version: 16.x
           registry-url: https://registry.npmjs.org
@@ -142,7 +121,7 @@ jobs:
         working-directory: ./typescript-generator
       - run: |
           npm install -g json && json -I -f package.json -e '
-            this.version = "'$(cat ../version/version.txt)'";
+            this.version = "'$(cat ../version.txt)'";
             this.main = "dist/src/index.js";
             this.types = "dist/src/index.d.ts";
             for (const pkg in this.dependencies)
@@ -162,10 +141,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v1
+      - uses: actions/download-artifact@v2
         with:
           name: version
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
           node-version: 16.x
           registry-url: https://registry.npmjs.org
@@ -174,7 +153,7 @@ jobs:
         working-directory: ./csharp-generator
       - run: |
           npm install -g json && json -I -f package.json -e '
-            this.version = "'$(cat ../version/version.txt)'";
+            this.version = "'$(cat ../version.txt)'";
             this.main = "dist/src/index.js";
             this.types = "dist/src/index.d.ts";
             for (const pkg in this.dependencies)
@@ -194,10 +173,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v1
+      - uses: actions/download-artifact@v2
         with:
           name: version
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
           node-version: 16.x
           registry-url: https://registry.npmjs.org
@@ -206,7 +185,7 @@ jobs:
         working-directory: ./kotlin-generator
       - run: |
           npm install -g json && json -I -f package.json -e '
-            this.version = "'$(cat ../version/version.txt)'";
+            this.version = "'$(cat ../version.txt)'";
             this.main = "dist/src/index.js";
             this.types = "dist/src/index.d.ts";
             for (const pkg in this.dependencies)
@@ -226,18 +205,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v1
+      - uses: actions/download-artifact@v2
         with:
           name: version
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
+          node-version: 16.x
           registry-url: https://registry.npmjs.org
       - run: cp LICENSE swift-generator/
       - run: npm install
         working-directory: ./swift-generator
       - run: |
           npm install -g json && json -I -f package.json -e '
-            this.version = "'$(cat ../version/version.txt)'";
+            this.version = "'$(cat ../version.txt)'";
             this.main = "dist/src/index.js";
             this.types = "dist/src/index.d.ts";
             for (const pkg in this.dependencies)
@@ -257,10 +237,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v1
+      - uses: actions/download-artifact@v2
         with:
           name: version
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
           node-version: 16.x
           registry-url: https://registry.npmjs.org
@@ -269,7 +249,7 @@ jobs:
         working-directory: ./dart-generator
       - run: |
           npm install -g json && json -I -f package.json -e '
-            this.version = "'$(cat ../version/version.txt)'";
+            this.version = "'$(cat ../version.txt)'";
             this.main = "dist/src/index.js";
             this.types = "dist/src/index.d.ts";
             for (const pkg in this.dependencies)
@@ -289,10 +269,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v1
+      - uses: actions/download-artifact@v2
         with:
           name: version
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
           node-version: 16.x
           registry-url: https://registry.npmjs.org
@@ -301,7 +281,7 @@ jobs:
         working-directory: ./cli
       - run: |
           npm install -g json && json -I -f package.json -e '
-            this.version = "'$(cat ../version/version.txt)'";
+            this.version = "'$(cat ../version.txt)'";
             this.main = "dist/src/index.js";
             this.types = "dist/src/index.d.ts";
             for (const pkg in this.dependencies)
@@ -321,10 +301,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v1
+      - uses: actions/download-artifact@v2
         with:
           name: version
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
           node-version: 16.x
           registry-url: https://registry.npmjs.org
@@ -337,7 +317,7 @@ jobs:
           NODE_ENV: production
       - run: |
           npm install -g json && json -I -f package.json -e '
-            this.version = "'$(cat ../version/version.txt)'";
+            this.version = "'$(cat ../version.txt)'";
             this.main = "dist/src/index.js";
             this.types = "dist/src/index.d.ts";
             delete this.dependencies.tslib;
@@ -358,10 +338,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v1
+      - uses: actions/download-artifact@v2
         with:
           name: version
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
           node-version: 16.x
           registry-url: https://registry.npmjs.org
@@ -370,7 +350,7 @@ jobs:
         working-directory: ./node-runtime
       - run: |
           npm install -g json && json -I -f package.json -e '
-            this.version = "'$(cat ../version/version.txt)'";
+            this.version = "'$(cat ../version.txt)'";
             this.main = "dist/src/index.js";
             this.types = "dist/src/index.d.ts";
             for (const pkg in this.dependencies)
@@ -390,13 +370,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v1
+      - uses: actions/download-artifact@v2
         with:
           name: version
       - uses: actions/setup-dotnet@v1
         with:
           dotnet-version: 5.0.x
-      - uses: actions/setup-node@v1
+      - uses: actions/setup-node@v2
         with:
           node-version: 16.x
       - run: cp LICENSE dotnet-runtime/
@@ -406,9 +386,47 @@ jobs:
         working-directory: ./playground
         env:
           NODE_ENV: production
-      - run: dotnet pack -c:Release -p:PackageVersion=$(cat ../version/version.txt)
+      - run: dotnet pack -c:Release -p:PackageVersion=$(cat ../version.txt)
         working-directory: ./dotnet-runtime
       - run: dotnet nuget push bin/**/*.nupkg -k $NUGET_TOKEN -s https://api.nuget.org/v3/index.json
         working-directory: ./dotnet-runtime
         env:
           NUGET_TOKEN: ${{ secrets.NUGET_TOKEN }}
+
+  android-runtime:
+    needs: [_version]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v2
+        with:
+          name: version
+      - run: sed -i -e "s/versionName \"1.0\"/versionName \"$(cat ../../version.txt)\"/g" build.gradle
+        working-directory: ./android-runtime/runtime
+      - run: sed -i -e "s/versionCode 1/versionCode $(date +%s)/g" build.gradle
+        working-directory: ./android-runtime/runtime
+      - run: sed -i -e "s/VERSION_NAME=0.0.0/VERSION_NAME=$(cat ../version.txt)/g" gradle.properties
+        working-directory: ./android-runtime/
+      - run: echo "mavenCentralUsername=${{ secrets.NEXUS_MAVEN_USER }}" >> gradle.properties
+        working-directory: ./android-runtime/
+      - run: echo "mavenCentralPassword=${{ secrets.NEXUS_MAVEN_PASSWORD }}" >> gradle.properties
+        working-directory: ./android-runtime/
+      - run: echo "SONATYPE_NEXUS_USERNAME=${{ secrets.NEXUS_MAVEN_USER }}" >> gradle.properties
+        working-directory: ./android-runtime/
+      - run: echo "SONATYPE_NEXUS_PASSWORD=${{ secrets.NEXUS_MAVEN_PASSWORD }}" >> gradle.properties
+        working-directory: ./android-runtime/
+      - run: echo "signing.keyId=${{ secrets.MAVEN_GPG_KEY_ID }}" >> gradle.properties
+        working-directory: ./android-runtime/
+      - run: echo "signing.password=${{ secrets.MAVEN_GPG_KEY_PASSWORD }}" >> gradle.properties
+        working-directory: ./android-runtime/
+      - run: echo "signing.secretKeyRingFile=${{ secrets.MAVEN_GPG_KEY_FILE_PATH }}" >> gradle.properties
+        working-directory: ./android-runtime/
+      - run: echo "${{ secrets.MAVEN_GPG_FILE_CONTENT }}" | base64 -d > "${{ secrets.MAVEN_GPG_KEY_FILE_PATH }}"
+        working-directory: ./android-runtime/runtime/
+      - uses: actions/setup-java@v2
+        with:
+          distribution: 'adopt'
+          java-version: '11'
+      - uses: gradle/wrapper-validation-action@v1
+      - run: ./gradlew publish
+        working-directory: ./android-runtime

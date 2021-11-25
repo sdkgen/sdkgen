@@ -61,7 +61,7 @@ class SdkgenHttpClient {
     return deviceId!;
   }
 
-  Future<Object> makeRequest(
+  Future<Object?> makeRequest(
       String functionName, Map<String, Object> args) async {
     try {
       var func = fnTable[functionName]!;
