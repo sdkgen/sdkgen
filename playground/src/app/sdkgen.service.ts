@@ -34,6 +34,8 @@ import {
 } from "@sdkgen/parser";
 import { BehaviorSubject } from "rxjs";
 
+import { DeepReadonly } from "../../../parser/src/utils";
+
 export interface SdkgenState {
   astRoot: AstRoot;
   astJson: AstJson;
@@ -242,7 +244,7 @@ export class SdkgenService {
     return `print("todo");`;
   }
 
-  public getSdkgenClient(url: string, ast: AstJson) {
+  public getSdkgenClient(url: string, ast: DeepReadonly<AstJson>) {
     const errorFns = ast.errors.reduce<{
       [className: string]:
         | (new (message: string, data: any) => SdkgenErrorWithData<any>)

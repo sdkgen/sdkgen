@@ -232,7 +232,7 @@ export function jsonToAst(json: DeepReadonly<AstJson>): AstRoot {
       fields.push(field);
     }
 
-    return new StructType(fields, []);
+    return new StructType(fields);
   }
 
   for (const [typeName, description] of Object.entries(json.typeTable)) {

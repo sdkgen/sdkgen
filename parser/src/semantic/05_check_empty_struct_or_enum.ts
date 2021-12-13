@@ -13,7 +13,7 @@ export class CheckEmptyStructOrEnumVisitor extends Visitor {
     }
 
     if (node instanceof StructType) {
-      if (node.fields.length === 0 && node.spreads.length === 0) {
+      if (node.fields.length === 0) {
         throw new SemanticError(`Struct '${node.name}' at ${node.location} is empty`);
       }
     }
