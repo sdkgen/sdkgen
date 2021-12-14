@@ -24,16 +24,7 @@ import {
 import { Lexer } from "./lexer";
 import { parseRestAnnotation } from "./restparser";
 import { analyse } from "./semantic/analyser";
-import type {
-  CommaSymbolToken,
-  CurlyCloseSymbolToken,
-  FalseKeywordToken,
-  ImportKeywordToken,
-  ParensCloseSymbolToken,
-  SpreadSymbolToken,
-  Token,
-  TrueKeywordToken,
-} from "./token";
+import type { CurlyCloseSymbolToken, FalseKeywordToken, ImportKeywordToken, SpreadSymbolToken, Token, TrueKeywordToken } from "./token";
 import {
   AnnotationToken,
   ArraySymbolToken,
@@ -49,6 +40,8 @@ import {
   PrimitiveTypeToken,
   StringLiteralToken,
   TypeKeywordToken,
+  CommaSymbolToken,
+  ParensCloseSymbolToken,
 } from "./token";
 import { primitiveToAstClass } from "./utils";
 
@@ -469,7 +462,7 @@ export class Parser {
             }
           }
 
-          enumValue.struct = new StructType(fields, []).atLocation(enumValue.location);
+          enumValue.struct = new StructType(fields).atLocation(enumValue.location);
 
           this.expect(ParensCloseSymbolToken);
           this.nextToken();
