@@ -184,6 +184,12 @@ export class Field extends AstNode {
   }
 }
 
+export class Spread extends AstNode {
+  constructor(public typeReference: TypeReference) {
+    super();
+  }
+}
+
 export class TypeReference extends Type {
   type!: Type;
 
@@ -195,7 +201,9 @@ export class TypeReference extends Type {
 export class StructType extends Type {
   name!: string;
 
-  constructor(public fields: Field[], public spreads: TypeReference[]) {
+  fields: Field[] = [];
+
+  constructor(public fieldsAndSpreads: Array<Field | Spread>) {
     super();
   }
 }
@@ -211,7 +219,9 @@ export class TypeDefinition extends AstNode {
 export class FunctionOperation extends AstNode {
   annotations: Annotation[] = [];
 
-  constructor(public name: string, public args: Field[], public returnType: Type) {
+  args: Field[] = [];
+
+  constructor(public name: string, public fieldsAndSpreads: Array<Field | Spread>, public returnType: Type) {
     super();
   }
 }

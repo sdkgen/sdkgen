@@ -247,6 +247,59 @@ describe(Parser, () => {
         },
       },
     );
+
+    expectParses(
+      `
+        type Bar {
+          aa: string
+        }
+
+        type Foo {
+          ...Bar
+          aa: int
+        }
+      `,
+      {
+        annotations: {},
+        errors: ["Fatal"],
+        functionTable: {},
+        typeTable: {
+          Bar: {
+            aa: "string",
+          },
+          Foo: {
+            aa: "int",
+          },
+        },
+      },
+    );
+
+    expectParses(
+      `
+        type Bar {
+          aa: string
+        }
+
+        type Foo {
+          ...Bar
+          aa: int
+          ...Bar
+        }
+      `,
+      {
+        annotations: {},
+        errors: ["Fatal"],
+        functionTable: {},
+        typeTable: {
+          Bar: {
+            aa: "string",
+          },
+          Foo: {
+            aa: "string",
+          },
+        },
+      },
+    );
   });
 
   test("handles functions with arguments", () => {
@@ -265,6 +318,36 @@ describe(Parser, () => {
           doIt: {
             args: {
               bar: "Bar",
+              foo: "int",
+            },
+            ret: "string",
+          },
+        },
+        typeTable: {
+          Bar: {
+            aa: "string",
+          },
+        },
+      },
+    );
+  });
+
+  test("handles spreads in function arguments", () => {
+    expectParses(
+      `
+        type Bar {
+          aa: string
+        }
+
+        fn doIt(foo: int, ...Bar): string
+      `,
+      {
+        annotations: {},
+        errors: ["Fatal"],
+        functionTable: {
+          doIt: {
+            args: {
+              aa: "string",
               foo: "int",
             },
             ret: "string",
