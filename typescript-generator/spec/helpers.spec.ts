@@ -4,20 +4,19 @@ import { generateTypescriptInterface, generateTypescriptTypeName } from "../src/
 
 describe("helpers.ts", () => {
   test("generateTypescriptInterface", () => {
-    const structType = new parser.StructType(
-      [
-        new parser.Field("int", new parser.IntPrimitiveType()),
-        new parser.Field("bigint", new parser.BigIntPrimitiveType()),
-        new parser.Field("date", new parser.DatePrimitiveType()),
-        new parser.Field("bool", new parser.BoolPrimitiveType()),
-        new parser.Field("bytes", new parser.BytesPrimitiveType()),
-        new parser.Field("uuid", new parser.UuidPrimitiveType()),
-        new parser.Field("void", new parser.VoidPrimitiveType()),
-        new parser.Field("json", new parser.JsonPrimitiveType()),
-        new parser.Field("optionalStrArray", new parser.OptionalType(new parser.ArrayType(new parser.StringPrimitiveType()))),
-      ],
-      [],
-    );
+    const structType = new parser.StructType([]);
+
+    structType.fields = [
+      new parser.Field("int", new parser.IntPrimitiveType()),
+      new parser.Field("bigint", new parser.BigIntPrimitiveType()),
+      new parser.Field("date", new parser.DatePrimitiveType()),
+      new parser.Field("bool", new parser.BoolPrimitiveType()),
+      new parser.Field("bytes", new parser.BytesPrimitiveType()),
+      new parser.Field("uuid", new parser.UuidPrimitiveType()),
+      new parser.Field("void", new parser.VoidPrimitiveType()),
+      new parser.Field("json", new parser.JsonPrimitiveType()),
+      new parser.Field("optionalStrArray", new parser.OptionalType(new parser.ArrayType(new parser.StringPrimitiveType()))),
+    ];
 
     structType.name = "awesomeInterface";
 
@@ -120,10 +119,10 @@ describe("helpers.ts", () => {
   });
 
   test("generateTypescriptTypeName: StructType", () => {
-    const structType = new parser.StructType(
-      [new parser.Field("int", new parser.IntPrimitiveType()), new parser.Field("bigint", new parser.BigIntPrimitiveType())],
-      [],
-    );
+    const structType = new parser.StructType([
+      new parser.Field("int", new parser.IntPrimitiveType()),
+      new parser.Field("bigint", new parser.BigIntPrimitiveType()),
+    ]);
 
     structType.name = "simpleInterface";
     expect(generateTypescriptTypeName(structType, false)).toBe(structType.name);
