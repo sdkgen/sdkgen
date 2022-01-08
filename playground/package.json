@@ -46,7 +46,7 @@
     "@angular/platform-browser-dynamic": "~12.2.11",
     "@angular/router": "~12.2.11",
     "@cubos/eslint-config": "^1.0.553260",
-    "@materia-ui/ngx-monaco-editor": "^5.1.0",
+    "@materia-ui/ngx-monaco-editor": "^6.0.0",
     "@types/file-saver": "^2.0.3",
     "@types/node": "^16.0.0",
     "angular-split": "^13.0.0",
