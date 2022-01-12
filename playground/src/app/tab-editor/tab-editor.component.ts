@@ -71,12 +71,21 @@ export class TabEditorComponent implements OnInit, OnDestroy {
   }
 
   patchBrowserClientSource(source: string) {
+    const additionalMembers = `
+      baseUrl: string;
+      extra = new Map<string, any>();
+      successHook: (result: any, name: string, args: any) => void = () => undefined;
+      errorHook: (result: any, name: string, args: any) => void = () => undefined;
+      async makeRequest(functionName: string, args: unknown): Promise<any>;
+    `;
+
     return `declare namespace sdkgen {\n${source
       .substring(95, source.indexOf("const errClasses"))
       .replace(/ extends SdkgenError/g, " extends Error")
       .replace(/ extends SdkgenHttpClient/g, "")
       .replace(/{ return this.makeRequest\(.*$/gm, "")
-      .replace(/ {\n {8}super\(baseUrl, astJson, errClasses\);\n {4}}/g, "")}\n}\n`;
+      .replace(/ {\n {8}super\(baseUrl, astJson, errClasses\);\n {4}}/g, "")
+      .replace("constructor(", `${additionalMembers}\nconstructor(`)}\n}\n`;
   }
 
   async run() {
