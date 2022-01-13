@@ -377,7 +377,7 @@ export function decode<Table extends DeepReadonly<TypeTable>, Type extends DeepR
       return null as DecodedType<Type, Table>;
     }
 
-    return decode(typeTable, path, type.slice(0, type.length - 1), value) as DecodedType<Type, Table>;
+    return decode(typeTable, path, type.slice(0, type.length - 1), value) as unknown as DecodedType<Type, Table>;
   } else if (typeof type === "string" && type.endsWith("[]")) {
     if (!Array.isArray(value)) {
       throw new ParseError(path, type, value);
@@ -443,7 +443,7 @@ export function decode<Table extends DeepReadonly<TypeTable>, Type extends DeepR
 
     if (resolved) {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-      return decode(typeTable, path, resolved, value) as DecodedType<Type, Table>;
+      return decode(typeTable, path, resolved, value) as unknown as DecodedType<Type, Table>;
     }
 
     throw new Error(`Unknown type '${type}' at '${path}'`);
