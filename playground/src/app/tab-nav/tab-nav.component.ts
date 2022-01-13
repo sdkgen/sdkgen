@@ -21,14 +21,15 @@ export class TabNavComponent implements OnInit {
     fetch("/ast.json")
       .then(result => {
         if (result.ok) {
-          this.url.setValue(`${window.location.protocol}://${window.location.hostname}`);
+          this.url.setValue(`${window.location.protocol}//${window.location.host}`);
+          void this.loadUrl();
         }
       })
       .catch(() => {});
   }
 
-  async loadUrl(event: Event) {
-    event.preventDefault();
+  async loadUrl(event?: Event) {
+    event?.preventDefault();
 
     try {
       this.loading = true;
