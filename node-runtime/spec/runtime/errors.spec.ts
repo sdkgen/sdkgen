@@ -11,6 +11,7 @@ import { unlinkSync, writeFileSync } from "fs";
 import { Parser } from "@sdkgen/parser";
 import { generateNodeClientSource, generateNodeServerSource } from "@sdkgen/typescript-generator";
 
+import type { Context } from "../../src";
 import { SdkgenHttpServer } from "../../src";
 
 const ast = new Parser(`${__dirname}/api.sdkgen`).parse();
@@ -20,7 +21,7 @@ const { api, CustomError } = require(`${__dirname}/errors-api.ts`);
 
 unlinkSync(`${__dirname}/errors-api.ts`);
 
-api.fn.throwCustomError = async (args: { value: number }) => {
+api.fn.throwCustomError = async (_ctx: Context, args: { value: number }) => {
   throw new CustomError("Some message", args);
 };
 
