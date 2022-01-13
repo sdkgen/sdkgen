@@ -1,8 +1,10 @@
 import { OnInit, Component } from "@angular/core";
 import { FormControl } from "@angular/forms";
+import { MatDialog } from "@angular/material/dialog";
 import { jsonToAst } from "@sdkgen/parser";
 import { ToastrService } from "ngx-toastr";
 
+import { DialogAboutComponent } from "../dialog-about/dialog-about.component";
 import { SdkgenService } from "../sdkgen.service";
 
 @Component({
@@ -14,7 +16,7 @@ export class TabNavComponent implements OnInit {
   loading = false;
   url = new FormControl("");
 
-  constructor(private sdkgen: SdkgenService, private toastr: ToastrService) {}
+  constructor(private sdkgen: SdkgenService, private toastr: ToastrService, private dialog: MatDialog) {}
 
   ngOnInit() {
     // TODO: this doesn't support APIs under a path other than /
@@ -79,5 +81,9 @@ export class TabNavComponent implements OnInit {
     } finally {
       this.loading = false;
     }
+  }
+
+  openAbout() {
+    this.dialog.open(DialogAboutComponent);
   }
 }

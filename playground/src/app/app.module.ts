@@ -3,6 +3,7 @@ import { NgModule } from "@angular/core";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatChipsModule } from "@angular/material/chips";
+import { MatRippleModule } from "@angular/material/core";
 import { MatDialogModule } from "@angular/material/dialog";
 import { MatIconModule } from "@angular/material/icon";
 import { MatMenuModule } from "@angular/material/menu";
@@ -18,6 +19,7 @@ import { ToastrModule } from "ngx-toastr";
 
 import { AppComponent } from "./app.component";
 import { ConsoleComponent } from "./console/console.component";
+import { DialogAboutComponent } from "./dialog-about/dialog-about.component";
 import { FilterPipe } from "./filter.pipe";
 import { SimpleCallComponent } from "./simple-call/simple-call.component";
 import { TabEditorComponent } from "./tab-editor/tab-editor.component";
@@ -35,6 +37,7 @@ import { TypeDetailsComponent } from "./type-details/type-details.component";
     FilterPipe,
     ConsoleComponent,
     TypeDetailsComponent,
+    DialogAboutComponent,
   ],
   imports: [
     BrowserModule,
@@ -52,6 +55,7 @@ import { TypeDetailsComponent } from "./type-details/type-details.component";
     MatDialogModule,
     MatIconModule,
     MatMenuModule,
+    MatRippleModule,
     MatTableModule,
     MatTabsModule,
     MatTooltipModule,

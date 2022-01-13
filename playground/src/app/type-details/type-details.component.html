@@ -1,5 +1,5 @@
 <h1>
-  <button *ngIf="data.subdialog" class="back-button" mat-icon-button mat-dialog-close>
+  <button *ngIf="data.subdialog" class="back-button" mat-icon-button mat-dialog-close tabindex="-1">
     <mat-icon>arrow_back</mat-icon>
   </button>
 
@@ -9,7 +9,7 @@
     <mat-chip *ngFor="let label of labels" [disableRipple]="true" color="primary">{{ label }}</mat-chip>
   </mat-chip-list>
 
-  <button *ngIf="!data.subdialog" class="close-button" mat-icon-button mat-dialog-close>
+  <button *ngIf="!data.subdialog" class="close-button" mat-icon-button mat-dialog-close tabindex="-1">
     <mat-icon>close</mat-icon>
   </button>
 </h1>
