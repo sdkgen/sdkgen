@@ -218,7 +218,7 @@ export interface TypeDoc {
 
   structFields?: Array<{
     name: string;
-    type: Type;
+    type: Type | null;
     description?: string;
     secret: boolean;
   }>;
@@ -279,14 +279,33 @@ export function getTypeDoc(type: Type): TypeDoc {
     }
 
     case EnumType:
-      const values = (type as EnumType).values.map(v => v.value);
+      const enu = type as EnumType;
+      const values = enu.values.slice(0, 3);
+      const examples = values.map(v => {
+        if (v.struct) {
+          return `${v.value}: ${JSON.stringify(new SdkgenService().buildJsonObject(v.struct.fields), null, 2)}`;
+        }
+
+        return v.value;
+      });
 
       return {
         longDescription:
           "enum representa um conjunto limitado de possibilidades de valores, similar as enumerações em outras linguagens.",
-        shortDescription: `(enum) ${values.slice(0, 3).join(", ")}${values.length > 3 ? "…" : ""}`,
-        examples: values,
+        shortDescription: `(enum) ${values.map(v => `${v.value}${v.struct ? "(…)" : ""}`).join(", ")}${
+          values.length > 3 ? "…" : ""
+        }`,
+        examples,
         isEnum: true,
+        isStruct: true,
+        structFields: enu.values.map(value => ({
+          name: value.value,
+          type: value.struct,
+          description: (
+            value.annotations.find(ann => ann instanceof DescriptionAnnotation) as DescriptionAnnotation | undefined
+          )?.text,
+          secret: false,
+        })),
       };
 
     case StructType:

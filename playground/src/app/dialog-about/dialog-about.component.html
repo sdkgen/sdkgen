@@ -1,0 +1,31 @@
+<header>
+  <h1 mat-dialog-title>sdkgen Playground</h1>
+  <mat-chip-list [selectable]="false">
+    <mat-chip [disableRipple]="true">{{ version }}</mat-chip>
+  </mat-chip-list>
+
+  <s></s>
+
+  <button mat-icon-button mat-dialog-close tabindex="-1"><mat-icon>close</mat-icon></button>
+</header>
+
+<p>Ferramenta para explorar e invocar APIs feitas com sdkgen.</p>
+
+<section>
+  <h4>Dependências</h4>
+
+  <mat-chip-list [selectable]="false" class="mat-chip-list-stacked">
+    <a
+      *ngFor="let dependency of dependencies"
+      [href]="'https://www.npmjs.com/package/' + dependency[0] + '/v/' + dependency[1]"
+      target="_blank"
+      rel="external noopener noreferrer"
+    >
+      <mat-chip [disableRipple]="true">
+        <span class="dependency-name">{{ dependency[0] }}</span>
+        <s></s>
+        <span class="dependency-version">{{ dependency[1] }}</span>
+      </mat-chip>
+    </a>
+  </mat-chip-list>
+</section>
