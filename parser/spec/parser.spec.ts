@@ -849,9 +849,42 @@ describe(Parser, () => {
       },
     );
 
+    expectParses(
+      `
+        type Item enum {
+          first(a: Item[])
+          second(b: Item)
+        }
+      `,
+      {
+        annotations: {},
+        errors: ["Fatal"],
+        functionTable: {},
+        typeTable: {
+          Item: [
+            ["first", "ItemFirst"],
+            ["second", "ItemSecond"],
+          ],
+          ItemFirst: {
+            a: "Item[]",
+          },
+          ItemSecond: {
+            b: "Item",
+          },
+        },
+      },
+    );
+
     expectDoesntParse(
       `
         type Item Item[]
+      `,
+      "Type 'Item' at -:2:9 is recursive but is not an struct",
+    );
+
+    expectDoesntParse(
+      `
+        type Item Item[][]?
       `,
       "Type 'Item' at -:2:9 is recursive but is not an struct",
     );
@@ -868,6 +901,25 @@ describe(Parser, () => {
         type Item Item
       `,
       "Type 'Item' at -:2:9 is recursive but is not an struct",
+    );
+
+    expectDoesntParse(
+      `
+        type Item {
+          value: Item
+        }
+      `,
+      "Type 'Item' at -:2:9 is infinitely recursive",
+    );
+
+    expectDoesntParse(
+      `
+        type Item enum {
+          first(a: Item)
+          second(b: Item)
+        }
+      `,
+      "Type 'Item' at -:2:9 is infinitely recursive",
     );
   });
 
