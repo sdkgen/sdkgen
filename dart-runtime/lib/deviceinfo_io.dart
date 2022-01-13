@@ -1,7 +1,7 @@
 import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/foundation.dart';
-import 'package:device_info/device_info.dart';
+import 'package:device_info_plus/device_info_plus.dart';
 import 'package:package_info/package_info.dart';
 
 Future<Map<String, Object?>> getDeviceInfo(String deviceId) async {
