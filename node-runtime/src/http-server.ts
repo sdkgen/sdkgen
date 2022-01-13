@@ -351,7 +351,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
                 simpleArgs.set(argName, Array.isArray(argValue) ? argValue.join("") : argValue);
               }
             } else if (!ann.bodyVariable && req.headers["content-type"]?.match(/^multipart\/form-data/iu)) {
-              const busboy = new Busboy({ headers: req.headers });
+              const busboy = Busboy({ headers: req.headers });
               const filePromises: Array<Promise<void>> = [];
 
               busboy.on("field", (field, value) => {
@@ -360,7 +360,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
                 }
               });
 
-              busboy.on("file", (_field, file, name) => {
+              busboy.on("file", (_field, stream, info) => {
                 const tempName = randomBytes(32).toString("hex");
                 const writeStream = createWriteStream(tempName);
 
@@ -371,7 +371,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
                     writeStream.on("close", () => {
                       const contents = createReadStream(tempName);
 
-                      files.push({ contents, name });
+                      files.push({ contents, name: info.filename });
 
                       contents.on("open", () => {
                         unlink(tempName, err => {
@@ -385,7 +385,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
                     });
 
                     writeStream.on("open", () => {
-                      file.pipe(writeStream);
+                      stream.pipe(writeStream);
                     });
                   }),
                 );
