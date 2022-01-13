@@ -54,7 +54,7 @@ import { SdkgenHttpServer } from "@sdkgen/node-runtime";
 import { api } from "./api";
 
 // Every endpoint described must receive some implementation
-api.fn.getPost = async (ctx, {id}) => {
+api.fn.getPost = async ({id}) => {
     return {
         id,
         title: "Getting Started",
