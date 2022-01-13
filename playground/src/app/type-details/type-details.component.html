@@ -26,8 +26,9 @@
 
       <ng-container matColumnDef="type">
         <th mat-header-cell *matHeaderCellDef>Tipo</th>
-        <td class="mono" mat-cell *matCellDef="let arg">
-          <u [matTooltip]="getTooltip(arg.type)" (click)="showDocumentation(arg.type)">{{ arg.type.name }}</u>
+        <td class="mono" mat-cell *matCellDef="let arg" [ngSwitch]="arg.type">
+          <span *ngSwitchCase="null">-</span>
+          <u *ngSwitchDefault [matTooltip]="getTooltip(arg.type)" (click)="showDocumentation(arg.type)">{{ arg.type.name }}</u>
         </td>
       </ng-container>
 
@@ -43,7 +44,7 @@
 </section>
 
 <section *ngIf="typeDoc?.examples?.length">
-  <h3>{{ typeDoc?.isEnum ? "Valores" : "Exemplos" }}</h3>
+  <h3>Exemplos</h3>
 
   <ul>
     <li *ngFor="let example of typeDoc?.examples">
