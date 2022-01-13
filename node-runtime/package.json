@@ -24,7 +24,7 @@
   "homepage": "https://github.com/sdkgen/sdkgen#readme",
   "devDependencies": {
     "@cubos/eslint-config": "^1.0.536820",
-    "@types/busboy": "^0.2.4",
+    "@types/busboy": "^1.0.0",
     "@types/jest": "^27.0.1",
     "@types/node": "^16.7.0",
     "@types/request-ip": "0.0.37",
@@ -65,7 +65,7 @@
     "@sdkgen/playground": "file:../playground",
     "@sdkgen/swift-generator": "file:../swift-generator",
     "@sdkgen/typescript-generator": "file:../typescript-generator",
-    "busboy": "^0.3.1",
+    "busboy": "^1.0.0",
     "file-type": "^16.5.3",
     "request-ip": "^2.1.3",
     "serve-handler": "^6.1.3",
