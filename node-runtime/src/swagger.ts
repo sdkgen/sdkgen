@@ -375,17 +375,26 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
                   content: {
                     "application/json": {
                       schema: {
-                        properties: {
-                          message: {
-                            type: "string",
-                          },
-                          type: {
-                            enum: server.apiConfig.ast.errors,
-                            type: "string",
-                          },
-                        },
-                        required: ["type", "message"],
-                        type: "object",
+                        anyOf: [
+                          server.apiConfig.ast.errors.map(error => ({
+                            properties: {
+                              message: {
+                                type: "string",
+                              },
+                              type: {
+                                enum: [error.name],
+                                type: "string",
+                              },
+                              ...(error.dataType instanceof VoidPrimitiveType
+                                ? {}
+                                : {
+                                    data: typeToSchema(definitions, error.dataType),
+                                  }),
+                            },
+                            required: ["type", "message"],
+                            type: "object",
+                          })),
+                        ],
                       },
                     },
                   },
