@@ -281,6 +281,10 @@ export class SdkgenService {
 
     return new Proxy(clientInstance, {
       get: (target, name) => {
+        if (["baseUrl", "extra", "successHook", "errorHook", "makeRequest"].includes(name.toString())) {
+          return clientInstance[name.toString() as keyof SdkgenHttpClient];
+        }
+
         return async (args: any) => clientInstance.makeRequest(name.toString(), args);
       },
     });

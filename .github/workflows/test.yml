@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12.x, 14.x, 16.x]
+        node-version: [12.x, 14.x, 16.x, 17.x]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12.x, 14.x, 16.x]
+        node-version: [12.x, 14.x, 16.x, 17.x]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
@@ -43,7 +43,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12.x, 14.x, 16.x]
+        node-version: [12.x, 14.x, 16.x, 17.x]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
@@ -70,7 +70,7 @@ jobs:
         with:
           java-version: 12.x
           distribution: zulu
-      - uses: subosito/flutter-action@v1
+      - uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ matrix.flutter-version }}
           channel: ${{ matrix.flutter-channel }}
@@ -89,7 +89,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12.x, 14.x, 16.x]
+        node-version: [12.x, 14.x, 16.x, 17.x]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
@@ -118,7 +118,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12.x, 14.x, 16.x]
+        node-version: [12.x, 14.x, 16.x, 17.x]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
@@ -137,7 +137,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12.x, 14.x, 16.x]
+        node-version: [12.x, 14.x, 16.x, 17.x]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
@@ -154,7 +154,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12.x, 14.x, 16.x]
+        node-version: [12.x, 14.x, 16.x, 17.x]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
@@ -173,7 +173,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12.x, 14.x, 16.x]
+        node-version: [12.x, 14.x, 16.x, 17.x]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
@@ -206,7 +206,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12.x, 14.x, 16.x]
+        node-version: [12.x, 14.x, 16.x, 17.x]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
@@ -225,7 +225,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [12.x, 14.x, 16.x]
+        node-version: [12.x, 14.x, 16.x, 17.x]
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
@@ -257,6 +257,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
       - run: npm install -g vsce
       - run: vsce package
         working-directory: ./vscode-ext

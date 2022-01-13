@@ -870,4 +870,31 @@ describe(Parser, () => {
       "Type 'Item' at -:2:9 is recursive but is not an struct",
     );
   });
+
+  test("handles enum with fields", () => {
+    expectParses(
+      `
+        type Shape enum {
+          point
+          circle(radius: float)
+          box(width: float, height: float)
+        }
+      `,
+      {
+        annotations: {},
+        errors: ["Fatal"],
+        functionTable: {},
+        typeTable: {
+          Shape: ["point", ["circle", "ShapeCircle"], ["box", "ShapeBox"]],
+          ShapeBox: {
+            height: "float",
+            width: "float",
+          },
+          ShapeCircle: {
+            radius: "float",
+          },
+        },
+      },
+    );
+  });
 });

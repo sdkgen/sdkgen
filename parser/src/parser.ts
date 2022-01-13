@@ -24,16 +24,7 @@ import {
 import { Lexer } from "./lexer";
 import { parseRestAnnotation } from "./restparser";
 import { analyse } from "./semantic/analyser";
-import type {
-  CommaSymbolToken,
-  CurlyCloseSymbolToken,
-  FalseKeywordToken,
-  ImportKeywordToken,
-  ParensCloseSymbolToken,
-  SpreadSymbolToken,
-  Token,
-  TrueKeywordToken,
-} from "./token";
+import type { CurlyCloseSymbolToken, FalseKeywordToken, ImportKeywordToken, SpreadSymbolToken, Token, TrueKeywordToken } from "./token";
 import {
   AnnotationToken,
   ArraySymbolToken,
@@ -49,6 +40,8 @@ import {
   PrimitiveTypeToken,
   StringLiteralToken,
   TypeKeywordToken,
+  CommaSymbolToken,
+  ParensCloseSymbolToken,
 } from "./token";
 import { primitiveToAstClass } from "./utils";
 
@@ -436,6 +429,42 @@ export class Parser {
           enumValue.annotations = this.annotations;
           this.annotations = [];
           enumType.values.push(enumValue);
+          this.nextToken();
+
+          if (!(this.token instanceof ParensOpenSymbolToken)) {
+            return;
+          }
+
+          this.nextToken();
+          const fieldNames = new Set<string>();
+          const fields = [];
+
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          while (this.token && this.token.maybeAsIdentifier() instanceof IdentifierToken) {
+            const field = this.parseField();
+
+            // "tag" is a reserved name on tagged enum fields and can't be used.
+            if (field.name === "tag") {
+              field.name = "_tag";
+            }
+
+            if (fieldNames.has(field.name)) {
+              throw new ParserError(`Cannot redeclare argument '${field.name}'`);
+            }
+
+            fieldNames.add(field.name);
+            fields.push(field);
+
+            if (this.token instanceof CommaSymbolToken) {
+              this.nextToken();
+            } else {
+              break;
+            }
+          }
+
+          enumValue.struct = new StructType(fields).atLocation(enumValue.location);
+
+          this.expect(ParensCloseSymbolToken);
           this.nextToken();
         },
       });

@@ -7,7 +7,7 @@
 
 ## Installing sdkgen
 
-First of all you need Node.js 12.17 or newer on your machine. We recommend using the latest LTS version, check for it here: https://nodejs.org/en/download/.
+First of all you need Node.js 12 or newer on your machine. We recommend using the latest LTS version, check for it here: https://nodejs.org/en/download/.
 
 Install the global CLI:
 

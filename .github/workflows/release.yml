@@ -67,7 +67,7 @@ jobs:
         with:
           java-version: 12.x
           distribution: zulu
-      - uses: subosito/flutter-action@v1
+      - uses: subosito/flutter-action@v2
         with:
           flutter-version: 2.5.x
           channel: stable
@@ -338,6 +338,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
       - run: |
           npm install -g json && json -I -f package.json -e '
             this.version = "${{ github.ref }}".replace("refs/tags/", "");

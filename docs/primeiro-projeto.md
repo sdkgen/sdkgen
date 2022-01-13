@@ -41,7 +41,7 @@ O arquivo gerado é legível, mas não deve ser alterado por você, visto que as
 import { SdkgenHttpServer } from "@sdkgen/node-runtime";
 import { api } from "./api";
 
-api.fn.getPost = async ({ id }) => {
+api.fn.getPost = async (ctx, { id }) => {
   return {
     id,
     title: "Primeira postagem",
