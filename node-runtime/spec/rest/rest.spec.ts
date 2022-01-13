@@ -114,9 +114,9 @@ describe("Rest API", () => {
     path: string;
     result: string;
     data?: string | Buffer;
-    headers?: Record<string, string | string[]>;
+    headers?: Record<string, string>;
     statusCode?: number;
-    resultHeaders?: Record<string, string | string[]>;
+    resultHeaders?: Record<string, string>;
   }> = [
     { method: "GET", path: "/add1/1/aa", result: "1aa" },
     { method: "GET", path: "/add1/1/aa/", result: "1aa" },
