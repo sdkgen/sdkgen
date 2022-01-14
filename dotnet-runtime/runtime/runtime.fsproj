@@ -1,24 +1,21 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net5.0</TargetFramework>
+    <TargetFramework>net6.0</TargetFramework>
     <WarnOn>3390;$(WarnOn)</WarnOn>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Context.fs" />
     <Compile Include="Runtime.fs" />
+    <Content Include="..\..\playground\dist\**\*">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <LinkBase>/playground</LinkBase>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\helpers\helpers.fsproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Giraffe" Version="5.0.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="../../playground/dist/**/*">
-      <PackagePath>contentFiles/any/any/sdkgen.runtime.static/playground/</PackagePath>
-      <Pack>true</Pack>
-      <PackageCopyToOutput>true</PackageCopyToOutput>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <PackageReference Include="Giraffe" Version="6.0.0-alpha-2" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
   </ItemGroup>
 </Project>
