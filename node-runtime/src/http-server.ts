@@ -8,8 +8,8 @@ import { parse as parseUrl } from "url";
 import { promisify } from "util";
 
 import { generateCSharpServerSource } from "@sdkgen/csharp-generator";
-import { generateFSharpServerSource } from "@sdkgen/fsharp-generator";
 import { generateDartClientSource } from "@sdkgen/dart-generator";
+import { generateFSharpServerSource } from "@sdkgen/fsharp-generator";
 import { generateAndroidClientSource } from "@sdkgen/kotlin-generator";
 import type { AstRoot } from "@sdkgen/parser";
 import {

@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <LangVersion>preview</LangVersion>
     <WarnOn>3390;$(WarnOn)</WarnOn>
     <RootNamespace>Sdkgen.Runtime</RootNamespace>
     <AssemblyName>Sdkgen.Runtime</AssemblyName>
