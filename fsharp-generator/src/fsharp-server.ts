@@ -1,5 +1,5 @@
-import { AstRoot, astToJson } from "@sdkgen/parser";
-import { VoidPrimitiveType } from "@sdkgen/parser";
+import type { AstRoot } from "@sdkgen/parser";
+import { astToJson, VoidPrimitiveType } from "@sdkgen/parser";
 
 import { capitalize, decodeType, encodeType, generateEnum, generateStruct, generateTypeName, ident } from "./helpers";
 

@@ -353,7 +353,10 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
         return `match ${jsonElementVar}.ValueKind with
                   | JsonValueKind.Null | JsonValueKind.Undefined -> None
                   | _ ->
-                    (${decodeType((type as OptionalType).base, jsonElementVar, path, targetVar, suffix, false).replace(/\n/gu, "\n                    ")}) |> Some
+                    (${decodeType((type as OptionalType).base, jsonElementVar, path, targetVar, suffix, false).replace(
+                      /\n/gu,
+                      "\n                    ",
+                    )}) |> Some
                 `
           .replace(/\n {16}/gu, "\n")
           .trim();
@@ -411,13 +414,13 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
                       let item = ${jsonElementVar}.[i1]
                       let partialResult =
                         ${decodeType(
-                        (type as ArrayType).base,
-                        `${jsonElementVar}.[i1]`,
-                        `${path.slice(0, -1)}.{i1}"`,
-                        targetVar,
-                        suffix,
-                        false,
-                      ).replace(/\n/gu, "\n                      ")}
+                          (type as ArrayType).base,
+                          `${jsonElementVar}.[i1]`,
+                          `${path.slice(0, -1)}.{i1}"`,
+                          targetVar,
+                          suffix,
+                          false,
+                        ).replace(/\n/gu, "\n                      ")}
                       list_ <- list_ |> List.append [ partialResult ]
                     list_
                   | _ -> raise (FatalException(${path.slice(0, -1)} must be an array."))
