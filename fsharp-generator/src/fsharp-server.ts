@@ -11,7 +11,6 @@ open Sdkgen.Context
 open System.Threading.Tasks
 open System.Text.Json
 open System
-open FSharp.Control.Tasks.NonAffine
 open System.Globalization
 `;
 
@@ -95,7 +94,7 @@ type Api() =`;
         } :> Task`;
 
   code += `
-    member __.GetAstJson() = """${JSON.stringify(astToJson(ast), null, 4).replace(/"/gu, '""').replace(/\n/gu, "\n        ")}""";`;
+    member __.GetAstJson() = """${JSON.stringify(astToJson(ast), null, 4).replace(/\n/gu, "\n        ")}""";`;
 
   return code;
 }
