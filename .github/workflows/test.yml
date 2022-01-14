@@ -181,6 +181,25 @@ jobs:
       - run: npm test
         working-directory: ./csharp-generator
 
+  fsharp-generator:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x, 14.x, 16.x]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: npm install
+        working-directory: ./fsharp-generator
+      - run: npm run eslint:check
+        working-directory: ./fsharp-generator
+      - run: npm run build
+        working-directory: ./fsharp-generator
+      - run: npm test
+        working-directory: ./fsharp-generator
+
   dotnet-runtime:
     runs-on: ubuntu-latest
     strategy:
@@ -194,6 +213,20 @@ jobs:
           include-prerelease: true
       - run: dotnet pack
         working-directory: ./dotnet-runtime
+
+  dotnet-fsharp-runtime:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dotnet-version: ["3.1.x", "5.0.x", "6.0.x"]
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+          include-prerelease: true
+      - run: dotnet pack
+        working-directory: ./dotnet-runtime/runtime
 
   kotlin-generator:
     runs-on: ubuntu-latest

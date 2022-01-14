@@ -189,6 +189,38 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
+  fsharp-generator:
+    needs: [_version]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/download-artifact@v1
+        with:
+          name: version
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 16.x
+          registry-url: https://registry.npmjs.org
+      - run: cp LICENSE fsharp-generator/
+      - run: npm install
+        working-directory: ./fsharp-generator
+      - run: |
+          npm install -g json && json -I -f package.json -e '
+            this.version = "'$(cat ../version/version.txt)'";
+            this.main = "dist/src/index.js";
+            this.types = "dist/src/index.d.ts";
+            for (const pkg in this.dependencies)
+              if (this.dependencies[pkg].startsWith("file:../"))
+                this.dependencies[pkg] = this.version;
+          '
+        working-directory: ./fsharp-generator
+      - run: npm run build
+        working-directory: ./fsharp-generator
+      - run: npm publish --tag dev
+        working-directory: ./fsharp-generator
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+
   kotlin-generator:
     needs: [_version]
     runs-on: ubuntu-latest
@@ -392,11 +424,11 @@ jobs:
           name: version
       - uses: actions/setup-dotnet@v1
         with:
-          dotnet-version: 5.0.x
+          dotnet-version: [3.1.x, 5.0.x, 6.0.x]
       - uses: actions/setup-node@v1
         with:
           node-version: 16.x
-      - run: cp LICENSE dotnet-runtime/
+      - run: cp LICENSE dotnet-runtime/runtime
       - run: npm install
         working-directory: ./playground
       - run: npm run build
@@ -404,8 +436,8 @@ jobs:
         env:
           NODE_ENV: production
       - run: dotnet pack -c:Release -p:PackageVersion=$(cat ../version/version.txt)
-        working-directory: ./dotnet-runtime
+        working-directory: ./dotnet-runtime/runtime
       - run: dotnet nuget push bin/**/*.nupkg -k $NUGET_TOKEN -s https://api.nuget.org/v3/index.json
-        working-directory: ./dotnet-runtime
+        working-directory: ./dotnet-runtime/runtime
         env:
           NUGET_TOKEN: ${{ secrets.NUGET_TOKEN }}

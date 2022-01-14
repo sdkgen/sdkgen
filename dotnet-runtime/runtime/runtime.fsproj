@@ -1,7 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <WarnOn>3390;$(WarnOn)</WarnOn>
+    <RootNamespace>Sdkgen.Runtime</RootNamespace>
+    <AssemblyName>Sdkgen.Runtime</AssemblyName>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <PackageId>Sdkgen.Runtime</PackageId>
+    <Version>0.0.0</Version>
+    <Authors>sdkgen</Authors>
+    <Company>sdkgen</Company>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Context.fs" />
@@ -15,7 +22,7 @@
     <ProjectReference Include="..\helpers\helpers.fsproj" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Giraffe" Version="6.0.0-alpha-2" />
+    <PackageReference Include="Giraffe" Version="4.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
   </ItemGroup>
 </Project>
