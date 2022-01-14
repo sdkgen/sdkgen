@@ -1,12 +1,10 @@
 module Sdkgen.Runtime
 
 open System
-open Microsoft.AspNetCore
 open Microsoft.AspNetCore.Builder
 open Microsoft.AspNetCore.Hosting
 open Microsoft.AspNetCore.Http
 open Giraffe
-open FSharp.Control.Tasks
 open System.Text.Json
 open System.Threading.Tasks
 open Sdkgen.Helpers
@@ -213,15 +211,13 @@ type SdkgenHttpServer(api: BaseApi) =
       }
 
   member this.Listen port =
-    WebHost
-      .CreateDefaultBuilder()
+    WebHostBuilder()
       .UseKestrel()
-      .UseContentRoot("sdkgen.runtime.static")
+      .UseWebRoot("")
       .Configure(fun (appBuilder: IApplicationBuilder) ->
         appBuilder
           .UseDefaultFiles()
           .UseStaticFiles()
-          .UseRouting()
           .UseGiraffe(handleRequest))
       .ConfigureLogging(fun (builder: ILoggingBuilder) ->
         let filter (l: LogLevel) = l.Equals LogLevel.Warning
