@@ -16,6 +16,7 @@ open System.Text
 open Sdkgen.Context
 open Microsoft.Extensions.Logging
 open System.Text.RegularExpressions
+open FSharp.Control.Tasks.V2.ContextInsensitive
 
 type BaseApi =
   abstract member ExecuteFunction : Context * Utf8JsonWriter -> Task

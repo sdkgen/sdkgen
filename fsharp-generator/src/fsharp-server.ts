@@ -12,6 +12,7 @@ open System.Threading.Tasks
 open System.Text.Json
 open System
 open System.Globalization
+open FSharp.Control.Tasks.V2.ContextInsensitive
 `;
 
   for (const error of ast.errors) {
