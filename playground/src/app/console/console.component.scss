@@ -1,0 +1,94 @@
+@import "variables.scss";
+
+:host {
+  display: block;
+  height: 100%;
+  text-align: left;
+  overflow-y: scroll;
+  box-sizing: border-box;
+}
+
+header {
+  display: flex;
+  flex-direction: row;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  background: $color-primary;
+  border-bottom: 1px solid lighten($color-primary, 15%);
+  padding: 5px 0;
+  z-index: 2;
+
+  strong {
+    margin: 0 10px;
+    text-transform: uppercase;
+    font-weight: 200;
+    color: rgb(231, 231, 231);
+    border-bottom: 1px solid rgb(231, 231, 231);
+    line-height: 27px;
+    font-size: 11pt;
+    align-self: center;
+  }
+
+  button {
+    margin: 0 10px;
+  }
+}
+
+ul {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+ul > li {
+  list-style: none;
+  display: block;
+  width: 100%;
+  height: auto;
+  padding: 5px 10px;
+  font-size: 1rem;
+  border-bottom: 1px solid lighten($color-primary, 15%);
+  background-color: darken($color-primary, 5%);
+  word-break: break-all;
+  box-sizing: border-box;
+  word-wrap: break-word;
+  font-family: monospace;
+
+  span {
+    display: inline;
+    vertical-align: text-bottom;
+  }
+
+  mat-icon {
+    $size: 1rem;
+    height: $size;
+    width: $size;
+    font-size: $size;
+    vertical-align: sub;
+    margin-right: 7.5px;
+    user-select: none;
+
+    &.info {
+      color: #b9b9bb;
+    }
+
+    &.error {
+      color: #ff3b6b;
+    }
+
+    &.network_recv,
+    &.network_send {
+      color: #939395;
+    }
+  }
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+
+  &.error {
+    color: #e69fa3;
+    background-color: #4b2f36;
+  }
+}

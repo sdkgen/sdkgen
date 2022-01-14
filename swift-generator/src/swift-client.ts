@@ -18,7 +18,7 @@ export function generateSwiftClientSource(ast: AstRoot, withRxExtension: boolean
 
   code += withRxExtension ? `import RxSwift\nimport RxCocoa\n\n` : `\n`;
 
-  code += `protocol APICallsProtocol: class {\n`;
+  code += `protocol APICallsProtocol {\n`;
   code += ast.operations
     .filter(op => op.annotations.every(ann => !(ann instanceof HiddenAnnotation)))
     .map(op => {

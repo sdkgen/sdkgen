@@ -1,0 +1,48 @@
+header {
+  display: flex;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 5px;
+
+  h1,
+  button,
+  mat-chip-list {
+    display: inline;
+    align-self: center;
+  }
+
+  h1 {
+    display: flex;
+    margin: 0 10px 0 0;
+  }
+
+  button {
+    margin-left: 20px;
+  }
+}
+
+section {
+  h4 {
+    font-weight: 500;
+  }
+
+  a {
+    width: 100%;
+  }
+
+  .mat-chip {
+    padding: 0;
+    overflow: hidden;
+    cursor: pointer;
+  }
+
+  .dependency-name {
+    padding: 7px 12px;
+  }
+
+  .dependency-version {
+    float: right;
+    background: rgba(0, 0, 0, 0.15);
+    padding: 7px 12px;
+    height: 100%;
+  }
+}

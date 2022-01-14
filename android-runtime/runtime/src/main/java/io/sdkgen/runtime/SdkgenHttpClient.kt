@@ -120,7 +120,7 @@ open class SdkgenHttpClient(
     private val random = Random()
     private val hexArray = "0123456789abcdef".toCharArray()
     private val gson = Gson()
-    private val httpClient = OkHttpClient.Builder()
+    private var httpClient = OkHttpClient.Builder()
         .connectTimeout(5, TimeUnit.MINUTES)
         .readTimeout(5, TimeUnit.MINUTES)
         .callTimeout(5, TimeUnit.MINUTES)
@@ -345,5 +345,9 @@ open class SdkgenHttpClient(
                 )
             )
         }
+    }
+
+    fun setHttpClient(client: OkHttpClient) {
+        httpClient = client
     }
 }

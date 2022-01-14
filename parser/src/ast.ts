@@ -157,6 +157,8 @@ export class ArrayType extends Type {
 export class EnumValue extends AstNode {
   annotations: Annotation[] = [];
 
+  struct: StructType | null = null;
+
   constructor(public value: string) {
     super();
   }
@@ -168,12 +170,22 @@ export class EnumType extends Type {
   constructor(public values: EnumValue[]) {
     super();
   }
+
+  get hasStructValues() {
+    return this.values.some(v => v.struct !== null);
+  }
 }
 
 export class Field extends AstNode {
   annotations: Annotation[] = [];
 
   constructor(public name: string, public type: Type, public secret = false) {
+    super();
+  }
+}
+
+export class Spread extends AstNode {
+  constructor(public typeReference: TypeReference) {
     super();
   }
 }
@@ -189,7 +201,9 @@ export class TypeReference extends Type {
 export class StructType extends Type {
   name!: string;
 
-  constructor(public fields: Field[], public spreads: TypeReference[]) {
+  fields: Field[] = [];
+
+  constructor(public fieldsAndSpreads: Array<Field | Spread>) {
     super();
   }
 }
@@ -205,7 +219,9 @@ export class TypeDefinition extends AstNode {
 export class FunctionOperation extends AstNode {
   annotations: Annotation[] = [];
 
-  constructor(public name: string, public args: Field[], public returnType: Type) {
+  args: Field[] = [];
+
+  constructor(public name: string, public fieldsAndSpreads: Array<Field | Spread>, public returnType: Type) {
     super();
   }
 }

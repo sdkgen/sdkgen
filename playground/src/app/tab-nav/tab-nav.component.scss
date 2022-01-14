@@ -1,0 +1,64 @@
+@import "variables.scss";
+
+:host {
+  display: flex;
+  height: $navbar-height;
+
+  background-color: lighten($color-primary, 5%);
+  box-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+}
+
+img {
+  padding: 5px;
+}
+
+form {
+  display: flex;
+  flex-direction: row;
+  flex-grow: 1;
+
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.5);
+  background: lighten($color-primary, 10%);
+
+  border: 0 none;
+  border-radius: 5px;
+
+  margin: 5px 10vw 5px calc(10vw - 42px);
+  overflow: hidden; // due to button border radius
+
+  input {
+    flex-grow: 1;
+    padding: 10px 5px;
+
+    background: transparent;
+    border: 0 none;
+
+    text-align: center;
+    color: #CCC;
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  button {
+    background: transparent;
+    color: #BFBFBF;
+    border: 0 none;
+    cursor: pointer;
+
+    .loader {
+      animation: spin 2s linear infinite;
+    }
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}

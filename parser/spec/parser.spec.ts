@@ -247,6 +247,59 @@ describe(Parser, () => {
         },
       },
     );
+
+    expectParses(
+      `
+        type Bar {
+          aa: string
+        }
+
+        type Foo {
+          ...Bar
+          aa: int
+        }
+      `,
+      {
+        annotations: {},
+        errors: ["Fatal"],
+        functionTable: {},
+        typeTable: {
+          Bar: {
+            aa: "string",
+          },
+          Foo: {
+            aa: "int",
+          },
+        },
+      },
+    );
+
+    expectParses(
+      `
+        type Bar {
+          aa: string
+        }
+
+        type Foo {
+          ...Bar
+          aa: int
+          ...Bar
+        }
+      `,
+      {
+        annotations: {},
+        errors: ["Fatal"],
+        functionTable: {},
+        typeTable: {
+          Bar: {
+            aa: "string",
+          },
+          Foo: {
+            aa: "string",
+          },
+        },
+      },
+    );
   });
 
   test("handles functions with arguments", () => {
@@ -265,6 +318,36 @@ describe(Parser, () => {
           doIt: {
             args: {
               bar: "Bar",
+              foo: "int",
+            },
+            ret: "string",
+          },
+        },
+        typeTable: {
+          Bar: {
+            aa: "string",
+          },
+        },
+      },
+    );
+  });
+
+  test("handles spreads in function arguments", () => {
+    expectParses(
+      `
+        type Bar {
+          aa: string
+        }
+
+        fn doIt(foo: int, ...Bar): string
+      `,
+      {
+        annotations: {},
+        errors: ["Fatal"],
+        functionTable: {
+          doIt: {
+            args: {
+              aa: "string",
               foo: "int",
             },
             ret: "string",
@@ -766,9 +849,42 @@ describe(Parser, () => {
       },
     );
 
+    expectParses(
+      `
+        type Item enum {
+          first(a: Item[])
+          second(b: Item)
+        }
+      `,
+      {
+        annotations: {},
+        errors: ["Fatal"],
+        functionTable: {},
+        typeTable: {
+          Item: [
+            ["first", "ItemFirst"],
+            ["second", "ItemSecond"],
+          ],
+          ItemFirst: {
+            a: "Item[]",
+          },
+          ItemSecond: {
+            b: "Item",
+          },
+        },
+      },
+    );
+
     expectDoesntParse(
       `
         type Item Item[]
+      `,
+      "Type 'Item' at -:2:9 is recursive but is not an struct",
+    );
+
+    expectDoesntParse(
+      `
+        type Item Item[][]?
       `,
       "Type 'Item' at -:2:9 is recursive but is not an struct",
     );
@@ -785,6 +901,52 @@ describe(Parser, () => {
         type Item Item
       `,
       "Type 'Item' at -:2:9 is recursive but is not an struct",
+    );
+
+    expectDoesntParse(
+      `
+        type Item {
+          value: Item
+        }
+      `,
+      "Type 'Item' at -:2:9 is infinitely recursive",
+    );
+
+    expectDoesntParse(
+      `
+        type Item enum {
+          first(a: Item)
+          second(b: Item)
+        }
+      `,
+      "Type 'Item' at -:2:9 is infinitely recursive",
+    );
+  });
+
+  test("handles enum with fields", () => {
+    expectParses(
+      `
+        type Shape enum {
+          point
+          circle(radius: float)
+          box(width: float, height: float)
+        }
+      `,
+      {
+        annotations: {},
+        errors: ["Fatal"],
+        functionTable: {},
+        typeTable: {
+          Shape: ["point", ["circle", "ShapeCircle"], ["box", "ShapeBox"]],
+          ShapeBox: {
+            height: "float",
+            width: "float",
+          },
+          ShapeCircle: {
+            radius: "float",
+          },
+        },
+      },
     );
   });
 });

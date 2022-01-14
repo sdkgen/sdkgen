@@ -7,7 +7,10 @@ import { parse as parseQuerystring } from "querystring";
 import { parse as parseUrl } from "url";
 import { promisify } from "util";
 
+import { generateCSharpServerSource } from "@sdkgen/csharp-generator";
 import { generateDartClientSource } from "@sdkgen/dart-generator";
+import { generateAndroidClientSource } from "@sdkgen/kotlin-generator";
+import type { AstRoot } from "@sdkgen/parser";
 import {
   Base64PrimitiveType,
   BigIntPrimitiveType,
@@ -31,6 +34,7 @@ import {
   XmlPrimitiveType,
 } from "@sdkgen/parser";
 import { PLAYGROUND_PUBLIC_PATH } from "@sdkgen/playground";
+import { generateSwiftClientSource } from "@sdkgen/swift-generator";
 import { generateBrowserClientSource, generateNodeClientSource, generateNodeServerSource } from "@sdkgen/typescript-generator";
 import Busboy from "busboy";
 import FileType from "file-type";
@@ -72,10 +76,15 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
     this.attachRestHandlers();
 
     const targetTable = [
+      ["/targets/android/client.kt", (ast: AstRoot) => generateAndroidClientSource(ast, true)],
+      ["/targets/android/client_without_callbacks.kt", (ast: AstRoot) => generateAndroidClientSource(ast, false)],
+      ["/targets/dotnet/api.cs", generateCSharpServerSource],
+      ["/targets/flutter/client.dart", generateDartClientSource],
+      ["/targets/ios/client.swift", (ast: AstRoot) => generateSwiftClientSource(ast, false)],
+      ["/targets/ios/client-rx.swift", (ast: AstRoot) => generateSwiftClientSource(ast, true)],
       ["/targets/node/api.ts", generateNodeServerSource],
       ["/targets/node/client.ts", generateNodeClientSource],
       ["/targets/web/client.ts", generateBrowserClientSource],
-      ["/targets/flutter/client.dart", generateDartClientSource],
     ] as const;
 
     for (const [path, generateFn] of targetTable) {
@@ -342,7 +351,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
                 simpleArgs.set(argName, Array.isArray(argValue) ? argValue.join("") : argValue);
               }
             } else if (!ann.bodyVariable && req.headers["content-type"]?.match(/^multipart\/form-data/iu)) {
-              const busboy = new Busboy({ headers: req.headers });
+              const busboy = Busboy({ headers: req.headers });
               const filePromises: Array<Promise<void>> = [];
 
               busboy.on("field", (field, value) => {
@@ -351,7 +360,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
                 }
               });
 
-              busboy.on("file", (_field, file, name) => {
+              busboy.on("file", (_field, stream, info) => {
                 const tempName = randomBytes(32).toString("hex");
                 const writeStream = createWriteStream(tempName);
 
@@ -362,7 +371,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
                     writeStream.on("close", () => {
                       const contents = createReadStream(tempName);
 
-                      files.push({ contents, name });
+                      files.push({ contents, name: info.filename });
 
                       contents.on("open", () => {
                         unlink(tempName, err => {
@@ -376,7 +385,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
                     });
 
                     writeStream.on("open", () => {
-                      file.pipe(writeStream);
+                      stream.pipe(writeStream);
                     });
                   }),
                 );

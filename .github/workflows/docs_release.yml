@@ -10,12 +10,31 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: "3.x"
+      - uses: actions/setup-node@v2
+        with:
+          node-version: 16.x
+          registry-url: https://registry.npmjs.org
       - run: pip install mkdocs-material
       - run: mkdocs build
       - run: git clone --depth 1 -b master https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/sdkgen/sdkgen.github.io.git
       - run: mkdir -p sdkgen.github.io/pr
       - run: cd sdkgen.github.io && rm -rf $(ls | grep -vE "^(pr|dev)$")
       - run: mv site/* sdkgen.github.io/
+      - run: |
+          cd playground
+          npm install
+          npm install -g json
+          bash .ci.sh
+          json -I -f package.json -e '
+            this.version = "${{ github.ref }}".replace("refs/tags/", "");
+            delete this.dependencies.tslib;
+            for (const pkg in this.dependencies)
+              if (this.dependencies[pkg].startsWith("file:../"))
+                this.dependencies[pkg] = this.version;
+          '
+          npm run build
+          sed -i -E 's_(<base href=")/(">)_\1/playground/\2_' dist/index.html
+          mv dist/ ../sdkgen.github.io/playground/
       - run: |
           cd sdkgen.github.io
           git config --global user.name "$GITHUB_ACTOR"
