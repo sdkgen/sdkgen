@@ -3,6 +3,7 @@ import { FormControl } from "@angular/forms";
 import { MatIconRegistry } from "@angular/material/icon";
 import { DomSanitizer } from "@angular/platform-browser";
 import { generateCSharpServerSource } from "@sdkgen/csharp-generator";
+import { generateFSharpServerSource } from "@sdkgen/fsharp-generator";
 import { generateDartClientSource } from "@sdkgen/dart-generator";
 import { generateAndroidClientSource } from "@sdkgen/kotlin-generator";
 import { generateSwiftClientSource } from "@sdkgen/swift-generator";
@@ -30,6 +31,7 @@ type SdkgenTarget =
   | "typescript_interfaces"
   | "flutter"
   | "csharp_server"
+  | "fsharp_server"
   | "kotlin_android"
   | "kotlin_android_without_callbacks"
   | "swift_ios"
@@ -125,6 +127,12 @@ export class AppComponent implements OnInit, OnDestroy {
       case "csharp_server": {
         source = generateCSharpServerSource(this.state.astRoot);
         fileName = "csharp-server.cs";
+        break;
+      }
+
+      case "fsharp_server": {
+        source = generateFSharpServerSource(this.state.astRoot);
+        fileName = "fsharp-server.fs";
         break;
       }
 

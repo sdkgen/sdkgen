@@ -34,8 +34,8 @@ Estes são os target possíveis:
 
 | Slug                  | Descrição                              |
 | --------------------- | -------------------------------------- |
-| csharp_server         | Servidor .NET Core, em C#              |
-| fsharp_server         | Servidor .NET Core, em F#              |
+| csharp_server         | Servidor .NET, em C#              |
+| fsharp_server         | Servidor .NET, em F#              |
 | flutter               | Cliente para Flutter, em Dart          |
 | kotlin_android        | Cliente para Android nativo, em Kotlin |
 | typescript_interfaces | Apenas tipos da API, em TypeScript     |
