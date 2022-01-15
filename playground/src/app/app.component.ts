@@ -3,8 +3,8 @@ import { FormControl } from "@angular/forms";
 import { MatIconRegistry } from "@angular/material/icon";
 import { DomSanitizer } from "@angular/platform-browser";
 import { generateCSharpServerSource } from "@sdkgen/csharp-generator";
-import { generateFSharpServerSource } from "@sdkgen/fsharp-generator";
 import { generateDartClientSource } from "@sdkgen/dart-generator";
+import { generateFSharpServerSource } from "@sdkgen/fsharp-generator";
 import { generateAndroidClientSource } from "@sdkgen/kotlin-generator";
 import { generateSwiftClientSource } from "@sdkgen/swift-generator";
 import {

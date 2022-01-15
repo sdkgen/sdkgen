@@ -25,6 +25,7 @@
     "@sdkgen/browser-runtime": "file:../browser-runtime",
     "@sdkgen/csharp-generator": "file:../csharp-generator",
     "@sdkgen/dart-generator": "file:../dart-generator",
+    "@sdkgen/fsharp-generator": "file:../fsharp-generator",
     "@sdkgen/kotlin-generator": "file:../kotlin-generator",
     "@sdkgen/parser": "file:../parser",
     "@sdkgen/swift-generator": "file:../swift-generator",
