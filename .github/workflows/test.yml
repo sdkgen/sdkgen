@@ -100,6 +100,8 @@ jobs:
       - run: npm install
         working-directory: ./csharp-generator
       - run: npm install
+        working-directory: ./fsharp-generator
+      - run: npm install
         working-directory: ./dart-generator
       - run: npm install
         working-directory: ./kotlin-generator
