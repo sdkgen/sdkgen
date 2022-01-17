@@ -9,6 +9,7 @@ import { promisify } from "util";
 
 import { generateCSharpServerSource } from "@sdkgen/csharp-generator";
 import { generateDartClientSource } from "@sdkgen/dart-generator";
+import { generateFSharpServerSource } from "@sdkgen/fsharp-generator";
 import { generateAndroidClientSource } from "@sdkgen/kotlin-generator";
 import type { AstRoot } from "@sdkgen/parser";
 import {
@@ -79,6 +80,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
       ["/targets/android/client.kt", (ast: AstRoot) => generateAndroidClientSource(ast, true)],
       ["/targets/android/client_without_callbacks.kt", (ast: AstRoot) => generateAndroidClientSource(ast, false)],
       ["/targets/dotnet/api.cs", generateCSharpServerSource],
+      ["/targets/dotnet/api.fs", generateFSharpServerSource],
       ["/targets/flutter/client.dart", generateDartClientSource],
       ["/targets/ios/client.swift", (ast: AstRoot) => generateSwiftClientSource(ast, false)],
       ["/targets/ios/client-rx.swift", (ast: AstRoot) => generateSwiftClientSource(ast, true)],

@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <LangVersion>preview</LangVersion>
+    <WarnOn>3390;$(WarnOn)</WarnOn>
+    <RootNamespace>Sdkgen.Runtime</RootNamespace>
+    <AssemblyName>Sdkgen.Runtime</AssemblyName>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <PackageId>Sdkgen.Runtime</PackageId>
+    <Version>0.0.0</Version>
+    <Authors>sdkgen</Authors>
+    <Company>sdkgen</Company>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Helpers.fs" />
+    <Compile Include="Context.fs" />
+    <Compile Include="Runtime.fs" />
+    <Content Include="..\..\playground\dist\**\*">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <LinkBase>/playground</LinkBase>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Giraffe" Version="4.1.0" />
+    <PackageReference Include="Microsoft.AspNetCore.StaticFiles" Version="2.2.0" />
+  </ItemGroup>
+</Project>
