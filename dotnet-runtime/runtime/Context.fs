@@ -23,8 +23,6 @@ type Context =
     mutable Headers: IHeaderDictionary
     Id: string
     mutable Ip: string }
-
-
 let DecodeContextDeviceInfo (json_: JsonElement) (path_: string) : ContextDeviceInfo =
   if (json_.ValueKind <> JsonValueKind.Object) then
     raise (FatalException($"'{path_}' must be an object."))
