@@ -23,8 +23,6 @@ type Context =
     mutable Headers: IHeaderDictionary
     Id: string
     mutable Ip: string }
-
-
 let DecodeContextDeviceInfo (json_: JsonElement) (path_: string) : ContextDeviceInfo =
   if (json_.ValueKind <> JsonValueKind.Object) then
     raise (FatalException($"'{path_}' must be an object."))
@@ -95,8 +93,6 @@ let DecodeContext (json_: JsonElement) (path_: string) : Context =
     decodeJsonElementWeak "name" json_ $"{path_}.name"
 
   let Name = decodeString NameJson_ $"{path_}.name"
-
-
   let ArgsJson_ =
     decodeJsonElementWeak "args" json_ $"{path_}.args"
 
