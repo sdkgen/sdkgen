@@ -416,7 +416,7 @@ jobs:
         working-directory: ./playground
         env:
           NODE_ENV: production
-      - run: dotnet pack -c:Release -p:PackageVersion=$(cat ../version.txt)
+      - run: dotnet pack -c:Release -p:PackageVersion=$(cat ../../version.txt)
         working-directory: ./dotnet-runtime/runtime
       - run: dotnet nuget push bin/**/*.nupkg -k $NUGET_TOKEN -s https://api.nuget.org/v3/index.json
         working-directory: ./dotnet-runtime/runtime
