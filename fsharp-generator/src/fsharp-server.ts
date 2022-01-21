@@ -12,7 +12,10 @@ open System.Threading.Tasks
 open System.Text.Json
 open System
 open System.Globalization
+#if NET5_0
+// To use tasks as computation expression in .NET 5 install https://www.nuget.org/packages/TaskBuilder.fs/
 open FSharp.Control.Tasks.V2.ContextInsensitive
+#endif
 `;
 
   for (const error of ast.errors) {
