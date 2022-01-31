@@ -62,7 +62,7 @@ class SdkgenHttpClient {
   }
 
   Future<Object?> makeRequest(
-      String functionName, Map<String, Object> args) async {
+      String functionName, Map<String, Object?> args) async {
     try {
       var func = fnTable[functionName]!;
       var encodedArgs = {};
