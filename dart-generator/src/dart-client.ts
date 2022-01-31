@@ -7,6 +7,7 @@ export function generateDartClientSource(ast: AstRoot): string {
   let code = "";
 
   code += `import 'dart:typed_data';
+import 'dart:ui';
 
 import 'package:sdkgen_runtime/types.dart';
 import 'package:sdkgen_runtime/http_client.dart';
