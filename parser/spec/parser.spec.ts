@@ -949,4 +949,90 @@ describe(Parser, () => {
       },
     );
   });
+
+  test("merges identical types with the same name", () => {
+    expectParses(
+      `
+        type Test {
+          foo: string
+          bar: int
+        }
+
+        type Test {
+          foo: string
+          bar: int
+        }
+      `,
+      {
+        annotations: {},
+        errors: ["Fatal"],
+        functionTable: {},
+        typeTable: {
+          Test: {
+            bar: "int",
+            foo: "string",
+          },
+        },
+      },
+    );
+
+    expectDoesntParse(
+      `
+        type Test {
+          foo: string
+          bar: int
+        }
+
+        type Test {
+          foo: string
+          bar: uint
+        }
+      `,
+      "Type 'Test' at -:7:9 is defined multiple times (also at -:2:19)",
+    );
+  });
+
+  test("merges identical types with automatic name", () => {
+    expectParses(
+      `
+        type Test {
+          foo: {
+            bar: int
+          }
+        }
+
+        type TestFoo {
+          bar: int
+        }
+      `,
+      {
+        annotations: {},
+        errors: ["Fatal"],
+        functionTable: {},
+        typeTable: {
+          Test: {
+            foo: "TestFoo",
+          },
+          TestFoo: {
+            bar: "int",
+          },
+        },
+      },
+    );
+
+    expectDoesntParse(
+      `
+        type Test {
+          foo: {
+            bar: int
+          }
+        }
+
+        type TestFoo {
+          bar: uint
+        }
+      `,
+      "The name of the type 'TestFoo' at -:8:22 will conflict with 'Test.foo' at -:3:16",
+    );
+  });
 });

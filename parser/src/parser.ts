@@ -283,7 +283,7 @@ export class Parser {
 
     this.nextToken();
 
-    let type = new VoidPrimitiveType();
+    let type: Type = new VoidPrimitiveType();
 
     if (
       this.token instanceof CurlyOpenSymbolToken ||
@@ -387,7 +387,7 @@ export class Parser {
 
     annotations = annotations.filter(ann => !(ann instanceof ArgDescriptionAnnotation));
 
-    let returnType = new VoidPrimitiveType().at(parensCloseToken);
+    let returnType: Type = new VoidPrimitiveType().at(parensCloseToken);
 
     if (this.token instanceof ColonSymbolToken) {
       this.nextToken();
