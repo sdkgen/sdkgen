@@ -77,7 +77,7 @@ Esperamos com isso aumentar a expressividade da descrição da API, representand
 
 Todos os recursos marcados como depreciados nas versões anteriores foram removidos. Se eram utilizados no seu projeto, precisará atualizar.
 
-Além disso foram aplicada várias correções e melhorias internas, deixando o projeto mais estável como um todo.
+Além disso foram aplicadas várias correções e melhorias internas, deixando o projeto mais estável como um todo.
 
 **Agradecimentos**
 
