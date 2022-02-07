@@ -16,7 +16,7 @@ Um novo cliente nativo para iOS foi adicionado, junto ao gerador de código em S
 
 **Servidor em F# (experimental)**
 
-O suporte original para rodar sdkgen em .NET foi construído com base no .NET Core utilizando C#. Toda essa base foi reconstruída para dar espaço a uma nova versão em F#, muito mais moderna e possibilitando ser utilizada tanto em projetos F# quanto em C#. A implementação de métodos é fácil e direta, assim como acontece em Node.js, mantendo a mesma simplicidade. Atualmente os recursos base do sdkgen são suportados, mas alguns opcionais não são suportados por este target, como suporte a REST e a compatibilidade com versões legadas. Está sendo lançado como experimental pois ainda não foin testado o suficiente em produção. A expectativa é lançar como versão estável e completa no futuro próximo.
+O suporte original para rodar sdkgen em .NET foi construído com base no .NET Core utilizando C#. Toda essa base foi reconstruída para dar espaço a uma nova versão em F#, muito mais moderna e possibilitando ser utilizada tanto em projetos F# quanto em C#. A implementação de métodos é fácil e direta, assim como acontece em Node.js, mantendo a mesma simplicidade. Atualmente os recursos base do sdkgen são suportados, mas alguns opcionais não são suportados por este target, como suporte a REST e a compatibilidade com versões legadas. Está sendo lançado como experimental pois ainda não foi testado o suficiente em produção. A expectativa é lançar como versão estável e completa no futuro próximo.
 
 **Novo Playground**
 
