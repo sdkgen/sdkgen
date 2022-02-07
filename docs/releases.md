@@ -30,7 +30,7 @@ O sdkgen possui um playgroud embutido desde a versão 1.0.0, possibilitando insp
 
 O novo playground pode ser utilizado inclusive com API's que ainda não foram atualizadas para o sdkgen 2.0.0.
 
-Acesse em: [https://sdkgen.github.io/playground/](https://sdkgen.github.io/playground/) ou na roda `/playground` da sua API. É necessário que `introspection` esteja habilitado.
+Acesse em: [https://sdkgen.github.io/playground/](https://sdkgen.github.io/playground/) ou na rota `/playground` da sua API. É necessário que `introspection` esteja habilitado.
 
 **União de Tipos (experimental)**
 
