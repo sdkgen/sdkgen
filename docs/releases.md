@@ -85,7 +85,7 @@ As contribuições de 13 pessoas tornaram esse lançamento possível: [@ahardman
 
 ## 1.6.2 (2021-10-27)
 
-- Correção do swagger, regressão causado na versão 1.5.0.
+- Correção do Swagger, regressão causado na versão 1.5.0.
 - Suporte ao tipo `bigint` no Playground e no Swagger.
 
 ## 1.6.0 / 1.6.1 (2021-09-29)
