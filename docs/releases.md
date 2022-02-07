@@ -2,7 +2,7 @@
 
 ## 2.0.0 (2022-02-07)
 
-Chegamos aqui com o sdkgen 2.0.0, após quase 1 ano de desenvolvimento. Vem trazendo muitas melhorias e novidades, com poucas mudanças que podem impactar projetos. A expectativa é que a atualização possa ser aplicada na maioria dos projetos sem nenhuma mudança de código. É sempre recomendado que o servidor atualize primeiro, antes dos clientes. Vamos ao que temos de novidades:
+Chegamos aqui com o sdkgen 2.0.0, após quase 1 ano de desenvolvimento, trazendo muitas melhorias e novidades, com poucas mudanças que podem impactar projetos. A expectativa é que a atualização possa ser aplicada na maioria dos projetos sem nenhuma mudança de código. É sempre recomendado que o servidor atualize primeiro, antes dos clientes. Vamos ao que temos de novidades:
 
 **Suporte ao Flutter 2 (sound null safety e Flutter Web)**
 
