@@ -341,8 +341,6 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
             if (!ann.bodyVariable && req.headers["content-type"]?.match(/^application\/x-www-form-urlencoded/iu)) {
               const parsedBody = parseQuerystring(body.toString());
 
-              console.log("parsedBody", parsedBody);
-
               for (const argName of ann.queryVariables) {
                 const argValue = parsedBody[argName] ?? null;
 
