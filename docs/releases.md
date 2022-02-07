@@ -26,7 +26,7 @@ O sdkgen possui um playgroud embutido desde a versão 1.0.0, possibilitando insp
 - Ver como a função deve ser chamada nas linguagens suportadas pelo sdkgen.
 - Chamar as funções, escrevendo os argumentos que deseja passar.
 - Gerar e baixar o código gerado em todos os targets suportados sem precisar instalar nada.
-- Utilizar o editor avançado, em que é possível escrever lógica em TypeScript chamando uma ou mais funções para executar diretamente em seu navegador.
+- Utilizar o editor avançado, em que é possível escrever lógica em JavaScript chamando uma ou mais funções para executar diretamente em seu navegador.
 
 O novo playground pode ser utilizado inclusive com API's que ainda não foram atualizadas para o sdkgen 2.0.0.
 
