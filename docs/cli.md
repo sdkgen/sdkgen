@@ -43,7 +43,7 @@ Estes são os target possíveis:
 | typescript_nodeserver | Servidor Node.js, em TypeScript             |
 | typescript_web        | Cliente para uso na Web, em TypeScript      |
 | swift_ios             | Cliente para iOS nativo, em Swift           |
-| rxswift_ios           | Cliente para iOS nativo, em Swift usando RX |
+| rxswift_ios           | Cliente para iOS nativo, em Swift usando Rx |
 
 ## Checagem de compatibilidade
 
