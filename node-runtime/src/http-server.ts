@@ -67,6 +67,10 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
 
   public introspection = true;
 
+  public log = (message: string) => {
+    console.log(`${new Date().toISOString()} ${message}`);
+  };
+
   private hasSwagger = false;
 
   private ignoredUrlPrefix = "";
@@ -648,10 +652,6 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
     req.on("end", () => {
       this.handleRequestWithBody(req, res, Buffer.concat(body), hrStart).catch((e: unknown) => this.writeReply(res, null, { error: e }, hrStart));
     });
-  }
-
-  private log(message: string) {
-    console.log(`${new Date().toISOString()} ${message}`);
   }
 
   private async handleRequestWithBody(req: IncomingMessage, res: ServerResponse, body: Buffer, hrStart: [number, number]) {
