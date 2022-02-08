@@ -1,0 +1,91 @@
+- name: Core Protocol
+  tests:
+    - name: Simple 'add' call
+      request:
+        method: POST
+        path: /
+        body:
+          name: add
+          args:
+            first: 1
+            second: 2
+      response:
+        body:
+          result: 3
+    - name: Simple 'add' call, inverting argument order
+      request:
+        method: POST
+        path: /
+        body:
+          name: add
+          args:
+            second: 2
+            first: 1
+      response:
+        body:
+          result: 3
+    - name: Simple 'add' call, with extra arguments
+      request:
+        method: POST
+        path: /
+        body:
+          name: add
+          args:
+            first: 1
+            second: 2
+            whatever: "123"
+      response:
+        body:
+          result: 3
+
+- name: REST
+  tests:
+    - name: Simple 'add' call
+      request:
+        method: POST
+        path: /add?first=1&second=2
+      response:
+        status: 200
+        headers:
+          content-type: text/plain
+        body: "3"
+    - name: Simple 'add' call with accept header
+      request:
+        method: POST
+        path: /add?first=1&second=2
+        headers:
+          accept: application/json
+      response:
+        status: 200
+        headers:
+          content-type: application/json
+        body: "3"
+    - name: Concat
+      request:
+        method: GET
+        path: /concat1/1/aa
+      response:
+        status: 200
+        headers:
+          content-type: text/plain
+        body: "1aa"
+    - name: Concat with accept header
+      request:
+        method: GET
+        path: /concat1/1/aa
+        headers:
+          accept: application/json
+      response:
+        status: 200
+        headers:
+          content-type: application/json
+        body: "\"1aa\""
+    - name: Concat with trailing slash
+      request:
+        method: GET
+        path: /concat1/1/aa/
+      response:
+        status: 200
+        headers:
+          content-type: text/plain
+        body: "1aa"
