@@ -32,16 +32,18 @@ sdkgen src/api.sdkgen -o api.dart -t flutter
 
 Estes são os target possíveis:
 
-| Slug                  | Descrição                              |
-| --------------------- | -------------------------------------- |
-| csharp_server         | Servidor .NET, em C#                   |
-| fsharp_server         | Servidor .NET, em F#                   |
-| flutter               | Cliente para Flutter, em Dart          |
-| kotlin_android        | Cliente para Android nativo, em Kotlin |
-| typescript_interfaces | Apenas tipos da API, em TypeScript     |
-| typescript_nodeclient | Cliente para Node.js, em TypeScript    |
-| typescript_nodeserver | Servidor Node.js, em TypeScript        |
-| typescript_web        | Cliente para uso na Web, em TypeScript |
+| Slug                  | Descrição                                 |
+| --------------------- | ------------------------------------------- |
+| csharp_server         | Servidor .NET, em C#                        |
+| fsharp_server         | Servidor .NET, em F#                        |
+| flutter               | Cliente para Flutter, em Dart               |
+| kotlin_android        | Cliente para Android nativo, em Kotlin      |
+| typescript_interfaces | Apenas tipos da API, em TypeScript          |
+| typescript_nodeclient | Cliente para Node.js, em TypeScript         |
+| typescript_nodeserver | Servidor Node.js, em TypeScript             |
+| typescript_web        | Cliente para uso na Web, em TypeScript      |
+| swift_ios             | Cliente para iOS nativo, em Swift           |
+| rxswift_ios           | Cliente para iOS nativo, em Swift usando Rx |
 
 ## Checagem de compatibilidade
 
