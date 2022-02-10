@@ -27,7 +27,7 @@ export class CheckDontReturnSecretVisitor extends Visitor {
         if (annotation instanceof RestAnnotation) {
           for (const arg of node.fieldsAndSpreads) {
             if (annotation.method === "GET" && (arg as Field).secret) {
-              throw new SemanticError(`Argument cannot be marked as secret in path or query at ${this.path.join(".")} at ${node.location}`);
+              throw new SemanticError(`Argument marked as secret cannot be used in the path or query parts of a GET endpoint at ${this.path.join(".")} at ${annotation.location}`);
             }
           }
         }
