@@ -451,7 +451,7 @@ describe(Parser, () => {
     );
   });
 
-  test.only("handles rest annotations", () => {
+  test("handles rest annotations", () => {
     expectParses(
       `
         @rest GET /foo
