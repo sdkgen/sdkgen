@@ -451,7 +451,7 @@ describe(Parser, () => {
     );
   });
 
-  test("handles rest annotations", () => {
+  test.only("handles rest annotations", () => {
     expectParses(
       `
         @rest GET /foo
@@ -736,6 +736,74 @@ describe(Parser, () => {
       },
     );
 
+    expectParses(
+      `
+        @rest POST /foo/{bar}
+        fn foo(bar: string !secret): string
+      `,
+      {
+        annotations: {
+          "fn.foo": [
+            {
+              type: "rest",
+              value: {
+                bodyVariable: null,
+                headers: [],
+                method: "POST",
+                path: "/foo/{bar}",
+                pathVariables: ["bar"],
+                queryVariables: [],
+              },
+            },
+          ],
+        },
+        errors: ["Fatal"],
+        functionTable: {
+          foo: {
+            args: {
+              bar: "string",
+            },
+            ret: "string",
+          },
+        },
+        typeTable: {},
+      },
+    );
+
+    expectParses(
+      `
+        @rest POST /foo?{bar}
+        fn foo(bar: string !secret): string
+      `,
+      {
+        annotations: {
+          "fn.foo": [
+            {
+              type: "rest",
+              value: {
+                bodyVariable: null,
+                headers: [],
+                method: "POST",
+                path: "/foo",
+                pathVariables: [],
+                queryVariables: ["bar"],
+              },
+            },
+          ],
+        },
+        errors: ["Fatal"],
+        functionTable: {
+          foo: {
+            args: {
+              bar: "string",
+            },
+            ret: "string",
+          },
+        },
+        typeTable: {},
+      },
+    );
+
     expectDoesntParse(
       `
         @rest HEAD /foo
@@ -806,6 +874,22 @@ describe(Parser, () => {
         fn foo(): void
       `,
       "GET rest endpoint must return something",
+    );
+
+    expectDoesntParse(
+      `
+        @rest GET /bobobobo/{bar}
+        fn foo(bar: string !secret): bool
+      `,
+      "marked as secret",
+    );
+
+    expectDoesntParse(
+      `
+        @rest GET /bobobobo?{bar}
+        fn foo(bar: string !secret): bool
+      `,
+      "marked as secret",
     );
   });
 
