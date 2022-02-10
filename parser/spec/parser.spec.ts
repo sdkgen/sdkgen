@@ -360,6 +360,21 @@ describe(Parser, () => {
         },
       },
     );
+
+    expectDoesntParse(
+      `
+        type Foo {
+          a: int !secret
+        }
+
+        type Bar {
+          ...Foo
+        }
+
+        fn Poo(): Bar
+      `,
+      "secret",
+    );
   });
 
   test("handles functions with annotations", () => {
