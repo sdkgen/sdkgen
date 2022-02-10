@@ -1,5 +1,5 @@
 import type { AstNode } from "../ast";
-import { TypeReference, FunctionOperation, RestAnnotation, Field } from "../ast";
+import { TypeReference, FunctionOperation, Field } from "../ast";
 import { SemanticError, Visitor } from "./visitor";
 
 export class CheckDontReturnSecretVisitor extends Visitor {
@@ -22,16 +22,6 @@ export class CheckDontReturnSecretVisitor extends Visitor {
       this.visit(node.returnType);
       this.path.pop();
       this.isInReturn = false;
-
-      for (const annotation of node.annotations) {
-        if (annotation instanceof RestAnnotation) {
-          for (const arg of node.fieldsAndSpreads) {
-            if (annotation.method === "GET" && (arg as Field).secret) {
-              throw new SemanticError(`Argument marked as secret cannot be used in the path or query parts of a GET endpoint at ${this.path.join(".")} at ${annotation.location}`);
-            }
-          }
-        }
-      }
     } else if (node instanceof TypeReference) {
       this.visit(node.type);
     } else if (node instanceof Field) {
