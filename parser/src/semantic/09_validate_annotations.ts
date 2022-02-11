@@ -117,7 +117,9 @@ export class ValidateAnnotationsVisitor extends Visitor {
               throw new SemanticError(`Argument '${arg.name}' is missing from the rest annotation at ${annotation.location}`);
             }
 
-            if (annotation.method === "GET" && arg.secret) {
+            const queryAndPathVariables = [...annotation.pathVariables, ...annotation.queryVariables];
+
+            if (annotation.method === "GET" && queryAndPathVariables.includes(arg.name) && arg.secret) {
               throw new SemanticError(
                 `Argument marked as secret cannot be used in the path or query parts of a GET endpoint at ${annotation.location}`,
               );
