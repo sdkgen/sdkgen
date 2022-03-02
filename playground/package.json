@@ -21,17 +21,7 @@
     "analyze": "webpack-bundle-analyzer dist/stats.json",
     "watch": "ng build --watch --configuration development"
   },
-  "dependencies": {
-    "@sdkgen/browser-runtime": "file:../browser-runtime",
-    "@sdkgen/csharp-generator": "file:../csharp-generator",
-    "@sdkgen/dart-generator": "file:../dart-generator",
-    "@sdkgen/fsharp-generator": "file:../fsharp-generator",
-    "@sdkgen/kotlin-generator": "file:../kotlin-generator",
-    "@sdkgen/parser": "file:../parser",
-    "@sdkgen/swift-generator": "file:../swift-generator",
-    "@sdkgen/typescript-generator": "file:../typescript-generator",
-    "tslib": "^2.2.0"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@angular-devkit/build-angular": "~13.2.0",
     "@angular/animations": "~13.2.0",
@@ -48,6 +38,14 @@
     "@angular/router": "~13.2.0",
     "@cubos/eslint-config": "^1.0.553260",
     "@materia-ui/ngx-monaco-editor": "^6.0.0",
+    "@sdkgen/browser-runtime": "file:../browser-runtime",
+    "@sdkgen/csharp-generator": "file:../csharp-generator",
+    "@sdkgen/dart-generator": "file:../dart-generator",
+    "@sdkgen/fsharp-generator": "file:../fsharp-generator",
+    "@sdkgen/kotlin-generator": "file:../kotlin-generator",
+    "@sdkgen/parser": "file:../parser",
+    "@sdkgen/swift-generator": "file:../swift-generator",
+    "@sdkgen/typescript-generator": "file:../typescript-generator",
     "@types/file-saver": "^2.0.3",
     "@types/node": "^16.0.0",
     "angular-split": "^13.0.0",
@@ -57,6 +55,7 @@
     "ngx-json-viewer": "^3.0.2",
     "ngx-toastr": "^14.2.1",
     "rxjs": "~7.5.2",
+    "tslib": "^2.2.0",
     "typescript": "~4.5.4",
     "webpack-bundle-analyzer": "^4.5.0",
     "zone.js": "~0.11.4"
