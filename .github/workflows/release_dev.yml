@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: version
       - uses: actions/setup-node@v2
@@ -50,7 +50,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: version
       - uses: actions/setup-node@v2
@@ -82,7 +82,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: version
       - uses: actions/setup-java@v2
@@ -109,7 +109,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: version
       - uses: actions/setup-node@v2
@@ -141,7 +141,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: version
       - uses: actions/setup-node@v2
@@ -173,7 +173,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v1
+      - uses: actions/download-artifact@v3
         with:
           name: version
       - uses: actions/setup-node@v1
@@ -205,7 +205,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: version
       - uses: actions/setup-node@v2
@@ -237,7 +237,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: version
       - uses: actions/setup-node@v2
@@ -269,7 +269,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: version
       - uses: actions/setup-node@v2
@@ -301,7 +301,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: version
       - uses: actions/setup-node@v2
@@ -333,7 +333,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: version
       - uses: actions/setup-node@v2
@@ -368,7 +368,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: version
       - uses: actions/setup-node@v2
@@ -400,7 +400,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: version
       - uses: actions/setup-dotnet@v1
@@ -428,7 +428,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
+      - uses: actions/download-artifact@v3
         with:
           name: version
       - run: sed -i -e "s/versionName \"1.0\"/versionName \"$(cat ../../version.txt)\"/g" build.gradle
