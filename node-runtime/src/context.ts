@@ -25,6 +25,7 @@ export interface ContextRequest {
 }
 
 export interface ContextReply {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   error?: any;
   result?: unknown;
 }

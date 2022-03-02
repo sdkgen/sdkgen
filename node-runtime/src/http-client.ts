@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable prefer-promise-reject-errors */
 import { randomBytes } from "crypto";
 import { request as httpRequest } from "http";

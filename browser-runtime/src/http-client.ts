@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { AstJson } from "./ast";
 import { decode, encode } from "./encode-decode";
 import type { SdkgenError, SdkgenErrorWithData } from "./error";
@@ -43,7 +44,7 @@ function has<P extends PropertyKey>(target: object, property: P): target is { [K
 export class SdkgenHttpClient {
   private baseUrl: string;
 
-  extra = new Map<string, any>();
+  extra = new Map<string, unknown>();
 
   successHook: (result: any, name: string, args: any) => void = () => undefined;
 
@@ -60,7 +61,7 @@ export class SdkgenHttpClient {
       throw new Error(`Unknown function ${functionName}`);
     }
 
-    const extra: Record<string, any> = {};
+    const extra: Record<string, unknown> = {};
 
     // eslint-disable-next-line no-foreach/no-foreach
     this.extra.forEach((value, key) => {
