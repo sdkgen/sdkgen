@@ -107,7 +107,7 @@ function annotationFromJson(json: AnnotationJson | DeepReadonly<AnnotationJson>)
 export interface AstJson {
   typeTable: TypeTable;
   functionTable: FunctionTable;
-  errors: Array<string | string[]>;
+  errors: Array<string | [string, string]>;
   annotations: Record<string, AnnotationJson[] | undefined>;
 }
 
@@ -191,7 +191,9 @@ export function astToJson(ast: AstRoot): AstJson {
     }
   }
 
-  const errors = ast.errors.map(error => (error.dataType instanceof VoidPrimitiveType ? error.name : [error.name, error.dataType.name]));
+  const errors = ast.errors.map(error =>
+    error.dataType instanceof VoidPrimitiveType ? error.name : ([error.name, error.dataType.name] as [string, string]),
+  );
 
   return {
     annotations,
@@ -231,7 +233,7 @@ export function jsonToAst(json: DeepReadonly<AstJson>): AstRoot {
             return enumValue;
           }
 
-          return new EnumValue(v);
+          return new EnumValue(v as string);
         }),
       );
     }
@@ -293,7 +295,9 @@ export function jsonToAst(json: DeepReadonly<AstJson>): AstRoot {
 
   const errors = json.errors.map(error => {
     if (Array.isArray(error)) {
-      return new ErrorNode(error[0], processType(error[1]));
+      const [name, type] = error as [string, string];
+
+      return new ErrorNode(name, processType(type));
     }
 
     return new ErrorNode(error as string, new VoidPrimitiveType());
