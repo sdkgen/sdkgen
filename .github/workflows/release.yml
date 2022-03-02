@@ -63,7 +63,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-java@v2
+      - uses: actions/setup-java@v3
         with:
           java-version: 12.x
           distribution: zulu
@@ -404,7 +404,7 @@ jobs:
         working-directory: ./android-runtime/
       - run: echo "${{ secrets.MAVEN_GPG_FILE_CONTENT }}" | base64 -d > "${{ secrets.MAVEN_GPG_KEY_FILE_PATH }}"
         working-directory: ./android-runtime/runtime/
-      - uses: actions/setup-java@v2
+      - uses: actions/setup-java@v3
         with:
           distribution: 'adopt'
           java-version: '11'
