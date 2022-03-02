@@ -185,7 +185,7 @@ jobs:
         working-directory: ./fsharp-generator
       - run: |
           npm install -g json && json -I -f package.json -e '
-            this.version = "'$(cat ../version/version.txt)'";
+            this.version = "'$(cat ../version.txt)'";
             this.main = "dist/src/index.js";
             this.types = "dist/src/index.d.ts";
             for (const pkg in this.dependencies)
