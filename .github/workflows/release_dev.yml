@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo -n 0.0.0-dev.$(date -u +'%Y%m%d%H%M%S') > version.txt
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: version
           path: version.txt
