@@ -1,5 +1,13 @@
 # Releases
 
+## 2.0.1 (2022-03-07)
+
+- Correção no uso do playground em produção.
+- Correção no tratamento da marcação `!secret` utilizada em conjunto com a anotação `@rest` ([#659](https://github.com/sdkgen/sdkgen/pull/659)).
+- Atualização de dependências.
+
+As contribuições de 4 pessoas tornaram essa nova versão possível: [@dgadelha](https://github.com/dgadelha), [@GuiBernal](https://github.com/GuiBernal), [@joshuapassos](https://github.com/joshuapassos), e [@lbguilherme](https://github.com/lbguilherme).
+
 ## 2.0.0 (2022-02-07)
 
 Chegamos aqui com o sdkgen 2.0.0, após quase 1 ano de desenvolvimento, trazendo muitas melhorias e novidades, com poucas mudanças que podem impactar projetos. A expectativa é que a atualização possa ser aplicada na maioria dos projetos sem nenhuma mudança de código. É sempre recomendado que o servidor atualize primeiro, antes dos clientes. Vamos ao que temos de novidades:
