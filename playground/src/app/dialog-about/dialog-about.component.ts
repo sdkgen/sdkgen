@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 
-import { version, dependencies } from "../../../package.json";
+import { version, devDependencies } from "../../../package.json";
 
 @Component({
   selector: "app-dialog-about",
@@ -9,5 +9,5 @@ import { version, dependencies } from "../../../package.json";
 })
 export class DialogAboutComponent {
   version = version;
-  dependencies = Object.entries(dependencies).filter(([name]) => name.startsWith("@sdkgen"));
+  dependencies = Object.entries(devDependencies).filter(([name]) => name.startsWith("@sdkgen"));
 }
