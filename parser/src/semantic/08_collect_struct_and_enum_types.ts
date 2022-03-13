@@ -12,4 +12,11 @@ export class CollectStructAndEnumTypesVisitor extends Visitor {
       this.root.enumTypes.push(node);
     }
   }
+
+  process(): void {
+    super.process();
+
+    this.root.structTypes = [...new Set(this.root.structTypes)];
+    this.root.enumTypes = [...new Set(this.root.enumTypes)];
+  }
 }
