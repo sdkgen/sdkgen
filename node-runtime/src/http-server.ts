@@ -9,6 +9,7 @@ import { promisify } from "util";
 
 import { generateCSharpServerSource } from "@sdkgen/csharp-generator";
 import { generateDartClientSource } from "@sdkgen/dart-generator";
+import { generateFSharpServerSource } from "@sdkgen/fsharp-generator";
 import { generateAndroidClientSource } from "@sdkgen/kotlin-generator";
 import type { AstRoot } from "@sdkgen/parser";
 import {
@@ -66,6 +67,10 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
 
   public introspection = true;
 
+  public log = (message: string) => {
+    console.log(`${new Date().toISOString()} ${message}`);
+  };
+
   private hasSwagger = false;
 
   private ignoredUrlPrefix = "";
@@ -79,6 +84,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
       ["/targets/android/client.kt", (ast: AstRoot) => generateAndroidClientSource(ast, true)],
       ["/targets/android/client_without_callbacks.kt", (ast: AstRoot) => generateAndroidClientSource(ast, false)],
       ["/targets/dotnet/api.cs", generateCSharpServerSource],
+      ["/targets/dotnet/api.fs", generateFSharpServerSource],
       ["/targets/flutter/client.dart", generateDartClientSource],
       ["/targets/ios/client.swift", (ast: AstRoot) => generateSwiftClientSource(ast, false)],
       ["/targets/ios/client-rx.swift", (ast: AstRoot) => generateSwiftClientSource(ast, true)],
@@ -339,8 +345,6 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
             if (!ann.bodyVariable && req.headers["content-type"]?.match(/^application\/x-www-form-urlencoded/iu)) {
               const parsedBody = parseQuerystring(body.toString());
 
-              console.log("parsedBody", parsedBody);
-
               for (const argName of ann.queryVariables) {
                 const argValue = parsedBody[argName] ?? null;
 
@@ -351,7 +355,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
                 simpleArgs.set(argName, Array.isArray(argValue) ? argValue.join("") : argValue);
               }
             } else if (!ann.bodyVariable && req.headers["content-type"]?.match(/^multipart\/form-data/iu)) {
-              const busboy = new Busboy({ headers: req.headers });
+              const busboy = Busboy({ headers: req.headers });
               const filePromises: Array<Promise<void>> = [];
 
               busboy.on("field", (field, value) => {
@@ -360,7 +364,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
                 }
               });
 
-              busboy.on("file", (_field, file, name) => {
+              busboy.on("file", (_field, stream, info) => {
                 const tempName = randomBytes(32).toString("hex");
                 const writeStream = createWriteStream(tempName);
 
@@ -371,7 +375,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
                     writeStream.on("close", () => {
                       const contents = createReadStream(tempName);
 
-                      files.push({ contents, name });
+                      files.push({ contents, name: info.filename });
 
                       contents.on("open", () => {
                         unlink(tempName, err => {
@@ -385,7 +389,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
                     });
 
                     writeStream.on("open", () => {
-                      file.pipe(writeStream);
+                      stream.pipe(writeStream);
                     });
                   }),
                 );
@@ -648,10 +652,6 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
     req.on("end", () => {
       this.handleRequestWithBody(req, res, Buffer.concat(body), hrStart).catch((e: unknown) => this.writeReply(res, null, { error: e }, hrStart));
     });
-  }
-
-  private log(message: string) {
-    console.log(`${new Date().toISOString()} ${message}`);
   }
 
   private async handleRequestWithBody(req: IncomingMessage, res: ServerResponse, body: Buffer, hrStart: [number, number]) {

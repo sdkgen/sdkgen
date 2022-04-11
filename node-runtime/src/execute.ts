@@ -2,7 +2,6 @@ import { ThrowsAnnotation } from "@sdkgen/parser";
 
 import type { BaseApiConfig } from "./api-config";
 import type { Context, ContextReply } from "./context";
-import { contextStorage } from "./context-storage";
 import { decode, encode } from "./encode-decode";
 import { Fatal } from "./error";
 import { has } from "./utils";
@@ -20,7 +19,7 @@ export async function executeRequest<ExtraContextT>(ctx: Context & ExtraContextT
 
       const args = decode(apiConfig.astJson.typeTable, `${ctx.request.name}.args`, functionDescription.args, ctx.request.args);
 
-      const ret = await contextStorage.run(ctx, async () => functionImplementation(args));
+      const ret = (await functionImplementation(ctx, args)) as unknown;
       const encodedRet = encode(apiConfig.astJson.typeTable, `${ctx.request.name}.ret`, functionDescription.ret, ret);
 
       return { result: encodedRet } as ContextReply;

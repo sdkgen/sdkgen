@@ -45,10 +45,7 @@ form {
     background: transparent;
     color: #BFBFBF;
     border: 0 none;
-
-    &:hover {
-      background-color: rgba(0, 0, 0, 0.2);
-    }
+    cursor: pointer;
 
     .loader {
       animation: spin 2s linear infinite;

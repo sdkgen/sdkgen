@@ -22,7 +22,7 @@ export abstract class AstNode {
 export abstract class Type extends AstNode {
   abstract get name(): string;
 
-  toJSON() {
+  toJSON(): unknown {
     const { name: _name, ...rest } = { ...this };
 
     return rest;
@@ -69,7 +69,11 @@ export class RestAnnotation extends Annotation {
 
 export class HiddenAnnotation extends Annotation {}
 
-export abstract class PrimitiveType extends Type {}
+export abstract class PrimitiveType extends Type {
+  toJSON() {
+    return this.name;
+  }
+}
 export class StringPrimitiveType extends PrimitiveType {
   name = "string";
 }
@@ -157,6 +161,8 @@ export class ArrayType extends Type {
 export class EnumValue extends AstNode {
   annotations: Annotation[] = [];
 
+  struct: StructType | null = null;
+
   constructor(public value: string) {
     super();
   }
@@ -167,6 +173,10 @@ export class EnumType extends Type {
 
   constructor(public values: EnumValue[]) {
     super();
+  }
+
+  get hasStructValues() {
+    return this.values.some(v => v.struct !== null);
   }
 }
 

@@ -3,6 +3,7 @@ import { writeFileSync } from "fs";
 
 import { generateCSharpServerSource } from "@sdkgen/csharp-generator";
 import { generateDartClientSource } from "@sdkgen/dart-generator";
+import { generateFSharpServerSource } from "@sdkgen/fsharp-generator";
 import { generateAndroidClientSource } from "@sdkgen/kotlin-generator";
 import { Parser } from "@sdkgen/parser";
 import { generateSwiftClientSource } from "@sdkgen/swift-generator";
@@ -114,6 +115,11 @@ export function buildCmd(argv: string[]): void {
 
     case "csharp_server": {
       writeFileSync(options.output, generateCSharpServerSource(ast));
+      break;
+    }
+
+    case "fsharp_server": {
+      writeFileSync(options.output, generateFSharpServerSource(ast));
       break;
     }
 

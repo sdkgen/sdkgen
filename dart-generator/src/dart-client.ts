@@ -7,8 +7,8 @@ export function generateDartClientSource(ast: AstRoot): string {
   let code = "";
 
   code += `import 'dart:typed_data';
+import 'dart:ui';
 
-import 'package:flutter/widgets.dart';
 import 'package:sdkgen_runtime/types.dart';
 import 'package:sdkgen_runtime/http_client.dart';
 
@@ -30,7 +30,7 @@ import 'package:sdkgen_runtime/http_client.dart';
   }
 
   code += `class ApiClient extends SdkgenHttpClient {
-  ApiClient(String baseUrl, [BuildContext? context]) : super(baseUrl, context, _typeTable, _fnTable, _errTable);
+  ApiClient(String baseUrl) : super(baseUrl, _typeTable, _fnTable, _errTable);
 ${ast.operations
   .filter(op => op.annotations.every(ann => !(ann instanceof HiddenAnnotation)))
   .map(

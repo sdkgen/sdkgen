@@ -46,7 +46,7 @@ export interface SdkgenState {
 export class SdkgenService {
   public state$ = new BehaviorSubject<SdkgenState | null>(null);
 
-  public buildJsonObject(args: Field[]) {
+  public buildJsonObject(args: Field[], visited = new Set<string>()) {
     const getTypeValue = (type: Type): any => {
       switch (type.constructor) {
         case StringPrimitiveType:
@@ -106,7 +106,9 @@ export class SdkgenService {
           return {};
 
         case StructType:
-          return this.buildJsonObject((type as StructType).fields);
+          return visited.has(type.name)
+            ? {}
+            : this.buildJsonObject((type as StructType).fields, new Set([...visited, type.name]));
 
         case OptionalType:
           return null;
@@ -281,6 +283,10 @@ export class SdkgenService {
 
     return new Proxy(clientInstance, {
       get: (target, name) => {
+        if (["baseUrl", "extra", "successHook", "errorHook", "makeRequest"].includes(name.toString())) {
+          return clientInstance[name.toString() as keyof SdkgenHttpClient];
+        }
+
         return async (args: any) => clientInstance.makeRequest(name.toString(), args);
       },
     });

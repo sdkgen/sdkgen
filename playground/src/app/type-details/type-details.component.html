@@ -1,5 +1,5 @@
 <h1>
-  <button *ngIf="data.subdialog" class="back-button" mat-icon-button mat-dialog-close>
+  <button *ngIf="data.subdialog" class="back-button" mat-icon-button mat-dialog-close tabindex="-1">
     <mat-icon>arrow_back</mat-icon>
   </button>
 
@@ -9,7 +9,7 @@
     <mat-chip *ngFor="let label of labels" [disableRipple]="true" color="primary">{{ label }}</mat-chip>
   </mat-chip-list>
 
-  <button *ngIf="!data.subdialog" class="close-button" mat-icon-button mat-dialog-close>
+  <button *ngIf="!data.subdialog" class="close-button" mat-icon-button mat-dialog-close tabindex="-1">
     <mat-icon>close</mat-icon>
   </button>
 </h1>
@@ -26,8 +26,9 @@
 
       <ng-container matColumnDef="type">
         <th mat-header-cell *matHeaderCellDef>Tipo</th>
-        <td class="mono" mat-cell *matCellDef="let arg">
-          <u [matTooltip]="getTooltip(arg.type)" (click)="showDocumentation(arg.type)">{{ arg.type.name }}</u>
+        <td class="mono" mat-cell *matCellDef="let arg" [ngSwitch]="arg.type">
+          <span *ngSwitchCase="null">-</span>
+          <u *ngSwitchDefault [matTooltip]="getTooltip(arg.type)" (click)="showDocumentation(arg.type)">{{ arg.type.name }}</u>
         </td>
       </ng-container>
 
@@ -43,7 +44,7 @@
 </section>
 
 <section *ngIf="typeDoc?.examples?.length">
-  <h3>{{ typeDoc?.isEnum ? "Valores" : "Exemplos" }}</h3>
+  <h3>Exemplos</h3>
 
   <ul>
     <li *ngFor="let example of typeDoc?.examples">

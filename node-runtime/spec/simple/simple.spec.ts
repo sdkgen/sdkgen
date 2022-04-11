@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/require-await */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -14,7 +15,7 @@ import { generateNodeClientSource, generateNodeServerSource } from "@sdkgen/type
 import axios from "axios";
 
 import type { Context } from "../../src";
-import { useSdkgenContext, SdkgenHttpServer } from "../../src";
+import { SdkgenHttpServer } from "../../src";
 
 const ast = new Parser(`${__dirname}/api.sdkgen`).parse();
 
@@ -25,16 +26,16 @@ unlinkSync(`${__dirname}/api.ts`);
 
 let lastCallCtx: Context & { aaa: boolean } = null as any;
 
-api.fn.getUser = async ({ id }: { id: string }) => {
-  lastCallCtx = useSdkgenContext();
+api.fn.getUser = async (ctx: Context & { aaa: boolean }, { id }: { id: string }) => {
+  lastCallCtx = ctx;
   return {
     age: 1,
     name: id,
   };
 };
 
-api.fn.identity = async ({ types }: { types: any }) => {
-  lastCallCtx = useSdkgenContext();
+api.fn.identity = async (ctx: Context & { aaa: boolean }, { types }: { types: any }) => {
+  lastCallCtx = ctx;
   return types;
 };
 

@@ -1,4 +1,4 @@
-@use "~@angular/material" as mat;
+@use "@angular/material" as mat;
 @include mat.core();
 
 $my-primary: mat.define-palette(mat.$orange-palette, 500);
@@ -111,24 +111,6 @@ body {
   }
 }
 
-/*! @see https://codepen.io/davidlazar/pen/dcxou !*/
-body:after {
-  content: "beta";
-  position: fixed;
-  width: 80px;
-  height: 25px;
-  background: #ff4136;
-  top: 7px;
-  right: -20px;
-  text-align: center;
-  font-size: 14px;
-  text-transform: uppercase;
-  font-weight: bold;
-  color: #fff;
-  line-height: 28px;
-  transform: rotate(45deg);
-}
-
 .mono {
   font-family: "Roboto Mono", monospace;
 }
@@ -160,5 +142,22 @@ body:after {
 @media (min-width: 1200px) {
   .container {
     max-width: 1170px;
+  }
+}
+
+s {
+  flex-grow: 1;
+}
+
+.mat-chip {
+  &::after {
+    display: none;
+  }
+
+  &:hover,
+  &:active,
+  &:focus {
+    box-shadow: none !important;
+    transition: none;
   }
 }

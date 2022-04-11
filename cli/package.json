@@ -51,6 +51,7 @@
   },
   "dependencies": {
     "@sdkgen/csharp-generator": "file:../csharp-generator",
+    "@sdkgen/fsharp-generator": "file:../fsharp-generator",
     "@sdkgen/dart-generator": "file:../dart-generator",
     "@sdkgen/kotlin-generator": "file:../kotlin-generator",
     "@sdkgen/parser": "file:../parser",

@@ -11,7 +11,7 @@ import { unlinkSync, writeFileSync } from "fs";
 import { Parser } from "@sdkgen/parser";
 import { generateNodeClientSource, generateNodeServerSource } from "@sdkgen/typescript-generator";
 
-import type { BaseApiConfig } from "../../src";
+import type { BaseApiConfig, Context } from "../../src";
 import { SdkgenHttpServer } from "../../src";
 
 const ast = new Parser(`${__dirname}/api.sdkgen`).parse();
@@ -21,11 +21,11 @@ const { api } = require(`${__dirname}/middleware-api.ts`);
 
 unlinkSync(`${__dirname}/middleware-api.ts`);
 
-api.fn.identity = async (args: { value: number }) => {
+api.fn.identity = async (_ctx: Context, args: { value: number }) => {
   return args.value;
 };
 
-api.fn.sum = async (args: { a: number; b: number }) => {
+api.fn.sum = async (_ctx: Context, args: { a: number; b: number }) => {
   return args.a + args.b;
 };
 

@@ -1,7 +1,7 @@
 #!/bin/bash
 set -ex
 
-for folder in browser-runtime csharp-generator dart-generator kotlin-generator parser swift-generator typescript-generator; do
+for folder in browser-runtime csharp-generator fsharp-generator dart-generator kotlin-generator parser swift-generator typescript-generator; do
   cd ..
   cd "$folder"
   npm i

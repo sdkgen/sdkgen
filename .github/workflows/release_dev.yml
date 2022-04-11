@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: echo -n 0.0.0-dev.$(date -u +'%Y%m%d%H%M%S') > version.txt
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: version
           path: version.txt
@@ -17,11 +17,11 @@ jobs:
     needs: [_version]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
         with:
           name: version
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: 16.x
           registry-url: https://registry.npmjs.org
@@ -49,11 +49,11 @@ jobs:
     needs: [_version]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
         with:
           name: version
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: 16.x
           registry-url: https://registry.npmjs.org
@@ -81,15 +81,15 @@ jobs:
     needs: [_version]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
         with:
           name: version
-      - uses: actions/setup-java@v2
+      - uses: actions/setup-java@v3
         with:
           java-version: 12.x
           distribution: zulu
-      - uses: subosito/flutter-action@v1
+      - uses: subosito/flutter-action@v2
         with:
           flutter-version: 2.5.x
           channel: stable
@@ -108,11 +108,11 @@ jobs:
     needs: [_version]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
         with:
           name: version
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: 16.x
           registry-url: https://registry.npmjs.org
@@ -140,11 +140,11 @@ jobs:
     needs: [_version]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
         with:
           name: version
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: 16.x
           registry-url: https://registry.npmjs.org
@@ -168,15 +168,47 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
+  fsharp-generator:
+    needs: [_version]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
+        with:
+          name: version
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16.x
+          registry-url: https://registry.npmjs.org
+      - run: cp LICENSE fsharp-generator/
+      - run: npm install
+        working-directory: ./fsharp-generator
+      - run: |
+          npm install -g json && json -I -f package.json -e '
+            this.version = "'$(cat ../version.txt)'";
+            this.main = "dist/src/index.js";
+            this.types = "dist/src/index.d.ts";
+            for (const pkg in this.dependencies)
+              if (this.dependencies[pkg].startsWith("file:../"))
+                this.dependencies[pkg] = this.version;
+          '
+        working-directory: ./fsharp-generator
+      - run: npm run build
+        working-directory: ./fsharp-generator
+      - run: npm publish --tag dev
+        working-directory: ./fsharp-generator
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+
   kotlin-generator:
     needs: [_version]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
         with:
           name: version
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: 16.x
           registry-url: https://registry.npmjs.org
@@ -204,11 +236,11 @@ jobs:
     needs: [_version]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
         with:
           name: version
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: 16.x
           registry-url: https://registry.npmjs.org
@@ -236,11 +268,11 @@ jobs:
     needs: [_version]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
         with:
           name: version
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: 16.x
           registry-url: https://registry.npmjs.org
@@ -268,11 +300,11 @@ jobs:
     needs: [_version]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
         with:
           name: version
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: 16.x
           registry-url: https://registry.npmjs.org
@@ -300,32 +332,30 @@ jobs:
     needs: [_version]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
         with:
           name: version
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: 16.x
           registry-url: https://registry.npmjs.org
       - run: cp LICENSE playground/
       - run: npm install && npm install -g json && bash .ci.sh
         working-directory: ./playground
-      - run: npm run build
-        working-directory: ./playground
-        env:
-          NODE_ENV: production
       - run: |
           npm install -g json && json -I -f package.json -e '
             this.version = "'$(cat ../version.txt)'";
-            this.main = "dist/src/index.js";
-            this.types = "dist/src/index.d.ts";
             delete this.dependencies.tslib;
             for (const pkg in this.dependencies)
               if (this.dependencies[pkg].startsWith("file:../"))
                 this.dependencies[pkg] = this.version;
           '
         working-directory: ./playground
+      - run: npm run build
+        working-directory: ./playground
+        env:
+          NODE_ENV: production
       - run: sed -i -E 's_(<base href=")/(">)_\1/playground/\2_' dist/index.html
         working-directory: ./playground
       - run: npm publish --tag dev
@@ -337,11 +367,11 @@ jobs:
     needs: [_version]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
         with:
           name: version
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: 16.x
           registry-url: https://registry.npmjs.org
@@ -369,27 +399,27 @@ jobs:
     needs: [_version]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
         with:
           name: version
-      - uses: actions/setup-dotnet@v1
+      - uses: actions/setup-dotnet@v2
         with:
           dotnet-version: 5.0.x
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
         with:
           node-version: 16.x
-      - run: cp LICENSE dotnet-runtime/
+      - run: cp LICENSE dotnet-runtime/runtime
       - run: npm install && npm install -g json && bash .ci.sh
         working-directory: ./playground
       - run: npm run build
         working-directory: ./playground
         env:
           NODE_ENV: production
-      - run: dotnet pack -c:Release -p:PackageVersion=$(cat ../version.txt)
-        working-directory: ./dotnet-runtime
+      - run: dotnet pack -c:Release -p:PackageVersion=$(cat ../../version.txt)
+        working-directory: ./dotnet-runtime/runtime
       - run: dotnet nuget push bin/**/*.nupkg -k $NUGET_TOKEN -s https://api.nuget.org/v3/index.json
-        working-directory: ./dotnet-runtime
+        working-directory: ./dotnet-runtime/runtime
         env:
           NUGET_TOKEN: ${{ secrets.NUGET_TOKEN }}
 
@@ -397,8 +427,8 @@ jobs:
     needs: [_version]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
+      - uses: actions/checkout@v3
+      - uses: actions/download-artifact@v3
         with:
           name: version
       - run: sed -i -e "s/versionName \"1.0\"/versionName \"$(cat ../../version.txt)\"/g" build.gradle
@@ -423,7 +453,7 @@ jobs:
         working-directory: ./android-runtime/
       - run: echo "${{ secrets.MAVEN_GPG_FILE_CONTENT }}" | base64 -d > "${{ secrets.MAVEN_GPG_KEY_FILE_PATH }}"
         working-directory: ./android-runtime/runtime/
-      - uses: actions/setup-java@v2
+      - uses: actions/setup-java@v3
         with:
           distribution: 'adopt'
           java-version: '11'

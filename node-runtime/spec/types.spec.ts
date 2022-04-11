@@ -114,4 +114,24 @@ describe("Encode/Decode", () => {
       decode({}, "", "bigint", "hello world");
     }).toThrow();
   });
+
+  test("Process Enum", () => {
+    for (const func of [encode, decode]) {
+      expect(func({}, "", ["a", "b"], "a")).toBe("a");
+      expect(func({}, "", ["a", "b"], "b")).toBe("b");
+      expect(() => {
+        func({}, "", ["a", "b"], "c");
+      }).toThrow();
+
+      expect(() => {
+        func({ X: { v: "int" } }, "", ["a", ["b", "X"]], "b");
+      }).toThrow();
+    }
+
+    expect(encode({ X: { v: "int" } }, "", ["a", ["b", "X"]], { tag: "a" })).toBe("a");
+    expect(encode({ X: { v: "int" } }, "", ["a", ["b", "X"]], { tag: "b", v: 4 })).toEqual(["b", { v: 4 }]);
+
+    expect(decode({ X: { v: "int" } }, "", ["a", ["b", "X"]], "a")).toEqual({ tag: "a" });
+    expect(decode({ X: { v: "int" } }, "", ["a", ["b", "X"]], ["b", { v: 4 }])).toEqual({ tag: "b", v: 4 });
+  });
 });

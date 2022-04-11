@@ -360,6 +360,21 @@ describe(Parser, () => {
         },
       },
     );
+
+    expectDoesntParse(
+      `
+        type Foo {
+          a: int !secret
+        }
+
+        type Bar {
+          ...Foo
+        }
+
+        fn Poo(): Bar
+      `,
+      "secret",
+    );
   });
 
   test("handles functions with annotations", () => {
@@ -736,6 +751,74 @@ describe(Parser, () => {
       },
     );
 
+    expectParses(
+      `
+        @rest POST /foo/{bar}
+        fn foo(bar: string !secret): string
+      `,
+      {
+        annotations: {
+          "fn.foo": [
+            {
+              type: "rest",
+              value: {
+                bodyVariable: null,
+                headers: [],
+                method: "POST",
+                path: "/foo/{bar}",
+                pathVariables: ["bar"],
+                queryVariables: [],
+              },
+            },
+          ],
+        },
+        errors: ["Fatal"],
+        functionTable: {
+          foo: {
+            args: {
+              bar: "string",
+            },
+            ret: "string",
+          },
+        },
+        typeTable: {},
+      },
+    );
+
+    expectParses(
+      `
+        @rest POST /foo?{bar}
+        fn foo(bar: string !secret): string
+      `,
+      {
+        annotations: {
+          "fn.foo": [
+            {
+              type: "rest",
+              value: {
+                bodyVariable: null,
+                headers: [],
+                method: "POST",
+                path: "/foo",
+                pathVariables: [],
+                queryVariables: ["bar"],
+              },
+            },
+          ],
+        },
+        errors: ["Fatal"],
+        functionTable: {
+          foo: {
+            args: {
+              bar: "string",
+            },
+            ret: "string",
+          },
+        },
+        typeTable: {},
+      },
+    );
+
     expectDoesntParse(
       `
         @rest HEAD /foo
@@ -807,6 +890,22 @@ describe(Parser, () => {
       `,
       "GET rest endpoint must return something",
     );
+
+    expectDoesntParse(
+      `
+        @rest GET /bobobobo/{bar}
+        fn foo(bar: string !secret): bool
+      `,
+      "marked as secret",
+    );
+
+    expectDoesntParse(
+      `
+        @rest GET /bobobobo?{bar}
+        fn foo(bar: string !secret): bool
+      `,
+      "marked as secret",
+    );
   });
 
   test("handles functions with @hidden", () => {
@@ -849,9 +948,42 @@ describe(Parser, () => {
       },
     );
 
+    expectParses(
+      `
+        type Item enum {
+          first(a: Item[])
+          second(b: Item)
+        }
+      `,
+      {
+        annotations: {},
+        errors: ["Fatal"],
+        functionTable: {},
+        typeTable: {
+          Item: [
+            ["first", "ItemFirst"],
+            ["second", "ItemSecond"],
+          ],
+          ItemFirst: {
+            a: "Item[]",
+          },
+          ItemSecond: {
+            b: "Item",
+          },
+        },
+      },
+    );
+
     expectDoesntParse(
       `
         type Item Item[]
+      `,
+      "Type 'Item' at -:2:9 is recursive but is not an struct",
+    );
+
+    expectDoesntParse(
+      `
+        type Item Item[][]?
       `,
       "Type 'Item' at -:2:9 is recursive but is not an struct",
     );
@@ -868,6 +1000,138 @@ describe(Parser, () => {
         type Item Item
       `,
       "Type 'Item' at -:2:9 is recursive but is not an struct",
+    );
+
+    expectDoesntParse(
+      `
+        type Item {
+          value: Item
+        }
+      `,
+      "Type 'Item' at -:2:9 is infinitely recursive",
+    );
+
+    expectDoesntParse(
+      `
+        type Item enum {
+          first(a: Item)
+          second(b: Item)
+        }
+      `,
+      "Type 'Item' at -:2:9 is infinitely recursive",
+    );
+  });
+
+  test("handles enum with fields", () => {
+    expectParses(
+      `
+        type Shape enum {
+          point
+          circle(radius: float)
+          box(width: float, height: float)
+        }
+      `,
+      {
+        annotations: {},
+        errors: ["Fatal"],
+        functionTable: {},
+        typeTable: {
+          Shape: ["point", ["circle", "ShapeCircle"], ["box", "ShapeBox"]],
+          ShapeBox: {
+            height: "float",
+            width: "float",
+          },
+          ShapeCircle: {
+            radius: "float",
+          },
+        },
+      },
+    );
+  });
+
+  test("merges identical types with the same name", () => {
+    expectParses(
+      `
+        type Test {
+          foo: string
+          bar: int
+        }
+
+        type Test {
+          foo: string
+          bar: int
+        }
+      `,
+      {
+        annotations: {},
+        errors: ["Fatal"],
+        functionTable: {},
+        typeTable: {
+          Test: {
+            bar: "int",
+            foo: "string",
+          },
+        },
+      },
+    );
+
+    expectDoesntParse(
+      `
+        type Test {
+          foo: string
+          bar: int
+        }
+
+        type Test {
+          foo: string
+          bar: uint
+        }
+      `,
+      "Type 'Test' at -:7:9 is defined multiple times (also at -:2:19)",
+    );
+  });
+
+  test("merges identical types with automatic name", () => {
+    expectParses(
+      `
+        type Test {
+          foo: {
+            bar: int
+          }
+        }
+
+        type TestFoo {
+          bar: int
+        }
+      `,
+      {
+        annotations: {},
+        errors: ["Fatal"],
+        functionTable: {},
+        typeTable: {
+          Test: {
+            foo: "TestFoo",
+          },
+          TestFoo: {
+            bar: "int",
+          },
+        },
+      },
+    );
+
+    expectDoesntParse(
+      `
+        type Test {
+          foo: {
+            bar: int
+          }
+        }
+
+        type TestFoo {
+          bar: uint
+        }
+      `,
+      "The name of the type 'TestFoo' at -:8:22 will conflict with 'Test.foo' at -:3:16",
     );
   });
 });
