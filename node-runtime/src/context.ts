@@ -30,6 +30,12 @@ export interface ContextReply {
   result?: unknown;
 }
 
+export interface ContextResponse {
+  statusCode?: number;
+  headers?: Record<string, string>;
+}
+
 export interface Context {
   request: ContextRequest;
+  response: ContextResponse;
 }
