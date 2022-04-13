@@ -514,7 +514,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
 
             await this.executeRequest(request, (ctx, reply) => {
               try {
-                if (ctx?.response.headers) {
+                if (ctx) {
                   for (const [headerKey, headerValue] of ctx.response.headers.entries()) {
                     res.setHeader(headerKey, headerValue);
                   }
