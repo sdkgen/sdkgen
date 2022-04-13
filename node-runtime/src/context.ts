@@ -1,4 +1,4 @@
-import type { IncomingHttpHeaders } from "http";
+import type { IncomingHttpHeaders, OutgoingHttpHeader } from "http";
 import type { Readable } from "stream";
 
 export interface ContextRequest {
@@ -32,7 +32,7 @@ export interface ContextReply {
 
 export interface ContextResponse {
   statusCode?: number;
-  headers?: Record<string, string>;
+  headers: Map<string, OutgoingHttpHeader>;
 }
 
 export interface Context {

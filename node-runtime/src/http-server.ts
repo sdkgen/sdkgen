@@ -515,8 +515,8 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
             await this.executeRequest(request, (ctx, reply) => {
               try {
                 if (ctx?.response.headers) {
-                  for (const [headerName, headerValue] of Object.entries(ctx.response.headers)) {
-                    res.setHeader(headerName, headerValue);
+                  for (const [headerKey, headerValue] of ctx.response.headers.entries()) {
+                    res.setHeader(headerKey, headerValue);
                   }
                 }
 
@@ -764,7 +764,9 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
     const ctx: Context & ExtraContextT = {
       ...this.extraContext,
       request,
-      response: {},
+      response: {
+        headers: new Map(),
+      },
     };
 
     writeReply(ctx, await executeRequest(ctx, this.apiConfig));
@@ -1034,10 +1036,8 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
       res.statusCode = ctx.response.statusCode;
     }
 
-    if (ctx.response.headers) {
-      for (const [key, value] of Object.entries(ctx.response.headers)) {
-        res.setHeader(key, value);
-      }
+    for (const [headerKey, headerValue] of ctx.response.headers.entries()) {
+      res.setHeader(headerKey, headerValue);
     }
 
     switch (ctx.request.version) {
