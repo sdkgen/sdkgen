@@ -24,3 +24,23 @@ O arquivo `api.ts` gerado pelo sdkgen é um módulo que importa `@sdkgen/node-ru
 - Para cada um dos erros definidos na descrição é criada uma classe estendida a partir de `Error` para que você possa utilizar com `throw`.
 - Uma classe `ApiConfig` com a qual você pode criar uma instância da configuração da API (descrito em mais detalhes abaixo).
 - Uma constante nomeada `api`, que é uma instância de `ApiConfig`.
+
+## Uso do sdkgen com um servidor HTTP existente ou Cloud Functions
+
+O sdkgen expõe o método `handleRequest` na sua instância do `SdkgenHttpServer`, abrindo a possibilidade de utilizar o sdkgen com um servidor HTTP existente, como o [Express](https://expressjs.com/) ou, ainda, com uma [Cloud Function](https://cloud.google.com/functions/).
+
+```typescript
+import { SdkgenHttpServer } from "@sdkgen/node-runtime";
+import { createServer } from "http";
+import { api } from "./api";
+
+const sdkgenServer = new SdkgenHttpServer(api, {});
+
+// Primeira possibilidade: uso com um servidor HTTP existente:
+const httpServer = createServer();
+httpServer.on("request", sdkgenServer.handleRequest);
+httpServer.listen(8080);
+
+// Segunda possibilidade: uso com uma Cloud Function:
+exports.api = sdkgenServer.handleRequest; // Aqui, será criada uma Cloud Function com o nome "api", que funciona normalmente como uma API em sdkgen.
+```

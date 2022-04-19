@@ -629,7 +629,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
     }
   }
 
-  private handleRequest(req: IncomingMessage, res: ServerResponse) {
+  public handleRequest(req: IncomingMessage, res: ServerResponse) {
     const hrStart = process.hrtime();
 
     req.on("error", err => {
