@@ -75,7 +75,10 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
 
   private ignoredUrlPrefix = "";
 
-  constructor(public apiConfig: BaseApiConfig<ExtraContextT>, private extraContext: ExtraContextT) {
+  private extraContext: ExtraContextT;
+
+  constructor(public apiConfig: BaseApiConfig<ExtraContextT>, ...maybeExtraContext: {} extends ExtraContextT ? [{}?] : [ExtraContextT]) {
+    this.extraContext = (maybeExtraContext[0] ?? {}) as ExtraContextT;
     this.httpServer = createServer(this.handleRequest.bind(this));
     this.enableCors();
     this.attachRestHandlers();
@@ -1084,3 +1087,20 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
     }
   }
 }
+
+// type SdkgenHttpServerConstructor<ExtraContextT = unknown> = {} extends ExtraContextT
+//   ? ExtraContextT extends {}
+//     ? new (apiConfig: BaseApiConfig<ExtraContextT>) => SdkgenHttpServer
+//     : new (apiConfig: BaseApiConfig<ExtraContextT>, extraContext: ExtraContextT) => SdkgenHttpServer
+//   : new (apiConfig: BaseApiConfig<ExtraContextT>, extraContext: ExtraContextT) => SdkgenHttpServer;
+
+// function wrap(constructor: typeof SdkgenHttpServerBase) {
+//   return constructor as unknown as SdkgenHttpServerConstructor;
+// }
+
+// // eslint-disable-next-line @typescript-eslint/naming-convention
+// export const SdkgenHttpServer = wrap(class SdkgenHttpServer<ExtraContextT = unknown> extends SdkgenHttpServerBase<ExtraContextT> {});
+
+// export type SdkgenHttpServer<ExtraContextT = unknown> = {
+//   [Prop in keyof SdkgenHttpServerBase<ExtraContextT>]: SdkgenHttpServerBase<ExtraContextT>[Prop];
+// };
