@@ -39,7 +39,7 @@ function objectFromEntries<T>(entries: Array<[string, T]>) {
   return Object.assign({}, ...Array.from(entries, ([k, v]) => ({ [k]: v }))) as { [key: string]: T };
 }
 
-function typeToSchema(definitions: Record<string, JSONSchema | undefined>, type: Type): JSONSchema {
+function typeToSchema(definitions: Record<string, JSONSchema | undefined>, type: Type): JSONSchema & object {
   if (type instanceof EnumType) {
     return {
       enum: type.values.map(x => x.value),
