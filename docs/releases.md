@@ -1,5 +1,19 @@
 # Releases
 
+## 2.1.0 (2022-05-04)
+
+- Suporte a utilizar o sdkgen em serviços Serverless (como Google Cloud Functions ou AWS Lambda), ou junto a servidores Node.js existentes, como o Express.js. Para tal basta criar uma instância do `SdkgenHttpServer` como usual, e então registrar a propriedade `handleRequest` como função para receber requisições HTTP. Ver detalhes na [documentação](https://sdkgen.github.io/dev/typescript_nodeserver/intro/#uso-do-sdkgen-com-um-servidor-http-existente-ou-cloud-functions). See ([#678](https://github.com/sdkgen/sdkgen/pull/678)).
+- Add `ctx.response.headers` and `ctx.response.statusCode` to allow adding headers and overriding the response status code on any request. Specially useful for REST requests. See ([#676](https://github.com/sdkgen/sdkgen/pull/676)).
+- Correções na validação de tipos quando mais de um tipo possui o mesmo nome em locais diferentes. See ([#672](https://github.com/sdkgen/sdkgen/pull/672)).
+- Segundo argumento do `SdkgenHttpServer` agora é opcional quando o `ExtraContext` não é utilizado, simplificando o código quando injeção de dependência não é necessário.
+- Atualização de dependências.
+
+As contribuições de 2 pessoas tornaram essa nova versão possível: [@dgadelha](https://github.com/dgadelha) e [@lbguilherme](https://github.com/lbguilherme).
+
+## 2.0.2 (2022-03-14)
+
+- Relançamento da 2.0.1 para correção de falha no processo de publicação.
+
 ## 2.0.1 (2022-03-07)
 
 - Correção no uso do playground em produção.
