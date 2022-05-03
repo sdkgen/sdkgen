@@ -515,12 +515,25 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
               version: 3,
             };
 
-            await this.executeRequest(request, (_ctx, reply) => {
+            await this.executeRequest(request, (ctx, reply) => {
               try {
+                if (ctx) {
+                  for (const [headerKey, headerValue] of ctx.response.headers.entries()) {
+                    res.setHeader(headerKey, headerValue);
+                  }
+                }
+
+                if (ctx?.response.statusCode) {
+                  res.statusCode = ctx.response.statusCode;
+                }
+
                 if (reply.error) {
                   const error = this.makeResponseError(reply.error);
 
-                  res.statusCode = error.type === "Fatal" ? 500 : 400;
+                  if (!ctx?.response.statusCode) {
+                    res.statusCode = error.type === "Fatal" ? 500 : 400;
+                  }
+
                   res.setHeader("content-type", "application/json");
                   res.write(JSON.stringify(error));
                   res.end();
@@ -536,7 +549,10 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
 
                   if (type instanceof OptionalType) {
                     if (reply.result === null) {
-                      res.statusCode = ann.method === "GET" ? 404 : 204;
+                      if (!ctx?.response.statusCode) {
+                        res.statusCode = ann.method === "GET" ? 404 : 204;
+                      }
+
                       res.end();
                       return;
                     }
@@ -616,7 +632,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
     }
   }
 
-  private handleRequest(req: IncomingMessage, res: ServerResponse) {
+  public handleRequest(req: IncomingMessage, res: ServerResponse) {
     const hrStart = process.hrtime();
 
     req.on("error", err => {
@@ -751,6 +767,9 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
     const ctx: Context & ExtraContextT = {
       ...this.extraContext,
       request,
+      response: {
+        headers: new Map(),
+      },
     };
 
     writeReply(ctx, await executeRequest(ctx, this.apiConfig));
@@ -1016,6 +1035,14 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
 
     this.log(`${ctx.request.id} [${duration.toFixed(6)}s] ${ctx.request.name}() -> ${reply.error ? this.makeResponseError(reply.error).type : "OK"}`);
 
+    if (ctx.response.statusCode) {
+      res.statusCode = ctx.response.statusCode;
+    }
+
+    for (const [headerKey, headerValue] of ctx.response.headers.entries()) {
+      res.setHeader(headerKey, headerValue);
+    }
+
     switch (ctx.request.version) {
       case 1: {
         const response = {
@@ -1028,7 +1055,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
           result: reply.error ? null : reply.result,
         };
 
-        if (response.error) {
+        if (response.error && !ctx.response.statusCode) {
           res.statusCode = this.makeResponseError(response.error).type === "Fatal" ? 500 : 400;
         }
 
@@ -1047,7 +1074,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
           sessionId: ctx.request.extra.sessionId,
         };
 
-        if (response.error) {
+        if (response.error && !ctx.response.statusCode) {
           res.statusCode = this.makeResponseError(response.error).type === "Fatal" ? 500 : 400;
         }
 
@@ -1064,7 +1091,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
           result: reply.error ? null : reply.result,
         };
 
-        if (response.error) {
+        if (response.error && !ctx.response.statusCode) {
           res.statusCode = this.makeResponseError(response.error).type === "Fatal" ? 500 : 400;
         }
 
