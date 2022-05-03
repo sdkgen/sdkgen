@@ -632,7 +632,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
     }
   }
 
-  public handleRequest(req: IncomingMessage, res: ServerResponse) {
+  public handleRequest = (req: IncomingMessage, res: ServerResponse) => {
     const hrStart = process.hrtime();
 
     req.on("error", err => {
@@ -671,7 +671,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
     req.on("end", () => {
       this.handleRequestWithBody(req, res, Buffer.concat(body), hrStart).catch((e: unknown) => this.writeReply(res, null, { error: e }, hrStart));
     });
-  }
+  };
 
   private async handleRequestWithBody(req: IncomingMessage, res: ServerResponse, body: Buffer, hrStart: [number, number]) {
     const { pathname, query } = parseUrl(req.url ?? "");
