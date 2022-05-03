@@ -1,7 +1,7 @@
 import type { AstRoot } from "../ast";
 import { ErrorNode, VoidPrimitiveType } from "../ast";
 import { CheckMultipleDeclarationVisitor } from "./01_check_multiple_declaration";
-import { GiveStructAndEnumNamesVisitor } from "./02_give_struct_and_enum_names";
+import { GiveStructAndEnumNamesTransformer } from "./02_give_struct_and_enum_names";
 import { MatchTypeDefinitionsVisitor } from "./03_match_type_definitions";
 import { CheckDontReturnSecretVisitor } from "./04_check_dont_return_secret";
 import { ExpandSpreadsVisitor } from "./05_expand_spreads";
@@ -16,7 +16,7 @@ export function analyse(root: AstRoot): void {
   }
 
   new CheckMultipleDeclarationVisitor(root).process();
-  new GiveStructAndEnumNamesVisitor(root).process();
+  new GiveStructAndEnumNamesTransformer(root).process();
   new MatchTypeDefinitionsVisitor(root).process();
   new CheckDontReturnSecretVisitor(root).process();
   new ExpandSpreadsVisitor(root).process();

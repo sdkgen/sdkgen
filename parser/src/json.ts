@@ -126,6 +126,10 @@ export function astToJson(ast: AstRoot): AstJson {
   }
 
   for (const { name, fields } of ast.structTypes) {
+    if (name in typeTable) {
+      throw new Error(`Duplicate struct type ${name}`);
+    }
+
     typeTable[name] = {};
     const obj = typeTable[name] as Record<string, TypeDescription>;
 
@@ -144,6 +148,10 @@ export function astToJson(ast: AstRoot): AstJson {
   }
 
   for (const { name, values } of ast.enumTypes) {
+    if (name in typeTable) {
+      throw new Error(`Duplicate enum type ${name}`);
+    }
+
     typeTable[name] = values.map(v => {
       if (!v.struct) {
         return v.value;

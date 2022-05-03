@@ -300,6 +300,32 @@ describe(Parser, () => {
         },
       },
     );
+
+    expectParses(
+      `
+        type Test {
+          foo: enum { bar baz }
+        }
+
+        type Test2 {
+          ...Test
+        }
+      `,
+      {
+        annotations: {},
+        errors: ["Fatal"],
+        functionTable: {},
+        typeTable: {
+          Test: {
+            foo: "TestFoo",
+          },
+          Test2: {
+            foo: "TestFoo",
+          },
+          TestFoo: ["bar", "baz"],
+        },
+      },
+    );
   });
 
   test("handles functions with arguments", () => {
