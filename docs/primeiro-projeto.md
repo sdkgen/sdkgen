@@ -8,7 +8,7 @@ Vamos criar nosso primeiro projeto utilizando o sdkgen! Antes de qualquer coisa 
 npm init -y
 npm i --save-dev typescript @sdkgen/cli
 npm i @sdkgen/node-runtime
-npx tsc --init -t esnext
+npx tsc --init -t es6
 ```
 
 O próximo passo será criar um arquivo de descrição da API. Nele você irá escrever todos os tipos customizados e as funções de sua API. Vamos nomear de `api.sdkgen`:
