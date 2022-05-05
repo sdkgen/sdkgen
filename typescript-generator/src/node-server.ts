@@ -37,7 +37,7 @@ export { Fatal } from "@sdkgen/node-runtime";
   }
 
   code += `export class ApiConfig<ExtraContextT> extends BaseApiConfig<ExtraContextT> {
-    fn!: {${ast.operations
+    declare fn: {${ast.operations
       .map(
         op => `
         ${op.name}: (ctx: Context & ExtraContextT, args: {${op.args
