@@ -1,6 +1,6 @@
 # Releases
 
-## 2.1.0 (2022-05-04)
+## 2.1.0 (2022-05-09)
 
 - Suporte a utilizar o sdkgen em serviços Serverless (como Google Cloud Functions ou AWS Lambda), ou junto a servidores Node.js existentes, como o Express.js. Para tal basta criar uma instância do `SdkgenHttpServer` como usual, e então registrar a propriedade `handleRequest` como função para receber requisições HTTP. Ver detalhes na [documentação](https://sdkgen.github.io/dev/typescript_nodeserver/intro/#uso-do-sdkgen-com-um-servidor-http-existente-ou-cloud-functions). Ver [#678](https://github.com/sdkgen/sdkgen/pull/678).
 - Adicionado `ctx.response.headers` e `ctx.response.statusCode` para permitir modificar os headers e o status code da resposta de qualquer requisição, especialmente útil para requisições REST. Ver [#676](https://github.com/sdkgen/sdkgen/pull/676).
