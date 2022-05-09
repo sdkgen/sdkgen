@@ -10,22 +10,8 @@
 </header>
 
 <p>Ferramenta para explorar e invocar APIs feitas com sdkgen.</p>
+<p>Feito com ❤️ no Brasil 🇧🇷</p>
 
-<section>
-  <h4>Dependências</h4>
-
-  <mat-chip-list [selectable]="false" class="mat-chip-list-stacked">
-    <a
-      *ngFor="let dependency of dependencies"
-      [href]="'https://www.npmjs.com/package/' + dependency[0] + '/v/' + dependency[1]"
-      target="_blank"
-      rel="external noopener noreferrer"
-    >
-      <mat-chip [disableRipple]="true">
-        <span class="dependency-name">{{ dependency[0] }}</span>
-        <s></s>
-        <span class="dependency-version">{{ dependency[1] }}</span>
-      </mat-chip>
-    </a>
-  </mat-chip-list>
-</section>
+<a href="https://sdkgen.github.io/" rel="external noreferer" target="_blank" mat-stroked-button>Documentação</a>
+<a href="https://github.com/sdkgen/sdkgen" rel="external noreferer" target="_blank" mat-stroked-button>Código-fonte</a>
+<a href="https://github.com/sdkgen/sdkgen/issues/new" rel="external noreferer" target="_blank" mat-stroked-button>Reportar um problema</a>
