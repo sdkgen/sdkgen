@@ -7,6 +7,7 @@
 - Correções na validação de tipos quando mais de um tipo possui o mesmo nome em locais diferentes. Ver [#672](https://github.com/sdkgen/sdkgen/pull/672).
 - Segundo argumento do `SdkgenHttpServer` agora é opcional quando o `ExtraContext` não é utilizado, simplificando o código quando injeção de dependência não é necessário.
 - Adicionado suporte ao ES2022 com TypeScript. Ver [#682](https://github.com/sdkgen/sdkgen/pull/682).
+- Melhoria no diálogo de "Sobre" do playground. Ver [#683](https://github.com/sdkgen/sdkgen/pull/683).
 - Atualização de dependências.
 
 As contribuições de 2 pessoas tornaram essa nova versão possível: [@dgadelha](https://github.com/dgadelha) e [@lbguilherme](https://github.com/lbguilherme).
