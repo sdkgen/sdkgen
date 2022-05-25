@@ -15,30 +15,36 @@ export function apiTestWrapper<T>(api: T extends BaseApiConfig<Context & infer _
   const wrappedApi = new (api.constructor as any)();
 
   for (const functionName of Object.keys(api.astJson.functionTable)) {
-    wrappedApi.fn[functionName] = async (ctx: Partial<Context>, args: any) => {
+    wrappedApi.fn[functionName] = async (partialCtx: Partial<Context>, args: any) => {
       const encodedArgs = encode(api.astJson.typeTable, `fn.${functionName}.args`, (api.astJson.functionTable as any)[functionName].args, args);
 
-      ctx.request = {
-        args: encodedArgs as Record<string, unknown>,
-        deviceInfo: ctx.request?.deviceInfo ?? {
-          fingerprint: null,
-          id: randomBytes(16).toString("hex"),
-          language: null,
-          platform: null,
-          timezone: null,
-          type: "test",
-          version: null,
+      const ctx: Context = {
+        ...partialCtx,
+        request: {
+          args: encodedArgs as Record<string, unknown>,
+          deviceInfo: partialCtx.request?.deviceInfo ?? {
+            fingerprint: null,
+            id: randomBytes(16).toString("hex"),
+            language: null,
+            platform: null,
+            timezone: null,
+            type: "test",
+            version: null,
+          },
+          extra: partialCtx.request?.extra ?? {},
+          files: partialCtx.request?.files ?? [],
+          headers: partialCtx.request?.headers ?? {},
+          id: partialCtx.request?.id ?? randomBytes(16).toString("hex"),
+          ip: partialCtx.request?.ip ?? "0.0.0.0",
+          name: functionName,
+          version: 3,
         },
-        extra: ctx.request?.extra ?? {},
-        files: ctx.request?.files ?? [],
-        headers: ctx.request?.headers ?? {},
-        id: ctx.request?.id ?? randomBytes(16).toString("hex"),
-        ip: ctx.request?.ip ?? "0.0.0.0",
-        name: functionName,
-        version: 3,
+        response: {
+          headers: new Map(),
+        },
       };
 
-      const reply = await executeRequest(ctx as Context, api);
+      const reply = await executeRequest(ctx, api);
 
       if (reply.error) {
         throw reply.error;
