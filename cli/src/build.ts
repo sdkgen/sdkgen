@@ -17,7 +17,7 @@ import commandLineArgs from "command-line-args";
 import commandLineUsage from "command-line-usage";
 
 const optionDefinitions = [
-  { defaultOption: true, description: "Specifies the source file", name: "sourcew", multiple: true },
+  { defaultOption: true, description: "Specifies the source file", name: "sources", multiple: true },
   { alias: "o", description: "Specifies the output file", name: "output" },
   { alias: "t", description: "Specifies the target platform and language", name: "target" },
   { alias: "h", description: "Display this usage guide.", name: "help", type: Boolean },
