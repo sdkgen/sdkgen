@@ -79,7 +79,7 @@ export class Parser {
     throw "Not implemented";
   };
 
-  constructor(source: Lexer | string) {
+  constructor(source: Lexer | string | Array<Lexer | string>) {
     try {
       // eslint-disable-next-line
       this.readFileSync = require("fs").readFileSync;
@@ -87,11 +87,9 @@ export class Parser {
       // do nothing
     }
 
-    if (source instanceof Lexer) {
-      this.lexers = [source];
-    } else {
-      this.lexers = [new Lexer(this.readFileSync(source).toString(), source)];
-    }
+    const sources = Array.isArray(source) ? [...source].reverse() : [source];
+
+    this.lexers = sources.map(x => (x instanceof Lexer ? x : new Lexer(this.readFileSync(x).toString(), x)));
 
     this.nextToken();
   }
