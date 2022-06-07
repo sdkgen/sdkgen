@@ -246,7 +246,6 @@ let decodeOptional<'T> (decode_: JsonElement -> string -> 'T) (json_: JsonElemen
 let decodeDateTime (json_: JsonElement) (path_: string) =
   match json_.ValueKind, json_ with
   | JsonValueKind.String, DateTime value -> value
-  | JsonValueKind.String, DateTime value -> value
   | _ -> raise (FatalException($"'{path_}' must be a datetime."))
 
 let decodeDate (json_: JsonElement) (path_: string) =
