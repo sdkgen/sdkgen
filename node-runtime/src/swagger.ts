@@ -1,5 +1,6 @@
 import type { Type } from "@sdkgen/parser";
 import {
+  JsonPrimitiveType,
   ArrayType,
   Base64PrimitiveType,
   BigIntPrimitiveType,
@@ -133,6 +134,8 @@ function typeToSchema(definitions: Record<string, JSONSchema | undefined>, type:
     return {
       type: "string",
     };
+  } else if (type instanceof JsonPrimitiveType) {
+    return {};
   } else if (type instanceof OptionalType) {
     return {
       oneOf: [typeToSchema(definitions, type.base), { type: "null" }],
