@@ -22,12 +22,14 @@ export interface ContextRequest {
     name: string;
     contents: Readable;
   }>;
+  sessionData: Record<string, string | undefined>;
 }
 
 export interface ContextReply {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   error?: any;
   result?: unknown;
+  sessionData?: Record<string, string | null | undefined>;
 }
 
 export interface ContextResponse {
@@ -38,4 +40,8 @@ export interface ContextResponse {
 export interface Context {
   request: ContextRequest;
   response: ContextResponse;
+  sessionData: {
+    get(key: string): string | null;
+    set(key: string, value: string | null): void;
+  };
 }

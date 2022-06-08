@@ -6,7 +6,11 @@ import { decode, encode } from "./encode-decode";
 import { Fatal } from "./error";
 import { has } from "./utils";
 
-export async function executeRequest<ExtraContextT>(ctx: Context & ExtraContextT, apiConfig: BaseApiConfig<ExtraContextT>) {
+export async function executeRequest<ExtraContextT>(
+  ctx: Context & ExtraContextT,
+  apiConfig: BaseApiConfig<ExtraContextT>,
+  sessionData: Record<string, string | null | undefined>,
+) {
   // eslint-disable-next-line func-style
   let next = async () => {
     try {
@@ -22,7 +26,7 @@ export async function executeRequest<ExtraContextT>(ctx: Context & ExtraContextT
       const ret = (await functionImplementation(ctx, args)) as unknown;
       const encodedRet = encode(apiConfig.astJson.typeTable, `${ctx.request.name}.ret`, functionDescription.ret, ret);
 
-      return { result: encodedRet } as ContextReply;
+      return { result: encodedRet, sessionData } as ContextReply;
     } catch (error) {
       return { error } as ContextReply;
     }
@@ -50,15 +54,17 @@ export async function executeRequest<ExtraContextT>(ctx: Context & ExtraContextT
     if (functionAst) {
       const allowedErrors = functionAst.annotations.filter(ann => ann instanceof ThrowsAnnotation).map(ann => (ann as ThrowsAnnotation).error);
 
+      const replyError = reply.error as unknown;
+
       if (
-        typeof reply.error !== "object" ||
-        reply.error === null ||
-        !has(reply.error, "type") ||
-        typeof reply.error.type !== "string" ||
-        (allowedErrors.length > 0 && !allowedErrors.includes(reply.error.type)) ||
-        !apiConfig.astJson.errors.map(error => (typeof error === "string" ? error : error[0])).includes(reply.error.type)
+        typeof replyError !== "object" ||
+        replyError === null ||
+        !has(replyError, "type") ||
+        typeof replyError.type !== "string" ||
+        (allowedErrors.length > 0 && !allowedErrors.includes(replyError.type)) ||
+        !apiConfig.astJson.errors.map(error => (typeof error === "string" ? error : error[0])).includes(replyError.type)
       ) {
-        Object.defineProperty(reply.error, "type", { value: "Fatal" });
+        Object.defineProperty(replyError, "type", { value: "Fatal" });
       }
     }
   }

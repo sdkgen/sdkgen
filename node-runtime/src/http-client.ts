@@ -25,6 +25,8 @@ export class SdkgenHttpClient {
 
   extra = new Map<string, unknown>();
 
+  private sessionData: Record<string, string> = {};
+
   constructor(baseUrl: string, private astJson: DeepReadonly<AstJson>, private errClasses: ErrClasses) {
     this.baseUrl = new URL(baseUrl);
   }
@@ -51,6 +53,7 @@ export class SdkgenHttpClient {
       },
       name: functionName,
       requestId: ctx?.request?.id ? ctx.request.id + randomBytes(6).toString("hex") : randomBytes(16).toString("hex"),
+      sessionData: Object.keys(this.sessionData).length ? this.sessionData : undefined,
       version: 3,
     });
 
@@ -78,6 +81,16 @@ export class SdkgenHttpClient {
             if (has(response, "error") && response.error) {
               reject(response.error);
             } else {
+              if (has(response, "sessionData") && typeof response.sessionData === "object" && response.sessionData) {
+                for (const [key, value] of Object.entries(response.sessionData)) {
+                  if (value === null) {
+                    delete this.sessionData[key];
+                  } else if (typeof value === "string") {
+                    this.sessionData[key] = value;
+                  }
+                }
+              }
+
               resolve(has(response, "result") ? response.result : null);
             }
           } catch (error) {

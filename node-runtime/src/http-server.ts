@@ -513,6 +513,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
               ip,
               name: op.name,
               version: 3,
+              sessionData: {},
             };
 
             await this.executeRequest(request, (ctx, reply) => {
@@ -774,15 +775,30 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
   }
 
   private async executeRequest(request: ContextRequest, writeReply: (ctx: Context | null, reply: ContextReply) => void) {
+    const responseSessionData: Record<string, string | null | undefined> = {};
+
     const ctx: Context & ExtraContextT = {
       ...this.extraContext,
       request,
       response: {
         headers: new Map(),
       },
+      sessionData: {
+        get(key) {
+          return responseSessionData[key] === null ? null : responseSessionData[key] ?? request.sessionData[key] ?? null;
+        },
+
+        set(key, value) {
+          if (value === request.sessionData[key]) {
+            delete responseSessionData[key];
+          } else {
+            responseSessionData[key] = value;
+          }
+        },
+      },
     };
 
-    writeReply(ctx, await executeRequest(ctx, this.apiConfig));
+    writeReply(ctx, await executeRequest(ctx, this.apiConfig, responseSessionData));
   }
 
   private parseRequest(req: IncomingMessage, body: string, ip: string): ContextRequest | null {
@@ -861,6 +877,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
       ip,
       name: parsed.name,
       version: 1,
+      sessionData: {},
     };
   }
 
@@ -916,6 +933,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
       ip,
       name: parsed.name,
       version: 2,
+      sessionData: {},
     };
   }
 
@@ -938,6 +956,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
           extra: "json?",
           name: "string",
           requestId: "string?",
+          sessionData: "json?",
         },
       } as const,
       "root",
@@ -954,6 +973,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
       type: null,
       version: null,
     };
+
     const deviceId = deviceInfo.id ?? randomBytes(16).toString("hex");
 
     if (!parsed.args || Array.isArray(parsed.args) || typeof parsed.args !== "object") {
@@ -978,6 +998,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
       ip,
       name: parsed.name,
       version: 3,
+      sessionData: parsed.sessionData ? Object.fromEntries(Object.entries(parsed.sessionData).filter(([_, value]) => typeof value === "string")) : {},
     };
   }
 
@@ -1099,6 +1120,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
           error: reply.error ? this.makeResponseError(reply.error) : null,
           host: hostname(),
           result: reply.error ? null : reply.result,
+          sessionData: reply.sessionData && Object.keys(reply.sessionData).length ? reply.sessionData : undefined,
         };
 
         if (response.error && !ctx.response.statusCode) {
