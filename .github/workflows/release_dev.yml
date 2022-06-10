@@ -91,7 +91,7 @@ jobs:
           distribution: zulu
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: 2.5.x
+          flutter-version: 3.0.x
           channel: stable
       - run: cp LICENSE dart-runtime/
       - run: flutter pub get
