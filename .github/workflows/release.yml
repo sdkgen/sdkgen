@@ -76,10 +76,13 @@ jobs:
         working-directory: ./dart-runtime
       - run: 'sed ''s/version: 0.0.0/version: ''$(echo "${{ github.ref }}" | cut -d''/'' -f3)''/'' -i pubspec.yaml'
         working-directory: ./dart-runtime
-      - run: mkdir -p $PUB_CACHE && echo "$PUB_CREDENTIALS" > $PUB_CACHE/credentials.json && flutter pub pub publish -v -f
+      - run: |
+          export PUB_CACHE=$GITHUB_WORKSPACE/pub-cache && \
+          mkdir -p $PUB_CACHE && \
+          echo "$PUB_CREDENTIALS" > $PUB_CACHE/credentials.json && \
+          flutter pub pub publish -v -f
         working-directory: ./dart-runtime
         env:
-          PUB_CACHE: ../pub-cache
           PUB_CREDENTIALS: ${{ secrets.PUB_CREDENTIALS }}
 
   typescript-generator:
