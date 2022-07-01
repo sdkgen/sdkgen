@@ -503,6 +503,9 @@ describe(Parser, () => {
 
         @rest GET /users/count?{since}&{until}
         fn userCount(since: date?, until: date?): uint
+
+        @rest GET /users/{userId}/addresses/{addressId}
+        fn userAddress(userId: string, addressId: string): string
       `,
       {
         annotations: {
@@ -545,6 +548,19 @@ describe(Parser, () => {
               },
             },
           ],
+          "fn.userAddress": [
+            {
+              type: "rest",
+              value: {
+                bodyVariable: null,
+                headers: [],
+                method: "GET",
+                path: "/users/{userId}/addresses/{addressId}",
+                pathVariables: ["userId", "addressId"],
+                queryVariables: [],
+              },
+            },
+          ],
         },
         errors: ["Fatal"],
         functionTable: {
@@ -564,6 +580,13 @@ describe(Parser, () => {
               until: "date?",
             },
             ret: "uint",
+          },
+          userAddress: {
+            args: {
+              userId: "string",
+              addressId: "string",
+            },
+            ret: "string",
           },
         },
         typeTable: {},
