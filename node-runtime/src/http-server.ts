@@ -1124,20 +1124,3 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
     }
   }
 }
-
-// type SdkgenHttpServerConstructor<ExtraContextT = unknown> = {} extends ExtraContextT
-//   ? ExtraContextT extends {}
-//     ? new (apiConfig: BaseApiConfig<ExtraContextT>) => SdkgenHttpServer
-//     : new (apiConfig: BaseApiConfig<ExtraContextT>, extraContext: ExtraContextT) => SdkgenHttpServer
-//   : new (apiConfig: BaseApiConfig<ExtraContextT>, extraContext: ExtraContextT) => SdkgenHttpServer;
-
-// function wrap(constructor: typeof SdkgenHttpServerBase) {
-//   return constructor as unknown as SdkgenHttpServerConstructor;
-// }
-
-// // eslint-disable-next-line @typescript-eslint/naming-convention
-// export const SdkgenHttpServer = wrap(class SdkgenHttpServer<ExtraContextT = unknown> extends SdkgenHttpServerBase<ExtraContextT> {});
-
-// export type SdkgenHttpServer<ExtraContextT = unknown> = {
-//   [Prop in keyof SdkgenHttpServerBase<ExtraContextT>]: SdkgenHttpServerBase<ExtraContextT>[Prop];
-// };
