@@ -73,7 +73,7 @@ function annotationToJson(ann: Annotation): AnnotationJson {
         headers: [...ann.headers.entries()].sort(([a], [b]) => a.localeCompare(b)),
         method: ann.method,
         path: ann.path,
-        pathVariables: [...ann.pathVariables].sort((a, b) => a.localeCompare(b)),
+        pathVariables: ann.pathVariables,
         queryVariables: [...ann.queryVariables].sort((a, b) => a.localeCompare(b)),
       },
     };
