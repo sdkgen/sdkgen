@@ -31,10 +31,24 @@ function getDeviceId() {
 
     return deviceId;
   } catch (e) {
+    return fallbackDeviceId;
+  }
+}
+
+function getSessionData() {
+  try {
+    return JSON.parse(localStorage.getItem("sessionData") ?? "{}") as Record<string, string>;
+  } catch (e) {
+    return {};
+  }
+}
+
+function saveSessionData(sessionData: Record<string, string>) {
+  try {
+    localStorage.setItem("sessionData", JSON.stringify(sessionData));
+  } catch (e) {
     //
   }
-
-  return fallbackDeviceId;
 }
 
 function has<P extends PropertyKey>(target: object, property: P): target is { [K in P]: unknown } {
@@ -68,6 +82,8 @@ export class SdkgenHttpClient {
       extra[key] = value;
     });
 
+    const sessionData = getSessionData();
+
     const request = {
       args: encode(this.astJson.typeTable, `${functionName}.args`, func.args, args),
       deviceInfo: {
@@ -83,6 +99,7 @@ export class SdkgenHttpClient {
       extra,
       name: functionName,
       requestId: randomBytesHex(16),
+      sessionData,
       version: 3,
     };
 
@@ -105,6 +122,19 @@ export class SdkgenHttpClient {
               reject(response.error);
               this.errorHook(response.error, functionName, args);
             } else {
+              if (has(response, "sessionData") && typeof response.sessionData === "object" && response.sessionData) {
+                for (const [key, value] of Object.entries(response.sessionData)) {
+                  // eslint-disable-next-line max-depth
+                  if (value === null) {
+                    delete sessionData[key];
+                  } else if (typeof value === "string") {
+                    sessionData[key] = value;
+                  }
+                }
+
+                saveSessionData(sessionData);
+              }
+
               resolve(has(response, "result") ? response.result : null);
             }
           } catch (e) {
