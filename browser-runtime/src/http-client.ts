@@ -103,7 +103,6 @@ export class SdkgenHttpClient {
           try {
             if (has(response, "error") && response.error) {
               reject(response.error);
-              this.errorHook(response.error, functionName, args);
             } else {
               resolve(has(response, "result") ? response.result : null);
             }
@@ -111,19 +110,20 @@ export class SdkgenHttpClient {
             const err = { message: `${e}`, type: "Fatal" };
 
             reject(err);
-            this.errorHook(err, functionName, args);
           }
         } catch (e) {
           const err = { message: `Falha de conexão com o servidor`, type: "Fatal" };
 
           reject(err);
-          this.errorHook(err, functionName, args);
         }
       };
 
       req.send(JSON.stringify(request));
     }).catch((error: object) => {
       this.errorHook(error, functionName, args);
+
+      let newError;
+
       if (has(error, "type") && has(error, "message") && typeof error.type === "string" && typeof error.message === "string") {
         const errClass = this.errClasses[error.type];
 
@@ -132,17 +132,22 @@ export class SdkgenHttpClient {
 
           if (errorJson) {
             if (Array.isArray(errorJson) && has(error, "data")) {
-              throw new errClass(error.message, decode(this.astJson.typeTable, `${errClass.name}.data`, errorJson[1], error.data));
+              newError = new errClass(error.message, decode(this.astJson.typeTable, `${errClass.name}.data`, errorJson[1], error.data));
             } else {
-              throw new errClass(error.message, undefined);
+              newError = new errClass(error.message, undefined);
             }
+
+            (newError as unknown as { type: string }).type = error.type;
           }
         }
 
-        throw new (this.errClasses.Fatal as new (message: string) => SdkgenError)(`${error.type}: ${error.message}`);
+        newError = new (this.errClasses.Fatal as new (message: string) => SdkgenError)(`${error.type}: ${error.message}`);
+        (newError as unknown as { type: string }).type = "Fatal";
       } else {
         throw error;
       }
+
+      throw newError;
     });
 
     const ret = decode(this.astJson.typeTable, `${functionName}.ret`, func.ret, encodedRet);
