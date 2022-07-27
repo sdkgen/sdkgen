@@ -36,7 +36,7 @@
     "@angular/platform-browser": "~13.3.6",
     "@angular/platform-browser-dynamic": "~13.3.6",
     "@angular/router": "~13.3.6",
-    "@cubos/eslint-config": "^1.0.614034",
+    "@cubos/eslint-config": "^2.0.0",
     "@materia-ui/ngx-monaco-editor": "^6.0.0",
     "@sdkgen/browser-runtime": "file:../browser-runtime",
     "@sdkgen/csharp-generator": "file:../csharp-generator",
