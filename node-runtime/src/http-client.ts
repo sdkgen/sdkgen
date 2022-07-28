@@ -18,6 +18,7 @@ import { has } from "./utils";
 
 interface ErrClasses {
   [className: string]: (new (message: string, data: any) => SdkgenErrorWithData<any>) | (new (message: string) => SdkgenError) | undefined;
+  Fatal: new (message: string) => SdkgenError;
 }
 
 export class SdkgenHttpClient {
@@ -98,23 +99,24 @@ export class SdkgenHttpClient {
 
       req.write(requestBody);
       req.end();
-    }).catch(error => {
+    }).catch((error: object) => {
       if (has(error, "type") && has(error, "message") && typeof error.type === "string" && typeof error.message === "string") {
-        const errClass = this.errClasses[error.type];
+        const errClass = this.errClasses[error.type] ?? this.errClasses.Fatal;
+        const errType = errClass.name;
 
-        if (errClass) {
-          const errorJson = this.astJson.errors.find(err => (Array.isArray(err) ? err[0] === error.type : err === error.type));
+        const errorJson = this.astJson.errors.find(err => (Array.isArray(err) ? err[0] === errType : err === errType));
 
-          if (errorJson) {
-            if (Array.isArray(errorJson) && has(error, "data")) {
-              throw new errClass(error.message, decode(this.astJson.typeTable, `${errClass.name}.data`, errorJson[1], error.data));
-            } else {
-              throw new errClass(error.message, undefined);
-            }
-          }
+        let newError;
+
+        if (errorJson && Array.isArray(errorJson) && has(error, "data")) {
+          newError = new errClass(error.message, decode(this.astJson.typeTable, `${errClass.name}.data`, errorJson[1], error.data));
+        } else {
+          newError = new errClass(error.message, undefined);
         }
 
-        throw new (this.errClasses.Fatal as new (message: string) => SdkgenError)(`${error.type}: ${error.message}`);
+        (newError as unknown as { type: string }).type = errType;
+
+        throw newError;
       } else {
         throw error;
       }
