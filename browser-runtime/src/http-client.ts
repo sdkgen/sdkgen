@@ -6,7 +6,7 @@ import type { DeepReadonly } from "./utils";
 
 interface ErrClasses {
   [className: string]: (new (message: string, data: any) => SdkgenErrorWithData<any>) | (new (message: string) => SdkgenError) | undefined;
-  Fatal: new (message: string) => SdkgenError;
+  // Fatal: new (message: string) => SdkgenError;
 }
 
 function randomBytesHex(len: number) {
@@ -118,7 +118,8 @@ export class SdkgenHttpClient {
       this.errorHook(error, functionName, args);
 
       if (has(error, "type") && has(error, "message") && typeof error.type === "string" && typeof error.message === "string") {
-        const errClass = this.errClasses[error.type] ?? this.errClasses.Fatal;
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const errClass = this.errClasses[error.type] ?? this.errClasses.Fatal!;
         const errType = errClass.name;
 
         const errorJson = this.astJson.errors.find(err => (Array.isArray(err) ? err[0] === errType : err === errType));
