@@ -32,7 +32,7 @@
     "@angular/compiler-cli": "~14.1.0",
     "@angular/core": "~14.1.0",
     "@angular/forms": "~14.1.0",
-    "@angular/material": "~13.3.6",
+    "@angular/material": "~14.1.0",
     "@angular/platform-browser": "~14.1.0",
     "@angular/platform-browser-dynamic": "~14.1.0",
     "@angular/router": "~14.1.0",
