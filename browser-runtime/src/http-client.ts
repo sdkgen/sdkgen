@@ -32,10 +32,8 @@ function getDeviceId() {
 
     return deviceId;
   } catch (e) {
-    //
+    return fallbackDeviceId;
   }
-
-  return fallbackDeviceId;
 }
 
 function has<P extends PropertyKey>(target: object, property: P): target is { [K in P]: unknown } {

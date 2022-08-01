@@ -122,7 +122,6 @@ export class SdkgenHttpClient {
       }
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return decode(this.astJson.typeTable, `${functionName}.ret`, func.ret, encodedRet);
   }
 }
