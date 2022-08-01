@@ -6,6 +6,7 @@ import type { DeepReadonly } from "./utils";
 
 interface ErrClasses {
   [className: string]: (new (message: string, data: any) => SdkgenErrorWithData<any>) | (new (message: string) => SdkgenError) | undefined;
+  Fatal: new (message: string) => SdkgenError;
 }
 
 function randomBytesHex(len: number) {
@@ -31,10 +32,8 @@ function getDeviceId() {
 
     return deviceId;
   } catch (e) {
-    //
+    return fallbackDeviceId;
   }
-
-  return fallbackDeviceId;
 }
 
 function has<P extends PropertyKey>(target: object, property: P): target is { [K in P]: unknown } {
@@ -42,17 +41,13 @@ function has<P extends PropertyKey>(target: object, property: P): target is { [K
 }
 
 export class SdkgenHttpClient {
-  private baseUrl: string;
-
   extra = new Map<string, unknown>();
 
   successHook: (result: any, name: string, args: any) => void = () => undefined;
 
   errorHook: (result: any, name: string, args: any) => void = () => undefined;
 
-  constructor(baseUrl: string, private astJson: DeepReadonly<AstJson>, private errClasses: ErrClasses) {
-    this.baseUrl = baseUrl;
-  }
+  constructor(private baseUrl: string, private astJson: DeepReadonly<AstJson>, private errClasses: ErrClasses) {}
 
   async makeRequest(functionName: string, args: unknown): Promise<any> {
     const func = this.astJson.functionTable[functionName];
@@ -122,32 +117,26 @@ export class SdkgenHttpClient {
     }).catch((error: object) => {
       this.errorHook(error, functionName, args);
 
-      let newError;
-
       if (has(error, "type") && has(error, "message") && typeof error.type === "string" && typeof error.message === "string") {
-        const errClass = this.errClasses[error.type];
+        const errClass = this.errClasses[error.type] ?? this.errClasses.Fatal;
+        const errType = errClass.name;
 
-        if (errClass) {
-          const errorJson = this.astJson.errors.find(err => (Array.isArray(err) ? err[0] === error.type : err === error.type));
+        const errorJson = this.astJson.errors.find(err => (Array.isArray(err) ? err[0] === errType : err === errType));
 
-          if (errorJson) {
-            if (Array.isArray(errorJson) && has(error, "data")) {
-              newError = new errClass(error.message, decode(this.astJson.typeTable, `${errClass.name}.data`, errorJson[1], error.data));
-            } else {
-              newError = new errClass(error.message, undefined);
-            }
+        let newError;
 
-            (newError as unknown as { type: string }).type = error.type;
-          }
+        if (errorJson && Array.isArray(errorJson) && has(error, "data")) {
+          newError = new errClass(error.message, decode(this.astJson.typeTable, `${errClass.name}.data`, errorJson[1], error.data));
+        } else {
+          newError = new errClass(error.message, undefined);
         }
 
-        newError = new (this.errClasses.Fatal as new (message: string) => SdkgenError)(`${error.type}: ${error.message}`);
-        (newError as unknown as { type: string }).type = "Fatal";
+        (newError as unknown as { type: string }).type = errType;
+
+        throw newError;
       } else {
         throw error;
       }
-
-      throw newError;
     });
 
     const ret = decode(this.astJson.typeTable, `${functionName}.ret`, func.ret, encodedRet);
