@@ -132,7 +132,9 @@ export class SdkgenHttpClient {
           newError = new errClass(error.message, undefined);
         }
 
-        (newError as unknown as { type: string }).type = errType;
+        if (!newError.type) {
+          (newError as unknown as { type: string }).type = errType;
+        }
 
         throw newError;
       } else {
