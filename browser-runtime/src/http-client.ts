@@ -6,7 +6,6 @@ import type { DeepReadonly } from "./utils";
 
 interface ErrClasses {
   [className: string]: (new (message: string, data: any) => SdkgenErrorWithData<any>) | (new (message: string) => SdkgenError) | undefined;
-  // Fatal: new (message: string) => SdkgenError;
 }
 
 function randomBytesHex(len: number) {
