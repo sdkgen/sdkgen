@@ -36,11 +36,11 @@ export class TabNavComponent implements OnInit {
     try {
       this.loading = true;
 
-      if (!/^https?:\/\//.test(this.url.value)) {
+      if (!/^https?:\/\//.test(this.url.value!)) {
         this.url.setValue(`https://${this.url.value}`);
       }
 
-      const parsedUrl = new URL(this.url.value);
+      const parsedUrl = new URL(this.url.value!);
 
       parsedUrl.pathname += `${/\/$/u.test(parsedUrl.pathname) ? "" : "/"}ast.json`;
 
@@ -72,7 +72,7 @@ export class TabNavComponent implements OnInit {
       this.sdkgen.state$.next({
         astJson: result,
         astRoot: jsonToAst(result),
-        url: this.url.value,
+        url: this.url.value!,
       });
     } catch (e: unknown) {
       this.toastr.error(e instanceof Error ? e.message : JSON.stringify(e), "Erro ao carregar AST", {
