@@ -211,7 +211,9 @@ dynamic encode(
           if (value is Decimal) {
             return value.toString();
           }
-          if (value is! num && (value is! String || !RegExp(r'^[0-9]+(?:\.[0-9]+)?$').hasMatch(value))) {
+          if (value is! num &&
+              (value is! String ||
+                  !RegExp(r'^[0-9]+(?:\.[0-9]+)?$').hasMatch(value))) {
             throw SdkgenTypeException(
                 'Invalid Type at \'$path\', expected ${jsonEncode(type)}, got ${jsonEncode(value)}');
           }
@@ -305,7 +307,9 @@ dynamic decode(
           }
           return DateTime.parse('${value}Z').toLocal();
         case 'decimal':
-          if (value is! num && (value is! String || !RegExp(r'^[0-9]+(?:\.[0-9]+)?$').hasMatch(value))) {
+          if (value is! num &&
+              (value is! String ||
+                  !RegExp(r'^[0-9]+(?:\.[0-9]+)?$').hasMatch(value))) {
             throw SdkgenTypeException(
                 'Invalid Type at \'$path\', expected ${jsonEncode(type)}, got ${jsonEncode(value)}');
           }
