@@ -11,8 +11,9 @@ import { generateCSharpServerSource } from "@sdkgen/csharp-generator";
 import { generateDartClientSource } from "@sdkgen/dart-generator";
 import { generateFSharpServerSource } from "@sdkgen/fsharp-generator";
 import { generateAndroidClientSource } from "@sdkgen/kotlin-generator";
-import { AstRoot, DecimalPrimitiveType } from "@sdkgen/parser";
+import type { AstRoot } from "@sdkgen/parser";
 import {
+  DecimalPrimitiveType,
   Base64PrimitiveType,
   BigIntPrimitiveType,
   BoolPrimitiveType,
