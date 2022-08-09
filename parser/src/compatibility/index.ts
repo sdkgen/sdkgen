@@ -1,5 +1,6 @@
 import type { AstRoot, Type } from "../ast";
 import {
+  DecimalPrimitiveType,
   ArrayType,
   Base64PrimitiveType,
   BigIntPrimitiveType,
@@ -103,6 +104,7 @@ function checkClientToServer(path: string, issues: string[], t1: Type, t2: Type)
     (t1 instanceof BytesPrimitiveType && t2 instanceof Base64PrimitiveType) ||
     (t1 instanceof UrlPrimitiveType && t2 instanceof StringPrimitiveType) ||
     (t1 instanceof EmailPrimitiveType && t2 instanceof StringPrimitiveType) ||
+    (t1 instanceof DecimalPrimitiveType && t2 instanceof StringPrimitiveType) ||
     (t1 instanceof EnumType && t2 instanceof StringPrimitiveType)
   ) {
     return;
@@ -202,6 +204,7 @@ function checkServerToClient(path: string, issues: string[], t1: Type, t2: Type)
     (t1 instanceof Base64PrimitiveType && t2 instanceof BytesPrimitiveType) ||
     (t1 instanceof StringPrimitiveType && t2 instanceof UrlPrimitiveType) ||
     (t1 instanceof StringPrimitiveType && t2 instanceof EmailPrimitiveType) ||
+    (t1 instanceof StringPrimitiveType && t2 instanceof DecimalPrimitiveType) ||
     (t1 instanceof StringPrimitiveType && t2 instanceof EnumType)
   ) {
     return;

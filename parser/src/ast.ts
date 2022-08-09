@@ -107,6 +107,9 @@ export class VoidPrimitiveType extends PrimitiveType {
 export class MoneyPrimitiveType extends PrimitiveType {
   name = "money";
 }
+export class DecimalPrimitiveType extends PrimitiveType {
+  name = "decimal";
+}
 export class CpfPrimitiveType extends PrimitiveType {
   name = "cpf";
 }

@@ -31,6 +31,7 @@ import {
   VoidPrimitiveType,
   XmlPrimitiveType,
   EnumType,
+  DecimalPrimitiveType,
 } from "@sdkgen/parser";
 import { BehaviorSubject } from "rxjs";
 
@@ -58,6 +59,9 @@ export class SdkgenService {
         case BigIntPrimitiveType:
         case MoneyPrimitiveType:
           return 0;
+
+        case DecimalPrimitiveType:
+          return "0.00";
 
         case DatePrimitiveType:
           return new Date().toJSON().substring(0, 10);
@@ -153,6 +157,9 @@ export class SdkgenService {
         case BigIntPrimitiveType:
         case MoneyPrimitiveType:
           return 0;
+
+        case DecimalPrimitiveType:
+          return 'BigDecimal("0.00")';
 
         case DatePrimitiveType:
         case DateTimePrimitiveType:

@@ -1,5 +1,6 @@
 import type { AstNode, Type } from "../ast";
 import {
+  DecimalPrimitiveType,
   FunctionOperation,
   Base64PrimitiveType,
   BigIntPrimitiveType,
@@ -40,6 +41,7 @@ function isRestEncodable(type: Type) {
     type instanceof DatePrimitiveType ||
     type instanceof DateTimePrimitiveType ||
     type instanceof MoneyPrimitiveType ||
+    type instanceof DecimalPrimitiveType ||
     type instanceof CpfPrimitiveType ||
     type instanceof CnpjPrimitiveType ||
     type instanceof UuidPrimitiveType ||

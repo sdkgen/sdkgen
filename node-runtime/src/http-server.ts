@@ -13,6 +13,7 @@ import { generateFSharpServerSource } from "@sdkgen/fsharp-generator";
 import { generateAndroidClientSource } from "@sdkgen/kotlin-generator";
 import type { AstRoot } from "@sdkgen/parser";
 import {
+  DecimalPrimitiveType,
   Base64PrimitiveType,
   BigIntPrimitiveType,
   BoolPrimitiveType,
@@ -434,6 +435,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
                     type instanceof DatePrimitiveType ||
                     type instanceof DateTimePrimitiveType ||
                     type instanceof MoneyPrimitiveType ||
+                    type instanceof DecimalPrimitiveType ||
                     type instanceof BigIntPrimitiveType ||
                     type instanceof CpfPrimitiveType ||
                     type instanceof CnpjPrimitiveType ||
@@ -569,6 +571,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
                     type instanceof DatePrimitiveType ||
                     type instanceof DateTimePrimitiveType ||
                     type instanceof MoneyPrimitiveType ||
+                    type instanceof DecimalPrimitiveType ||
                     type instanceof BigIntPrimitiveType ||
                     type instanceof CpfPrimitiveType ||
                     type instanceof CnpjPrimitiveType ||

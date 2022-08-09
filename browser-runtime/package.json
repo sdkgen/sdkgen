@@ -45,5 +45,8 @@
       "/node_modules/",
       "/spec/"
     ]
+  },
+  "dependencies": {
+    "decimal.js-light": "^2.5.1"
   }
 }

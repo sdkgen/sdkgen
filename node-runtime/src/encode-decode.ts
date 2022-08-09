@@ -1,6 +1,7 @@
 import * as CNPJ from "@fnando/cnpj";
 import * as CPF from "@fnando/cpf";
 import type { AstJson, TypeDescription } from "@sdkgen/parser";
+import { Decimal } from "decimal.js";
 
 import type { DeepReadonly } from "./utils";
 
@@ -13,7 +14,7 @@ type ExpandRecursively<T> = T extends object ? (T extends infer O ? { [K in keyo
 
 type JsonType = number | string | boolean | null | JsonType[] | { [Key in string]: JsonType };
 
-type AnyDecodedType = number | string | boolean | null | bigint | Buffer | Date | AnyDecodedType[] | { [Key in string]: AnyDecodedType };
+type AnyDecodedType = number | string | boolean | null | bigint | Decimal | Buffer | Date | AnyDecodedType[] | { [Key in string]: AnyDecodedType };
 
 type DecodedType<Type, Table extends object> = TypeDescription extends Type
   ? AnyDecodedType
@@ -31,6 +32,8 @@ type DecodedType<Type, Table extends object> = TypeDescription extends Type
   ? bigint
   : Type extends "bytes"
   ? Buffer
+  : Type extends "decimal"
+  ? Decimal
   : Type extends "date" | "datetime"
   ? Date
   : Type extends `${infer X}?`
@@ -77,7 +80,7 @@ type EncodedType<Type, Table extends object> = TypeDescription extends Type
   ? null
   : Type extends "int" | "uint" | "float" | "money"
   ? number
-  : Type extends "bigint" | "bytes" | "date" | "datetime"
+  : Type extends "bigint" | "bytes" | "date" | "datetime" | "decimal"
   ? string
   : Type extends `${infer X}?`
   ? EncodedType<X, Table> | null
@@ -310,6 +313,12 @@ export function encode<Table extends DeepReadonly<TypeTable>, Type extends DeepR
     }
 
     return (typeof value === "string" ? new Date(value) : value).toISOString().replace("Z", "") as EncodedType<Type, Table>;
+  } else if (type === "decimal") {
+    if (typeof value !== "number" && (typeof value !== "string" || !/^[0-9]+(?:\.[0-9]+)?$/u.test(value)) && !(value instanceof Decimal)) {
+      throw new ParseError(path, type, value);
+    }
+
+    return new Decimal(value).toString() as EncodedType<Type, Table>;
   } else {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
     const resolved = (typeTable as Record<string, TypeDescription>)[type as string];
@@ -437,6 +446,12 @@ export function decode<Table extends DeepReadonly<TypeTable>, Type extends DeepR
     }
 
     return new Date(`${value.endsWith("Z") ? value : value.concat("Z")}`) as DecodedType<Type, Table>;
+  } else if (type === "decimal") {
+    if (typeof value !== "number" && (typeof value !== "string" || !/^[0-9]+(?:\.[0-9]+)?$/u.test(value))) {
+      throw new ParseError(path, type, value);
+    }
+
+    return new Decimal(value) as DecodedType<Type, Table>;
   } else {
     // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
     const resolved = (typeTable as Record<string, TypeDescription>)[type as string];
