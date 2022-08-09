@@ -1,5 +1,6 @@
-import { AstRoot, DecimalPrimitiveType, Type } from "../ast";
+import type { AstRoot, Type } from "../ast";
 import {
+  DecimalPrimitiveType,
   ArrayType,
   Base64PrimitiveType,
   BigIntPrimitiveType,

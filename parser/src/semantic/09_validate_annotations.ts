@@ -1,5 +1,6 @@
-import { AstNode, DecimalPrimitiveType, Type } from "../ast";
+import type { AstNode, Type } from "../ast";
 import {
+  DecimalPrimitiveType,
   FunctionOperation,
   Base64PrimitiveType,
   BigIntPrimitiveType,
