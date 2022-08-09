@@ -10,9 +10,9 @@ environment:
 dependencies:
   convert: ^3.0.0
   decimal: ^2.2.0
-  device_info_plus: ^4.0.0
+  device_info_plus: ^4.0.2
   equatable: ^2.0.0
-  http: ^0.13.0
+  http: ^0.13.5
   package_info: ^2.0.0
   shared_preferences: ^2.0.0
   flutter:
