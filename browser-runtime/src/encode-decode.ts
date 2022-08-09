@@ -1,4 +1,4 @@
-import Decimal from "decimal.js";
+import Decimal from "decimal.js-light";
 
 import type { TypeDescription, TypeTable } from "./ast";
 import type { DeepReadonly } from "./utils";
