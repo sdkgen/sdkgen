@@ -9,6 +9,7 @@ environment:
 
 dependencies:
   convert: ^3.0.0
+  decimal: ^2.2.0
   device_info_plus: ^4.0.0
   equatable: ^2.0.0
   http: ^0.13.0

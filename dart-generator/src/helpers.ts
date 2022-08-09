@@ -17,6 +17,7 @@ import {
   IntPrimitiveType,
   JsonPrimitiveType,
   MoneyPrimitiveType,
+  DecimalPrimitiveType,
   OptionalType,
   StringPrimitiveType,
   StructType,
@@ -127,6 +128,8 @@ export function generateTypeName(type: Type): string {
       return "Uint8List";
     case MoneyPrimitiveType:
       return "int";
+    case DecimalPrimitiveType:
+      return "Decimal";
     case CpfPrimitiveType:
     case CnpjPrimitiveType:
     case EmailPrimitiveType:

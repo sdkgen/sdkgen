@@ -45,5 +45,8 @@
       "/node_modules/",
       "/spec/"
     ]
+  },
+  "dependencies": {
+    "decimal.js": "^10.3.1"
   }
 }

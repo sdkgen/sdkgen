@@ -11,7 +11,7 @@ import { generateCSharpServerSource } from "@sdkgen/csharp-generator";
 import { generateDartClientSource } from "@sdkgen/dart-generator";
 import { generateFSharpServerSource } from "@sdkgen/fsharp-generator";
 import { generateAndroidClientSource } from "@sdkgen/kotlin-generator";
-import type { AstRoot } from "@sdkgen/parser";
+import { AstRoot, DecimalPrimitiveType } from "@sdkgen/parser";
 import {
   Base64PrimitiveType,
   BigIntPrimitiveType,
@@ -434,6 +434,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
                     type instanceof DatePrimitiveType ||
                     type instanceof DateTimePrimitiveType ||
                     type instanceof MoneyPrimitiveType ||
+                    type instanceof DecimalPrimitiveType ||
                     type instanceof BigIntPrimitiveType ||
                     type instanceof CpfPrimitiveType ||
                     type instanceof CnpjPrimitiveType ||
@@ -569,6 +570,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
                     type instanceof DatePrimitiveType ||
                     type instanceof DateTimePrimitiveType ||
                     type instanceof MoneyPrimitiveType ||
+                    type instanceof DecimalPrimitiveType ||
                     type instanceof BigIntPrimitiveType ||
                     type instanceof CpfPrimitiveType ||
                     type instanceof CnpjPrimitiveType ||

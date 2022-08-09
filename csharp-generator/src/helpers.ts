@@ -17,6 +17,7 @@ import {
   IntPrimitiveType,
   JsonPrimitiveType,
   MoneyPrimitiveType,
+  DecimalPrimitiveType,
   OptionalType,
   StringPrimitiveType,
   StructType,
@@ -133,6 +134,7 @@ const needsTempVarForNullable: Function[] = [
   FloatPrimitiveType,
   IntPrimitiveType,
   MoneyPrimitiveType,
+  DecimalPrimitiveType,
   UIntPrimitiveType,
 ];
 
@@ -164,6 +166,7 @@ export function generateTypeName(type: Type): string {
     case BytesPrimitiveType:
       return "byte[]";
     case MoneyPrimitiveType:
+    case DecimalPrimitiveType:
       return "decimal";
     case CpfPrimitiveType:
     case CnpjPrimitiveType:
@@ -218,6 +221,7 @@ export function decodeType(type: Type, jsonElementVar: string, path: string, tar
         .trim();
     }
 
+    case DecimalPrimitiveType:
     case MoneyPrimitiveType: {
       return `
                 if (${jsonElementVar}.ValueKind != JsonValueKind.Number || !${jsonElementVar}.TryGetDecimal(out ${targetVar}) || ${targetVar} % 1 != 0)
@@ -534,6 +538,7 @@ export function encodeType(type: Type, valueVar: string, path: string, suffix = 
       return `resultWriter_.WriteNumberValue(${valueVar});`;
     }
 
+    case DecimalPrimitiveType:
     case MoneyPrimitiveType: {
       return `resultWriter_.WriteNumberValue(Math.Round(${valueVar} * 100));`;
     }

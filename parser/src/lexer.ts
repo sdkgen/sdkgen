@@ -38,6 +38,7 @@ export class Lexer {
     "datetime",
     "bytes",
     "money",
+    "decimal",
     "cpf",
     "cnpj",
     "email",

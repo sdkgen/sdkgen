@@ -46,7 +46,7 @@ fn createProduct(newProduct: Product): Product
 
 Logo após o método o segundo elemento obrigatório do `@rest` é o caminho (ou "endpoint"). Este caminho deve começar com uma "/" e utilizar caracteres permitidos em uma URL. Neste caminho podem ser incluídos alguns segmentos dinâmicos vinculados aos argumentos da função, como `/product/{id}` onde `id` é um argumento. O caminho pode incluir múltiplos destes argumentos.
 
-Para um argumento poder ser utilizado dentro de um caminho ele deve ter um dos seguintes tipos: `bool`, `int`, `uint`, `bigint`, `float`, `string`, `date`, `datetime`, `money`, `cpf`, `cnpj`, `uuid`, `hex`, `base64` ou ser um enum. Note que o tipo não pode ser nulável.
+Para um argumento poder ser utilizado dentro de um caminho ele deve ter um dos seguintes tipos: `bool`, `int`, `uint`, `bigint`, `float`, `string`, `date`, `datetime`, `money`, `decimal`, `cpf`, `cnpj`, `uuid`, `hex`, `base64` ou ser um enum. Note que o tipo não pode ser nulável.
 
 Por exemplo:
 
@@ -75,7 +75,7 @@ Em uma API REST pode ser necessário receber argumentos através de headers, esp
 fn getCurrentUser(token: base64): User
 ```
 
-Os tipos permitidos são os mesmos listados para o caminho, podendo ser opcionais: `bool`, `int`, `uint`, `bigint`, `float`, `string`, `date`, `datetime`, `money`, `cpf`, `cnpj`, `uuid`, `hex`, `base64` ou ser um enum. Múltiplos headers podem ser especificados.
+Os tipos permitidos são os mesmos listados para o caminho, podendo ser opcionais: `bool`, `int`, `uint`, `bigint`, `float`, `string`, `date`, `datetime`, `money`, `decimal`, `cpf`, `cnpj`, `uuid`, `hex`, `base64` ou ser um enum. Múltiplos headers podem ser especificados.
 
 ## Body
 
@@ -104,7 +104,7 @@ Se o `Content-Type` tiver sido passado como `application/json`, então o body se
 | qualquer nulável                                                                | O argumento será considerado `null` caso o body esteja em branco.                     |
 | `bool`                                                                          | É esperado que o body seja literalmente `true` ou `false`.                            |
 | `int`, `uint`, `bigint` ou `float`                                              | O body seve conter apenas o número, sem aspas.                                        |
-| `string`, `date`, `datetime`, `money`, `cpf`, `cnpj`, `uuid`, `hex` ou `base64` | O conteúdo do body será interpretado diretamente. Não deve estar entre aspas.         |
+| `string`, `date`, `datetime`, `money`, `decimal`, `cpf`, `cnpj`, `uuid`, `hex` ou `base64` | O conteúdo do body será interpretado diretamente. Não deve estar entre aspas.         |
 | `xml`, `bytes` ou `html`                                                        | Similar ao caso acima. O conteúdo do body será passado tal como está.                 |
 | `json`                                                                          | Um objeto JSON arbitrário será esperado.                                              |
 | qualquer enum                                                                   | O body deverá ser um dos valores possíveis do enum, sem aspas.                        |
@@ -131,7 +131,7 @@ Se a requisição tiver passado o header `Accept` como `application/json`, entã
 
 | Tipo                                                                                                                      | Comportamento                                                                                                                                                                                                           |
 | ------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `bool`, `int`, `uint`, `float`, `string`, `date`, `datetime`, `money`, `bigint`, `cpf`, `cnpj`, `uuid`, `hex` ou `base64` | Valor será posto diretamente no body, sem aspas adicionais. O `Content-Type` será `text/plain`.                                                                                                                         |
+| `bool`, `int`, `uint`, `float`, `string`, `date`, `datetime`, `money`, `bigint`, `decimal`, `cpf`, `cnpj`, `uuid`, `hex` ou `base64` | Valor será posto diretamente no body, sem aspas adicionais. O `Content-Type` será `text/plain`.                                                                                                                         |
 | `html`                                                                                                                    | Valor será posto diretamente no body, sem aspas adicionais. O `Content-Type` será `text/html`.                                                                                                                          |
 | `xml`                                                                                                                    | Valor será posto diretamente no body, sem aspas adicionais. O `Content-Type` será `text/xml`.                                                                                                                          |
 | `bytes`                                                                                                                   | Os bytes serão entregues diretamente, ideal para oferecer download de arquivos. O `Content-Type` será detectado dinamicamente a depender do conteúdo. Caso não seja possível detectar, será `application/octet-stream`. |

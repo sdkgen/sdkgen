@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:decimal/decimal.dart';
 
 class SdkgenTypeException implements Exception {
   String cause;
@@ -206,6 +207,15 @@ dynamic encode(
                 'Invalid Type at \'$path\', expected ${jsonEncode(type)}, got ${jsonEncode(value)}');
           }
           return value.toUtc().toIso8601String().replaceAll('Z', '');
+        case 'decimal':
+          if (value is Decimal) {
+            return value.toString();
+          }
+          if (value is! num && (value is! String || !RegExp(r'^[0-9]+(?:\.[0-9]+)?$').hasMatch(value))) {
+            throw SdkgenTypeException(
+                'Invalid Type at \'$path\', expected ${jsonEncode(type)}, got ${jsonEncode(value)}');
+          }
+          return Decimal.parse("$value").toString();
         default:
           if (simpleTypes.contains(type)) {
             return simpleEncodeDecode(typeTable, path, type, value);
@@ -294,6 +304,12 @@ dynamic decode(
                 'Invalid Type at \'$path\', expected ${jsonEncode(type)}, got ${jsonEncode(value)}');
           }
           return DateTime.parse('${value}Z').toLocal();
+        case 'decimal':
+          if (value is! num && (value is! String || !RegExp(r'^[0-9]+(?:\.[0-9]+)?$').hasMatch(value))) {
+            throw SdkgenTypeException(
+                'Invalid Type at \'$path\', expected ${jsonEncode(type)}, got ${jsonEncode(value)}');
+          }
+          return Decimal.parse("$value");
         default:
           if (simpleTypes.contains(type)) {
             return simpleEncodeDecode(typeTable, path, type, value);

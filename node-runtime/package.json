@@ -67,6 +67,7 @@
     "@sdkgen/swift-generator": "file:../swift-generator",
     "@sdkgen/typescript-generator": "file:../typescript-generator",
     "busboy": "1.5.0",
+    "decimal.js": "^10.3.1",
     "file-type": "^16.5.3",
     "request-ip": "^3.0.0",
     "serve-handler": "^6.1.3",

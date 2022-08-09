@@ -1,3 +1,5 @@
+import Decimal from "decimal.js";
+
 import type { TypeDescription, TypeTable } from "./ast";
 import type { DeepReadonly } from "./utils";
 
@@ -201,6 +203,12 @@ export function encode(typeTable: DeepReadonly<TypeTable>, path: string, type: D
     }
 
     return (typeof value === "string" ? new Date(value) : value).toISOString().replace("Z", "");
+  } else if (type === "decimal") {
+    if (typeof value !== "number" && (typeof value !== "string" || !/^[0-9]+(?:\.[0-9]+)?$/u.test(value)) && !(value instanceof Decimal)) {
+      throw new ParseError(path, type, value);
+    }
+
+    return new Decimal(value).toString();
   } else {
     const resolved = typeTable[type];
 
@@ -310,6 +318,12 @@ export function decode(typeTable: DeepReadonly<TypeTable>, path: string, type: D
     }
 
     return new Date(`${value.endsWith("Z") ? value : value.concat("Z")}`);
+  } else if (type === "decimal") {
+    if (typeof value !== "number" && (typeof value !== "string" || !/^[0-9]+(?:\.[0-9]+)?$/u.test(value))) {
+      throw new ParseError(path, type, value);
+    }
+
+    return new Decimal(value);
   } else {
     const resolved = typeTable[type];
 
