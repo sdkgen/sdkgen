@@ -55,10 +55,6 @@ class SdkgenHttpClient {
     return Function.apply(description.create, [message, decodedData]);
   }
 
-  dynamic _throwError(String type, String message, dynamic data) {
-    throw _createError(type, message, data);
-  }
-
   Future<String> _deviceId() async {
     if (deviceId == null) {
       var prefs = await SharedPreferences.getInstance();
@@ -104,7 +100,7 @@ class SdkgenHttpClient {
       var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (responseBody['error'] != null) {
-        throw _throwError(responseBody['error']['type'],
+        throw _createError(responseBody['error']['type'],
             responseBody['error']['message'], responseBody['error']['data']);
       } else {
         final response = decode(
