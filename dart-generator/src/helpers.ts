@@ -203,7 +203,7 @@ function generateConstructor(type: StructType): string {
 }
 
 function generateEquality(type: StructType): string {
-  let str = `  bool operator ==(other){\n`;
+  let str = `  @override\n  bool operator ==(other){\n`;
 
   str += `    if (identical(this, other)) return true;\n`;
   str += `    return ${[`other is ${type.name}`, ...type.fields.map(field => `${mangle(field.name)} == other.${mangle(field.name)}`)].join(
@@ -219,7 +219,7 @@ function generateHashcode(type: StructType): string {
 }
 
 function generateToString(type: StructType): string {
-  return `  String toString() {\n    return '${type.name} { ${type.fields
+  return `  @override\n  String toString() {\n    return '${type.name} { ${type.fields
     .map(field => `${field.name}: $${mangle(field.name).startsWith("$") ? `{${mangle(field.name)}}` : mangle(field.name)}`)
     .join(", ")} }';\n  }\n`;
 }
