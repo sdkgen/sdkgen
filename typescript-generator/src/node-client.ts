@@ -1,7 +1,7 @@
 import type { AstRoot } from "@sdkgen/parser";
-import { astToJson, HiddenAnnotation, VoidPrimitiveType } from "@sdkgen/parser";
+import { DecimalPrimitiveType, astToJson, HiddenAnnotation, VoidPrimitiveType } from "@sdkgen/parser";
 
-import { generateTypescriptEnum, generateTypescriptErrorClass, generateTypescriptInterface, generateTypescriptTypeName } from "./helpers";
+import { generateTypescriptEnum, generateTypescriptErrorClass, generateTypescriptInterface, generateTypescriptTypeName, hasType } from "./helpers";
 
 export function generateNodeClientSource(ast: AstRoot): string {
   let code = "";
@@ -15,8 +15,13 @@ import { Context, Fatal${hasErrorWithoutData ? ", SdkgenError" : ""}${
   }, SdkgenHttpClient } from "@sdkgen/node-runtime";
 import { PartialDeep } from "type-fest";
 export { Fatal } from "@sdkgen/node-runtime";
-
 `;
+
+  if (hasType(ast, DecimalPrimitiveType)) {
+    code += `import { Decimal } from "decimal.js";\n`;
+  }
+
+  code += "\n";
 
   for (const type of ast.enumTypes) {
     code += generateTypescriptEnum(type);

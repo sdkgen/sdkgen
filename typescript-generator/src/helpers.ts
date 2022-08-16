@@ -1,4 +1,4 @@
-import type { ErrorNode, Type } from "@sdkgen/parser";
+import type { AstNode, AstRoot, ErrorNode, Type } from "@sdkgen/parser";
 import {
   ArrayType,
   Base64PrimitiveType,
@@ -9,6 +9,7 @@ import {
   CpfPrimitiveType,
   DatePrimitiveType,
   DateTimePrimitiveType,
+  DecimalPrimitiveType,
   EmailPrimitiveType,
   EnumType,
   FloatPrimitiveType,
@@ -24,6 +25,7 @@ import {
   UIntPrimitiveType,
   UrlPrimitiveType,
   UuidPrimitiveType,
+  Visitor,
   VoidPrimitiveType,
   XmlPrimitiveType,
 } from "@sdkgen/parser";
@@ -38,6 +40,9 @@ export function generateTypescriptTypeName(type: Type, isBrowser: boolean): stri
 
     case BigIntPrimitiveType:
       return "bigint";
+
+    case DecimalPrimitiveType:
+      return "Decimal";
 
     case DatePrimitiveType:
     case DateTimePrimitiveType:
@@ -161,4 +166,27 @@ export function clearForLogging(path: string, type: Type): string {
     default:
       return "";
   }
+}
+
+class HasTypeVisitor extends Visitor {
+  found = false;
+
+  constructor(root: AstRoot, private type: typeof Type) {
+    super(root);
+  }
+
+  visit(node: AstNode): void {
+    if (node.constructor === this.type) {
+      this.found = true;
+    }
+
+    super.visit(node);
+  }
+}
+
+export function hasType(root: AstRoot, type: typeof Type) {
+  const visitor = new HasTypeVisitor(root, type);
+
+  visitor.process();
+  return visitor.found;
 }

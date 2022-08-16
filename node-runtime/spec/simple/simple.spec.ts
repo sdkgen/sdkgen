@@ -16,6 +16,7 @@ import axios from "axios";
 
 import type { Context } from "../../src";
 import { SdkgenHttpServer } from "../../src";
+import Decimal from "decimal.js";
 
 const ast = new Parser(`${__dirname}/api.sdkgen`).parse();
 
@@ -41,6 +42,10 @@ api.fn.identity = async (ctx: Context & { aaa: boolean }, { types }: { types: an
 
 api.fn.throwsError = async () => {
   throw new SomeError("Some message");
+};
+
+api.fn.decimalAdd = async (_ctx: Context, { a, b }: { a: Decimal; b: Decimal }) => {
+  return a.add(b);
 };
 
 // ExecSync(`../../cubos/sdkgen/sdkgen ${__dirname + "/api.sdkgen"} -o ${__dirname + "/legacyNodeClient.ts"} -t typescript_nodeclient`);
@@ -121,5 +126,10 @@ describe("Simple API", () => {
       message: "Some message",
       type: "SomeError",
     });
+  });
+
+  test("Can handle decimals", async () => {
+    const result = await nodeClient.decimalAdd(null, { a: new Decimal("0.1"), b: new Decimal("0.2") });
+    expect(result.eq(new Decimal("0.3"))).toEqual(true);
   });
 });

@@ -1,7 +1,7 @@
 import type { AstRoot } from "@sdkgen/parser";
-import { astToJson, HiddenAnnotation, VoidPrimitiveType } from "@sdkgen/parser";
+import { astToJson, DecimalPrimitiveType, HiddenAnnotation, VoidPrimitiveType } from "@sdkgen/parser";
 
-import { generateTypescriptEnum, generateTypescriptErrorClass, generateTypescriptInterface, generateTypescriptTypeName } from "./helpers";
+import { generateTypescriptEnum, generateTypescriptErrorClass, generateTypescriptInterface, generateTypescriptTypeName, hasType } from "./helpers";
 
 export function generateBrowserClientSource(ast: AstRoot): string {
   let code = "";
@@ -10,8 +10,13 @@ export function generateBrowserClientSource(ast: AstRoot): string {
 
   code += `/* eslint-disable */
 import { SdkgenError${hasErrorWithData ? ", SdkgenErrorWithData" : ""}, SdkgenHttpClient } from "@sdkgen/browser-runtime";
-
 `;
+
+  if (hasType(ast, DecimalPrimitiveType)) {
+    code += `import { Decimal } from "decimal.js";\n`;
+  }
+
+  code += "\n";
 
   for (const type of ast.enumTypes) {
     code += generateTypescriptEnum(type);
