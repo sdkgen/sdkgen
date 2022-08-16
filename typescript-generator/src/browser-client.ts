@@ -13,7 +13,7 @@ import { SdkgenError${hasErrorWithData ? ", SdkgenErrorWithData" : ""}, SdkgenHt
 `;
 
   if (hasType(ast, DecimalPrimitiveType)) {
-    code += `import { Decimal } from "decimal.js";\n`;
+    code += `import { Decimal } from "decimal.js-light";\n`;
   }
 
   code += "\n";
