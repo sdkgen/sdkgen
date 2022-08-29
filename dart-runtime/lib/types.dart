@@ -213,7 +213,7 @@ dynamic encode(
           }
           if (value is! num &&
               (value is! String ||
-                  !RegExp(r'^[0-9]+(?:\.[0-9]+)?$').hasMatch(value))) {
+                  !RegExp(r'^-?[0-9]+(?:\.[0-9]+)?$').hasMatch(value))) {
             throw SdkgenTypeException(
                 'Invalid Type at \'$path\', expected ${jsonEncode(type)}, got ${jsonEncode(value)}');
           }
@@ -309,7 +309,7 @@ dynamic decode(
         case 'decimal':
           if (value is! num &&
               (value is! String ||
-                  !RegExp(r'^[0-9]+(?:\.[0-9]+)?$').hasMatch(value))) {
+                  !RegExp(r'^-?[0-9]+(?:\.[0-9]+)?$').hasMatch(value))) {
             throw SdkgenTypeException(
                 'Invalid Type at \'$path\', expected ${jsonEncode(type)}, got ${jsonEncode(value)}');
           }

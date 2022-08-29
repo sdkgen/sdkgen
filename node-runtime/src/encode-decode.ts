@@ -314,7 +314,7 @@ export function encode<Table extends DeepReadonly<TypeTable>, Type extends DeepR
 
     return (typeof value === "string" ? new Date(value) : value).toISOString().replace("Z", "") as EncodedType<Type, Table>;
   } else if (type === "decimal") {
-    if (typeof value !== "number" && (typeof value !== "string" || !/^[0-9]+(?:\.[0-9]+)?$/u.test(value)) && !(value instanceof Decimal)) {
+    if (typeof value !== "number" && (typeof value !== "string" || !/^-?[0-9]+(?:\.[0-9]+)?$/u.test(value)) && !(value instanceof Decimal)) {
       throw new ParseError(path, type, value);
     }
 
@@ -447,7 +447,7 @@ export function decode<Table extends DeepReadonly<TypeTable>, Type extends DeepR
 
     return new Date(`${value.endsWith("Z") ? value : value.concat("Z")}`) as DecodedType<Type, Table>;
   } else if (type === "decimal") {
-    if (typeof value !== "number" && (typeof value !== "string" || !/^[0-9]+(?:\.[0-9]+)?$/u.test(value))) {
+    if (typeof value !== "number" && (typeof value !== "string" || !/^-?[0-9]+(?:\.[0-9]+)?$/u.test(value))) {
       throw new ParseError(path, type, value);
     }
 
