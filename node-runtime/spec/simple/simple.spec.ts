@@ -13,10 +13,10 @@ import { unlinkSync, writeFileSync } from "fs";
 import { astToJson, Parser } from "@sdkgen/parser";
 import { generateNodeClientSource, generateNodeServerSource } from "@sdkgen/typescript-generator";
 import axios from "axios";
+import Decimal from "decimal.js";
 
 import type { Context } from "../../src";
 import { SdkgenHttpServer } from "../../src";
-import Decimal from "decimal.js";
 
 const ast = new Parser(`${__dirname}/api.sdkgen`).parse();
 
@@ -130,6 +130,7 @@ describe("Simple API", () => {
 
   test("Can handle decimals", async () => {
     const result = await nodeClient.decimalAdd(null, { a: new Decimal("0.1"), b: new Decimal("0.2") });
+
     expect(result.eq(new Decimal("0.3"))).toEqual(true);
   });
 });
