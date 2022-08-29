@@ -1,4 +1,4 @@
-import type { AstNode, AstRoot, ErrorNode, Type } from "@sdkgen/parser";
+import type { ErrorNode, Type } from "@sdkgen/parser";
 import {
   ArrayType,
   Base64PrimitiveType,
@@ -25,7 +25,6 @@ import {
   UIntPrimitiveType,
   UrlPrimitiveType,
   UuidPrimitiveType,
-  Visitor,
   VoidPrimitiveType,
   XmlPrimitiveType,
 } from "@sdkgen/parser";
@@ -166,27 +165,4 @@ export function clearForLogging(path: string, type: Type): string {
     default:
       return "";
   }
-}
-
-class HasTypeVisitor extends Visitor {
-  found = false;
-
-  constructor(root: AstRoot, private type: typeof Type) {
-    super(root);
-  }
-
-  visit(node: AstNode): void {
-    if (node.constructor === this.type) {
-      this.found = true;
-    }
-
-    super.visit(node);
-  }
-}
-
-export function hasType(root: AstRoot, type: typeof Type) {
-  const visitor = new HasTypeVisitor(root, type);
-
-  visitor.process();
-  return visitor.found;
 }
