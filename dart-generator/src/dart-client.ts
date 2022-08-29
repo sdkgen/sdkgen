@@ -1,17 +1,27 @@
 import type { AstRoot } from "@sdkgen/parser";
-import { OptionalType, HiddenAnnotation, VoidPrimitiveType } from "@sdkgen/parser";
+import { DecimalPrimitiveType, OptionalType, HiddenAnnotation, VoidPrimitiveType, BytesPrimitiveType, hasType } from "@sdkgen/parser";
 
 import { cast, generateClass, generateEnum, generateErrorClass, generateTypeName, mangle } from "./helpers";
 
 export function generateDartClientSource(ast: AstRoot): string {
   let code = "";
 
-  code += `import 'dart:typed_data';
+  code += `// ignore_for_file: constant_identifier_names
 import 'dart:ui';
+`;
 
-import 'package:sdkgen_runtime/types.dart';
+  if (hasType(ast, BytesPrimitiveType)) {
+    code += `import 'dart:typed_data';
+`;
+  }
+
+  if (hasType(ast, DecimalPrimitiveType)) {
+    code += `import 'package:decimal/decimal.dart';
+`;
+  }
+
+  code += `import 'package:sdkgen_runtime/types.dart';
 import 'package:sdkgen_runtime/http_client.dart';
-
 `;
 
   for (const type of ast.enumTypes) {
