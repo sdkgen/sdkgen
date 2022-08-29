@@ -1,7 +1,7 @@
 import type { AstRoot } from "@sdkgen/parser";
-import { astToJson, DecimalPrimitiveType, HiddenAnnotation, VoidPrimitiveType } from "@sdkgen/parser";
+import { astToJson, DecimalPrimitiveType, HiddenAnnotation, VoidPrimitiveType, hasType } from "@sdkgen/parser";
 
-import { generateTypescriptEnum, generateTypescriptErrorClass, generateTypescriptInterface, generateTypescriptTypeName, hasType } from "./helpers";
+import { generateTypescriptEnum, generateTypescriptErrorClass, generateTypescriptInterface, generateTypescriptTypeName } from "./helpers";
 
 export function generateBrowserClientSource(ast: AstRoot): string {
   let code = "";
