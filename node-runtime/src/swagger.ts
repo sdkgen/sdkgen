@@ -1,5 +1,6 @@
 import type { Type } from "@sdkgen/parser";
 import {
+  DecimalPrimitiveType,
   JsonPrimitiveType,
   ArrayType,
   Base64PrimitiveType,
@@ -131,6 +132,10 @@ function typeToSchema(definitions: Record<string, JSONSchema | undefined>, type:
       type: "string",
     };
   } else if (type instanceof BigIntPrimitiveType) {
+    return {
+      type: "string",
+    };
+  } else if (type instanceof DecimalPrimitiveType) {
     return {
       type: "string",
     };
