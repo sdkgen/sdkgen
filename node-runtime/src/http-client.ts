@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable prefer-promise-reject-errors */
 import { randomBytes } from "crypto";
 import { request as httpRequest } from "http";
@@ -7,11 +8,9 @@ import { hostname } from "os";
 import { URL } from "url";
 
 import type { AstJson } from "@sdkgen/parser";
-import merge from "deepmerge";
 import type { PartialDeep } from "type-fest";
 
 import type { Context } from "./context";
-import { useSdkgenContext } from "./context-storage";
 import { decode, encode } from "./encode-decode";
 import type { SdkgenError, SdkgenErrorWithData } from "./error";
 import type { DeepReadonly } from "./utils";
@@ -30,18 +29,8 @@ export class SdkgenHttpClient {
     this.baseUrl = new URL(baseUrl);
   }
 
-  async makeRequest(ctxArg: PartialDeep<Context> | null, functionName: string, args: unknown): Promise<any> {
+  async makeRequest(ctx: PartialDeep<Context> | null, functionName: string, args: unknown): Promise<any> {
     const func = this.astJson.functionTable[functionName];
-
-    let ctx: PartialDeep<Context> = {};
-
-    if (ctxArg) {
-      try {
-        ctx = merge(useSdkgenContext(), ctxArg);
-      } catch {
-        ctx = { ...ctxArg };
-      }
-    }
 
     if (!func) {
       throw new Error(`Unknown function ${functionName}`);
@@ -55,13 +44,13 @@ export class SdkgenHttpClient {
 
     const requestBody = JSON.stringify({
       args: encode(this.astJson.typeTable, `${functionName}.args`, func.args, args),
-      deviceInfo: ctx.request?.deviceInfo ?? { id: hostname(), type: "node" },
+      deviceInfo: ctx?.request?.deviceInfo ?? { id: hostname(), type: "node" },
       extra: {
         ...extra,
-        ...ctx.request?.extra,
+        ...ctx?.request?.extra,
       },
       name: functionName,
-      requestId: ctx.request?.id ? ctx.request.id + randomBytes(6).toString("hex") : randomBytes(16).toString("hex"),
+      requestId: ctx?.request?.id ? ctx.request.id + randomBytes(6).toString("hex") : randomBytes(16).toString("hex"),
       version: 3,
     });
 
@@ -109,29 +98,32 @@ export class SdkgenHttpClient {
 
       req.write(requestBody);
       req.end();
-    }).catch(error => {
+    }).catch((error: object) => {
       if (has(error, "type") && has(error, "message") && typeof error.type === "string" && typeof error.message === "string") {
-        const errClass = this.errClasses[error.type];
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const errClass = this.errClasses[error.type] ?? this.errClasses.Fatal!;
+        const errType = errClass.name;
 
-        if (errClass) {
-          const errorJson = this.astJson.errors.find(err => (Array.isArray(err) ? err[0] === error.type : err === error.type));
+        const errorJson = this.astJson.errors.find(err => (Array.isArray(err) ? err[0] === errType : err === errType));
 
-          if (errorJson) {
-            if (Array.isArray(errorJson) && has(error, "data")) {
-              throw new errClass(error.message, decode(this.astJson.typeTable, `${errClass.name}.data`, errorJson[1], error.data));
-            } else {
-              throw new errClass(error.message, undefined);
-            }
-          }
+        let newError;
+
+        if (errorJson && Array.isArray(errorJson) && has(error, "data")) {
+          newError = new errClass(error.message, decode(this.astJson.typeTable, `${errClass.name}.data`, errorJson[1], error.data));
+        } else {
+          newError = new errClass(error.message, undefined);
         }
 
-        throw new (this.errClasses.Fatal as new (message: string) => SdkgenError)(`${error.type}: ${error.message}`);
+        if (!newError.type) {
+          (newError as unknown as { type: string }).type = errType;
+        }
+
+        throw newError;
       } else {
         throw error;
       }
     });
 
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return decode(this.astJson.typeTable, `${functionName}.ret`, func.ret, encodedRet);
   }
 }

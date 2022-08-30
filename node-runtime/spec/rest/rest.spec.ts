@@ -14,7 +14,8 @@ import { generateNodeClientSource, generateNodeServerSource } from "@sdkgen/type
 import axios from "axios";
 import FormData from "form-data";
 
-import { useSdkgenContext, SdkgenHttpServer } from "../../src";
+import type { Context } from "../../src";
+import { SdkgenHttpServer } from "../../src";
 
 const ast = new Parser(`${__dirname}/api.sdkgen`).parse();
 
@@ -23,19 +24,19 @@ const { api, TestError } = require(`${__dirname}/api.ts`);
 
 unlinkSync(`${__dirname}/api.ts`);
 
-api.fn.add = async ({ first, second }: { first: number; second: string }) => {
+api.fn.add = async (_ctx: Context, { first, second }: { first: number; second: string }) => {
   return `${first}${second}`;
 };
 
-api.fn.maybe = async ({ bin }: { bin: string | null }) => {
+api.fn.maybe = async (_ctx: Context, { bin }: { bin: string | null }) => {
   return bin === null ? null : Buffer.from(bin, "hex");
 };
 
-api.fn.hex = async ({ bin }: { bin: Buffer }) => {
+api.fn.hex = async (_ctx: Context, { bin }: { bin: Buffer }) => {
   return bin.toString("hex");
 };
 
-api.fn.obj = async ({ obj }: { obj: { val: number } }) => {
+api.fn.obj = async (_ctx: Context, { obj }: { obj: { val: number } }) => {
   if (obj.val === 0) {
     throw new Error("Value is zero ~ Fatal");
   }
@@ -47,15 +48,15 @@ api.fn.obj = async ({ obj }: { obj: { val: number } }) => {
   return obj;
 };
 
-api.fn.returnArg = async ({ arg }: { arg: string }) => {
+api.fn.returnArg = async (_ctx: Context, { arg }: { arg: string }) => {
   return arg;
 };
 
-api.fn.returnNoArg = async () => {
+api.fn.returnNoArg = async (_ctx: Context) => {
   return "no-arg";
 };
 
-api.fn.returnArgConcat = async ({ arg, arg2 }: { arg: string; arg2: string }) => {
+api.fn.returnArgConcat = async (_ctx: Context, { arg, arg2 }: { arg: string; arg2: string }) => {
   return `${arg}${arg2}`;
 };
 
@@ -69,9 +70,9 @@ async function readAllStream(stream: Readable) {
   });
 }
 
-api.fn.uploadFile = async () => {
+api.fn.uploadFile = async (ctx: Context) => {
   return Promise.all(
-    useSdkgenContext().request.files.map(async ({ name, contents }) => ({
+    ctx.request.files.map(async ({ name, contents }) => ({
       data: await readAllStream(contents),
       name,
     })),
@@ -113,9 +114,9 @@ describe("Rest API", () => {
     path: string;
     result: string;
     data?: string | Buffer;
-    headers?: Record<string, string | string[]>;
+    headers?: Record<string, string>;
     statusCode?: number;
-    resultHeaders?: Record<string, string | string[]>;
+    resultHeaders?: Record<string, string>;
   }> = [
     { method: "GET", path: "/add1/1/aa", result: "1aa" },
     { method: "GET", path: "/add1/1/aa/", result: "1aa" },

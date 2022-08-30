@@ -7,7 +7,7 @@
 
 ## Installing sdkgen
 
-First of all you need Node.js 12.17 or newer on your machine. We recommend using the latest LTS version, check for it here: https://nodejs.org/en/download/.
+First of all you need Node.js 12 or newer on your machine. We recommend using the latest LTS version, check for it here: https://nodejs.org/en/download/.
 
 Install the global CLI:
 
@@ -21,13 +21,13 @@ Create an `api.sdkgen` to describe your API. For example:
 
 ```
 type Post {
-    id: uuid
-    title: string
-    body: string
-    createdAt: datetime
-    author: {
-        name: string
-    }
+  id: uuid
+  title: string
+  body: string
+  createdAt: datetime
+  author: {
+    name: string
+  }
 }
 
 fn getPost(id: uuid): Post?
@@ -54,20 +54,20 @@ import { SdkgenHttpServer } from "@sdkgen/node-runtime";
 import { api } from "./api";
 
 // Every endpoint described must receive some implementation
-api.fn.getPost = async (ctx, {id}) => {
-    return {
-        id,
-        title: "Getting Started",
-        author: {
-            name: "John Doe"
-        },
-        body: "Lorem ipsum",
-        createdAt: new Date(),
-    };
+api.fn.getPost = async (ctx, { id }) => {
+  return {
+    id,
+    title: "Getting Started",
+    author: {
+      name: "John Doe"
+    },
+    body: "Lorem ipsum",
+    createdAt: new Date(),
+  };
 };
 
 // Start a HTTP server for the API
-const server = new SdkgenHttpServer(api, {});
+const server = new SdkgenHttpServer(api);
 server.listen(8000);
 ```
 

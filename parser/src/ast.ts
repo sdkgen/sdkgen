@@ -22,7 +22,7 @@ export abstract class AstNode {
 export abstract class Type extends AstNode {
   abstract get name(): string;
 
-  toJSON() {
+  toJSON(): unknown {
     const { name: _name, ...rest } = { ...this };
 
     return rest;
@@ -69,7 +69,11 @@ export class RestAnnotation extends Annotation {
 
 export class HiddenAnnotation extends Annotation {}
 
-export abstract class PrimitiveType extends Type {}
+export abstract class PrimitiveType extends Type {
+  toJSON() {
+    return this.name;
+  }
+}
 export class StringPrimitiveType extends PrimitiveType {
   name = "string";
 }
@@ -102,6 +106,9 @@ export class VoidPrimitiveType extends PrimitiveType {
 }
 export class MoneyPrimitiveType extends PrimitiveType {
   name = "money";
+}
+export class DecimalPrimitiveType extends PrimitiveType {
+  name = "decimal";
 }
 export class CpfPrimitiveType extends PrimitiveType {
   name = "cpf";
@@ -157,6 +164,8 @@ export class ArrayType extends Type {
 export class EnumValue extends AstNode {
   annotations: Annotation[] = [];
 
+  struct: StructType | null = null;
+
   constructor(public value: string) {
     super();
   }
@@ -168,12 +177,22 @@ export class EnumType extends Type {
   constructor(public values: EnumValue[]) {
     super();
   }
+
+  get hasStructValues() {
+    return this.values.some(v => v.struct !== null);
+  }
 }
 
 export class Field extends AstNode {
   annotations: Annotation[] = [];
 
   constructor(public name: string, public type: Type, public secret = false) {
+    super();
+  }
+}
+
+export class Spread extends AstNode {
+  constructor(public typeReference: TypeReference) {
     super();
   }
 }
@@ -189,7 +208,9 @@ export class TypeReference extends Type {
 export class StructType extends Type {
   name!: string;
 
-  constructor(public fields: Field[], public spreads: TypeReference[]) {
+  fields: Field[] = [];
+
+  constructor(public fieldsAndSpreads: Array<Field | Spread>) {
     super();
   }
 }
@@ -205,7 +226,9 @@ export class TypeDefinition extends AstNode {
 export class FunctionOperation extends AstNode {
   annotations: Annotation[] = [];
 
-  constructor(public name: string, public args: Field[], public returnType: Type) {
+  args: Field[] = [];
+
+  constructor(public name: string, public fieldsAndSpreads: Array<Field | Spread>, public returnType: Type) {
     super();
   }
 }

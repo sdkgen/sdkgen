@@ -1,5 +1,5 @@
 import type { AstRoot } from "@sdkgen/parser";
-import { astToJson, VoidPrimitiveType } from "@sdkgen/parser";
+import { DecimalPrimitiveType, astToJson, VoidPrimitiveType, hasType } from "@sdkgen/parser";
 
 import { generateTypescriptEnum, generateTypescriptErrorClass, generateTypescriptInterface, generateTypescriptTypeName } from "./helpers";
 
@@ -14,8 +14,13 @@ import { BaseApiConfig, Context, Fatal${hasErrorWithoutData ? ", SdkgenError" : 
     hasErrorWithData ? ", SdkgenErrorWithData" : ""
   } } from "@sdkgen/node-runtime";
 export { Fatal } from "@sdkgen/node-runtime";
-
 `;
+
+  if (hasType(ast, DecimalPrimitiveType)) {
+    code += `import { Decimal } from "decimal.js";\n`;
+  }
+
+  code += "\n";
 
   for (const type of ast.enumTypes) {
     code += generateTypescriptEnum(type);
@@ -37,10 +42,10 @@ export { Fatal } from "@sdkgen/node-runtime";
   }
 
   code += `export class ApiConfig<ExtraContextT> extends BaseApiConfig<ExtraContextT> {
-    fn!: {${ast.operations
+    declare fn: {${ast.operations
       .map(
         op => `
-        ${op.name}: (args: {${op.args
+        ${op.name}: (ctx: Context & ExtraContextT, args: {${op.args
           .map(arg => `${arg.name}: ${generateTypescriptTypeName(arg.type, false)}`)
           .join(", ")}}) => Promise<${generateTypescriptTypeName(op.returnType, false)}>`,
       )

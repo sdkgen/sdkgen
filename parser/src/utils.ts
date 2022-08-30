@@ -15,6 +15,7 @@ import {
   IntPrimitiveType,
   JsonPrimitiveType,
   MoneyPrimitiveType,
+  DecimalPrimitiveType,
   StringPrimitiveType,
   UIntPrimitiveType,
   UrlPrimitiveType,
@@ -34,6 +35,7 @@ primitiveToAstClass.set("bigint", BigIntPrimitiveType);
 primitiveToAstClass.set("bool", BoolPrimitiveType);
 primitiveToAstClass.set("bytes", BytesPrimitiveType);
 primitiveToAstClass.set("money", MoneyPrimitiveType);
+primitiveToAstClass.set("decimal", DecimalPrimitiveType);
 primitiveToAstClass.set("cpf", CpfPrimitiveType);
 primitiveToAstClass.set("cnpj", CnpjPrimitiveType);
 primitiveToAstClass.set("email", EmailPrimitiveType);

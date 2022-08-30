@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { AstJson } from "./ast";
 import { decode, encode } from "./encode-decode";
 import type { SdkgenError, SdkgenErrorWithData } from "./error";
@@ -30,10 +31,8 @@ function getDeviceId() {
 
     return deviceId;
   } catch (e) {
-    //
+    return fallbackDeviceId;
   }
-
-  return fallbackDeviceId;
 }
 
 function has<P extends PropertyKey>(target: object, property: P): target is { [K in P]: unknown } {
@@ -41,17 +40,13 @@ function has<P extends PropertyKey>(target: object, property: P): target is { [K
 }
 
 export class SdkgenHttpClient {
-  private baseUrl: string;
-
-  extra = new Map<string, any>();
+  extra = new Map<string, unknown>();
 
   successHook: (result: any, name: string, args: any) => void = () => undefined;
 
   errorHook: (result: any, name: string, args: any) => void = () => undefined;
 
-  constructor(baseUrl: string, private astJson: DeepReadonly<AstJson>, private errClasses: ErrClasses) {
-    this.baseUrl = baseUrl;
-  }
+  constructor(private baseUrl: string, private astJson: DeepReadonly<AstJson>, private errClasses: ErrClasses) {}
 
   async makeRequest(functionName: string, args: unknown): Promise<any> {
     const func = this.astJson.functionTable[functionName];
@@ -60,7 +55,7 @@ export class SdkgenHttpClient {
       throw new Error(`Unknown function ${functionName}`);
     }
 
-    const extra: Record<string, any> = {};
+    const extra: Record<string, unknown> = {};
 
     // eslint-disable-next-line no-foreach/no-foreach
     this.extra.forEach((value, key) => {
@@ -102,7 +97,6 @@ export class SdkgenHttpClient {
           try {
             if (has(response, "error") && response.error) {
               reject(response.error);
-              this.errorHook(response.error, functionName, args);
             } else {
               resolve(has(response, "result") ? response.result : null);
             }
@@ -110,35 +104,38 @@ export class SdkgenHttpClient {
             const err = { message: `${e}`, type: "Fatal" };
 
             reject(err);
-            this.errorHook(err, functionName, args);
           }
         } catch (e) {
           const err = { message: `Falha de conexão com o servidor`, type: "Fatal" };
 
           reject(err);
-          this.errorHook(err, functionName, args);
         }
       };
 
       req.send(JSON.stringify(request));
     }).catch((error: object) => {
       this.errorHook(error, functionName, args);
+
       if (has(error, "type") && has(error, "message") && typeof error.type === "string" && typeof error.message === "string") {
-        const errClass = this.errClasses[error.type];
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        const errClass = this.errClasses[error.type] ?? this.errClasses.Fatal!;
+        const errType = errClass.name;
 
-        if (errClass) {
-          const errorJson = this.astJson.errors.find(err => (Array.isArray(err) ? err[0] === error.type : err === error.type));
+        const errorJson = this.astJson.errors.find(err => (Array.isArray(err) ? err[0] === errType : err === errType));
 
-          if (errorJson) {
-            if (Array.isArray(errorJson) && has(error, "data")) {
-              throw new errClass(error.message, decode(this.astJson.typeTable, `${errClass.name}.data`, errorJson[1], error.data));
-            } else {
-              throw new errClass(error.message, undefined);
-            }
-          }
+        let newError;
+
+        if (errorJson && Array.isArray(errorJson) && has(error, "data")) {
+          newError = new errClass(error.message, decode(this.astJson.typeTable, `${errClass.name}.data`, errorJson[1], error.data));
+        } else {
+          newError = new errClass(error.message, undefined);
         }
 
-        throw new (this.errClasses.Fatal as new (message: string) => SdkgenError)(`${error.type}: ${error.message}`);
+        if (!newError.type) {
+          (newError as unknown as { type: string }).type = errType;
+        }
+
+        throw newError;
       } else {
         throw error;
       }

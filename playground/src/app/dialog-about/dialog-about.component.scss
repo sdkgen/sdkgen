@@ -1,0 +1,25 @@
+header {
+  display: flex;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  padding-bottom: 5px;
+
+  h1,
+  button,
+  mat-chip-list {
+    display: inline;
+    align-self: center;
+  }
+
+  h1 {
+    display: flex;
+    margin: 0 10px 0 0;
+  }
+
+  button {
+    margin-left: 20px;
+  }
+}
+
+a:not(:last-child) {
+  margin-right: 12px;
+}

@@ -25,13 +25,13 @@
   },
   "homepage": "https://github.com/sdkgen/sdkgen#readme",
   "devDependencies": {
-    "@cubos/eslint-config": "^1.0.536820",
+    "@cubos/eslint-config": "^2.0.0",
     "@types/command-line-args": "^5.2.0",
     "@types/command-line-usage": "^5.0.2",
-    "@types/jest": "^27.0.1",
+    "@types/jest": "^28.0.0",
     "@types/node": "^16.7.0",
-    "jest": "^27.0.6",
-    "ts-jest": "^27.0.5",
+    "jest": "^28.0.0",
+    "ts-jest": "^28.0.0",
     "typescript": "^4.3.5"
   },
   "jest": {
@@ -51,6 +51,7 @@
   },
   "dependencies": {
     "@sdkgen/csharp-generator": "file:../csharp-generator",
+    "@sdkgen/fsharp-generator": "file:../fsharp-generator",
     "@sdkgen/dart-generator": "file:../dart-generator",
     "@sdkgen/kotlin-generator": "file:../kotlin-generator",
     "@sdkgen/parser": "file:../parser",

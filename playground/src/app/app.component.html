@@ -1,0 +1,76 @@
+<!-- Esta instância do editor serve para pré-carregar os scripts do Monaco -->
+<ngx-monaco-editor style="width: 0; height: 0; opacity: 0; display: block"></ngx-monaco-editor>
+
+<app-tab-nav></app-tab-nav>
+
+<mat-tab-group
+  *ngIf="sdkgen.state$ | async"
+  id="main-tabs"
+  [selectedIndex]="selected.value"
+  (selectedIndexChange)="selected.setValue($event)"
+  animationDuration="150ms"
+>
+  <mat-tab label="Documentação">
+    <app-tab-home (runFunction)="addSimpleTab($event)"></app-tab-home>
+  </mat-tab>
+
+  <mat-tab *ngFor="let tab of tabs">
+    <ng-template mat-tab-label>
+      <span [ngSwitch]="tab.type">
+        <ng-container *ngSwitchCase="'advanced'">Editor Avançado</ng-container>
+        <ng-container *ngSwitchCase="'simple'"><span class="mono tt-none">▶&nbsp;{{ tab.function }}</span></ng-container>
+      </span>
+
+      <button mat-icon-button matTooltip="Fechar aba" (click)="closeTab(tab)">
+        <mat-icon>close</mat-icon>
+      </button>
+    </ng-template>
+
+    <ng-container [ngSwitch]="tab.type">
+      <ng-container *ngSwitchCase="'advanced'">
+        <app-tab-editor></app-tab-editor>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'simple'">
+        <app-simple-call [fn]="tab.function!"></app-simple-call>
+      </ng-container>
+    </ng-container>
+  </mat-tab>
+
+  <mat-tab disabled>
+    <ng-template mat-tab-label>
+      <button mat-icon-button matTooltip="Nova aba de editor avançado" (click)="addAdvancedTab()">
+        <mat-icon>add_circle</mat-icon>
+      </button>
+    </ng-template>
+  </mat-tab>
+
+  <mat-tab disabled>
+    <ng-template mat-tab-label>
+      <button mat-icon-button [matMenuTriggerFor]="downloadMenu">
+        <mat-icon>download</mat-icon>
+      </button>
+    </ng-template>
+  </mat-tab>
+</mat-tab-group>
+
+<mat-menu #downloadMenu="matMenu">
+  <div id="download-menu-size-flow"></div>
+
+  <button mat-menu-item disabled>Cliente</button>
+  <button mat-menu-item (click)="downloadTarget('typescript_nodeclient')"><mat-icon svgIcon="typescript"></mat-icon>Node.js</button>
+  <button mat-menu-item (click)="downloadTarget('typescript_web')"><mat-icon svgIcon="typescript"></mat-icon>Web</button>
+  <button mat-menu-item (click)="downloadTarget('flutter')"><mat-icon svgIcon="dart"></mat-icon>Flutter</button>
+  <button mat-menu-item (click)="downloadTarget('kotlin_android')"><mat-icon svgIcon="kotlin"></mat-icon>Android</button>
+  <button mat-menu-item (click)="downloadTarget('kotlin_android_without_callbacks')"><mat-icon svgIcon="kotlin"></mat-icon>Android (sem callbacks)</button>
+  <button mat-menu-item (click)="downloadTarget('swift_ios')"><mat-icon svgIcon="swift"></mat-icon>iOS</button>
+  <button mat-menu-item (click)="downloadTarget('rxswift_ios')"><mat-icon svgIcon="swift"></mat-icon>iOS (Rx)</button>
+
+  <button mat-menu-item disabled>Servidor</button>
+  <button mat-menu-item (click)="downloadTarget('typescript_nodeserver')"><mat-icon svgIcon="typescript"></mat-icon>Node.js</button>
+  <button mat-menu-item (click)="downloadTarget('csharp_server')"><mat-icon svgIcon="dot-net"></mat-icon>C#</button>
+  <button mat-menu-item (click)="downloadTarget('fsharp_server')"><mat-icon svgIcon="dot-net"></mat-icon>F#</button>
+
+  <button mat-menu-item disabled>Outros</button>
+  <button mat-menu-item (click)="downloadTarget('typescript_interfaces')"><mat-icon svgIcon="typescript"></mat-icon>Interfaces</button>
+</mat-menu>

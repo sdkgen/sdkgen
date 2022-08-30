@@ -13,6 +13,7 @@ internal class SdkgenDevice {
         device["platform"] = platformInfo()
         device["type"] = "ios"
         device["screen"] = screenInfo()
+        device["version"] = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
         return device
     }
     

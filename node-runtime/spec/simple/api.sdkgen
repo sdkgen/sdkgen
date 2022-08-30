@@ -33,3 +33,5 @@ type AllTypes {
 
 error SomeError
 fn throwsError(): void
+
+fn decimalAdd(a: decimal, b: decimal): decimal

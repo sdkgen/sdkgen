@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/require-await */
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 /* eslint-disable @typescript-eslint/naming-convention */
@@ -12,9 +13,10 @@ import { unlinkSync, writeFileSync } from "fs";
 import { astToJson, Parser } from "@sdkgen/parser";
 import { generateNodeClientSource, generateNodeServerSource } from "@sdkgen/typescript-generator";
 import axios from "axios";
+import Decimal from "decimal.js";
 
 import type { Context } from "../../src";
-import { useSdkgenContext, SdkgenHttpServer } from "../../src";
+import { SdkgenHttpServer } from "../../src";
 
 const ast = new Parser(`${__dirname}/api.sdkgen`).parse();
 
@@ -25,21 +27,25 @@ unlinkSync(`${__dirname}/api.ts`);
 
 let lastCallCtx: Context & { aaa: boolean } = null as any;
 
-api.fn.getUser = async ({ id }: { id: string }) => {
-  lastCallCtx = useSdkgenContext();
+api.fn.getUser = async (ctx: Context & { aaa: boolean }, { id }: { id: string }) => {
+  lastCallCtx = ctx;
   return {
     age: 1,
     name: id,
   };
 };
 
-api.fn.identity = async ({ types }: { types: any }) => {
-  lastCallCtx = useSdkgenContext();
+api.fn.identity = async (ctx: Context & { aaa: boolean }, { types }: { types: any }) => {
+  lastCallCtx = ctx;
   return types;
 };
 
 api.fn.throwsError = async () => {
   throw new SomeError("Some message");
+};
+
+api.fn.decimalAdd = async (_ctx: Context, { a, b }: { a: Decimal; b: Decimal }) => {
+  return a.add(b);
 };
 
 // ExecSync(`../../cubos/sdkgen/sdkgen ${__dirname + "/api.sdkgen"} -o ${__dirname + "/legacyNodeClient.ts"} -t typescript_nodeclient`);
@@ -120,5 +126,11 @@ describe("Simple API", () => {
       message: "Some message",
       type: "SomeError",
     });
+  });
+
+  test("Can handle decimals", async () => {
+    const result = await nodeClient.decimalAdd(null, { a: new Decimal("0.1"), b: new Decimal("0.2") });
+
+    expect(result.eq(new Decimal("0.3"))).toEqual(true);
   });
 });

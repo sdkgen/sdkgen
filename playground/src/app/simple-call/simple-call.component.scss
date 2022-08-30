@@ -1,0 +1,35 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+mat-tab-group {
+  height: 100%;
+
+  ::ng-deep {
+    .ngx-json-viewer {
+      overflow: inherit !important;
+    }
+
+    .mat-tab-body-wrapper {
+      height: 100%;
+    }
+
+    .mat-tab-body-content {
+      overflow-y: hidden !important;
+    }
+  }
+
+  ngx-monaco-editor {
+    display: block;
+    height: 100%;
+  }
+
+  ngx-json-viewer {
+    display: block;
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+    scrollbar-width: thin;
+  }
+}

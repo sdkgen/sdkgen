@@ -22,6 +22,12 @@ class SdkgenErrorWithData<T> implements Exception {
   SdkgenErrorWithData(this.message, this.data);
 }
 
+class SdkgenInterceptors {
+  Future Function(Map<String, dynamic> body)? onRequest;
+  Future Function(dynamic error)? onError;
+  Future Function(dynamic response)? onResponse;
+}
+
 class SdkgenHttpClient {
   Uri baseUrl;
   Map<String, dynamic> extra = <String, dynamic>{};
@@ -33,6 +39,7 @@ class SdkgenHttpClient {
   Map<String, SdkgenErrorDescription> errTable;
   String? deviceId;
   Random random = Random.secure();
+  final SdkgenInterceptors interceptors = SdkgenInterceptors();
 
   SdkgenHttpClient(baseUrl, this.typeTable, this.fnTable, this.errTable)
       : baseUrl = Uri.parse(baseUrl);
@@ -41,11 +48,11 @@ class SdkgenHttpClient {
     return hex.encode(List<int>.generate(bytes, (i) => random.nextInt(256)));
   }
 
-  dynamic _throwError(String type, String message, dynamic data) {
+  dynamic _createError(String type, String message, dynamic data) {
     var description = errTable[type] ?? errTable['Fatal']!;
     var decodedData =
         decode(typeTable, '$type.data', description.dataType, data);
-    throw Function.apply(description.create, [message, decodedData]);
+    return Function.apply(description.create, [message, decodedData]);
   }
 
   Future<String> _deviceId() async {
@@ -61,8 +68,10 @@ class SdkgenHttpClient {
     return deviceId!;
   }
 
-  Future<Object> makeRequest(
-      String functionName, Map<String, Object> args) async {
+  Future<Object?> makeRequest(
+    String functionName,
+    Map<String, Object?> args,
+  ) async {
     try {
       var func = fnTable[functionName]!;
       var encodedArgs = {};
@@ -80,6 +89,8 @@ class SdkgenHttpClient {
         'deviceInfo': await getDeviceInfo(await _deviceId())
       };
 
+      await interceptors.onRequest?.call(body);
+
       var response = await http.post(
         baseUrl,
         headers: headers,
@@ -89,17 +100,25 @@ class SdkgenHttpClient {
       var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (responseBody['error'] != null) {
-        throw _throwError(responseBody['error']['type'],
+        throw _createError(responseBody['error']['type'],
             responseBody['error']['message'], responseBody['error']['data']);
       } else {
-        return decode(
+        final response = decode(
             typeTable, '$functionName.ret', func.ret, responseBody['result']);
+
+        await interceptors.onResponse?.call(response);
+
+        return response;
       }
     } catch (e) {
       if (e is SdkgenError || e is SdkgenErrorWithData) {
+        await interceptors.onError?.call(e);
         rethrow;
       } else {
-        throw _throwError('Fatal', e.toString(), null);
+        final error = _createError('Fatal', e.toString(), null);
+        await interceptors.onError?.call(error);
+
+        throw error;
       }
     }
   }

@@ -14,6 +14,7 @@ import {
   FunctionOperation,
   HiddenAnnotation,
   OptionalType,
+  Spread,
   StructType,
   ThrowsAnnotation,
   TypeDefinition,
@@ -28,7 +29,6 @@ import {
   AnnotationToken,
   ArraySymbolToken,
   ColonSymbolToken,
-  CommaSymbolToken,
   CurlyOpenSymbolToken,
   EnumKeywordToken,
   ErrorKeywordToken,
@@ -36,31 +36,34 @@ import {
   FnKeywordToken,
   IdentifierToken,
   OptionalSymbolToken,
-  ParensCloseSymbolToken,
   ParensOpenSymbolToken,
   PrimitiveTypeToken,
   StringLiteralToken,
   TypeKeywordToken,
+  CommaSymbolToken,
+  ParensCloseSymbolToken,
 } from "./token";
 import { primitiveToAstClass } from "./utils";
 
 export class ParserError extends Error {}
 
 interface MultiExpectMatcher<T> {
-  ImportKeywordToken?(token: ImportKeywordToken): T;
-  TypeKeywordToken?(token: TypeKeywordToken): T;
-  FnKeywordToken?(token: FnKeywordToken): T;
-  ErrorKeywordToken?(token: ErrorKeywordToken): T;
-  IdentifierToken?(token: IdentifierToken): T;
+  ArraySymbolToken?(token: ArraySymbolToken): T;
+  CommaSymbolToken?(token: CommaSymbolToken): T;
+  CurlyCloseSymbolToken?(token: CurlyCloseSymbolToken): T;
   CurlyOpenSymbolToken?(token: CurlyOpenSymbolToken): T;
   EnumKeywordToken?(token: EnumKeywordToken): T;
-  PrimitiveTypeToken?(token: PrimitiveTypeToken): T;
-  ArraySymbolToken?(token: ArraySymbolToken): T;
+  ErrorKeywordToken?(token: ErrorKeywordToken): T;
+  FalseKeywordToken?(token: FalseKeywordToken): T;
+  FnKeywordToken?(token: FnKeywordToken): T;
+  IdentifierToken?(token: IdentifierToken): T;
+  ImportKeywordToken?(token: ImportKeywordToken): T;
   OptionalSymbolToken?(token: OptionalSymbolToken): T;
-  CurlyCloseSymbolToken?(token: CurlyCloseSymbolToken): T;
+  ParensCloseSymbolToken?(token: ParensCloseSymbolToken): T;
+  PrimitiveTypeToken?(token: PrimitiveTypeToken): T;
   SpreadSymbolToken?(token: SpreadSymbolToken): T;
   TrueKeywordToken?(token: TrueKeywordToken): T;
-  FalseKeywordToken?(token: FalseKeywordToken): T;
+  TypeKeywordToken?(token: TypeKeywordToken): T;
 }
 
 export class Parser {
@@ -76,7 +79,7 @@ export class Parser {
     throw "Not implemented";
   };
 
-  constructor(source: Lexer | string) {
+  constructor(source: Lexer | string | Array<Lexer | string>) {
     try {
       // eslint-disable-next-line
       this.readFileSync = require("fs").readFileSync;
@@ -84,11 +87,9 @@ export class Parser {
       // do nothing
     }
 
-    if (source instanceof Lexer) {
-      this.lexers = [source];
-    } else {
-      this.lexers = [new Lexer(this.readFileSync(source).toString(), source)];
-    }
+    const sources = Array.isArray(source) ? [...source].reverse() : [source];
+
+    this.lexers = sources.map(x => (x instanceof Lexer ? x : new Lexer(this.readFileSync(x).toString(), x)));
 
     this.nextToken();
   }
@@ -248,7 +249,7 @@ export class Parser {
     const name = nameToken.value;
 
     if (!/[A-Z]/u.test(name[0])) {
-      throw new ParserError(`The custom type name must start with an uppercase letter, but found '${JSON.stringify(name)}' at ${nameToken.location}`);
+      throw new ParserError(`The custom type name must start with an uppercase letter, but found ${JSON.stringify(name)} at ${nameToken.location}`);
     }
 
     this.nextToken();
@@ -275,12 +276,12 @@ export class Parser {
     const name = nameToken.value;
 
     if (!/[A-Z]/u.test(name[0])) {
-      throw new ParserError(`Error name must start with an uppercase letter, but found '${JSON.stringify(name)}' at ${nameToken.location}`);
+      throw new ParserError(`Error name must start with an uppercase letter, but found ${JSON.stringify(name)} at ${nameToken.location}`);
     }
 
     this.nextToken();
 
-    let type = new VoidPrimitiveType();
+    let type: Type = new VoidPrimitiveType();
 
     if (
       this.token instanceof CurlyOpenSymbolToken ||
@@ -311,28 +312,68 @@ export class Parser {
     this.nextToken();
 
     const argNames = new Set<string>();
-    const args: Field[] = [];
+    const fieldsAndSpreads: Array<Field | Spread> = [];
+    let finished = false;
+    let parensCloseToken!: ParensCloseSymbolToken;
 
-    while (this.token && this.token.maybeAsIdentifier() instanceof IdentifierToken) {
-      const field = this.parseField();
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+    while (!finished) {
+      this.acceptAnnotations();
+      this.multiExpect({
+        ParensCloseSymbolToken: token => {
+          this.checkCannotHaveAnnotationsHere();
+          this.nextToken();
+          finished = true;
+          parensCloseToken = token;
+        },
+        IdentifierToken: () => {
+          const field = this.parseField();
 
-      if (argNames.has(field.name)) {
-        throw new ParserError(`Cannot redeclare argument '${field.name}'`);
-      }
+          if (argNames.has(field.name)) {
+            throw new ParserError(`Cannot redeclare argument '${field.name}'`);
+          }
 
-      argNames.add(field.name);
-      args.push(field);
+          argNames.add(field.name);
+          fieldsAndSpreads.push(field);
 
-      if (this.token instanceof CommaSymbolToken) {
-        this.nextToken();
-      } else {
-        break;
-      }
+          this.multiExpect({
+            ParensCloseSymbolToken: token => {
+              this.checkCannotHaveAnnotationsHere();
+              this.nextToken();
+              finished = true;
+              parensCloseToken = token;
+            },
+            CommaSymbolToken: () => this.nextToken(),
+          });
+        },
+        SpreadSymbolToken: () => {
+          this.checkCannotHaveAnnotationsHere();
+          this.nextToken();
+          const identToken = this.expect(IdentifierToken);
+
+          this.nextToken();
+          if (!/[A-Z]/u.test(identToken.value[0])) {
+            throw new ParserError(`Expected a type but found ${JSON.stringify(identToken.value)} at ${identToken.location}`);
+          }
+
+          fieldsAndSpreads.push(new Spread(new TypeReference(identToken.value).at(identToken)).at(identToken));
+
+          this.multiExpect({
+            ParensCloseSymbolToken: token => {
+              this.checkCannotHaveAnnotationsHere();
+              this.nextToken();
+              finished = true;
+              parensCloseToken = token;
+            },
+            CommaSymbolToken: () => this.nextToken(),
+          });
+        },
+      });
     }
 
     for (const annotation of annotations) {
       if (annotation instanceof ArgDescriptionAnnotation) {
-        const arg = args.find(x => x.name === annotation.argName);
+        const arg = fieldsAndSpreads.find(x => x instanceof Field && x.name === annotation.argName) as Field | undefined;
 
         if (!arg) {
           throw new ParserError(`Argument '${annotation.argName}' not found, at ${annotation.location}`);
@@ -344,18 +385,14 @@ export class Parser {
 
     annotations = annotations.filter(ann => !(ann instanceof ArgDescriptionAnnotation));
 
-    const parensCloseToken = this.expect(ParensCloseSymbolToken);
-
-    this.nextToken();
-
-    let returnType = new VoidPrimitiveType().at(parensCloseToken);
+    let returnType: Type = new VoidPrimitiveType().at(parensCloseToken);
 
     if (this.token instanceof ColonSymbolToken) {
       this.nextToken();
       returnType = this.parseType();
     }
 
-    const op = new FunctionOperation(name, args, returnType);
+    const op = new FunctionOperation(name, fieldsAndSpreads, returnType);
 
     op.annotations = annotations;
 
@@ -390,6 +427,42 @@ export class Parser {
           enumValue.annotations = this.annotations;
           this.annotations = [];
           enumType.values.push(enumValue);
+          this.nextToken();
+
+          if (!(this.token instanceof ParensOpenSymbolToken)) {
+            return;
+          }
+
+          this.nextToken();
+          const fieldNames = new Set<string>();
+          const fields = [];
+
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+          while (this.token && this.token.maybeAsIdentifier() instanceof IdentifierToken) {
+            const field = this.parseField();
+
+            // "tag" is a reserved name on tagged enum fields and can't be used.
+            if (field.name === "tag") {
+              field.name = "_tag";
+            }
+
+            if (fieldNames.has(field.name)) {
+              throw new ParserError(`Cannot redeclare argument '${field.name}'`);
+            }
+
+            fieldNames.add(field.name);
+            fields.push(field);
+
+            if (this.token instanceof CommaSymbolToken) {
+              this.nextToken();
+            } else {
+              break;
+            }
+          }
+
+          enumValue.struct = new StructType(fields).atLocation(enumValue.location);
+
+          this.expect(ParensCloseSymbolToken);
           this.nextToken();
         },
       });
@@ -436,8 +509,7 @@ export class Parser {
 
     this.nextToken();
 
-    const fields: Field[] = [];
-    const spreads: TypeReference[] = [];
+    const fieldsAndSpreads: Array<Field | Spread> = [];
     const fieldNames = new Set<string>();
 
     let finished = false;
@@ -459,7 +531,7 @@ export class Parser {
           }
 
           fieldNames.add(field.name);
-          fields.push(field);
+          fieldsAndSpreads.push(field);
         },
         SpreadSymbolToken: () => {
           this.checkCannotHaveAnnotationsHere();
@@ -468,15 +540,15 @@ export class Parser {
 
           this.nextToken();
           if (!/[A-Z]/u.test(identToken.value[0])) {
-            throw new ParserError(`Expected a type but found '${JSON.stringify(identToken.value)}' at ${identToken.location}`);
+            throw new ParserError(`Expected a type but found ${JSON.stringify(identToken.value)} at ${identToken.location}`);
           }
 
-          spreads.push(new TypeReference(identToken.value).at(identToken));
+          fieldsAndSpreads.push(new Spread(new TypeReference(identToken.value).at(identToken)).at(identToken));
         },
       });
     }
 
-    return new StructType(fields, spreads).at(openingToken);
+    return new StructType(fieldsAndSpreads).at(openingToken);
   }
 
   private parseType(): Type {
@@ -487,7 +559,7 @@ export class Parser {
       IdentifierToken: token => {
         this.nextToken();
         if (!/[A-Z]/u.test(token.value[0])) {
-          throw new ParserError(`Expected a type but found '${JSON.stringify(token.value)}' at ${token.location}`);
+          throw new ParserError(`Expected a type but found ${JSON.stringify(token.value)} at ${token.location}`);
         }
 
         return new TypeReference(token.value).at(token);

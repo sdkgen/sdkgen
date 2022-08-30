@@ -1,42 +1,33 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
-  "buildOnSave": false,
-  "compileOnSave": true,
+  "compileOnSave": false,
   "compilerOptions": {
-    "jsx": "react",
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
     "sourceMap": true,
-    "target": "es5",
-    "module": "esnext",
-    "outDir": "./dist/",
-    "allowJs": true,
-    "pretty": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "resolveJsonModule": true,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
-    "types": ["node", "jest", "chrome"],
-    "skipLibCheck": true,
-    "lib": ["dom", "es2018", "esnext"],
-    "moduleResolution": "node",
-    "noUnusedParameters": true,
-    "experimentalDecorators": true,
-    // remove strict to get rid of 'strictFunctionTypes'
-    "strict": true,
-    "strictFunctionTypes": false,
-    // best practices
-    "noUnusedLocals": true,
-    "baseUrl": "src",
-    "paths": {
-      "assets/*": ["assets/*"],
-      "components/*": ["components/*"],
-      "configuration/*": ["configuration/*"],
-      "containers/*": ["containers/*"],
-      "helpers/*": ["helpers/*"],
-      "resources/*": ["resources/*"],
-      "pages/*": ["pages/*"],
-      "public/*": ["public/*"],
-      "stores/*": ["stores/*"],
-      "styles/*": ["styles/*"],
-      "types/*": ["types/*"]
-    }
+    "target": "es2017",
+    "module": "es2020",
+    "lib": [
+      "es2020",
+      "dom"
+    ]
   },
-  "include": ["src/", "_tests_", "index.d.ts"],
-  "exclude": ["node_modules", "!node_modules/@types", "**/__tests__/*", "dist"]
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  }
 }

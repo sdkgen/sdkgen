@@ -22,7 +22,7 @@ import { analyse } from "./semantic/analyser";
 import type { DeepReadonly } from "./utils";
 import { primitiveToAstClass } from "./utils";
 
-export type TypeDescription = string | string[] | Record<string, string>;
+export type TypeDescription = string | Array<string | [string, string]> | Record<string, string>;
 
 type TypeTable = Record<string, TypeDescription | undefined>;
 
@@ -73,7 +73,7 @@ function annotationToJson(ann: Annotation): AnnotationJson {
         headers: [...ann.headers.entries()].sort(([a], [b]) => a.localeCompare(b)),
         method: ann.method,
         path: ann.path,
-        pathVariables: [...ann.pathVariables].sort((a, b) => a.localeCompare(b)),
+        pathVariables: ann.pathVariables,
         queryVariables: [...ann.queryVariables].sort((a, b) => a.localeCompare(b)),
       },
     };
@@ -107,7 +107,7 @@ function annotationFromJson(json: AnnotationJson | DeepReadonly<AnnotationJson>)
 export interface AstJson {
   typeTable: TypeTable;
   functionTable: FunctionTable;
-  errors: Array<string | string[]>;
+  errors: Array<string | [string, string]>;
   annotations: Record<string, AnnotationJson[] | undefined>;
 }
 
@@ -126,6 +126,10 @@ export function astToJson(ast: AstRoot): AstJson {
   }
 
   for (const { name, fields } of ast.structTypes) {
+    if (name in typeTable) {
+      throw new Error(`Duplicate struct type ${name}`);
+    }
+
     typeTable[name] = {};
     const obj = typeTable[name] as Record<string, TypeDescription>;
 
@@ -144,7 +148,17 @@ export function astToJson(ast: AstRoot): AstJson {
   }
 
   for (const { name, values } of ast.enumTypes) {
-    typeTable[name] = values.map(v => v.value);
+    if (name in typeTable) {
+      throw new Error(`Duplicate enum type ${name}`);
+    }
+
+    typeTable[name] = values.map(v => {
+      if (!v.struct) {
+        return v.value;
+      }
+
+      return [v.value, v.struct.name] as [string, string];
+    });
   }
 
   for (const { name, type } of ast.typeDefinitions) {
@@ -185,7 +199,9 @@ export function astToJson(ast: AstRoot): AstJson {
     }
   }
 
-  const errors = ast.errors.map(error => (error.dataType instanceof VoidPrimitiveType ? error.name : [error.name, error.dataType.name]));
+  const errors = ast.errors.map(error =>
+    error.dataType instanceof VoidPrimitiveType ? error.name : ([error.name, error.dataType.name] as [string, string]),
+  );
 
   return {
     annotations,
@@ -198,6 +214,7 @@ export function astToJson(ast: AstRoot): AstJson {
 export function jsonToAst(json: DeepReadonly<AstJson>): AstRoot {
   const operations: FunctionOperation[] = [];
   const typeDefinition: TypeDefinition[] = [];
+  const solveEnumValueStructRef: Array<[EnumValue, string]> = [];
 
   function processType(description: DeepReadonly<TypeDescription>, typeName?: string): Type {
     if (typeof description === "string") {
@@ -213,13 +230,26 @@ export function jsonToAst(json: DeepReadonly<AstJson>): AstRoot {
 
       return new TypeReference(description);
     } else if (Array.isArray(description)) {
-      return new EnumType(description.map(v => new EnumValue(v)));
+      return new EnumType(
+        description.map(v => {
+          if (Array.isArray(v)) {
+            const [value, structName] = v as [string, string];
+            const enumValue = new EnumValue(value);
+
+            solveEnumValueStructRef.push([enumValue, structName]);
+
+            return enumValue;
+          }
+
+          return new EnumValue(v as string);
+        }),
+      );
     }
 
     const fields: Field[] = [];
 
     for (const fieldName of Object.keys(description)) {
-      const field = new Field(fieldName, processType((description as { [name: string]: TypeDescription })[fieldName]));
+      const field = new Field(fieldName, processType((description as Record<string, string>)[fieldName]));
 
       if (typeName) {
         const target = `type.${typeName}.${fieldName}`;
@@ -232,7 +262,7 @@ export function jsonToAst(json: DeepReadonly<AstJson>): AstRoot {
       fields.push(field);
     }
 
-    return new StructType(fields, []);
+    return new StructType(fields);
   }
 
   for (const [typeName, description] of Object.entries(json.typeTable)) {
@@ -263,9 +293,19 @@ export function jsonToAst(json: DeepReadonly<AstJson>): AstRoot {
     operations.push(op);
   }
 
+  for (const [enumValue, structName] of solveEnumValueStructRef) {
+    const struct = typeDefinition.find(def => def.name === structName)?.type;
+
+    if (struct instanceof StructType) {
+      enumValue.struct = struct;
+    }
+  }
+
   const errors = json.errors.map(error => {
     if (Array.isArray(error)) {
-      return new ErrorNode(error[0], processType(error[1]));
+      const [name, type] = error as [string, string];
+
+      return new ErrorNode(name, processType(type));
     }
 
     return new ErrorNode(error as string, new VoidPrimitiveType());

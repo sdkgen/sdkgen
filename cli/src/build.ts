@@ -3,6 +3,7 @@ import { writeFileSync } from "fs";
 
 import { generateCSharpServerSource } from "@sdkgen/csharp-generator";
 import { generateDartClientSource } from "@sdkgen/dart-generator";
+import { generateFSharpServerSource } from "@sdkgen/fsharp-generator";
 import { generateAndroidClientSource } from "@sdkgen/kotlin-generator";
 import { Parser } from "@sdkgen/parser";
 import { generateSwiftClientSource } from "@sdkgen/swift-generator";
@@ -16,7 +17,7 @@ import commandLineArgs from "command-line-args";
 import commandLineUsage from "command-line-usage";
 
 const optionDefinitions = [
-  { defaultOption: true, description: "Specifies the source file", name: "source" },
+  { defaultOption: true, description: "Specifies the source file", name: "sources", multiple: true },
   { alias: "o", description: "Specifies the output file", name: "output" },
   { alias: "t", description: "Specifies the target platform and language", name: "target" },
   { alias: "h", description: "Display this usage guide.", name: "help", type: Boolean },
@@ -24,7 +25,7 @@ const optionDefinitions = [
 
 export function buildCmd(argv: string[]): void {
   const options = commandLineArgs(optionDefinitions, { argv }) as {
-    source?: string;
+    sources?: string[];
     output?: string;
     target?: string;
     help?: boolean;
@@ -65,8 +66,8 @@ export function buildCmd(argv: string[]): void {
     process.exit(0);
   }
 
-  if (!options.source) {
-    console.error("Error: Missing 'source' option.");
+  if (!options.sources || options.sources.length === 0) {
+    console.error("Error: Missing 'sources' option.");
     process.exit(1);
   }
 
@@ -80,7 +81,7 @@ export function buildCmd(argv: string[]): void {
     process.exit(1);
   }
 
-  const ast = new Parser(options.source).parse();
+  const ast = new Parser(options.sources).parse();
 
   for (const warning of ast.warnings) {
     console.error(`WARNING: ${warning}`);
@@ -114,6 +115,11 @@ export function buildCmd(argv: string[]): void {
 
     case "csharp_server": {
       writeFileSync(options.output, generateCSharpServerSource(ast));
+      break;
+    }
+
+    case "fsharp_server": {
+      writeFileSync(options.output, generateFSharpServerSource(ast));
       break;
     }
 

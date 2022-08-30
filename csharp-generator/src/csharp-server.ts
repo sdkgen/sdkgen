@@ -10,7 +10,9 @@ using System.Globalization;
 using System.Numerics;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Sdkgen.Runtime;
+using static Sdkgen.Runtime;
+using static Sdkgen.Context;
+using static Sdkgen.Helpers;
 
 namespace SdkgenGenerated
 {
@@ -48,7 +50,7 @@ namespace SdkgenGenerated
                         {
                             ${
                               arg.type instanceof OptionalType
-                                ? `${arg.name}Json_ = new JsonElement()`
+                                ? `${arg.name}Json_ = new JsonElement();`
                                 : `throw new FatalException("'${op.name}().args.${arg.name}' must be set to a value of type ${arg.type.name}.");`
                             }
                         }

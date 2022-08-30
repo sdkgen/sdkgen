@@ -1,0 +1,54 @@
+<h1>
+  <button *ngIf="data.subdialog" class="back-button" mat-icon-button mat-dialog-close tabindex="-1">
+    <mat-icon>arrow_back</mat-icon>
+  </button>
+
+  <span class="mono">{{ data.type.name }}</span>
+
+  <mat-chip-list [selectable]="false">
+    <mat-chip *ngFor="let label of labels" [disableRipple]="true" color="primary">{{ label }}</mat-chip>
+  </mat-chip-list>
+
+  <button *ngIf="!data.subdialog" class="close-button" mat-icon-button mat-dialog-close tabindex="-1">
+    <mat-icon>close</mat-icon>
+  </button>
+</h1>
+
+<p>{{ typeDoc?.longDescription }}</p>
+
+<section *ngIf="typeDoc?.isStruct && typeDoc?.structFields">
+  <div class="table-responsive mat-elevation-z8">
+    <table mat-table [dataSource]="typeDoc?.structFields ?? []">
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Nome</th>
+        <td class="mono" mat-cell *matCellDef="let arg">{{ arg.name }}</td>
+      </ng-container>
+
+      <ng-container matColumnDef="type">
+        <th mat-header-cell *matHeaderCellDef>Tipo</th>
+        <td class="mono" mat-cell *matCellDef="let arg" [ngSwitch]="arg.type">
+          <span *ngSwitchCase="null">-</span>
+          <u *ngSwitchDefault [matTooltip]="getTooltip(arg.type)" (click)="showDocumentation(arg.type)">{{ arg.type.name }}</u>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="description">
+        <th mat-header-cell *matHeaderCellDef>Descrição</th>
+        <td mat-cell *matCellDef="let arg">{{ arg.description || "-" }}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="argumentsTableColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: argumentsTableColumns"></tr>
+    </table>
+  </div>
+</section>
+
+<section *ngIf="typeDoc?.examples?.length">
+  <h3>Exemplos</h3>
+
+  <ul>
+    <li *ngFor="let example of typeDoc?.examples">
+      <code class="mono">{{ example }}</code>
+    </li>
+  </ul>
+</section>

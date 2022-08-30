@@ -9,6 +9,7 @@ import {
   CpfPrimitiveType,
   DatePrimitiveType,
   DateTimePrimitiveType,
+  DecimalPrimitiveType,
   EmailPrimitiveType,
   EnumType,
   FloatPrimitiveType,
@@ -38,6 +39,9 @@ export function generateTypescriptTypeName(type: Type, isBrowser: boolean): stri
 
     case BigIntPrimitiveType:
       return "bigint";
+
+    case DecimalPrimitiveType:
+      return "Decimal";
 
     case DatePrimitiveType:
     case DateTimePrimitiveType:
@@ -100,6 +104,12 @@ ${type.fields.map(field => `    ${field.name}: ${generateTypescriptTypeName(fiel
 }
 
 export function generateTypescriptEnum(type: EnumType): string {
+  if (type.hasStructValues) {
+    return `export type ${type.name} = ${type.values
+      .map(x => (x.struct ? `({tag: "${x.value}"} & ${x.struct.name})` : `{tag: "${x.value}"}`))
+      .join(" | ")};\n`;
+  }
+
   return `export type ${type.name} = ${type.values.map(x => `"${x.value}"`).join(" | ")};\n`;
 }
 
