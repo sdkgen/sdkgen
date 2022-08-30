@@ -67,7 +67,7 @@ export function generateKotlinTypeName(type: Type): string {
       return "Unit";
 
     case JsonPrimitiveType:
-      return "JsonElement";
+      return "@RawValue JsonElement";
 
     case OptionalType:
       return `${generateKotlinTypeName((type as OptionalType).base)}?`;
