@@ -28,7 +28,8 @@ import java.text.SimpleDateFormat
 open class SdkgenHttpClient(
     private val baseUrl: String,
     private val applicationContext: Context,
-    private val defaultTimeoutMillis: Long = 10000L
+    private val defaultTimeoutMillis: Long = 10000L,
+    private val fingerprint: String? = null
 ) {
 
     class ByteArrayDeserializer : JsonDeserializer<ByteArray> {
@@ -211,7 +212,7 @@ open class SdkgenHttpClient(
     private fun makeDeviceObj(): JsonObject {
         return JsonObject().apply {
             addProperty("id", getDeviceId())
-            addProperty("fingerprint", Settings.Secure.getString(applicationContext.contentResolver, Settings.Secure.ANDROID_ID))
+            addProperty("fingerprint", fingerprint ?: Settings.Secure.getString(applicationContext.contentResolver, Settings.Secure.ANDROID_ID))
             addProperty("language", language())
             add("platform", JsonObject().apply {
                 addProperty("version", Build.VERSION.RELEASE)
