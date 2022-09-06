@@ -29,8 +29,13 @@ allprojects {
 group = "io.cubos"
 version = "0.0.0"
 
-def nexusUsername = rootProject.hasProperty("SONATYPE_NEXUS_USERNAME") ? rootProject.ext["SONATYPE_NEXUS_USERNAME"] : ""
-def nexusPassword = rootProject.hasProperty("SONATYPE_NEXUS_PASSWORD") ? rootProject.ext["SONATYPE_NEXUS_PASSWORD"] : ""
+Properties properties = new Properties()
+properties.load(project.rootProject.file('local.properties').newDataInputStream())
+println(properties.getProperty("SONATYPE_NEXUS_USERNAME"))
+println(properties.getProperty("SONATYPE_NEXUS_PASSWORD"))
+def nexusUsername = properties.getProperty("SONATYPE_NEXUS_USERNAME") ?: ""
+def nexusPassword = properties.getProperty("SONATYPE_NEXUS_PASSWORD") ?: ""
+
 nexusPublishing {
     repositories {
         sonatype {

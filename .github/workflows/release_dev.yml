@@ -442,15 +442,15 @@ jobs:
         working-directory: ./android-runtime/runtime
       - run: sed -i -e "s/version = \"0.0.0\"/version = \"$(cat ../version.txt)\"/g" build.gradle
         working-directory: ./android-runtime/
-      - run: echo "SONATYPE_NEXUS_USERNAME=${{ secrets.NEXUS_MAVEN_USER }}" >> gradle.properties
+      - run: echo "SONATYPE_NEXUS_USERNAME=${{ secrets.NEXUS_MAVEN_USER }}" >> local.properties
         working-directory: ./android-runtime/
-      - run: echo "SONATYPE_NEXUS_PASSWORD=${{ secrets.NEXUS_MAVEN_PASSWORD }}" >> gradle.properties
+      - run: echo "SONATYPE_NEXUS_PASSWORD=${{ secrets.NEXUS_MAVEN_PASSWORD }}" >> local.properties
         working-directory: ./android-runtime/
-      - run: echo "signing.keyId=${{ secrets.MAVEN_GPG_KEY_ID }}" >> gradle.properties
+      - run: echo "signing.keyId=${{ secrets.MAVEN_GPG_KEY_ID }}" >> local.properties
         working-directory: ./android-runtime/
-      - run: echo "signing.password=${{ secrets.MAVEN_GPG_KEY_PASSWORD }}" >> gradle.properties
+      - run: echo "signing.password=${{ secrets.MAVEN_GPG_KEY_PASSWORD }}" >> local.properties
         working-directory: ./android-runtime/
-      - run: echo "signing.secretKeyRingFile=${{ secrets.MAVEN_GPG_KEY_FILE_PATH }}" >> gradle.properties
+      - run: echo "signing.secretKeyRingFile=${{ secrets.MAVEN_GPG_KEY_FILE_PATH }}" >> local.properties
         working-directory: ./android-runtime/
       - run: echo "${{ secrets.MAVEN_GPG_FILE_CONTENT }}" | base64 -d > "${{ secrets.MAVEN_GPG_KEY_FILE_PATH }}"
         working-directory: ./android-runtime/runtime/
@@ -459,5 +459,5 @@ jobs:
           distribution: 'adopt'
           java-version: '11'
       - uses: gradle/wrapper-validation-action@v1
-      - run: ./gradlew publish
+      - run: ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
         working-directory: ./android-runtime
