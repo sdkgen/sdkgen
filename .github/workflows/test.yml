@@ -274,7 +274,7 @@ jobs:
           distribution: 'adopt'
           java-version: '11'
       - uses: gradle/wrapper-validation-action@v1
-      - run: echo empty=empty >> local.properties 
+      - run: echo "empty=empty" >> local.properties 
         working-directory: ./android-runtime
       - run: ./gradlew test assembleRelease
         working-directory: ./android-runtime
