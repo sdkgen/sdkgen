@@ -31,8 +31,7 @@ version = "0.0.0"
 
 Properties properties = new Properties()
 properties.load(project.rootProject.file('local.properties').newDataInputStream())
-println(properties.getProperty("SONATYPE_NEXUS_USERNAME"))
-println(properties.getProperty("SONATYPE_NEXUS_PASSWORD"))
+
 def nexusUsername = properties.getProperty("SONATYPE_NEXUS_USERNAME") ?: ""
 def nexusPassword = properties.getProperty("SONATYPE_NEXUS_PASSWORD") ?: ""
 
