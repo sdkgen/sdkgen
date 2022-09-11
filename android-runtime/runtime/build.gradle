@@ -2,7 +2,6 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'kotlin-android-extensions'
-    id 'com.vanniktech.maven.publish'
 }
 
 android {
@@ -21,10 +20,33 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'androidx.core:core-ktx:1.8.0'
+    implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'com.squareup.okhttp3:okhttp:4.10.0'
     api 'androidx.test.espresso:espresso-idling-resource:3.4.0'
     api 'com.google.code.gson:gson:2.9.1'
     api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4'
     api 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
 }
+
+ext {
+    PUBLISH_GROUP_ID = 'io.cubos'
+    PUBLISH_VERSION = '0.0.0'
+    PUBLISH_ARTIFACT_ID = 'android-runtime'
+    PUBLISH_DESCRIPTION = 'Sdkgen Android Runtime'
+    PUBLISH_URL = 'https://https://github.com/sdkgen/sdkgen'
+    PUBLISH_LICENSE_NAME = 'MIT License'
+    PUBLISH_LICENSE_URL =
+            'http://www.opensource.org/licenses/mit-license.php'
+    PUBLISH_DEVELOPER_ID = 'danielpsantiago'
+    PUBLISH_DEVELOPER_NAME = 'Daniel Santiago'
+    PUBLISH_DEVELOPER_EMAIL = 'tech@cubos.io'
+    PUBLISH_SCM_CONNECTION =
+            'scm:git:https://github.com/sdkgen/sdkgen.git'
+    PUBLISH_SCM_DEVELOPER_CONNECTION =
+            'scm:git:ssh://https://github.com/sdkgen/sdkgen.git'
+    PUBLISH_SCM_URL =
+            'https://https://github.com/sdkgen/sdkgen/tree/master'
+}
+
+apply from: "${rootProject.projectDir}/scripts/publish-module.gradle"
+
