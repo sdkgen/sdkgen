@@ -1,5 +1,25 @@
 # Releases
 
+## 2.2.0 (2022-10-06)
+
+### Funcionalidades:
+
+- Adicionado o tipo `decimal` para armazenar números monetários com precisão de casas decimais. Ver [#724](https://github.com/sdkgen/sdkgen/pull/724).
+- Adicionado interceptadores de requisições no target Flutter. Ver [#725](https://github.com/sdkgen/sdkgen/pull/725).
+- Suporte ao Node.js 18. Removido suporte ao Node.js 12 e 17. Versões 14, 16 e 18 são suportadas. Ver [#703](https://github.com/sdkgen/sdkgen/pull/703).
+- Adicionado suporte ao Flutter 3 e removido suporte ao Flutter 2. Ver [#704](https://github.com/sdkgen/sdkgen/pull/704).
+- Permite customizar o fingerprint do dispositivo no target Android. Ver [#734](https://github.com/sdkgen/sdkgen/pull/734).
+- Suporte a compilar múltiplos arquivos em um único comando. Ver [#690](https://github.com/sdkgen/sdkgen/pull/690).
+- Atualização de dependências.
+
+### Correções:
+
+- Corrigido suporte a executar em serviços Serverless.
+- Adicionado suporte ao tipo `json` em requisições REST com Swagger.
+- Outras correções. Ver [#684](https://github.com/sdkgen/sdkgen/pull/684), [#689](https://github.com/sdkgen/sdkgen/pull/689).
+- Correção na ordem dos argumentos na path de uma requisição REST. Ver [#713](https://github.com/sdkgen/sdkgen/pull/713).
+- Ajustes no gerador do Flutter para produzir código livre de alertas. Ver [#726](https://github.com/sdkgen/sdkgen/pull/726), [#733](https://github.com/sdkgen/sdkgen/pull/733).
+
 ## 2.1.0 (2022-05-09)
 
 - Suporte a utilizar o sdkgen em serviços Serverless (como Google Cloud Functions ou AWS Lambda), ou junto a servidores Node.js existentes, como o Express.js. Para tal basta criar uma instância do `SdkgenHttpServer` como usual, e então registrar a propriedade `handleRequest` como função para receber requisições HTTP. Ver detalhes na [documentação](https://sdkgen.github.io/dev/typescript_nodeserver/intro/#uso-do-sdkgen-com-um-servidor-http-existente-ou-cloud-functions). Ver [#678](https://github.com/sdkgen/sdkgen/pull/678).
