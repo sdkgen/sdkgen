@@ -29,7 +29,8 @@ open class SdkgenHttpClient(
     private val baseUrl: String,
     private val applicationContext: Context,
     private val defaultTimeoutMillis: Long = 10000L,
-    private val fingerprint: String? = null
+    private val fingerprint: String? = null,
+    private val globalExtras: Map<String, Any>? = null,
 ) {
 
     class ByteArrayDeserializer : JsonDeserializer<ByteArray> {
@@ -238,11 +239,34 @@ open class SdkgenHttpClient(
         }
     }
 
+    private fun addMapEntriesToJsonObject(map: Map<String, Any>?, jsonObject: JsonObject) {
+        if(map != null) {
+            for(entry in map.entries.iterator()) {
+                val key = entry.key
+                when(val value = entry.value) {
+                    is String -> jsonObject.addProperty(key, value)
+                    is Boolean -> jsonObject.addProperty(key, value)
+                    is Number -> jsonObject.addProperty(key, value)
+                    is Char -> jsonObject.addProperty(key, value)
+                    else -> jsonObject.addProperty(key, gson.toJson(value))
+                }
+            }
+        }
+    }
+
+    private fun joinExtrasIntoJsonObject(requestExtras: Map<String, Any>? = null): JsonObject {
+        return JsonObject().apply {
+            addMapEntriesToJsonObject(globalExtras, this)
+            addMapEntriesToJsonObject(requestExtras, this)
+        }
+    }
+
     @SuppressLint("HardwareIds")
     suspend fun makeRequest(
         functionName: String,
         bodyArgs: JsonObject?,
-        timeoutMillis: Long? = null
+        timeoutMillis: Long? = null,
+        requestExtras: Map<String, Any>? = null,
     ): InternalResponse = suspendCoroutine { continuation ->
         SdkgenIdlingResource.increment()
         try {
@@ -252,6 +276,7 @@ open class SdkgenHttpClient(
                 addProperty("name", functionName)
                 add("args", bodyArgs ?: JsonObject())
                 add("deviceInfo", makeDeviceObj())
+                add("extras",  joinExtrasIntoJsonObject(requestExtras))
             }
 
             val request = Request.Builder()
