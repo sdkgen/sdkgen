@@ -31,8 +31,9 @@ class ApiClient(
     baseUrl: String,
     val applicationContext: Context,
     defaultTimeoutMillis: Long = 10000L,
-    fingerprint: String? = null
-) : SdkgenHttpClient(baseUrl, applicationContext, defaultTimeoutMillis, fingerprint) {
+    fingerprint: String? = null,
+    globalExtras: Map<String, Any>? = null
+) : SdkgenHttpClient(baseUrl, applicationContext, defaultTimeoutMillis, fingerprint, globalExtras) {
 
     private val gson = GsonBuilder()
         .registerTypeAdapter(object : TypeToken<ByteArray>() {}.type, ByteArrayDeserializer())
@@ -83,7 +84,7 @@ class ApiClient(
       let opImpl = "";
       const defaultArguments: string[] = [];
 
-      defaultArguments.push(`timeoutMillis: Long? = null`);
+      defaultArguments.push(`timeoutMillis: Long? = null`, `requestExtras: Map<String, Any>? = null`);
       if (shouldImplementCallbacks) {
         defaultArguments.push(`callback: ((response: Response<${generateKotlinTypeName(op.returnType)}>) -> Unit)? = null`);
       }
@@ -103,7 +104,7 @@ class ApiClient(
       }
 
       opImpl += `\n`;
-      opImpl += `        val call = makeRequest("${op.name}", bodyArgs, timeoutMillis)\n`;
+      opImpl += `        val call = makeRequest("${op.name}", bodyArgs, timeoutMillis, requestExtras)\n`;
       opImpl += `        val response: Response<${generateKotlinTypeName(op.returnType)}> = handleCallResponse(call)\n`;
       if (shouldImplementCallbacks) {
         opImpl += `        withContext(Dispatchers.Main) { callback?.invoke(response) } \n`;
