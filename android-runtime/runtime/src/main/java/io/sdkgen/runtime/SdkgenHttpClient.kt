@@ -242,9 +242,9 @@ open class SdkgenHttpClient(
 
     private fun createJsonObjectFromExtrasMap(): JsonObject {
         val jsonObject = JsonObject()
-        for(entry in extras.entries.iterator()) {
+        for (entry in extras.entries.iterator()) {
             val key = entry.key
-            when(val value = entry.value) {
+            when (val value = entry.value) {
                 is String -> jsonObject.addProperty(key, value)
                 is Boolean -> jsonObject.addProperty(key, value)
                 is Number -> jsonObject.addProperty(key, value)
