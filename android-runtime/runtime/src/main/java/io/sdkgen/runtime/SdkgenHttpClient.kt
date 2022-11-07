@@ -29,9 +29,10 @@ open class SdkgenHttpClient(
     private val baseUrl: String,
     private val applicationContext: Context,
     private val defaultTimeoutMillis: Long = 10000L,
-    private val fingerprint: String? = null,
-    private val globalExtras: Map<String, Any>? = null,
+    private val fingerprint: String? = null
 ) {
+
+    val extras = mutableMapOf<String, Any>()
 
     class ByteArrayDeserializer : JsonDeserializer<ByteArray> {
         @Throws(JsonParseException::class)
@@ -239,25 +240,17 @@ open class SdkgenHttpClient(
         }
     }
 
-    private fun addMapEntriesToJsonObject(map: Map<String, Any>?, jsonObject: JsonObject) {
-        if(map != null) {
-            for(entry in map.entries.iterator()) {
-                val key = entry.key
-                when(val value = entry.value) {
-                    is String -> jsonObject.addProperty(key, value)
-                    is Boolean -> jsonObject.addProperty(key, value)
-                    is Number -> jsonObject.addProperty(key, value)
-                    is Char -> jsonObject.addProperty(key, value)
-                    else -> jsonObject.addProperty(key, gson.toJson(value))
-                }
+    private fun createJsonObjectFromExtrasMap(): JsonObject {
+        val jsonObject = JsonObject()
+        for(entry in extras.entries.iterator()) {
+            val key = entry.key
+            when(val value = entry.value) {
+                is String -> jsonObject.addProperty(key, value)
+                is Boolean -> jsonObject.addProperty(key, value)
+                is Number -> jsonObject.addProperty(key, value)
+                is Char -> jsonObject.addProperty(key, value)
+                else -> jsonObject.addProperty(key, gson.toJson(value))
             }
-        }
-    }
-
-    private fun joinExtrasIntoJsonObject(requestExtras: Map<String, Any>? = null): JsonObject {
-        return JsonObject().apply {
-            addMapEntriesToJsonObject(globalExtras, this)
-            addMapEntriesToJsonObject(requestExtras, this)
         }
     }
 
@@ -265,8 +258,7 @@ open class SdkgenHttpClient(
     suspend fun makeRequest(
         functionName: String,
         bodyArgs: JsonObject?,
-        timeoutMillis: Long? = null,
-        requestExtras: Map<String, Any>? = null,
+        timeoutMillis: Long? = null
     ): InternalResponse = suspendCoroutine { continuation ->
         SdkgenIdlingResource.increment()
         try {
@@ -276,7 +268,7 @@ open class SdkgenHttpClient(
                 addProperty("name", functionName)
                 add("args", bodyArgs ?: JsonObject())
                 add("deviceInfo", makeDeviceObj())
-                add("extras",  joinExtrasIntoJsonObject(requestExtras))
+                add("extras",  createJsonObjectFromExtrasMap())
             }
 
             val request = Request.Builder()
