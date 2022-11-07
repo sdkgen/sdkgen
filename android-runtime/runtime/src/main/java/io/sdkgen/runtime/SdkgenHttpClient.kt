@@ -252,6 +252,7 @@ open class SdkgenHttpClient(
                 else -> jsonObject.addProperty(key, gson.toJson(value))
             }
         }
+        return jsonObject
     }
 
     @SuppressLint("HardwareIds")
