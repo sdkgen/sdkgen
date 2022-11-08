@@ -32,6 +32,8 @@ open class SdkgenHttpClient(
     private val fingerprint: String? = null
 ) {
 
+    val extras = mutableMapOf<String, Any>()
+
     class ByteArrayDeserializer : JsonDeserializer<ByteArray> {
         @Throws(JsonParseException::class)
         override fun deserialize(
@@ -252,6 +254,7 @@ open class SdkgenHttpClient(
                 addProperty("name", functionName)
                 add("args", bodyArgs ?: JsonObject())
                 add("deviceInfo", makeDeviceObj())
+                add("extras",  gson.toJsonTree(extras).getAsJsonObject())
             }
 
             val request = Request.Builder()
