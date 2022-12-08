@@ -215,7 +215,7 @@ function generateEquality(type: StructType): string {
 }
 
 function generateHashcode(type: StructType): string {
-  return `  @override\n  int get hashCode => Object.hashAll([${type.fields.map(field => mangle(field.name)).join(", ")}]);\n`;
+  return `  @override\n  int get hashCode => Object.hashAllUnordered([${type.fields.map(field => mangle(field.name)).join(", ")}]);\n`;
 }
 
 function generateToString(type: StructType): string {
