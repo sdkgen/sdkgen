@@ -9,6 +9,7 @@ import { CheckEmptyStructOrEnumVisitor } from "./06_check_empty_struct_or_enum";
 import { ValidateRecursiveTypes } from "./07_validate_recursive_types";
 import { CollectStructAndEnumTypesVisitor } from "./08_collect_struct_and_enum_types";
 import { ValidateAnnotationsVisitor } from "./09_validate_annotations";
+import { CheckDuplicatedMembersOnEnumVisitor } from "./10_check_duplicate_members_on_enum";
 
 export function analyse(root: AstRoot): void {
   if (!root.errors.some(error => error.name === "Fatal")) {
@@ -24,4 +25,5 @@ export function analyse(root: AstRoot): void {
   new ValidateRecursiveTypes(root).process();
   new CollectStructAndEnumTypesVisitor(root).process();
   new ValidateAnnotationsVisitor(root).process();
+  new CheckDuplicatedMembersOnEnumVisitor(root).process();
 }
