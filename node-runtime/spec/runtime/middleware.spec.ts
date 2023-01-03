@@ -6,18 +6,21 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-import { unlinkSync, writeFileSync } from "fs";
+import { readFileSync, unlinkSync, writeFileSync } from "fs";
+import { fileURLToPath } from "url";
 
 import { Parser } from "@sdkgen/parser";
 import { generateNodeClientSource, generateNodeServerSource } from "@sdkgen/typescript-generator";
 
-import type { BaseApiConfig, Context } from "../../src";
-import { SdkgenHttpServer } from "../../src";
+import type { BaseApiConfig, Context } from "../../src/index.js";
+import { SdkgenHttpServer } from "../../src/index.js";
 
-const ast = new Parser(`${__dirname}/api.sdkgen`).parse();
+const __dirname = fileURLToPath(new URL(".", import.meta.url));
+
+const ast = new Parser(`${__dirname}/api.sdkgen`, readFileSync).parse();
 
 writeFileSync(`${__dirname}/middleware-api.ts`, generateNodeServerSource(ast).replace(/@sdkgen\/node-runtime/gu, "../../src"));
-const { api } = require(`${__dirname}/middleware-api.ts`);
+const { api } = await import(`${__dirname}/middleware-api.ts`);
 
 unlinkSync(`${__dirname}/middleware-api.ts`);
 
@@ -30,7 +33,7 @@ api.fn.sum = async (_ctx: Context, args: { a: number; b: number }) => {
 };
 
 writeFileSync(`${__dirname}/middleware-nodeClient.ts`, generateNodeClientSource(ast).replace(/@sdkgen\/node-runtime/gu, "../../src"));
-const { ApiClient: NodeApiClient } = require(`${__dirname}/middleware-nodeClient.ts`);
+const { ApiClient: NodeApiClient } = await import(`${__dirname}/middleware-nodeClient.ts`);
 
 unlinkSync(`${__dirname}/middleware-nodeClient.ts`);
 const nodeClient = new NodeApiClient("http://localhost:32542");

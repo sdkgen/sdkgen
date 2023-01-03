@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-import { SdkgenError } from "../src";
+import { SdkgenError } from "../src/index.js";
 
 class TestError extends SdkgenError {}
 

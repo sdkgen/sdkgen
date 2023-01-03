@@ -1,4 +1,4 @@
-import type { AstNode, Type } from "../ast";
+import type { AstNode, Type } from "../ast.js";
 import {
   DecimalPrimitiveType,
   FunctionOperation,
@@ -27,8 +27,8 @@ import {
   UIntPrimitiveType,
   UuidPrimitiveType,
   VoidPrimitiveType,
-} from "../ast";
-import { SemanticError, Visitor } from "./visitor";
+} from "../ast.js";
+import { SemanticError, Visitor } from "./visitor.js";
 
 function isRestEncodable(type: Type) {
   return (

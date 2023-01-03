@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import commandLineArgs from "command-line-args";
 
-import { buildCmd } from "./build";
-import { compatibilityCmd } from "./compatibility";
+import { buildCmd } from "./build.js";
+import { compatibilityCmd } from "./compatibility.js";
 
 const mainDefinitions = [{ defaultOption: true, name: "command" }];
 

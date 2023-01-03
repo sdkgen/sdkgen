@@ -2,6 +2,7 @@ import { randomBytes } from "crypto";
 import { createReadStream, createWriteStream, unlink } from "fs";
 import type { IncomingMessage, Server, ServerResponse } from "http";
 import { createServer } from "http";
+import type { AddressInfo } from "net";
 import { hostname } from "os";
 import { parse as parseQuerystring } from "querystring";
 import { parse as parseUrl } from "url";
@@ -39,17 +40,17 @@ import { PLAYGROUND_PUBLIC_PATH } from "@sdkgen/playground";
 import { generateSwiftClientSource } from "@sdkgen/swift-generator";
 import { generateBrowserClientSource, generateNodeClientSource, generateNodeServerSource } from "@sdkgen/typescript-generator";
 import Busboy from "busboy";
-import FileType from "file-type";
+import { fileTypeFromBuffer } from "file-type";
 import { getClientIp } from "request-ip";
 import staticFilesHandler from "serve-handler";
 
-import type { BaseApiConfig } from "./api-config";
-import type { Context, ContextReply, ContextRequest } from "./context";
-import { decode, encode } from "./encode-decode";
-import { Fatal } from "./error";
-import { executeRequest } from "./execute";
-import { setupSwagger } from "./swagger";
-import { has } from "./utils";
+import type { BaseApiConfig } from "./api-config.js";
+import type { Context, ContextReply, ContextRequest } from "./context.js";
+import { decode, encode } from "./encode-decode.js";
+import { Fatal } from "./error.js";
+import { executeRequest } from "./execute.js";
+import { setupSwagger } from "./swagger.js";
+import { has } from "./utils.js";
 
 export class SdkgenHttpServer<ExtraContextT = unknown> {
   public httpServer: Server;
@@ -166,31 +167,25 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
   async listen(port = 8000): Promise<void> {
     return new Promise(resolve => {
       this.httpServer.listen(port, () => {
-        const addr = this.httpServer.address();
-        let addrString: string | undefined;
+        const addr = this.httpServer.address() as AddressInfo;
+        let urlHost: string;
 
-        if (addr === null) {
-          addrString = undefined;
-        } else if (typeof addr === "string") {
-          addrString = addr;
+        if (addr.address === "::") {
+          urlHost = `localhost:${addr.port}`;
+        } else if (addr.family === "ipv6") {
+          urlHost = `[${addr.address}]:${addr.port}`;
         } else {
-          addrString = `${addr.address}:${addr.port}`;
+          urlHost = `${addr.address}:${addr.port}`;
         }
 
-        if (!addrString) {
-          console.log(`Listening.`);
-          resolve();
-          return;
-        }
-
-        console.log(`Listening on ${addrString}`);
+        console.log(`Listening on ${addr.address} at port ${addr.port}`);
 
         if (this.introspection) {
-          console.log(`Access the sdkgen Playground at http://${addrString}/playground`);
+          console.log(`Access the Playground at http://${urlHost}/playground`);
         }
 
         if (this.hasSwagger) {
-          console.log(`Access the REST API Swagger at http://${addrString}/swagger`);
+          console.log(`Access the Swagger UI at http://${urlHost}/swagger`);
         }
 
         resolve();
@@ -594,7 +589,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
                     const buffer = Buffer.from(reply.result as string, "base64");
 
                     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-                    FileType.fromBuffer(buffer)
+                    fileTypeFromBuffer(buffer)
                       .then(fileType => {
                         res.setHeader("content-type", fileType?.mime ?? "application/octet-stream");
                       })

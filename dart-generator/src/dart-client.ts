@@ -1,7 +1,7 @@
 import type { AstRoot } from "@sdkgen/parser";
 import { DecimalPrimitiveType, OptionalType, HiddenAnnotation, VoidPrimitiveType, BytesPrimitiveType, hasType } from "@sdkgen/parser";
 
-import { cast, generateClass, generateEnum, generateErrorClass, generateTypeName, mangle } from "./helpers";
+import { cast, generateClass, generateEnum, generateErrorClass, generateTypeName, mangle } from "./helpers.js";
 
 export function generateDartClientSource(ast: AstRoot): string {
   let code = "";

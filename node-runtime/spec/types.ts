@@ -1,6 +1,6 @@
 import { _, assert } from "spec.ts";
 
-import { decode, encode } from "../src";
+import { decode, encode } from "../src/index.js";
 
 {
   const typeTable = {} as const;

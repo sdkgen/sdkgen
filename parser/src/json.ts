@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-import type { Annotation, Type } from "./ast";
+import type { Annotation, Type } from "./ast.js";
 import {
   ArrayType,
   AstRoot,
@@ -17,10 +17,10 @@ import {
   TypeDefinition,
   TypeReference,
   VoidPrimitiveType,
-} from "./ast";
-import { analyse } from "./semantic/analyser";
-import type { DeepReadonly } from "./utils";
-import { primitiveToAstClass } from "./utils";
+} from "./ast.js";
+import { analyse } from "./semantic/analyser.js";
+import type { DeepReadonly } from "./utils.js";
+import { primitiveToAstClass } from "./utils.js";
 
 export type TypeDescription = string | Array<string | [string, string]> | Record<string, string>;
 
@@ -30,7 +30,7 @@ type FunctionTable = Record<
   string,
   | {
       args: Record<string, string>;
-      ret: TypeDescription;
+      ret: string;
     }
   | undefined
 >;

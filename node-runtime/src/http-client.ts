@@ -10,11 +10,11 @@ import { URL } from "url";
 import type { AstJson } from "@sdkgen/parser";
 import type { PartialDeep } from "type-fest";
 
-import type { Context } from "./context";
-import { decode, encode } from "./encode-decode";
-import type { SdkgenError, SdkgenErrorWithData } from "./error";
-import type { DeepReadonly } from "./utils";
-import { has } from "./utils";
+import type { Context } from "./context.js";
+import { decode, encode } from "./encode-decode.js";
+import type { SdkgenError, SdkgenErrorWithData } from "./error.js";
+import type { DeepReadonly } from "./utils.js";
+import { has } from "./utils.js";
 
 interface ErrClasses {
   [className: string]: (new (message: string, data: any) => SdkgenErrorWithData<any>) | (new (message: string) => SdkgenError) | undefined;

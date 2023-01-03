@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-import { decode, encode } from "../src";
+import { decode, encode } from "../src/index.js";
 
 describe("Encode/Decode", () => {
   test("Process CPF", () => {

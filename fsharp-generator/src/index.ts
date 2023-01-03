@@ -1,1 +1,1 @@
-export * from "./fsharp-server";
+export * from "./fsharp-server.js";

@@ -1,4 +1,4 @@
-import type { Token } from "./token";
+import type { Token } from "./token.js";
 import {
   AnnotationToken,
   ArraySymbolToken,
@@ -22,7 +22,7 @@ import {
   StringLiteralToken,
   TrueKeywordToken,
   TypeKeywordToken,
-} from "./token";
+} from "./token.js";
 
 export class LexerError extends Error {}
 

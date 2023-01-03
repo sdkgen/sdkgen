@@ -3,7 +3,7 @@ import * as CPF from "@fnando/cpf";
 import type { AstJson, TypeDescription } from "@sdkgen/parser";
 import { Decimal } from "decimal.js";
 
-import type { DeepReadonly } from "./utils";
+import type { DeepReadonly } from "./utils.js";
 
 type TypeTable = AstJson["typeTable"];
 

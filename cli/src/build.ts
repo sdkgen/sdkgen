@@ -1,5 +1,5 @@
 /* eslint-disable no-process-exit */
-import { writeFileSync } from "fs";
+import { readFileSync, writeFileSync } from "fs";
 
 import { generateCSharpServerSource } from "@sdkgen/csharp-generator";
 import { generateDartClientSource } from "@sdkgen/dart-generator";
@@ -81,7 +81,7 @@ export function buildCmd(argv: string[]): void {
     process.exit(1);
   }
 
-  const ast = new Parser(options.sources).parse();
+  const ast = new Parser(options.sources, readFileSync).parse();
 
   for (const warning of ast.warnings) {
     console.error(`WARNING: ${warning}`);

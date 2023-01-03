@@ -1,7 +1,7 @@
 import type { AstRoot } from "@sdkgen/parser";
 import { DecimalPrimitiveType, astToJson, HiddenAnnotation, VoidPrimitiveType, hasType } from "@sdkgen/parser";
 
-import { generateTypescriptEnum, generateTypescriptErrorClass, generateTypescriptInterface, generateTypescriptTypeName } from "./helpers";
+import { generateTypescriptEnum, generateTypescriptErrorClass, generateTypescriptInterface, generateTypescriptTypeName } from "./helpers.js";
 
 export function generateNodeClientSource(ast: AstRoot): string {
   let code = "";

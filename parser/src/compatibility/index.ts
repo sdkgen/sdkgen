@@ -1,4 +1,4 @@
-import type { AstRoot, Type } from "../ast";
+import type { AstRoot, Type } from "../ast.js";
 import {
   DecimalPrimitiveType,
   ArrayType,
@@ -24,7 +24,7 @@ import {
   UrlPrimitiveType,
   UuidPrimitiveType,
   XmlPrimitiveType,
-} from "../ast";
+} from "../ast.js";
 
 /*
  * 1 -> Old version

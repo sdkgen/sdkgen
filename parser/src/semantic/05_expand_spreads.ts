@@ -1,7 +1,6 @@
-import type { Spread } from "..";
-import type { AstNode } from "../ast";
-import { FunctionOperation, Field, StructType } from "../ast";
-import { SemanticError, Visitor } from "./visitor";
+import { FunctionOperation, Field, StructType } from "../ast.js";
+import type { AstNode, Spread } from "../ast.js";
+import { SemanticError, Visitor } from "./visitor.js";
 
 export class ExpandSpreadsVisitor extends Visitor {
   /*

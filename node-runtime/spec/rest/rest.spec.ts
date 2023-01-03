@@ -6,21 +6,24 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-import { unlinkSync, writeFileSync } from "fs";
+import { readFileSync, unlinkSync, writeFileSync } from "fs";
 import type { Readable } from "stream";
+import { fileURLToPath } from "url";
 
 import { Parser } from "@sdkgen/parser";
 import { generateNodeClientSource, generateNodeServerSource } from "@sdkgen/typescript-generator";
 import axios from "axios";
 import FormData from "form-data";
 
-import type { Context } from "../../src";
-import { SdkgenHttpServer } from "../../src";
+import type { Context } from "../../src/index.js";
+import { SdkgenHttpServer } from "../../src/index.js";
 
-const ast = new Parser(`${__dirname}/api.sdkgen`).parse();
+const __dirname = fileURLToPath(new URL(".", import.meta.url));
+
+const ast = new Parser(`${__dirname}/api.sdkgen`, readFileSync).parse();
 
 writeFileSync(`${__dirname}/api.ts`, generateNodeServerSource(ast).replace(/@sdkgen\/node-runtime/gu, "../../src"));
-const { api, TestError } = require(`${__dirname}/api.ts`);
+const { api, TestError } = await import(`${__dirname}/api.ts`);
 
 unlinkSync(`${__dirname}/api.ts`);
 
@@ -88,7 +91,7 @@ api.fn.getXml = async () => {
 };
 
 writeFileSync(`${__dirname}/nodeClient.ts`, generateNodeClientSource(ast).replace(/@sdkgen\/node-runtime/gu, "../../src"));
-const { ApiClient: NodeApiClient } = require(`${__dirname}/nodeClient.ts`);
+const { ApiClient: NodeApiClient } = await import(`${__dirname}/nodeClient.ts`);
 
 unlinkSync(`${__dirname}/nodeClient.ts`);
 

@@ -1,5 +1,5 @@
-import type { Token } from "./token";
-import { TokenLocation } from "./token";
+import type { Token } from "./token.js";
+import { TokenLocation } from "./token.js";
 
 export abstract class AstNode {
   public location = new TokenLocation();

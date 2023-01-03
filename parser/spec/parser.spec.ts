@@ -1,10 +1,12 @@
-import type { AstJson } from "../src/json";
-import { astToJson, jsonToAst } from "../src/json";
-import { Lexer } from "../src/lexer";
-import { Parser } from "../src/parser";
+import { readFileSync } from "fs";
+
+import type { AstJson } from "../src/json.js";
+import { astToJson, jsonToAst } from "../src/json.js";
+import { Lexer } from "../src/lexer.js";
+import { Parser } from "../src/parser.js";
 
 function expectParses(source: string, json: AstJson, warnings: string[] = []) {
-  const parser = new Parser(new Lexer(source));
+  const parser = new Parser(new Lexer(source), readFileSync);
   const ast = parser.parse();
 
   expect(ast.warnings).toEqual(warnings);
@@ -13,7 +15,7 @@ function expectParses(source: string, json: AstJson, warnings: string[] = []) {
 }
 
 function expectDoesntParse(source: string, message: string) {
-  const parser = new Parser(new Lexer(source));
+  const parser = new Parser(new Lexer(source), readFileSync);
 
   expect(() => parser.parse()).toThrowError(message);
 }

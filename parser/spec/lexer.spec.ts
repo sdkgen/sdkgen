@@ -1,5 +1,5 @@
-import { Lexer } from "../src/lexer";
-import type { Token } from "../src/token";
+import { Lexer } from "../src/lexer.js";
+import type { Token } from "../src/token.js";
 import {
   AnnotationToken,
   ArraySymbolToken,
@@ -21,7 +21,7 @@ import {
   SpreadSymbolToken,
   StringLiteralToken,
   TypeKeywordToken,
-} from "../src/token";
+} from "../src/token.js";
 
 function itLexes(source: string, expectedTokens: Token[]) {
   test(`lexes ${JSON.stringify(source)} as [${expectedTokens.join(", ")}]`, () => {

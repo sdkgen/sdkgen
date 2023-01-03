@@ -1,12 +1,12 @@
 import type { AstJson, AstRoot } from "@sdkgen/parser";
 import { jsonToAst } from "@sdkgen/parser";
 
-import type { Context, ContextReply } from "./context";
-import type { DeepReadonly } from "./utils";
+import type { Context, ContextReply } from "./context.js";
+import type { DeepReadonly } from "./utils.js";
 
-type Middleware<ExtraContextT> = (ctx: Context & ExtraContextT, next: () => Promise<ContextReply>) => Promise<ContextReply>;
+export type Middleware<ExtraContextT> = (ctx: Context & ExtraContextT, next: () => Promise<ContextReply>) => Promise<ContextReply>;
 
-export abstract class BaseApiConfig<ExtraContextT = unknown> {
+export class BaseApiConfig<ExtraContextT = unknown> {
   private _ast: AstRoot | undefined;
 
   get ast() {

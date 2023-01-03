@@ -1,10 +1,10 @@
 import { ThrowsAnnotation } from "@sdkgen/parser";
 
-import type { BaseApiConfig } from "./api-config";
-import type { Context, ContextReply } from "./context";
-import { decode, encode } from "./encode-decode";
-import { Fatal } from "./error";
-import { has } from "./utils";
+import type { BaseApiConfig } from "./api-config.js";
+import type { Context, ContextReply } from "./context.js";
+import { decode, encode } from "./encode-decode.js";
+import { Fatal } from "./error.js";
+import { has } from "./utils.js";
 
 export async function executeRequest<ExtraContextT>(ctx: Context & ExtraContextT, apiConfig: BaseApiConfig<ExtraContextT>) {
   // eslint-disable-next-line func-style
@@ -52,6 +52,7 @@ export async function executeRequest<ExtraContextT>(ctx: Context & ExtraContextT
 
       if (
         typeof reply.error !== "object" ||
+        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         reply.error === null ||
         !has(reply.error, "type") ||
         typeof reply.error.type !== "string" ||

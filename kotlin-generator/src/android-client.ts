@@ -1,7 +1,7 @@
 import type { AstRoot } from "@sdkgen/parser";
 import { ErrorNode, HiddenAnnotation, VoidPrimitiveType } from "@sdkgen/parser";
 
-import { generateClass, generateEnum, generateErrorClass, generateJsonAddRepresentation, generateKotlinTypeName, mangle } from "./helpers";
+import { generateClass, generateEnum, generateErrorClass, generateJsonAddRepresentation, generateKotlinTypeName, mangle } from "./helpers.js";
 
 export function generateAndroidClientSource(ast: AstRoot, shouldImplementCallbacks: boolean): string {
   let code = `@file:Suppress("UNNECESSARY_SAFE_CALL")

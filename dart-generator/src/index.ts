@@ -1,1 +1,1 @@
-export * from "./dart-client";
+export * from "./dart-client.js";

@@ -6,18 +6,21 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
-import { unlinkSync, writeFileSync } from "fs";
+import { readFileSync, unlinkSync, writeFileSync } from "fs";
+import { fileURLToPath } from "url";
 
 import { Parser } from "@sdkgen/parser";
 import { generateNodeClientSource, generateNodeServerSource } from "@sdkgen/typescript-generator";
 
-import type { Context } from "../../src";
-import { SdkgenHttpServer } from "../../src";
+import type { Context } from "../../src/index.js";
+import { SdkgenHttpServer } from "../../src/index.js";
 
-const ast = new Parser(`${__dirname}/api.sdkgen`).parse();
+const __dirname = fileURLToPath(new URL(".", import.meta.url));
+
+const ast = new Parser(`${__dirname}/api.sdkgen`, readFileSync).parse();
 
 writeFileSync(`${__dirname}/errors-api.ts`, generateNodeServerSource(ast).replace(/@sdkgen\/node-runtime/gu, "../../src"));
-const { api, CustomError } = require(`${__dirname}/errors-api.ts`);
+const { api, CustomError } = await import(`${__dirname}/errors-api.ts`);
 
 unlinkSync(`${__dirname}/errors-api.ts`);
 
@@ -26,7 +29,7 @@ api.fn.throwCustomError = async (_ctx: Context, args: { value: number }) => {
 };
 
 writeFileSync(`${__dirname}/errors-nodeClient.ts`, generateNodeClientSource(ast).replace(/@sdkgen\/node-runtime/gu, "../../src"));
-const { ApiClient: NodeApiClient } = require(`${__dirname}/errors-nodeClient.ts`);
+const { ApiClient: NodeApiClient } = await import(`${__dirname}/errors-nodeClient.ts`);
 
 unlinkSync(`${__dirname}/errors-nodeClient.ts`);
 const nodeClient = new NodeApiClient("http://localhost:35437");

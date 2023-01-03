@@ -1,6 +1,6 @@
-import type { AstNode } from "../ast";
-import { EnumType, StructType } from "../ast";
-import { Visitor } from "./visitor";
+import type { AstNode } from "../ast.js";
+import { EnumType, StructType } from "../ast.js";
+import { Visitor } from "./visitor.js";
 
 export class CollectStructAndEnumTypesVisitor extends Visitor {
   visited = new Set<AstNode>();

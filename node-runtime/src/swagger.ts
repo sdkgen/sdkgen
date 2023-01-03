@@ -33,7 +33,7 @@ import type { JSONSchema } from "json-schema-typed";
 import staticFilesHandler from "serve-handler";
 import { getAbsoluteFSPath as getSwaggerUiAssetPath } from "swagger-ui-dist";
 
-import type { SdkgenHttpServer } from "./http-server";
+import type { SdkgenHttpServer } from "./http-server.js";
 
 const swaggerUiAssetPath = getSwaggerUiAssetPath();
 

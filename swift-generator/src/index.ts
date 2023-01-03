@@ -1,1 +1,1 @@
-export * from "./swift-client";
+export * from "./swift-client.js";

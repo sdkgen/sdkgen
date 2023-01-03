@@ -8,20 +8,24 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 /* eslint-disable @typescript-eslint/no-unsafe-call */
 import { randomBytes } from "crypto";
-import { unlinkSync, writeFileSync } from "fs";
+import { readFileSync, unlinkSync, writeFileSync } from "fs";
+import { fileURLToPath } from "url";
 
 import { astToJson, Parser } from "@sdkgen/parser";
 import { generateNodeClientSource, generateNodeServerSource } from "@sdkgen/typescript-generator";
+// import * as axios from "axios";
 import axios from "axios";
-import Decimal from "decimal.js";
+import { Decimal } from "decimal.js";
 
-import type { Context } from "../../src";
-import { SdkgenHttpServer } from "../../src";
+import type { Context } from "../../src/index.js";
+import { SdkgenHttpServer } from "../../src/index.js";
 
-const ast = new Parser(`${__dirname}/api.sdkgen`).parse();
+const __dirname = fileURLToPath(new URL(".", import.meta.url));
+
+const ast = new Parser(`${__dirname}/api.sdkgen`, readFileSync).parse();
 
 writeFileSync(`${__dirname}/api.ts`, generateNodeServerSource(ast).replace(/@sdkgen\/node-runtime/gu, "../../src"));
-const { api, SomeError } = require(`${__dirname}/api.ts`);
+const { api, SomeError } = await import(`${__dirname}/api.ts`);
 
 unlinkSync(`${__dirname}/api.ts`);
 
@@ -49,11 +53,11 @@ api.fn.decimalAdd = async (_ctx: Context, { a, b }: { a: Decimal; b: Decimal }) 
 };
 
 // ExecSync(`../../cubos/sdkgen/sdkgen ${__dirname + "/api.sdkgen"} -o ${__dirname + "/legacyNodeClient.ts"} -t typescript_nodeclient`);
-const { ApiClient: NodeLegacyApiClient } = require(`${__dirname}/legacyNodeClient.ts`);
+const { ApiClient: NodeLegacyApiClient } = await import(`${__dirname}/legacyNodeClient.ts`);
 const nodeLegacyClient = new NodeLegacyApiClient("http://localhost:34367");
 
 writeFileSync(`${__dirname}/nodeClient.ts`, generateNodeClientSource(ast).replace(/@sdkgen\/node-runtime/gu, "../../src"));
-const { ApiClient: NodeApiClient } = require(`${__dirname}/nodeClient.ts`);
+const { ApiClient: NodeApiClient } = await import(`${__dirname}/nodeClient.ts`);
 
 unlinkSync(`${__dirname}/nodeClient.ts`);
 const nodeClient = new NodeApiClient("http://localhost:34367");

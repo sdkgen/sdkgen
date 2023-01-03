@@ -1,7 +1,7 @@
 import type { AstRoot } from "@sdkgen/parser";
 import { astToJson, OptionalType, VoidPrimitiveType } from "@sdkgen/parser";
 
-import { capitalize, decodeType, encodeType, generateEnum, generateStruct, generateTypeName, ident } from "./helpers";
+import { capitalize, decodeType, encodeType, generateEnum, generateStruct, generateTypeName, ident } from "./helpers.js";
 
 export function generateCSharpServerSource(ast: AstRoot): string {
   let code = `using System;

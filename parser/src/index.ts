@@ -1,8 +1,9 @@
-export * from "./ast";
-export * from "./compatibility";
-export { AstJson, astToJson, jsonToAst, TypeDescription } from "./json";
-export * from "./lexer";
-export * from "./parser";
-export * from "./token";
-export { Visitor } from "./semantic/visitor";
-export { hasType } from "./helpers";
+export * from "./ast.js";
+export * from "./compatibility/index.js";
+export { astToJson, jsonToAst } from "./json.js";
+export type { TypeDescription, AstJson } from "./json.js";
+export * from "./lexer.js";
+export * from "./parser.js";
+export * from "./token.js";
+export { Visitor } from "./semantic/visitor.js";
+export { hasType } from "./helpers.js";

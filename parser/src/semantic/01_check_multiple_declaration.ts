@@ -1,6 +1,6 @@
-import type { AstNode, Type } from "../ast";
-import { TypeDefinition } from "../ast";
-import { SemanticError, Visitor } from "./visitor";
+import type { AstNode, Type } from "../ast.js";
+import { TypeDefinition } from "../ast.js";
+import { SemanticError, Visitor } from "./visitor.js";
 
 export class CheckMultipleDeclarationVisitor extends Visitor {
   nameToType = new Map<string, Type>();

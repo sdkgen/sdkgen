@@ -1,4 +1,4 @@
-import type { PrimitiveType } from "./ast";
+import type { PrimitiveType } from "./ast.js";
 import {
   Base64PrimitiveType,
   BigIntPrimitiveType,
@@ -22,7 +22,7 @@ import {
   UuidPrimitiveType,
   VoidPrimitiveType,
   XmlPrimitiveType,
-} from "./ast";
+} from "./ast.js";
 
 export const primitiveToAstClass = new Map<string, new () => PrimitiveType>();
 primitiveToAstClass.set("string", StringPrimitiveType);

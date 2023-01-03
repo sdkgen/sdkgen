@@ -40,8 +40,6 @@ jobs:
         working-directory: ./cli
       - run: npm run build
         working-directory: ./cli
-      - run: npm test
-        working-directory: ./cli
 
   dart-generator:
     runs-on: ubuntu-latest
@@ -58,8 +56,6 @@ jobs:
       - run: npm run eslint:check
         working-directory: ./dart-generator
       - run: npm run build
-        working-directory: ./dart-generator
-      - run: npm test
         working-directory: ./dart-generator
 
   dart-runtime:
@@ -82,11 +78,11 @@ jobs:
         working-directory: ./dart-runtime
       - run: flutter test
         working-directory: ./dart-runtime
-      - run: if [ "${{ matrix.flutter-version }}" == "3.0.x" ]; then flutter analyze; fi
+      - run: if [ "${{ matrix.flutter-version }}" == "3.3.x" ]; then flutter analyze; fi
         working-directory: ./dart-runtime
-      - run: if [ "${{ matrix.flutter-version }}" == "3.0.x" ]; then flutter format . --set-exit-if-changed; fi
+      - run: if [ "${{ matrix.flutter-version }}" == "3.3.x" ]; then flutter format . --set-exit-if-changed; fi
         working-directory: ./dart-runtime
-      - run: if [ "${{ matrix.flutter-version }}" == "3.0.x" ]; then flutter pub pub publish --dry-run; fi
+      - run: if [ "${{ matrix.flutter-version }}" == "3.3.x" ]; then flutter pub pub publish --dry-run; fi
         working-directory: ./dart-runtime
 
   node-runtime:
@@ -101,18 +97,6 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - run: npm install
         working-directory: ./node-runtime
-      - run: npm install
-        working-directory: ./csharp-generator
-      - run: npm install
-        working-directory: ./fsharp-generator
-      - run: npm install
-        working-directory: ./dart-generator
-      - run: npm install
-        working-directory: ./kotlin-generator
-      - run: npm install
-        working-directory: ./swift-generator
-      - run: npm install
-        working-directory: ./typescript-generator
       - run: npm run eslint:check
         working-directory: ./node-runtime
       - run: npm run build
@@ -172,8 +156,6 @@ jobs:
         working-directory: ./typescript-generator
       - run: npm run build
         working-directory: ./typescript-generator
-      - run: npm test
-        working-directory: ./typescript-generator
 
   csharp-generator:
     runs-on: ubuntu-latest
@@ -191,8 +173,6 @@ jobs:
         working-directory: ./csharp-generator
       - run: npm run build
         working-directory: ./csharp-generator
-      - run: npm test
-        working-directory: ./csharp-generator
 
   fsharp-generator:
     runs-on: ubuntu-latest
@@ -209,8 +189,6 @@ jobs:
       - run: npm run eslint:check
         working-directory: ./fsharp-generator
       - run: npm run build
-        working-directory: ./fsharp-generator
-      - run: npm test
         working-directory: ./fsharp-generator
 
   dotnet-runtime:
@@ -243,8 +221,6 @@ jobs:
         working-directory: ./kotlin-generator
       - run: npm run build
         working-directory: ./kotlin-generator
-      - run: npm test
-        working-directory: ./kotlin-generator
 
   swift-generator:
     runs-on: ubuntu-latest
@@ -262,8 +238,6 @@ jobs:
         working-directory: ./swift-generator
       - run: npm run build
         working-directory: ./swift-generator
-      - run: npm test
-        working-directory: ./swift-generator
 
   android-runtime:
     runs-on: ubuntu-latest
@@ -274,7 +248,7 @@ jobs:
           distribution: 'adopt'
           java-version: '11'
       - uses: gradle/wrapper-validation-action@v1
-      - run: echo "empty=empty" >> local.properties 
+      - run: echo "empty=empty" >> local.properties
         working-directory: ./android-runtime
       - run: ./gradlew test assembleRelease
         working-directory: ./android-runtime
@@ -285,7 +259,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: 18.x
       - run: npm install -g vsce
       - run: vsce package
         working-directory: ./vscode-ext

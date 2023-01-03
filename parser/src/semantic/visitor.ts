@@ -1,5 +1,5 @@
-import type { AstNode, AstRoot } from "../ast";
-import { EnumValue, EnumType, Spread, FunctionOperation, ArrayType, ErrorNode, Field, OptionalType, StructType, TypeDefinition } from "../ast";
+import type { AstNode, AstRoot } from "../ast.js";
+import { EnumValue, EnumType, Spread, FunctionOperation, ArrayType, ErrorNode, Field, OptionalType, StructType, TypeDefinition } from "../ast.js";
 
 export class SemanticError extends Error {}
 

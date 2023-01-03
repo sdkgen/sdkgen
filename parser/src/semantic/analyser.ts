@@ -1,15 +1,15 @@
-import type { AstRoot } from "../ast";
-import { ErrorNode, VoidPrimitiveType } from "../ast";
-import { CheckMultipleDeclarationVisitor } from "./01_check_multiple_declaration";
-import { GiveStructAndEnumNamesTransformer } from "./02_give_struct_and_enum_names";
-import { MatchTypeDefinitionsVisitor } from "./03_match_type_definitions";
-import { CheckDontReturnSecretVisitor } from "./04_check_dont_return_secret";
-import { ExpandSpreadsVisitor } from "./05_expand_spreads";
-import { CheckEmptyStructOrEnumVisitor } from "./06_check_empty_struct_or_enum";
-import { ValidateRecursiveTypes } from "./07_validate_recursive_types";
-import { CollectStructAndEnumTypesVisitor } from "./08_collect_struct_and_enum_types";
-import { ValidateAnnotationsVisitor } from "./09_validate_annotations";
-import { CheckDuplicatedMembersOnEnumVisitor } from "./10_check_duplicate_members_on_enum";
+import type { AstRoot } from "../ast.js";
+import { ErrorNode, VoidPrimitiveType } from "../ast.js";
+import { CheckMultipleDeclarationVisitor } from "./01_check_multiple_declaration.js";
+import { GiveStructAndEnumNamesTransformer } from "./02_give_struct_and_enum_names.js";
+import { MatchTypeDefinitionsVisitor } from "./03_match_type_definitions.js";
+import { CheckDontReturnSecretVisitor } from "./04_check_dont_return_secret.js";
+import { ExpandSpreadsVisitor } from "./05_expand_spreads.js";
+import { CheckEmptyStructOrEnumVisitor } from "./06_check_empty_struct_or_enum.js";
+import { ValidateRecursiveTypes } from "./07_validate_recursive_types.js";
+import { CollectStructAndEnumTypesVisitor } from "./08_collect_struct_and_enum_types.js";
+import { ValidateAnnotationsVisitor } from "./09_validate_annotations.js";
+import { CheckDuplicatedMembersOnEnumVisitor } from "./10_check_duplicate_members_on_enum.js";
 
 export function analyse(root: AstRoot): void {
   if (!root.errors.some(error => error.name === "Fatal")) {

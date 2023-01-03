@@ -1,4 +1,6 @@
 /* eslint-disable no-process-exit */
+import { readFileSync } from "fs";
+
 import { compatibilityIssues, Parser } from "@sdkgen/parser";
 import commandLineArgs from "command-line-args";
 import commandLineUsage from "command-line-usage";
@@ -59,8 +61,8 @@ export function compatibilityCmd(argv: string[]): void {
     process.exit(1);
   }
 
-  const astOld = new Parser(options.old).parse();
-  const astNew = new Parser(options.new).parse();
+  const astOld = new Parser(options.old, readFileSync).parse();
+  const astNew = new Parser(options.new, readFileSync).parse();
 
   const issues = compatibilityIssues(astOld, astNew);
 

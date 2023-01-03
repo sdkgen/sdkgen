@@ -1,7 +1,7 @@
 /* eslint-disable no-sync */
 /* eslint-disable no-loop-func */
 
-import type { Annotation, Type } from "./ast";
+import type { Annotation, Type } from "./ast.js";
 import {
   ArgDescriptionAnnotation,
   ArrayType,
@@ -20,11 +20,11 @@ import {
   TypeDefinition,
   TypeReference,
   VoidPrimitiveType,
-} from "./ast";
-import { Lexer } from "./lexer";
-import { parseRestAnnotation } from "./restparser";
-import { analyse } from "./semantic/analyser";
-import type { CurlyCloseSymbolToken, FalseKeywordToken, ImportKeywordToken, SpreadSymbolToken, Token, TrueKeywordToken } from "./token";
+} from "./ast.js";
+import { Lexer } from "./lexer.js";
+import { parseRestAnnotation } from "./restparser.js";
+import { analyse } from "./semantic/analyser.js";
+import type { CurlyCloseSymbolToken, FalseKeywordToken, ImportKeywordToken, SpreadSymbolToken, Token, TrueKeywordToken } from "./token.js";
 import {
   AnnotationToken,
   ArraySymbolToken,
@@ -42,8 +42,8 @@ import {
   TypeKeywordToken,
   CommaSymbolToken,
   ParensCloseSymbolToken,
-} from "./token";
-import { primitiveToAstClass } from "./utils";
+} from "./token.js";
+import { primitiveToAstClass } from "./utils.js";
 
 export class ParserError extends Error {}
 
@@ -75,18 +75,7 @@ export class Parser {
 
   private warnings: string[] = [];
 
-  private readFileSync: (path: string) => { toString(): string } = () => {
-    throw "Not implemented";
-  };
-
-  constructor(source: Lexer | string | Array<Lexer | string>) {
-    try {
-      // eslint-disable-next-line
-      this.readFileSync = require("fs").readFileSync;
-    } catch (e) {
-      // do nothing
-    }
-
+  constructor(source: Lexer | string | Array<Lexer | string>, private readFileSync: (path: string) => { toString(): string }) {
     const sources = Array.isArray(source) ? [...source].reverse() : [source];
 
     this.lexers = sources.map(x => (x instanceof Lexer ? x : new Lexer(this.readFileSync(x).toString(), x)));

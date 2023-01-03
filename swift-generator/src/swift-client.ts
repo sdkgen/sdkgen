@@ -11,7 +11,7 @@ import {
   generateSwiftTypeName,
   generateRxMethod,
   mangle,
-} from "./helpers";
+} from "./helpers.js";
 
 export function generateSwiftClientSource(ast: AstRoot, withRxExtension: boolean): string {
   let code = `import Foundation\nimport SdkgenRuntime\n`;
@@ -35,7 +35,7 @@ export function generateSwiftClientSource(ast: AstRoot, withRxExtension: boolean
             self.calls = Calls(baseUrl: baseUrl ?? "")
         }
     }
-    
+
     override init() {
       super.init()
     }\n\n`;

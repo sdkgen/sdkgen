@@ -1,5 +1,5 @@
-import type { AstRoot, Type, AstNode } from "./ast";
-import { Visitor } from "./semantic/visitor";
+import type { AstRoot, Type, AstNode } from "./ast.js";
+import { Visitor } from "./semantic/visitor.js";
 
 class HasTypeVisitor extends Visitor {
   found = false;

@@ -1,4 +1,4 @@
-import { RestAnnotation } from "./ast";
+import { RestAnnotation } from "./ast.js";
 
 function scanHeaders(text: string) {
   // Header name: https://tools.ietf.org/html/rfc2616#section-4.2

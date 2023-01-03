@@ -1,1 +1,1 @@
-export * from "./csharp-server";
+export * from "./csharp-server.js";

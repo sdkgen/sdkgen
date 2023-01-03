@@ -1,6 +1,6 @@
-import type { Type, AstNode } from "../ast";
-import { EnumType, StructType, ArrayType, OptionalType, TypeDefinition, TypeReference } from "../ast";
-import { SemanticError, Visitor } from "./visitor";
+import type { Type, AstNode } from "../ast.js";
+import { EnumType, StructType, ArrayType, OptionalType, TypeDefinition, TypeReference } from "../ast.js";
+import { SemanticError, Visitor } from "./visitor.js";
 
 export class ValidateRecursiveTypes extends Visitor {
   visit(node: AstNode): void {
