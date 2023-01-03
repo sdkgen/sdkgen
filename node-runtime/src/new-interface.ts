@@ -5,6 +5,7 @@
 import { inspect } from "util";
 
 import type { AstJson } from "@sdkgen/parser";
+import Decimal from "decimal.js";
 
 import type { Middleware } from "./api-config.js";
 import { BaseApiConfig } from "./api-config.js";
@@ -21,6 +22,10 @@ export const Uuid: unique symbol = Symbol("Uuid");
 export const Int: unique symbol = Symbol("Int");
 // eslint-disable-next-line @typescript-eslint/naming-convention
 export const UInt: unique symbol = Symbol("UInt");
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export const Cpf: unique symbol = Symbol("Cpf");
+// eslint-disable-next-line @typescript-eslint/naming-convention
+export const Cnpj: unique symbol = Symbol("Cnpj");
 
 class ApiConfig<ExtraContextT = unknown> extends BaseApiConfig<ExtraContextT> {
   constructor(
@@ -60,6 +65,12 @@ function getSdkgenType(type: TypeSpec, registry: CustomTypeRegistry): string {
     type === BigInt ||
     type === Int ||
     type === UInt ||
+    type === Date ||
+    type === Buffer ||
+    type === Decimal ||
+    type === Cpf ||
+    type === Cnpj ||
+    type === URL ||
     type === undefined
   ) {
     normalizedType = { type };
@@ -90,6 +101,18 @@ function getSdkgenType(type: TypeSpec, registry: CustomTypeRegistry): string {
     return "bool";
   } else if (normalizedType.type === BigInt) {
     return "bigint";
+  } else if (normalizedType.type === Date) {
+    return "datetime";
+  } else if (normalizedType.type === Buffer) {
+    return "bytes";
+  } else if (normalizedType.type === Decimal) {
+    return "decimal";
+  } else if (normalizedType.type === Cpf) {
+    return "cpf";
+  } else if (normalizedType.type === Cnpj) {
+    return "cnpj";
+  } else if (normalizedType.type === URL) {
+    return "url";
   } else if (normalizedType.type === undefined) {
     return "void";
   } else if (normalizedType.type === Array) {
@@ -208,6 +231,12 @@ export type TypeSpec =
   | typeof BigInt
   | typeof CustomTypeBaseClass
   | typeof Uuid
+  | typeof Date
+  | typeof Buffer
+  | typeof Decimal
+  | typeof Cpf
+  | typeof Cnpj
+  | typeof URL
   | undefined
   | [TypeSpec]
   | ((
@@ -219,6 +248,12 @@ export type TypeSpec =
       | { type: typeof BigInt; min?: bigint; max?: bigint }
       | { type: typeof CustomTypeBaseClass }
       | { type: typeof Uuid }
+      | { type: typeof Date }
+      | { type: typeof Buffer }
+      | { type: typeof Decimal }
+      | { type: typeof Cpf }
+      | { type: typeof Cnpj }
+      | { type: typeof URL }
       | { type: undefined }
       | { type: [TypeSpec]; minLength?: number; maxLength?: number }
       | { type: typeof Array; of: TypeSpec; minLength?: number; maxLength?: number }
@@ -244,6 +279,16 @@ export type GenerateTyping<Type> = Type extends { nullable: true }
   : Type extends typeof BigInt | { type: typeof BigInt }
   ? bigint
   : Type extends typeof Uuid | { type: typeof Uuid }
+  ? string
+  : Type extends typeof Date | { type: typeof Date }
+  ? Date
+  : Type extends typeof Buffer | { type: typeof Buffer }
+  ? Buffer
+  : Type extends typeof Cpf | { type: typeof Cpf }
+  ? string
+  : Type extends typeof Cnpj | { type: typeof Cnpj }
+  ? string
+  : Type extends typeof URL | { type: typeof URL }
   ? string
   : Type extends [infer Inner]
   ? Array<GenerateTyping<Inner>>
