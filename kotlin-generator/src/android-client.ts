@@ -19,6 +19,7 @@ import kotlinx.coroutines.*
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.parcelize.RawValue
 import java.util.*
+import okhttp3.Interceptor
 
 inline fun <reified T> Gson.fromJson(json: String) =
     fromJson<T>(json, object : TypeToken<T>() {}.type)
@@ -31,8 +32,10 @@ class ApiClient(
     baseUrl: String,
     val applicationContext: Context,
     defaultTimeoutMillis: Long = 10000L,
-    fingerprint: String? = null
-) : SdkgenHttpClient(baseUrl, applicationContext, defaultTimeoutMillis, fingerprint) {
+    fingerprint: String? = null,
+    httpInterceptor: Interceptor? = null,
+    httpNetworkInterceptor: Interceptor? = null
+) : SdkgenHttpClient(baseUrl, applicationContext, defaultTimeoutMillis, fingerprint, httpInterceptor, httpNetworkInterceptor) {
 
     private val gson = GsonBuilder()
         .registerTypeAdapter(object : TypeToken<ByteArray>() {}.type, ByteArrayDeserializer())

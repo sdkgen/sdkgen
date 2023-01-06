@@ -21,6 +21,7 @@ import kotlin.coroutines.suspendCoroutine
 import android.util.Base64
 import com.google.gson.stream.JsonReader
 import com.google.gson.stream.JsonWriter
+import okhttp3.Interceptor
 import okhttp3.Response
 import java.text.SimpleDateFormat
 
@@ -29,7 +30,9 @@ open class SdkgenHttpClient(
     private val baseUrl: String,
     private val applicationContext: Context,
     private val defaultTimeoutMillis: Long = 10000L,
-    private val fingerprint: String? = null
+    private val fingerprint: String? = null,
+    private val httpInterceptor: Interceptor? = null,
+    private val httpNetworkInterceptor: Interceptor? = null
 ) {
 
     val extras = mutableMapOf<String, Any>()
@@ -128,6 +131,14 @@ open class SdkgenHttpClient(
         .readTimeout(5, TimeUnit.MINUTES)
         .callTimeout(5, TimeUnit.MINUTES)
         .writeTimeout(5, TimeUnit.MINUTES)
+        .apply {
+            if (httpInterceptor != null) {
+                addInterceptor(httpInterceptor)
+            }
+            if (httpNetworkInterceptor != null) {
+                addNetworkInterceptor(httpNetworkInterceptor)
+            }
+        }
         .build()
 
     private fun callId(): String {
