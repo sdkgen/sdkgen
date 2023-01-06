@@ -33,8 +33,9 @@ class ApiClient(
     val applicationContext: Context,
     defaultTimeoutMillis: Long = 10000L,
     fingerprint: String? = null,
-    httpInterceptor: Interceptor? = null
-) : SdkgenHttpClient(baseUrl, applicationContext, defaultTimeoutMillis, fingerprint, httpInterceptor) {
+    httpInterceptor: Interceptor? = null,
+    httpNetworkInterceptor: Interceptor? = null
+) : SdkgenHttpClient(baseUrl, applicationContext, defaultTimeoutMillis, fingerprint, httpInterceptor, httpNetworkInterceptor) {
 
     private val gson = GsonBuilder()
         .registerTypeAdapter(object : TypeToken<ByteArray>() {}.type, ByteArrayDeserializer())

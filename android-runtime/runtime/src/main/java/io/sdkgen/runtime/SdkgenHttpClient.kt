@@ -31,7 +31,8 @@ open class SdkgenHttpClient(
     private val applicationContext: Context,
     private val defaultTimeoutMillis: Long = 10000L,
     private val fingerprint: String? = null,
-    private val httpInterceptor: Interceptor? = null
+    private val httpInterceptor: Interceptor? = null,
+    private val httpNetworkInterceptor: Interceptor? = null
 ) {
 
     val extras = mutableMapOf<String, Any>()
@@ -125,18 +126,21 @@ open class SdkgenHttpClient(
     private val random = Random()
     private val hexArray = "0123456789abcdef".toCharArray()
     private val gson = Gson()
-    private var httpClient = httpInterceptor.let {
-        val builder = OkHttpClient.Builder()
-            .connectTimeout(5, TimeUnit.MINUTES)
-            .readTimeout(5, TimeUnit.MINUTES)
-            .callTimeout(5, TimeUnit.MINUTES)
-            .writeTimeout(5, TimeUnit.MINUTES)
 
-        if (it != null) {
-            builder.addInterceptor(it).build()
-        } else {
-            builder.build()
+    private val baseHttpClient = OkHttpClient.Builder()
+        .connectTimeout(5, TimeUnit.MINUTES)
+        .readTimeout(5, TimeUnit.MINUTES)
+        .callTimeout(5, TimeUnit.MINUTES)
+        .writeTimeout(5, TimeUnit.MINUTES)
+
+    private var httpClient = baseHttpClient.let {
+        if (httpInterceptor != null) {
+            it.addInterceptor(httpInterceptor)
         }
+        if (httpNetworkInterceptor != null) {
+            it.addNetworkInterceptor(httpNetworkInterceptor)
+        }
+        it.build()
     }
 
     private fun callId(): String {
