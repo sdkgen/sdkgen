@@ -126,22 +126,20 @@ open class SdkgenHttpClient(
     private val random = Random()
     private val hexArray = "0123456789abcdef".toCharArray()
     private val gson = Gson()
-
-    private val baseHttpClient = OkHttpClient.Builder()
+    private var httpClient = OkHttpClient.Builder()
         .connectTimeout(5, TimeUnit.MINUTES)
         .readTimeout(5, TimeUnit.MINUTES)
         .callTimeout(5, TimeUnit.MINUTES)
         .writeTimeout(5, TimeUnit.MINUTES)
-
-    private var httpClient = baseHttpClient.let {
-        if (httpInterceptor != null) {
-            it.addInterceptor(httpInterceptor)
+        .apply {
+            if (httpInterceptor != null) {
+                addInterceptor(httpInterceptor)
+            }
+            if (httpNetworkInterceptor != null) {
+                addNetworkInterceptor(httpNetworkInterceptor)
+            }
         }
-        if (httpNetworkInterceptor != null) {
-            it.addNetworkInterceptor(httpNetworkInterceptor)
-        }
-        it.build()
-    }
+        .build()
 
     private fun callId(): String {
         val bytes = ByteArray(8)
