@@ -178,15 +178,21 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
           urlHost = `${addr.address}:${addr.port}`;
         }
 
-        console.log(`Listening on ${addr.address} at port ${addr.port}`);
+        if (addr.address === "::" || addr.address === "0.0.0.0") {
+          console.log(`\nListening on port ${addr.port}`);
+        } else {
+          console.log(`\nListening on port ${addr.port} (${addr.address})`);
+        }
 
         if (this.introspection) {
-          console.log(`Access the Playground at http://${urlHost}/playground`);
+          console.log(`Playground: http://${urlHost}/playground`);
         }
 
         if (this.hasSwagger) {
-          console.log(`Access the Swagger UI at http://${urlHost}/swagger`);
+          console.log(`Swagger UI: http://${urlHost}/swagger`);
         }
+
+        console.log("");
 
         resolve();
       });

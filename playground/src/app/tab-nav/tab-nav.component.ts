@@ -69,6 +69,8 @@ export class TabNavComponent implements OnInit {
 
       console.debug("astJson", result);
 
+      console.log(jsonToAst);
+
       this.sdkgen.state$.next({
         astJson: result,
         astRoot: jsonToAst(result),

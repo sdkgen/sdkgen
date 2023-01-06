@@ -1,5 +1,7 @@
-// eslint-disable-next-line
-const path = require("path");
+import { join } from "path";
+import { fileURLToPath } from "url";
 
-Object.defineProperty(exports, "__esModule", { value: true });
-exports.PLAYGROUND_PUBLIC_PATH = path.join(__dirname, "./dist");
+const currentDir = fileURLToPath(new URL(".", import.meta.url));
+
+// eslint-disable-next-line
+export const PLAYGROUND_PUBLIC_PATH = join(currentDir, "./dist");

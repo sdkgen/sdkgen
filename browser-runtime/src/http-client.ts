@@ -117,23 +117,20 @@ export class SdkgenHttpClient {
       this.errorHook(error, functionName, args);
 
       if (has(error, "type") && has(error, "message") && typeof error.type === "string" && typeof error.message === "string") {
+        const errorType = error.type in this.errClasses ? error.type : "Fatal";
         // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-        const errClass = this.errClasses[error.type] ?? this.errClasses.Fatal!;
-        const errType = errClass.name;
-
-        const errorJson = this.astJson.errors.find(err => (Array.isArray(err) ? err[0] === errType : err === errType));
+        const errorClass = this.errClasses[errorType]!;
+        const errorJson = this.astJson.errors.find(err => (Array.isArray(err) ? err[0] === errorType : err === errorType));
 
         let newError;
 
         if (errorJson && Array.isArray(errorJson) && has(error, "data")) {
-          newError = new errClass(error.message, decode(this.astJson.typeTable, `${errClass.name}.data`, errorJson[1], error.data));
+          newError = new errorClass(error.message, decode(this.astJson.typeTable, `${errorType}.data`, errorJson[1], error.data));
         } else {
-          newError = new errClass(error.message, undefined);
+          newError = new errorClass(error.message, undefined);
         }
 
-        if (!newError.type) {
-          (newError as unknown as { type: string }).type = errType;
-        }
+        (newError as unknown as { type: string }).type = errorType;
 
         throw newError;
       } else {

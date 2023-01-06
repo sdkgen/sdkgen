@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "types": "index.d.ts",
+  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/sdkgen/sdkgen.git"
@@ -16,7 +17,7 @@
     "eslint:check": "eslint 'src/**/*.{t,j}s'",
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build && sed -i -E 's_(<base href=\")/(\">)_\\1/playground/\\2_' dist/index.html",
     "build:stats": "ng build --stats-json",
     "analyze": "webpack-bundle-analyzer dist/stats.json",
     "watch": "ng build --watch --configuration development"

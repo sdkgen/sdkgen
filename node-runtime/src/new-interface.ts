@@ -260,8 +260,15 @@ export type TypeSpec =
     ) & { nullable?: true });
 
 interface ApiEndpointOptions {
+  rest?: {
+    method: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
+    path: string;
+    headers?: Record<string, string>;
+    body?: string;
+  };
   args?: Record<string, TypeSpec>;
   return?: TypeSpec;
+  middlewares?: Array<Middleware<InferContext<DefaultExtraContext>>>;
 }
 
 export type GenerateTyping<Type> = Type extends { nullable: true }
