@@ -24,7 +24,7 @@ jobs:
           name: version
       - uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: 18.x
           registry-url: https://registry.npmjs.org
       - run: cp LICENSE parser/
       - run: npm install
@@ -56,7 +56,7 @@ jobs:
           name: version
       - uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: 18.x
           registry-url: https://registry.npmjs.org
       - run: cp LICENSE browser-runtime/
       - run: npm install
@@ -118,7 +118,7 @@ jobs:
           name: version
       - uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: 18.x
           registry-url: https://registry.npmjs.org
       - run: cp LICENSE typescript-generator/
       - run: npm install
@@ -150,7 +150,7 @@ jobs:
           name: version
       - uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: 18.x
           registry-url: https://registry.npmjs.org
       - run: cp LICENSE csharp-generator/
       - run: npm install
@@ -182,7 +182,7 @@ jobs:
           name: version
       - uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: 18.x
           registry-url: https://registry.npmjs.org
       - run: cp LICENSE fsharp-generator/
       - run: npm install
@@ -214,7 +214,7 @@ jobs:
           name: version
       - uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: 18.x
           registry-url: https://registry.npmjs.org
       - run: cp LICENSE kotlin-generator/
       - run: npm install
@@ -246,7 +246,7 @@ jobs:
           name: version
       - uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: 18.x
           registry-url: https://registry.npmjs.org
       - run: cp LICENSE swift-generator/
       - run: npm install
@@ -278,7 +278,7 @@ jobs:
           name: version
       - uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: 18.x
           registry-url: https://registry.npmjs.org
       - run: cp LICENSE dart-generator/
       - run: npm install
@@ -310,8 +310,22 @@ jobs:
           name: version
       - uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: 18.x
           registry-url: https://registry.npmjs.org
+      - run: npm install
+        working-directory: ./parser
+      - run: npm install
+        working-directory: ./typescript-generator
+      - run: npm install
+        working-directory: ./swift-generator
+      - run: npm install
+        working-directory: ./fsharp-generator
+      - run: npm install
+        working-directory: ./csharp-generator
+      - run: npm install
+        working-directory: ./kotlin-generator
+      - run: npm install
+        working-directory: ./dart-generator
       - run: cp LICENSE cli/
       - run: npm install
         working-directory: ./cli
@@ -342,8 +356,24 @@ jobs:
           name: version
       - uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: 18.x
           registry-url: https://registry.npmjs.org
+      - run: npm install
+        working-directory: ./browser-runtime
+      - run: npm install
+        working-directory: ./parser
+      - run: npm install
+        working-directory: ./typescript-generator
+      - run: npm install
+        working-directory: ./swift-generator
+      - run: npm install
+        working-directory: ./fsharp-generator
+      - run: npm install
+        working-directory: ./csharp-generator
+      - run: npm install
+        working-directory: ./kotlin-generator
+      - run: npm install
+        working-directory: ./dart-generator
       - run: cp LICENSE playground/
       - run: npm install && npm install -g json && bash .ci.sh
         working-directory: ./playground
@@ -377,8 +407,22 @@ jobs:
           name: version
       - uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: 18.x
           registry-url: https://registry.npmjs.org
+      - run: npm install
+        working-directory: ./parser
+      - run: npm install
+        working-directory: ./typescript-generator
+      - run: npm install
+        working-directory: ./swift-generator
+      - run: npm install
+        working-directory: ./fsharp-generator
+      - run: npm install
+        working-directory: ./csharp-generator
+      - run: npm install
+        working-directory: ./kotlin-generator
+      - run: npm install
+        working-directory: ./dart-generator
       - run: cp LICENSE node-runtime/
       - run: npm install
         working-directory: ./node-runtime
@@ -412,8 +456,24 @@ jobs:
           dotnet-version: 5.0.x
       - uses: actions/setup-node@v3
         with:
-          node-version: 16.x
+          node-version: 18.x
       - run: cp LICENSE dotnet-runtime/runtime
+      - run: npm install
+        working-directory: ./browser-runtime
+      - run: npm install
+        working-directory: ./parser
+      - run: npm install
+        working-directory: ./typescript-generator
+      - run: npm install
+        working-directory: ./swift-generator
+      - run: npm install
+        working-directory: ./fsharp-generator
+      - run: npm install
+        working-directory: ./csharp-generator
+      - run: npm install
+        working-directory: ./kotlin-generator
+      - run: npm install
+        working-directory: ./dart-generator
       - run: npm install && npm install -g json && bash .ci.sh
         working-directory: ./playground
       - run: npm run build
