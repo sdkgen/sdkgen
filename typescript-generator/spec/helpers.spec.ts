@@ -1,21 +1,51 @@
-import * as parser from "@sdkgen/parser";
+import {
+  ArrayType,
+  Base64PrimitiveType,
+  BigIntPrimitiveType,
+  BoolPrimitiveType,
+  BytesPrimitiveType,
+  CnpjPrimitiveType,
+  CpfPrimitiveType,
+  DatePrimitiveType,
+  DateTimePrimitiveType,
+  EmailPrimitiveType,
+  EnumType,
+  EnumValue,
+  Field,
+  FloatPrimitiveType,
+  HexPrimitiveType,
+  HtmlPrimitiveType,
+  IntPrimitiveType,
+  JsonPrimitiveType,
+  MoneyPrimitiveType,
+  OptionalType,
+  StringPrimitiveType,
+  StructType,
+  Type,
+  TypeReference,
+  UIntPrimitiveType,
+  UrlPrimitiveType,
+  UuidPrimitiveType,
+  VoidPrimitiveType,
+  XmlPrimitiveType,
+} from "@sdkgen/parser";
 
-import { generateTypescriptInterface, generateTypescriptTypeName } from "../src/helpers";
+import { generateTypescriptInterface, generateTypescriptTypeName } from "../src/helpers.js";
 
 describe("helpers.ts", () => {
   test("generateTypescriptInterface", () => {
-    const structType = new parser.StructType([]);
+    const structType = new StructType([]);
 
     structType.fields = [
-      new parser.Field("int", new parser.IntPrimitiveType()),
-      new parser.Field("bigint", new parser.BigIntPrimitiveType()),
-      new parser.Field("date", new parser.DatePrimitiveType()),
-      new parser.Field("bool", new parser.BoolPrimitiveType()),
-      new parser.Field("bytes", new parser.BytesPrimitiveType()),
-      new parser.Field("uuid", new parser.UuidPrimitiveType()),
-      new parser.Field("void", new parser.VoidPrimitiveType()),
-      new parser.Field("json", new parser.JsonPrimitiveType()),
-      new parser.Field("optionalStrArray", new parser.OptionalType(new parser.ArrayType(new parser.StringPrimitiveType()))),
+      new Field("int", new IntPrimitiveType()),
+      new Field("bigint", new BigIntPrimitiveType()),
+      new Field("date", new DatePrimitiveType()),
+      new Field("bool", new BoolPrimitiveType()),
+      new Field("bytes", new BytesPrimitiveType()),
+      new Field("uuid", new UuidPrimitiveType()),
+      new Field("void", new VoidPrimitiveType()),
+      new Field("json", new JsonPrimitiveType()),
+      new Field("optionalStrArray", new OptionalType(new ArrayType(new StringPrimitiveType()))),
     ];
 
     structType.name = "awesomeInterface";
@@ -35,101 +65,98 @@ describe("helpers.ts", () => {
   });
 
   test("generateTypescriptTypeName: IntPrimitiveType", () => {
-    const type = new parser.IntPrimitiveType();
+    const type = new IntPrimitiveType();
 
     expect(generateTypescriptTypeName(type, false)).toBe("number");
   });
 
   test("generateTypescriptTypeName: UIntPrimitiveType", () => {
-    const type = new parser.UIntPrimitiveType();
+    const type = new UIntPrimitiveType();
 
     expect(generateTypescriptTypeName(type, false)).toBe("number");
   });
 
   test("generateTypescriptTypeName: MoneyPrimitiveType", () => {
-    const type = new parser.MoneyPrimitiveType();
+    const type = new MoneyPrimitiveType();
 
     expect(generateTypescriptTypeName(type, false)).toBe("number");
   });
 
   test("generateTypescriptTypeName: FloatPrimitiveType", () => {
-    const type = new parser.FloatPrimitiveType();
+    const type = new FloatPrimitiveType();
 
     expect(generateTypescriptTypeName(type, false)).toBe("number");
   });
 
   test("generateTypescriptTypeName: DateTimePrimitiveType", () => {
-    const type = new parser.DateTimePrimitiveType();
+    const type = new DateTimePrimitiveType();
 
     expect(generateTypescriptTypeName(type, false)).toBe("Date");
   });
 
   test("generateTypescriptTypeName: StringPrimitiveType", () => {
-    const type = new parser.StringPrimitiveType();
+    const type = new StringPrimitiveType();
 
     expect(generateTypescriptTypeName(type, false)).toBe("string");
   });
 
   test("generateTypescriptTypeName: CpfPrimitiveType", () => {
-    const type = new parser.CpfPrimitiveType();
+    const type = new CpfPrimitiveType();
 
     expect(generateTypescriptTypeName(type, false)).toBe("string");
   });
 
   test("generateTypescriptTypeName: CnpjPrimitiveType", () => {
-    const type = new parser.CnpjPrimitiveType();
+    const type = new CnpjPrimitiveType();
 
     expect(generateTypescriptTypeName(type, false)).toBe("string");
   });
 
   test("generateTypescriptTypeName: EmailPrimitiveType", () => {
-    const type = new parser.EmailPrimitiveType();
+    const type = new EmailPrimitiveType();
 
     expect(generateTypescriptTypeName(type, false)).toBe("string");
   });
 
   test("generateTypescriptTypeName: HtmlPrimitiveType", () => {
-    const type = new parser.HtmlPrimitiveType();
+    const type = new HtmlPrimitiveType();
 
     expect(generateTypescriptTypeName(type, false)).toBe("string");
   });
 
   test("generateTypescriptTypeName: UrlPrimitiveType", () => {
-    const type = new parser.UrlPrimitiveType();
+    const type = new UrlPrimitiveType();
 
     expect(generateTypescriptTypeName(type, false)).toBe("string");
   });
 
   test("generateTypescriptTypeName: HexPrimitiveType", () => {
-    const type = new parser.HexPrimitiveType();
+    const type = new HexPrimitiveType();
 
     expect(generateTypescriptTypeName(type, false)).toBe("string");
   });
 
   test("generateTypescriptTypeName: Base64PrimitiveType", () => {
-    const type = new parser.Base64PrimitiveType();
+    const type = new Base64PrimitiveType();
 
     expect(generateTypescriptTypeName(type, false)).toBe("string");
   });
 
   test("generateTypescriptTypeName: XmlPrimitiveType", () => {
-    const type = new parser.XmlPrimitiveType();
+    const type = new XmlPrimitiveType();
 
     expect(generateTypescriptTypeName(type, false)).toBe("string");
   });
 
   test("generateTypescriptTypeName: StructType", () => {
-    const structType = new parser.StructType([
-      new parser.Field("int", new parser.IntPrimitiveType()),
-      new parser.Field("bigint", new parser.BigIntPrimitiveType()),
-    ]);
+    const structType = new StructType([new Field("int", new IntPrimitiveType()), new Field("bigint", new BigIntPrimitiveType())]);
 
     structType.name = "simpleInterface";
     expect(generateTypescriptTypeName(structType, false)).toBe(structType.name);
   });
 
   test("generateTypescriptTypeName: EnumType", () => {
-    const enumType = new parser.EnumType([new parser.EnumValue("value1")]);
+    const enumType = new EnumType([new EnumValue("value1")]);
 
     enumType.name = "simpleEnum";
 
@@ -137,15 +164,15 @@ describe("helpers.ts", () => {
   });
 
   test("generateTypescriptTypeName: TypeReference", () => {
-    const enumType = new parser.TypeReference("typeRef");
+    const enumType = new TypeReference("typeRef");
 
-    enumType.type = new parser.HexPrimitiveType();
+    enumType.type = new HexPrimitiveType();
 
     expect(generateTypescriptTypeName(enumType, false)).toBe("string");
   });
 
   test("generateTypescriptTypeName: unknown PrimitiveType error", () => {
-    class UnknownType extends parser.Type {
+    class UnknownType extends Type {
       name = "UnknownType";
     }
 
