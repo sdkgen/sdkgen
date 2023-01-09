@@ -36,7 +36,7 @@ import {
   VoidPrimitiveType,
   XmlPrimitiveType,
 } from "@sdkgen/parser";
-import { PLAYGROUND_PUBLIC_PATH } from "@sdkgen/playground";
+// import { PLAYGROUND_PUBLIC_PATH } from "@sdkgen/playground";
 import { generateSwiftClientSource } from "@sdkgen/swift-generator";
 import { generateBrowserClientSource, generateNodeClientSource, generateNodeServerSource } from "@sdkgen/typescript-generator";
 import Busboy from "busboy";
@@ -131,29 +131,29 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
       res.end();
     });
 
-    this.addHttpHandler("GET", /^\/playground.*/u, (req, res) => {
-      if (!this.introspection) {
-        res.statusCode = 404;
-        res.end();
-        return;
-      }
+    // this.addHttpHandler("GET", /^\/playground.*/u, (req, res) => {
+    //   if (!this.introspection) {
+    //     res.statusCode = 404;
+    //     res.end();
+    //     return;
+    //   }
 
-      if (req.url) {
-        req.url = req.url.endsWith("/playground") ? req.url.replace(/\/playground/u, "/index.html") : req.url.replace(/\/playground/u, "");
-      }
+    //   if (req.url) {
+    //     req.url = req.url.endsWith("/playground") ? req.url.replace(/\/playground/u, "/index.html") : req.url.replace(/\/playground/u, "");
+    //   }
 
-      staticFilesHandler(req, res, {
-        cleanUrls: false,
-        directoryListing: false,
-        etag: true,
-        public: PLAYGROUND_PUBLIC_PATH,
-      }).catch(e => {
-        console.error(e);
-        res.statusCode = 500;
-        res.write(`${e}`);
-        res.end();
-      });
-    });
+    //   staticFilesHandler(req, res, {
+    //     cleanUrls: false,
+    //     directoryListing: false,
+    //     etag: true,
+    //     public: PLAYGROUND_PUBLIC_PATH,
+    //   }).catch(e => {
+    //     console.error(e);
+    //     res.statusCode = 500;
+    //     res.write(`${e}`);
+    //     res.end();
+    //   });
+    // });
   }
 
   registerHealthCheck(healthCheck: () => Promise<boolean>): void {
@@ -184,9 +184,9 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
           console.log(`\nListening on port ${addr.port} (${addr.address})`);
         }
 
-        if (this.introspection) {
-          console.log(`Playground: http://${urlHost}/playground`);
-        }
+        // if (this.introspection) {
+        //   console.log(`Playground: http://${urlHost}/playground`);
+        // }
 
         if (this.hasSwagger) {
           console.log(`Swagger UI: http://${urlHost}/swagger`);

@@ -68,7 +68,6 @@
     "@sdkgen/fsharp-generator": "file:../fsharp-generator",
     "@sdkgen/kotlin-generator": "file:../kotlin-generator",
     "@sdkgen/parser": "file:../parser",
-    "@sdkgen/playground": "file:../playground",
     "@sdkgen/swift-generator": "file:../swift-generator",
     "@sdkgen/typescript-generator": "file:../typescript-generator",
     "busboy": "1.5.0",
