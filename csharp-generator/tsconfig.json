@@ -8,6 +8,7 @@
     "inlineSourceMap": true,
     "inlineSources": true,
     "skipLibCheck": true,
-    "strict": true
+    "strict": true,
+    "composite": true
   }
 }

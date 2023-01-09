@@ -33,7 +33,7 @@ jobs:
           npm install -g json && json -I -f package.json -e '
             this.version = "'$(cat ../version.txt)'";
             this.main = "dist/src/index.js";
-            this.exports = "dist/src/index.js";
+            this.exports = "./dist/src/index.js";
             this.types = "dist/src/index.d.ts";
             for (const pkg in this.dependencies)
               if (this.dependencies[pkg].startsWith("file:../"))
@@ -66,7 +66,7 @@ jobs:
           npm install -g json && json -I -f package.json -e '
             this.version = "'$(cat ../version.txt)'";
             this.main = "dist/src/index.js";
-            this.exports = "dist/src/index.js";
+            this.exports = "./dist/src/index.js";
             this.types = "dist/src/index.d.ts";
             for (const pkg in this.dependencies)
               if (this.dependencies[pkg].startsWith("file:../"))
@@ -129,7 +129,7 @@ jobs:
           npm install -g json && json -I -f package.json -e '
             this.version = "'$(cat ../version.txt)'";
             this.main = "dist/src/index.js";
-            this.exports = "dist/src/index.js";
+            this.exports = "./dist/src/index.js";
             this.types = "dist/src/index.d.ts";
             for (const pkg in this.dependencies)
               if (this.dependencies[pkg].startsWith("file:../"))
@@ -162,7 +162,7 @@ jobs:
           npm install -g json && json -I -f package.json -e '
             this.version = "'$(cat ../version.txt)'";
             this.main = "dist/src/index.js";
-            this.exports = "dist/src/index.js";
+            this.exports = "./dist/src/index.js";
             this.types = "dist/src/index.d.ts";
             for (const pkg in this.dependencies)
               if (this.dependencies[pkg].startsWith("file:../"))
@@ -195,7 +195,7 @@ jobs:
           npm install -g json && json -I -f package.json -e '
             this.version = "'$(cat ../version.txt)'";
             this.main = "dist/src/index.js";
-            this.exports = "dist/src/index.js";
+            this.exports = "./dist/src/index.js";
             this.types = "dist/src/index.d.ts";
             for (const pkg in this.dependencies)
               if (this.dependencies[pkg].startsWith("file:../"))
@@ -228,7 +228,7 @@ jobs:
           npm install -g json && json -I -f package.json -e '
             this.version = "'$(cat ../version.txt)'";
             this.main = "dist/src/index.js";
-            this.exports = "dist/src/index.js";
+            this.exports = "./dist/src/index.js";
             this.types = "dist/src/index.d.ts";
             for (const pkg in this.dependencies)
               if (this.dependencies[pkg].startsWith("file:../"))
@@ -261,7 +261,7 @@ jobs:
           npm install -g json && json -I -f package.json -e '
             this.version = "'$(cat ../version.txt)'";
             this.main = "dist/src/index.js";
-            this.exports = "dist/src/index.js";
+            this.exports = "./dist/src/index.js";
             this.types = "dist/src/index.d.ts";
             for (const pkg in this.dependencies)
               if (this.dependencies[pkg].startsWith("file:../"))
@@ -294,7 +294,7 @@ jobs:
           npm install -g json && json -I -f package.json -e '
             this.version = "'$(cat ../version.txt)'";
             this.main = "dist/src/index.js";
-            this.exports = "dist/src/index.js";
+            this.exports = "./dist/src/index.js";
             this.types = "dist/src/index.d.ts";
             for (const pkg in this.dependencies)
               if (this.dependencies[pkg].startsWith("file:../"))
@@ -341,7 +341,7 @@ jobs:
           npm install -g json && json -I -f package.json -e '
             this.version = "'$(cat ../version.txt)'";
             this.main = "dist/src/index.js";
-            this.exports = "dist/src/index.js";
+            this.exports = "./dist/src/index.js";
             this.types = "dist/src/index.d.ts";
             for (const pkg in this.dependencies)
               if (this.dependencies[pkg].startsWith("file:../"))
@@ -439,7 +439,7 @@ jobs:
           npm install -g json && json -I -f package.json -e '
             this.version = "'$(cat ../version.txt)'";
             this.main = "dist/src/index.js";
-            this.exports = "dist/src/index.js";
+            this.exports = "./dist/src/index.js";
             this.types = "dist/src/index.d.ts";
             for (const pkg in this.dependencies)
               if (this.dependencies[pkg].startsWith("file:../"))
