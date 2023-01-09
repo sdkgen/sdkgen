@@ -2,7 +2,8 @@
   "name": "@sdkgen/fsharp-generator",
   "version": "0.0.0",
   "description": "",
-  "main": "src/index.ts",
+  "main": "./src/index.js",
+  "exports": "./src/index.js",
   "type": "module",
   "scripts": {
     "eslint:fix": "eslint --fix '**/*.ts'",

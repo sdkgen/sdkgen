@@ -2,7 +2,8 @@
   "name": "@sdkgen/node-runtime",
   "version": "0.0.0",
   "description": "",
-  "main": "src/index.ts",
+  "main": "./src/index.js",
+  "exports": "./src/index.js",
   "type": "module",
   "scripts": {
     "test": "TZ=UTC NODE_OPTIONS='--no-warnings --experimental-vm-modules' jest --passWithNoTests",

@@ -37,12 +37,12 @@
       </header>
 
       <section class="container" id="labels" *ngIf="this.selectedFunction.labels.length > 0">
-        <mat-chip-list [selectable]="false">
-          <mat-chip *ngFor="let label of this.selectedFunction.labels" [disableRipple]="true" color="primary">
+        <mat-chip-listbox [selectable]="false">
+          <mat-chip-option *ngFor="let label of this.selectedFunction.labels" [disableRipple]="true" color="primary">
             <span class="mono">{{ label.name }}</span><i></i>
             <span class="mono">{{ label.type }} <u *ngIf="label.dataType && label.dataType.name !== 'void'" [matTooltip]="getTooltip(label.dataType)" (click)="showDocumentation(label.dataType)">({{ label.dataType.name }})</u></span>
-          </mat-chip>
-        </mat-chip-list>
+          </mat-chip-option>
+        </mat-chip-listbox>
       </section>
 
       <section class="container">

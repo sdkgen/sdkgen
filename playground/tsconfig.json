@@ -15,10 +15,10 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "target": "es2018",
-    "module": "es2022",
+    // "esModuleInterop": true,
+    "skipLibCheck": true,
+    "target": "es2022",
+    "module": "CommonJS",
     "lib": [
       "es2022",
       "dom"

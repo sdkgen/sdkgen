@@ -46,23 +46,18 @@
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
             "aot": true,
-            "allowedCommonJsDependencies": [
-              "@sdkgen/browser-runtime",
-              "@sdkgen/csharp-generator",
-              "@sdkgen/dart-generator",
-              "@sdkgen/kotlin-generator",
-              "@sdkgen/parser",
-              "@sdkgen/swift-generator",
-              "@sdkgen/typescript-generator"
-            ],
             "outputPath": "dist",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
-            "tsConfig": "tsconfig.app.json",
+            "tsConfig": "tsconfig.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              { "glob": "**/*", "input": "node_modules/monaco-editor/min/vs", "output": "assets/vs" },
+              {
+                "glob": "**/*",
+                "input": "node_modules/monaco-editor/min/vs",
+                "output": "assets/vs"
+              },
               "src/favicon.ico",
               "src/assets"
             ],

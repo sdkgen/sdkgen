@@ -5,9 +5,9 @@
 
   <span class="mono">{{ data.type.name }}</span>
 
-  <mat-chip-list [selectable]="false">
-    <mat-chip *ngFor="let label of labels" [disableRipple]="true" color="primary">{{ label }}</mat-chip>
-  </mat-chip-list>
+  <mat-chip-listbox [selectable]="false">
+    <mat-chip-option *ngFor="let label of labels" [disableRipple]="true" color="primary">{{ label }}</mat-chip-option>
+  </mat-chip-listbox>
 
   <button *ngIf="!data.subdialog" class="close-button" mat-icon-button mat-dialog-close tabindex="-1">
     <mat-icon>close</mat-icon>

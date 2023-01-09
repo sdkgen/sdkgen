@@ -2,7 +2,8 @@
   "name": "@sdkgen/browser-runtime",
   "version": "0.0.0",
   "description": "",
-  "main": "src/index.ts",
+  "main": "./src/index.js",
+  "exports": "./src/index.js",
   "scripts": {
     "test": "jest --passWithNoTests",
     "eslint:fix": "eslint --fix '**/*.ts'",
