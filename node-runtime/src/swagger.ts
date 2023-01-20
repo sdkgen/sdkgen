@@ -35,7 +35,6 @@ import type { JSONSchema } from "json-schema-typed";
 import staticFilesHandler from "serve-handler";
 import { getAbsoluteFSPath as getSwaggerUiAssetPath } from "swagger-ui-dist";
 
-import { Fatal } from "./error";
 import type { SdkgenHttpServer } from "./http-server";
 
 const swaggerUiAssetPath = getSwaggerUiAssetPath();
@@ -282,7 +281,7 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
 
         for (const error of possibleErrors) {
           const statusAnnotation = error.annotations.find(ann => ann instanceof StatusCodeAnnotation) as StatusCodeAnnotation | undefined;
-          const statusCode = statusAnnotation ? statusAnnotation.statusCode : error instanceof Fatal ? 500 : 400;
+          const statusCode = statusAnnotation ? statusAnnotation.statusCode : error.name === "Fatal" ? 500 : 400;
 
           const errorList = errorsByStatus.get(statusCode) ?? [];
 
@@ -294,7 +293,10 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
           [...errorsByStatus.entries()].map(([status, errors]) => [
             status,
             {
-              description: errors.map(error => error.name).join(" / "),
+              description: errors
+                .map(error => error.name)
+                .sort((a, b) => a.localeCompare(b))
+                .join("<br>"),
               content: {
                 "application/json": {
                   schema: {
