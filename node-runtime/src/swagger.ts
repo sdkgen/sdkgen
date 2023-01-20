@@ -64,6 +64,7 @@ function typeToSchema(definitions: Record<string, JSONSchema | undefined>, type:
       ),
       required: type.fields.filter(f => !(f.type instanceof OptionalType)).map(f => f.name),
       type: "object",
+      additionalProperties: false,
     };
   } else if (
     type instanceof StringPrimitiveType ||
@@ -155,7 +156,7 @@ function typeToSchema(definitions: Record<string, JSONSchema | undefined>, type:
       definitions[type.name] = typeToSchema(definitions, type.type);
     }
 
-    return { $ref: `#/definitions/${type.name}` };
+    return { $ref: `#/$defs/${type.name}` };
   }
 
   throw new Error(`Unhandled type ${type.constructor.name}`);
@@ -423,13 +424,14 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
 
       res.write(
         JSON.stringify({
-          consumes: ["application/json"],
-          definitions,
+          $schema: "https://spec.openapis.org/oas/3.1/dialect/base",
+          openapi: "3.1.0",
           info: {},
-          openapi: "3.0.3",
-          paths,
-          produces: ["application/json"],
           schemes: ["https"],
+          consumes: ["application/json"],
+          produces: ["application/json"],
+          paths,
+          $defs: definitions,
         }),
       );
     } catch (error) {
