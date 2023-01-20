@@ -6,7 +6,7 @@ import type { DeepReadonly } from "./utils";
 
 type Middleware<ExtraContextT> = (ctx: Context & ExtraContextT, next: () => Promise<ContextReply>) => Promise<ContextReply>;
 
-export abstract class BaseApiConfig<ExtraContextT = unknown> {
+export class BaseApiConfig<ExtraContextT = unknown> {
   private _ast: AstRoot | undefined;
 
   get ast() {

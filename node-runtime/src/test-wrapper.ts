@@ -11,14 +11,15 @@ import type { Context } from "./context";
 import { decode, encode } from "./encode-decode";
 import { executeRequest } from "./execute";
 
-export function apiTestWrapper<T>(api: T extends BaseApiConfig<Context & infer _ExtraContextT> ? T : never): T {
-  const wrappedApi = new (api.constructor as any)();
+export function apiTestWrapper<ExtraContextT, ApiT extends BaseApiConfig<ExtraContextT>>(api: ApiT, extraContext: Partial<ExtraContextT> = {}): ApiT {
+  const wrappedApi: ApiT = new (api.constructor as any)();
 
   for (const functionName of Object.keys(api.astJson.functionTable)) {
     wrappedApi.fn[functionName] = async (partialCtx: Partial<Context>, args: any) => {
       const encodedArgs = encode(api.astJson.typeTable, `fn.${functionName}.args`, (api.astJson.functionTable as any)[functionName].args, args);
 
       const ctx: Context = {
+        ...extraContext,
         ...partialCtx,
         request: {
           args: encodedArgs as Record<string, unknown>,
@@ -44,7 +45,7 @@ export function apiTestWrapper<T>(api: T extends BaseApiConfig<Context & infer _
         },
       };
 
-      const reply = await executeRequest(ctx, api);
+      const reply = await executeRequest(ctx as Context & ExtraContextT, api);
 
       if (reply.error) {
         throw reply.error;
