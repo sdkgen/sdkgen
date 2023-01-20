@@ -1,6 +1,6 @@
+import { SemanticError, Visitor } from "./visitor";
 import type { AstNode } from "../ast";
 import { EnumType } from "../ast";
-import { SemanticError, Visitor } from "./visitor";
 
 export class CheckDuplicatedMembersOnEnumVisitor extends Visitor {
   visit(node: AstNode): void {

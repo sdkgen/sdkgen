@@ -1,7 +1,7 @@
+import { SemanticError, Visitor } from "./visitor";
 import type { Spread } from "..";
 import type { AstNode } from "../ast";
 import { FunctionOperation, Field, StructType } from "../ast";
-import { SemanticError, Visitor } from "./visitor";
 
 export class ExpandSpreadsVisitor extends Visitor {
   /*

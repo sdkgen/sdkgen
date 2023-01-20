@@ -1,7 +1,7 @@
-import type { AstNode } from "../ast";
-import { EnumValue, FunctionOperation, EnumType, ErrorNode, Field, StructType, TypeDefinition } from "../ast";
 import { Transformer } from "./transformer";
 import { SemanticError } from "./visitor";
+import type { AstNode } from "../ast";
+import { EnumValue, FunctionOperation, EnumType, ErrorNode, Field, StructType, TypeDefinition } from "../ast";
 
 export class GiveStructAndEnumNamesTransformer extends Transformer {
   path: string[] = [];

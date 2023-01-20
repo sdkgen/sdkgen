@@ -1,3 +1,4 @@
+import { SemanticError, Visitor } from "./visitor";
 import type { AstNode, Type } from "../ast";
 import {
   ErrorNode,
@@ -30,7 +31,6 @@ import {
   UuidPrimitiveType,
   VoidPrimitiveType,
 } from "../ast";
-import { SemanticError, Visitor } from "./visitor";
 
 function isRestEncodable(type: Type) {
   return (
