@@ -1,5 +1,7 @@
-import type { Type } from "@sdkgen/parser";
+import type { ErrorNode, Type } from "@sdkgen/parser";
 import {
+  StatusCodeAnnotation,
+  ThrowsAnnotation,
   DecimalPrimitiveType,
   JsonPrimitiveType,
   ArrayType,
@@ -33,6 +35,7 @@ import type { JSONSchema } from "json-schema-typed";
 import staticFilesHandler from "serve-handler";
 import { getAbsoluteFSPath as getSwaggerUiAssetPath } from "swagger-ui-dist";
 
+import { Fatal } from "./error";
 import type { SdkgenHttpServer } from "./http-server";
 
 const swaggerUiAssetPath = getSwaggerUiAssetPath();
@@ -266,6 +269,62 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
       const paths: Record<string, any> = {};
 
       for (const op of server.apiConfig.ast.operations) {
+        const throwAnnotations = op.annotations.filter(ann => ann instanceof ThrowsAnnotation) as ThrowsAnnotation[];
+        let possibleErrors = throwAnnotations
+          .map(ann => server.apiConfig.ast.errors.find(err => err.name === ann.error))
+          .filter(x => x) as ErrorNode[];
+
+        if (possibleErrors.length === 0) {
+          possibleErrors = server.apiConfig.ast.errors;
+        }
+
+        const errorsByStatus = new Map<number, ErrorNode[]>();
+
+        for (const error of possibleErrors) {
+          const statusAnnotation = error.annotations.find(ann => ann instanceof StatusCodeAnnotation) as StatusCodeAnnotation | undefined;
+          const statusCode = statusAnnotation ? statusAnnotation.statusCode : error instanceof Fatal ? 500 : 400;
+
+          const errorList = errorsByStatus.get(statusCode) ?? [];
+
+          errorList.push(error);
+          errorsByStatus.set(statusCode, errorList);
+        }
+
+        const errorResponses = Object.fromEntries(
+          [...errorsByStatus.entries()].map(([status, errors]) => [
+            status,
+            {
+              content: {
+                "application/json": {
+                  schema: {
+                    anyOf: [
+                      errors.map(error => ({
+                        properties: {
+                          message: {
+                            type: "string",
+                          },
+                          type: {
+                            enum: [error.name],
+                            type: "string",
+                          },
+                          ...(error.dataType instanceof VoidPrimitiveType
+                            ? {}
+                            : {
+                                data: typeToSchema(definitions, error.dataType),
+                              }),
+                        },
+                        required: ["type", "message", ...(error.dataType instanceof VoidPrimitiveType ? [] : ["data"])],
+                        type: "object",
+                        additionalProperties: false,
+                      })),
+                    ],
+                  },
+                },
+              },
+            },
+          ]),
+        );
+
         for (const ann of op.annotations) {
           if (ann instanceof RestAnnotation) {
             if (!paths[ann.path]) {
@@ -381,35 +440,7 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
                         },
                       },
                     }),
-                400: {
-                  content: {
-                    "application/json": {
-                      schema: {
-                        anyOf: [
-                          server.apiConfig.ast.errors.map(error => ({
-                            properties: {
-                              message: {
-                                type: "string",
-                              },
-                              type: {
-                                enum: [error.name],
-                                type: "string",
-                              },
-                              ...(error.dataType instanceof VoidPrimitiveType
-                                ? {}
-                                : {
-                                    data: typeToSchema(definitions, error.dataType),
-                                  }),
-                            },
-                            required: ["type", "message"],
-                            type: "object",
-                          })),
-                        ],
-                      },
-                    },
-                  },
-                },
-                500: {},
+                ...errorResponses,
               },
               summary:
                 op.annotations

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import type { Annotation, Type } from "./ast";
 import {
+  StatusCodeAnnotation,
   ArrayType,
   AstRoot,
   DescriptionAnnotation,
@@ -49,6 +50,10 @@ type AnnotationJson =
       value: null;
     }
   | {
+      type: "statusCode";
+      value: number;
+    }
+  | {
       type: "rest";
       value: {
         bodyVariable: string | null;
@@ -79,6 +84,8 @@ function annotationToJson(ann: Annotation): AnnotationJson {
     };
   } else if (ann instanceof HiddenAnnotation) {
     return { type: "hidden", value: null };
+  } else if (ann instanceof StatusCodeAnnotation) {
+    return { type: "statusCode", value: ann.statusCode };
   }
 
   throw new Error(`BUG: annotationToJson with ${ann.constructor.name}`);
@@ -98,6 +105,8 @@ function annotationFromJson(json: AnnotationJson | DeepReadonly<AnnotationJson>)
 
     case "hidden":
       return new HiddenAnnotation();
+    case "statusCode":
+      return new StatusCodeAnnotation(json.value);
 
     default:
       throw new Error(`BUG: annotationFromJson with ${(json as { type: string }).type}`);

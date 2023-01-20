@@ -3,6 +3,7 @@
 
 import type { Annotation, Type } from "./ast";
 import {
+  StatusCodeAnnotation,
   ArgDescriptionAnnotation,
   ArrayType,
   AstRoot,
@@ -226,6 +227,17 @@ export class Parser {
           this.annotations.push(new HiddenAnnotation().at(this.token));
 
           break;
+        case "statusCode": {
+          const statusCode = parseInt(body, 10);
+
+          if (statusCode.toString() !== body.trim()) {
+            throw new ParserError(`@statusCode annotation takes an integer as argument`);
+          }
+
+          this.annotations.push(new StatusCodeAnnotation(statusCode).at(this.token));
+          break;
+        }
+
         default:
           throw new ParserError(`Unknown annotation '${words[0]}' at ${this.token.location}`);
       }
@@ -267,7 +279,6 @@ export class Parser {
   }
 
   private parseError(): ErrorNode {
-    this.checkCannotHaveAnnotationsHere();
     const errorToken = this.expect(ErrorKeywordToken);
 
     this.nextToken();
@@ -292,7 +303,11 @@ export class Parser {
       type = this.parseType();
     }
 
-    return new ErrorNode(name, type).at(errorToken);
+    const node = new ErrorNode(name, type).at(errorToken);
+
+    node.annotations = this.annotations;
+    this.annotations = [];
+    return node;
   }
 
   private parseOperation() {

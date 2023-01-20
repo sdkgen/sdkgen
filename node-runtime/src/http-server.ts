@@ -14,6 +14,7 @@ import { generateFSharpServerSource } from "@sdkgen/fsharp-generator";
 import { generateAndroidClientSource } from "@sdkgen/kotlin-generator";
 import type { AstRoot } from "@sdkgen/parser";
 import {
+  StatusCodeAnnotation,
   DecimalPrimitiveType,
   Base64PrimitiveType,
   BigIntPrimitiveType,
@@ -534,7 +535,10 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
                   const error = this.makeResponseError(reply.error);
 
                   if (!ctx?.response.statusCode) {
-                    res.statusCode = error.type === "Fatal" ? 500 : 400;
+                    const errorNode = this.apiConfig.ast.errors.find(node => node.name === error.type);
+                    const statusAnnotation = errorNode?.annotations.find(x => x instanceof StatusCodeAnnotation) as StatusCodeAnnotation | undefined;
+
+                    res.statusCode = statusAnnotation ? statusAnnotation.statusCode : error.type === "Fatal" ? 500 : 400;
                   }
 
                   res.setHeader("content-type", "application/json");

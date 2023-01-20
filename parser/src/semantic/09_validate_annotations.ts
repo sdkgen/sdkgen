@@ -1,5 +1,7 @@
 import type { AstNode, Type } from "../ast";
 import {
+  ErrorNode,
+  StatusCodeAnnotation,
   DecimalPrimitiveType,
   FunctionOperation,
   Base64PrimitiveType,
@@ -136,6 +138,20 @@ export class ValidateAnnotationsVisitor extends Visitor {
         } else {
           throw new SemanticError(`Cannot have @${annotation.constructor.name.replace("Annotation", "").toLowerCase()} at ${annotation.location}`);
         }
+      }
+    } else if (node instanceof ErrorNode) {
+      for (const annotation of node.annotations) {
+        if (annotation instanceof StatusCodeAnnotation) {
+          if (annotation.statusCode < 400 || annotation.statusCode > 599) {
+            throw new SemanticError(`Error status code can only be 4xx or 5xx at ${annotation.location}`);
+          }
+        } else {
+          throw new SemanticError(`Cannot have @${annotation.constructor.name.replace("Annotation", "").toLowerCase()} at ${annotation.location}`);
+        }
+      }
+
+      if (node.annotations.filter(ann => ann instanceof StatusCodeAnnotation).length > 1) {
+        throw new SemanticError(`Can't provide more than one status code at ${node.location}`);
       }
     }
   }
