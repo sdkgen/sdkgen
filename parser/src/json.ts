@@ -320,20 +320,23 @@ export function jsonToAst(json: DeepReadonly<AstJson>): AstRoot {
   }
 
   const errors = json.errors.map(error => {
+    let errorNode;
+
     if (Array.isArray(error)) {
       const [name, type] = error as [string, string];
 
-      const errorNode = new ErrorNode(name, processType(type));
-      const target = `error.${errorNode.name}`;
-
-      for (const annotationJson of json.annotations[target] ?? []) {
-        errorNode.annotations.push(annotationFromJson(annotationJson));
-      }
-
-      return errorNode;
+      errorNode = new ErrorNode(name, processType(type));
+    } else {
+      errorNode = new ErrorNode(error as string, new VoidPrimitiveType());
     }
 
-    return new ErrorNode(error as string, new VoidPrimitiveType());
+    const target = `error.${errorNode.name}`;
+
+    for (const annotationJson of json.annotations[target] ?? []) {
+      errorNode.annotations.push(annotationFromJson(annotationJson));
+    }
+
+    return errorNode;
   });
 
   const ast = new AstRoot(typeDefinition, operations, errors);

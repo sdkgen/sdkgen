@@ -159,7 +159,7 @@ function typeToSchema(definitions: Record<string, JSONSchema | undefined>, type:
       definitions[type.name] = typeToSchema(definitions, type.type);
     }
 
-    return { $ref: `#/$defs/${type.name}` };
+    return { $ref: `#/definitions/${type.name}` };
   }
 
   throw new Error(`Unhandled type ${type.constructor.name}`);
@@ -294,30 +294,29 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
           [...errorsByStatus.entries()].map(([status, errors]) => [
             status,
             {
+              description: errors.map(error => error.name).join(" / "),
               content: {
                 "application/json": {
                   schema: {
-                    anyOf: [
-                      errors.map(error => ({
-                        properties: {
-                          message: {
-                            type: "string",
-                          },
-                          type: {
-                            enum: [error.name],
-                            type: "string",
-                          },
-                          ...(error.dataType instanceof VoidPrimitiveType
-                            ? {}
-                            : {
-                                data: typeToSchema(definitions, error.dataType),
-                              }),
+                    anyOf: errors.map(error => ({
+                      properties: {
+                        message: {
+                          type: "string",
                         },
-                        required: ["type", "message", ...(error.dataType instanceof VoidPrimitiveType ? [] : ["data"])],
-                        type: "object",
-                        additionalProperties: false,
-                      })),
-                    ],
+                        type: {
+                          enum: [error.name],
+                          type: "string",
+                        },
+                        ...(error.dataType instanceof VoidPrimitiveType
+                          ? {}
+                          : {
+                              data: typeToSchema(definitions, error.dataType),
+                            }),
+                      },
+                      required: ["type", "message", ...(error.dataType instanceof VoidPrimitiveType ? [] : ["data"])],
+                      type: "object",
+                      additionalProperties: false,
+                    })),
                   },
                 },
               },
@@ -410,6 +409,7 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
                   ? {}
                   : {
                       200: {
+                        description: "",
                         content: {
                           ...(() => {
                             return op.returnType instanceof BoolPrimitiveType ||
@@ -455,14 +455,13 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
 
       res.write(
         JSON.stringify({
-          $schema: "https://spec.openapis.org/oas/3.1/dialect/base",
-          openapi: "3.1.0",
-          info: {},
-          schemes: ["https"],
-          consumes: ["application/json"],
-          produces: ["application/json"],
+          openapi: "3.0.0",
+          info: {
+            title: "",
+            version: "",
+          },
           paths,
-          $defs: definitions,
+          definitions,
         }),
       );
     } catch (error) {
