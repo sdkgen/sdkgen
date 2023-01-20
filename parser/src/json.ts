@@ -212,6 +212,15 @@ export function astToJson(ast: AstRoot): AstJson {
     error.dataType instanceof VoidPrimitiveType ? error.name : ([error.name, error.dataType.name] as [string, string]),
   );
 
+  for (const error of ast.errors) {
+    for (const ann of error.annotations) {
+      const target = `error.${error.name}`;
+
+      annotations[target] ??= [];
+      annotations[target].push(annotationToJson(ann));
+    }
+  }
+
   return {
     annotations,
     errors,
@@ -314,7 +323,14 @@ export function jsonToAst(json: DeepReadonly<AstJson>): AstRoot {
     if (Array.isArray(error)) {
       const [name, type] = error as [string, string];
 
-      return new ErrorNode(name, processType(type));
+      const errorNode = new ErrorNode(name, processType(type));
+      const target = `error.${errorNode.name}`;
+
+      for (const annotationJson of json.annotations[target] ?? []) {
+        errorNode.annotations.push(annotationFromJson(annotationJson));
+      }
+
+      return errorNode;
     }
 
     return new ErrorNode(error as string, new VoidPrimitiveType());
