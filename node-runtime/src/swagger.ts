@@ -35,6 +35,7 @@ import type { JSONSchema } from "json-schema-typed";
 import staticFilesHandler from "serve-handler";
 import { getAbsoluteFSPath as getSwaggerUiAssetPath } from "swagger-ui-dist";
 
+import type { BaseApiConfig } from "./api-config";
 import type { SdkgenHttpServer } from "./http-server";
 
 const swaggerUiAssetPath = getSwaggerUiAssetPath();
@@ -164,6 +165,208 @@ function typeToSchema(definitions: Record<string, JSONSchema | undefined>, type:
   throw new Error(`Unhandled type ${type.constructor.name}`);
 }
 
+function getSwaggerJson<ExtraContextT>(apiConfig: BaseApiConfig<ExtraContextT>) {
+  const definitions: Record<string, JSONSchema | undefined> = {};
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const paths: Record<string, any> = {};
+
+  for (const op of apiConfig.ast.operations) {
+    const throwAnnotations = op.annotations.filter(ann => ann instanceof ThrowsAnnotation) as ThrowsAnnotation[];
+    let possibleErrors = throwAnnotations.map(ann => apiConfig.ast.errors.find(err => err.name === ann.error)).filter(x => x) as ErrorNode[];
+
+    if (possibleErrors.length === 0) {
+      possibleErrors = apiConfig.ast.errors;
+    }
+
+    const errorsByStatus = new Map<number, ErrorNode[]>();
+
+    for (const error of possibleErrors) {
+      const statusAnnotation = error.annotations.find(ann => ann instanceof StatusCodeAnnotation) as StatusCodeAnnotation | undefined;
+      const statusCode = statusAnnotation ? statusAnnotation.statusCode : error.name === "Fatal" ? 500 : 400;
+
+      const errorList = errorsByStatus.get(statusCode) ?? [];
+
+      errorList.push(error);
+      errorsByStatus.set(statusCode, errorList);
+    }
+
+    const errorResponses = Object.fromEntries(
+      [...errorsByStatus.entries()].map(([status, errors]) => [
+        status,
+        {
+          description: errors
+            .map(error => error.name)
+            .sort((a, b) => a.localeCompare(b))
+            .join("<br>"),
+          content: {
+            "application/json": {
+              schema: {
+                anyOf: errors.map(error => ({
+                  properties: {
+                    message: {
+                      type: "string",
+                    },
+                    type: {
+                      enum: [error.name],
+                      type: "string",
+                    },
+                    ...(error.dataType instanceof VoidPrimitiveType
+                      ? {}
+                      : {
+                          data: typeToSchema(definitions, error.dataType),
+                        }),
+                  },
+                  required: ["type", "message", ...(error.dataType instanceof VoidPrimitiveType ? [] : ["data"])],
+                  type: "object",
+                  additionalProperties: false,
+                })),
+              },
+            },
+          },
+        },
+      ]),
+    );
+
+    for (const ann of op.annotations) {
+      if (ann instanceof RestAnnotation) {
+        if (!paths[ann.path]) {
+          paths[ann.path] = {};
+        }
+
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
+        paths[ann.path][ann.method.toLowerCase()] = {
+          operationId: op.name,
+          parameters: [
+            ...ann.pathVariables.map(name => ({
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              arg: op.args.find(arg => arg.name === name)!,
+              location: "path",
+              name,
+            })),
+            ...ann.queryVariables.map(name => ({
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              arg: op.args.find(arg => arg.name === name)!,
+              location: "query",
+              name,
+            })),
+            ...[...ann.headers.entries()].map(([header, name]) => ({
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              arg: op.args.find(arg => arg.name === name)!,
+              location: "header",
+              name: header,
+            })),
+          ].map(({ name, location, arg }) => ({
+            description:
+              arg.annotations
+                .filter(x => x instanceof DescriptionAnnotation)
+                .map(x => (x as DescriptionAnnotation).text)
+                .join(" ") || undefined,
+            in: location,
+            name,
+            required: !(arg.type instanceof OptionalType),
+            schema: typeToSchema(definitions, arg.type),
+          })),
+          requestBody: ann.bodyVariable
+            ? {
+                content: {
+                  ...(() => {
+                    const bodyType = op.args.find(arg => arg.name === ann.bodyVariable)?.type;
+
+                    return bodyType instanceof BoolPrimitiveType ||
+                      bodyType instanceof IntPrimitiveType ||
+                      bodyType instanceof UIntPrimitiveType ||
+                      bodyType instanceof FloatPrimitiveType ||
+                      bodyType instanceof StringPrimitiveType ||
+                      bodyType instanceof DatePrimitiveType ||
+                      bodyType instanceof DateTimePrimitiveType ||
+                      bodyType instanceof MoneyPrimitiveType ||
+                      bodyType instanceof CpfPrimitiveType ||
+                      bodyType instanceof CnpjPrimitiveType ||
+                      bodyType instanceof EmailPrimitiveType ||
+                      bodyType instanceof HtmlPrimitiveType ||
+                      bodyType instanceof UuidPrimitiveType ||
+                      bodyType instanceof HexPrimitiveType ||
+                      bodyType instanceof BytesPrimitiveType ||
+                      bodyType instanceof Base64PrimitiveType
+                      ? {
+                          [bodyType instanceof HtmlPrimitiveType ? "text/html" : "text/plain"]: {
+                            schema: typeToSchema(definitions, bodyType),
+                          },
+                        }
+                      : {};
+                  })(),
+                  "application/json": {
+                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                    schema: typeToSchema(definitions, op.args.find(arg => arg.name === ann.bodyVariable)!.type),
+                  },
+                },
+                // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+                required: !(op.args.find(arg => arg.name === ann.bodyVariable)!.type instanceof OptionalType),
+              }
+            : undefined,
+          responses: {
+            ...(op.returnType instanceof OptionalType || op.returnType instanceof VoidPrimitiveType
+              ? { [ann.method === "GET" ? "404" : "204"]: {} }
+              : {}),
+            ...(op.returnType instanceof VoidPrimitiveType
+              ? {}
+              : {
+                  200: {
+                    description: "",
+                    content: {
+                      ...(() => {
+                        return op.returnType instanceof BoolPrimitiveType ||
+                          op.returnType instanceof IntPrimitiveType ||
+                          op.returnType instanceof UIntPrimitiveType ||
+                          op.returnType instanceof FloatPrimitiveType ||
+                          op.returnType instanceof StringPrimitiveType ||
+                          op.returnType instanceof DatePrimitiveType ||
+                          op.returnType instanceof DateTimePrimitiveType ||
+                          op.returnType instanceof MoneyPrimitiveType ||
+                          op.returnType instanceof CpfPrimitiveType ||
+                          op.returnType instanceof CnpjPrimitiveType ||
+                          op.returnType instanceof EmailPrimitiveType ||
+                          op.returnType instanceof UuidPrimitiveType ||
+                          op.returnType instanceof HexPrimitiveType ||
+                          op.returnType instanceof BytesPrimitiveType ||
+                          op.returnType instanceof Base64PrimitiveType
+                          ? {
+                              "text/plain": {
+                                schema: typeToSchema(definitions, op.returnType),
+                              },
+                            }
+                          : {};
+                      })(),
+                      "application/json": {
+                        schema: typeToSchema(definitions, op.returnType),
+                      },
+                    },
+                  },
+                }),
+            ...errorResponses,
+          },
+          summary:
+            op.annotations
+              .filter(x => x instanceof DescriptionAnnotation)
+              .map(x => (x as DescriptionAnnotation).text)
+              .join(" ") || undefined,
+          tags: ["REST Endpoints"],
+        };
+      }
+    }
+  }
+
+  return {
+    openapi: "3.0.0",
+    info: {
+      title: "",
+      version: "",
+    },
+    paths,
+    definitions,
+  };
+}
+
 export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContextT>): void {
   server.addHttpHandler("GET", "/swagger", (req, res) => {
     if (!server.introspection) {
@@ -211,7 +414,10 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
                 <script>
                 window.onload = function() {
                     window.ui = SwaggerUIBundle({
-                        url: location.origin + location.pathname + ".json",
+                        spec: {
+                          ...${JSON.stringify(getSwaggerJson(server.apiConfig))}
+                          servers: { url: location.origin + location.pathname.replace(/\/swagger$/, "") }
+                        },
                         dom_id: '#swagger-ui',
                         deepLinking: true,
                         presets: [
@@ -264,209 +470,7 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
     }
 
     try {
-      const definitions: Record<string, JSONSchema | undefined> = {};
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const paths: Record<string, any> = {};
-
-      for (const op of server.apiConfig.ast.operations) {
-        const throwAnnotations = op.annotations.filter(ann => ann instanceof ThrowsAnnotation) as ThrowsAnnotation[];
-        let possibleErrors = throwAnnotations
-          .map(ann => server.apiConfig.ast.errors.find(err => err.name === ann.error))
-          .filter(x => x) as ErrorNode[];
-
-        if (possibleErrors.length === 0) {
-          possibleErrors = server.apiConfig.ast.errors;
-        }
-
-        const errorsByStatus = new Map<number, ErrorNode[]>();
-
-        for (const error of possibleErrors) {
-          const statusAnnotation = error.annotations.find(ann => ann instanceof StatusCodeAnnotation) as StatusCodeAnnotation | undefined;
-          const statusCode = statusAnnotation ? statusAnnotation.statusCode : error.name === "Fatal" ? 500 : 400;
-
-          const errorList = errorsByStatus.get(statusCode) ?? [];
-
-          errorList.push(error);
-          errorsByStatus.set(statusCode, errorList);
-        }
-
-        const errorResponses = Object.fromEntries(
-          [...errorsByStatus.entries()].map(([status, errors]) => [
-            status,
-            {
-              description: errors
-                .map(error => error.name)
-                .sort((a, b) => a.localeCompare(b))
-                .join("<br>"),
-              content: {
-                "application/json": {
-                  schema: {
-                    anyOf: errors.map(error => ({
-                      properties: {
-                        message: {
-                          type: "string",
-                        },
-                        type: {
-                          enum: [error.name],
-                          type: "string",
-                        },
-                        ...(error.dataType instanceof VoidPrimitiveType
-                          ? {}
-                          : {
-                              data: typeToSchema(definitions, error.dataType),
-                            }),
-                      },
-                      required: ["type", "message", ...(error.dataType instanceof VoidPrimitiveType ? [] : ["data"])],
-                      type: "object",
-                      additionalProperties: false,
-                    })),
-                  },
-                },
-              },
-            },
-          ]),
-        );
-
-        for (const ann of op.annotations) {
-          if (ann instanceof RestAnnotation) {
-            if (!paths[ann.path]) {
-              paths[ann.path] = {};
-            }
-
-            // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-            paths[ann.path][ann.method.toLowerCase()] = {
-              operationId: op.name,
-              parameters: [
-                ...ann.pathVariables.map(name => ({
-                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                  arg: op.args.find(arg => arg.name === name)!,
-                  location: "path",
-                  name,
-                })),
-                ...ann.queryVariables.map(name => ({
-                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                  arg: op.args.find(arg => arg.name === name)!,
-                  location: "query",
-                  name,
-                })),
-                ...[...ann.headers.entries()].map(([header, name]) => ({
-                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                  arg: op.args.find(arg => arg.name === name)!,
-                  location: "header",
-                  name: header,
-                })),
-              ].map(({ name, location, arg }) => ({
-                description:
-                  arg.annotations
-                    .filter(x => x instanceof DescriptionAnnotation)
-                    .map(x => (x as DescriptionAnnotation).text)
-                    .join(" ") || undefined,
-                in: location,
-                name,
-                required: !(arg.type instanceof OptionalType),
-                schema: typeToSchema(definitions, arg.type),
-              })),
-              requestBody: ann.bodyVariable
-                ? {
-                    content: {
-                      ...(() => {
-                        const bodyType = op.args.find(arg => arg.name === ann.bodyVariable)?.type;
-
-                        return bodyType instanceof BoolPrimitiveType ||
-                          bodyType instanceof IntPrimitiveType ||
-                          bodyType instanceof UIntPrimitiveType ||
-                          bodyType instanceof FloatPrimitiveType ||
-                          bodyType instanceof StringPrimitiveType ||
-                          bodyType instanceof DatePrimitiveType ||
-                          bodyType instanceof DateTimePrimitiveType ||
-                          bodyType instanceof MoneyPrimitiveType ||
-                          bodyType instanceof CpfPrimitiveType ||
-                          bodyType instanceof CnpjPrimitiveType ||
-                          bodyType instanceof EmailPrimitiveType ||
-                          bodyType instanceof HtmlPrimitiveType ||
-                          bodyType instanceof UuidPrimitiveType ||
-                          bodyType instanceof HexPrimitiveType ||
-                          bodyType instanceof BytesPrimitiveType ||
-                          bodyType instanceof Base64PrimitiveType
-                          ? {
-                              [bodyType instanceof HtmlPrimitiveType ? "text/html" : "text/plain"]: {
-                                schema: typeToSchema(definitions, bodyType),
-                              },
-                            }
-                          : {};
-                      })(),
-                      "application/json": {
-                        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                        schema: typeToSchema(definitions, op.args.find(arg => arg.name === ann.bodyVariable)!.type),
-                      },
-                    },
-                    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                    required: !(op.args.find(arg => arg.name === ann.bodyVariable)!.type instanceof OptionalType),
-                  }
-                : undefined,
-              responses: {
-                ...(op.returnType instanceof OptionalType || op.returnType instanceof VoidPrimitiveType
-                  ? { [ann.method === "GET" ? "404" : "204"]: {} }
-                  : {}),
-                ...(op.returnType instanceof VoidPrimitiveType
-                  ? {}
-                  : {
-                      200: {
-                        description: "",
-                        content: {
-                          ...(() => {
-                            return op.returnType instanceof BoolPrimitiveType ||
-                              op.returnType instanceof IntPrimitiveType ||
-                              op.returnType instanceof UIntPrimitiveType ||
-                              op.returnType instanceof FloatPrimitiveType ||
-                              op.returnType instanceof StringPrimitiveType ||
-                              op.returnType instanceof DatePrimitiveType ||
-                              op.returnType instanceof DateTimePrimitiveType ||
-                              op.returnType instanceof MoneyPrimitiveType ||
-                              op.returnType instanceof CpfPrimitiveType ||
-                              op.returnType instanceof CnpjPrimitiveType ||
-                              op.returnType instanceof EmailPrimitiveType ||
-                              op.returnType instanceof UuidPrimitiveType ||
-                              op.returnType instanceof HexPrimitiveType ||
-                              op.returnType instanceof BytesPrimitiveType ||
-                              op.returnType instanceof Base64PrimitiveType
-                              ? {
-                                  "text/plain": {
-                                    schema: typeToSchema(definitions, op.returnType),
-                                  },
-                                }
-                              : {};
-                          })(),
-                          "application/json": {
-                            schema: typeToSchema(definitions, op.returnType),
-                          },
-                        },
-                      },
-                    }),
-                ...errorResponses,
-              },
-              summary:
-                op.annotations
-                  .filter(x => x instanceof DescriptionAnnotation)
-                  .map(x => (x as DescriptionAnnotation).text)
-                  .join(" ") || undefined,
-              tags: ["REST Endpoints"],
-            };
-          }
-        }
-      }
-
-      res.write(
-        JSON.stringify({
-          openapi: "3.0.0",
-          info: {
-            title: "",
-            version: "",
-          },
-          paths,
-          definitions,
-        }),
-      );
+      res.write(JSON.stringify(getSwaggerJson(server.apiConfig)));
     } catch (error) {
       console.error(error);
       res.statusCode = 500;
