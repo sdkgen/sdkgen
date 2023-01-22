@@ -415,8 +415,8 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
                 window.onload = function() {
                     window.ui = SwaggerUIBundle({
                         spec: {
-                          ...${JSON.stringify(getSwaggerJson(server.apiConfig))}
-                          servers: { url: location.origin + location.pathname.replace(/\/swagger$/, "") }
+                          ...${JSON.stringify(getSwaggerJson(server.apiConfig))},
+                          servers: { url: location.origin + location.pathname.replace(/\\/swagger$/, "") }
                         },
                         dom_id: '#swagger-ui',
                         deepLinking: true,
