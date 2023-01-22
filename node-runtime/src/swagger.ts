@@ -205,12 +205,12 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
 
             <body>
                 <div id="swagger-ui"></div>
-                <script src="/swagger/swagger-ui-bundle.js"> </script>
-                <script src="/swagger/swagger-ui-standalone-preset.js"> </script>
+                <script src="swagger-ui-bundle.js"> </script>
+                <script src="swagger-ui-standalone-preset.js"> </script>
                 <script>
                 window.onload = function() {
                     window.ui = SwaggerUIBundle({
-                        url: location.origin + "/swagger.json",
+                        url: location.origin + location.pathname + ".json",
                         dom_id: '#swagger-ui',
                         deepLinking: true,
                         presets: [
