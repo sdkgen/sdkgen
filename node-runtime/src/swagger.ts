@@ -172,6 +172,7 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
       return;
     }
 
+    res.setHeader("content-type", "text/html");
     res.write(`
             <!DOCTYPE html>
             <html lang="en">
@@ -205,8 +206,8 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
 
             <body>
                 <div id="swagger-ui"></div>
-                <script src="swagger-ui-bundle.js"> </script>
-                <script src="swagger-ui-standalone-preset.js"> </script>
+                <script src="swagger/swagger-ui-bundle.js"> </script>
+                <script src="swagger/swagger-ui-standalone-preset.js"> </script>
                 <script>
                 window.onload = function() {
                     window.ui = SwaggerUIBundle({
