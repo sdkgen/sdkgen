@@ -35,7 +35,7 @@ open class SdkgenHttpClient(
     private val httpNetworkInterceptor: Interceptor? = null
 ) {
 
-    val extras = mutableMapOf<String, Any>()
+    val extra = mutableMapOf<String, Any>()
 
     class ByteArrayDeserializer : JsonDeserializer<ByteArray> {
         @Throws(JsonParseException::class)
@@ -265,7 +265,7 @@ open class SdkgenHttpClient(
                 addProperty("name", functionName)
                 add("args", bodyArgs ?: JsonObject())
                 add("deviceInfo", makeDeviceObj())
-                add("extras",  gson.toJsonTree(extras).getAsJsonObject())
+                add("extra",  gson.toJsonTree(extra).getAsJsonObject())
             }
 
             val request = Request.Builder()
