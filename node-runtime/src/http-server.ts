@@ -2,6 +2,7 @@ import { randomBytes } from "crypto";
 import { createReadStream, createWriteStream, unlink } from "fs";
 import type { IncomingMessage, Server, ServerResponse } from "http";
 import { createServer } from "http";
+import type { AddressInfo } from "net";
 import { hostname } from "os";
 import { parse as parseQuerystring } from "querystring";
 import { parse as parseUrl } from "url";
@@ -13,6 +14,7 @@ import { generateFSharpServerSource } from "@sdkgen/fsharp-generator";
 import { generateAndroidClientSource } from "@sdkgen/kotlin-generator";
 import type { AstRoot } from "@sdkgen/parser";
 import {
+  StatusCodeAnnotation,
   DecimalPrimitiveType,
   Base64PrimitiveType,
   BigIntPrimitiveType,
@@ -166,32 +168,32 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
   async listen(port = 8000): Promise<void> {
     return new Promise(resolve => {
       this.httpServer.listen(port, () => {
-        const addr = this.httpServer.address();
-        let addrString: string | undefined;
+        const addr = this.httpServer.address() as AddressInfo;
+        let urlHost: string;
 
-        if (addr === null) {
-          addrString = undefined;
-        } else if (typeof addr === "string") {
-          addrString = addr;
+        if (addr.address === "::") {
+          urlHost = `localhost:${addr.port}`;
+        } else if (addr.family === "ipv6") {
+          urlHost = `[${addr.address}]:${addr.port}`;
         } else {
-          addrString = `${addr.address}:${addr.port}`;
+          urlHost = `${addr.address}:${addr.port}`;
         }
 
-        if (!addrString) {
-          console.log(`Listening.`);
-          resolve();
-          return;
+        if (addr.address === "::" || addr.address === "0.0.0.0") {
+          console.log(`\nListening on port ${addr.port}`);
+        } else {
+          console.log(`\nListening on port ${addr.port} (${addr.address})`);
         }
-
-        console.log(`Listening on ${addrString}`);
 
         if (this.introspection) {
-          console.log(`Access the sdkgen Playground at http://${addrString}/playground`);
+          console.log(`Playground: http://${urlHost}/playground`);
         }
 
         if (this.hasSwagger) {
-          console.log(`Access the REST API Swagger at http://${addrString}/swagger`);
+          console.log(`Swagger UI: http://${urlHost}/swagger`);
         }
+
+        console.log("");
 
         resolve();
       });
@@ -533,7 +535,10 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
                   const error = this.makeResponseError(reply.error);
 
                   if (!ctx?.response.statusCode) {
-                    res.statusCode = error.type === "Fatal" ? 500 : 400;
+                    const errorNode = this.apiConfig.ast.errors.find(node => node.name === error.type);
+                    const statusAnnotation = errorNode?.annotations.find(x => x instanceof StatusCodeAnnotation) as StatusCodeAnnotation | undefined;
+
+                    res.statusCode = statusAnnotation ? statusAnnotation.statusCode : error.type === "Fatal" ? 500 : 400;
                   }
 
                   res.setHeader("content-type", "application/json");

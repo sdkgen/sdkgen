@@ -73,6 +73,15 @@ fn getUser(): User
 fn getUserV2(): UserV2
 ```
 
+## `@statusCode`
+
+Pode ser adicionado na declaração de erros para designar o código de status que será utilizado no retorno do mesmo. Afeta apenas endpoints em modo REST.
+
+```
+@statusCode 404
+error NotFound
+```
+
 ## `@rest`
 
 Ver [REST](./rest.md).

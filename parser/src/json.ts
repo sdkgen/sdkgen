@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
 import type { Annotation, Type } from "./ast";
 import {
+  StatusCodeAnnotation,
   ArrayType,
   AstRoot,
   DescriptionAnnotation,
@@ -49,6 +50,10 @@ type AnnotationJson =
       value: null;
     }
   | {
+      type: "statusCode";
+      value: number;
+    }
+  | {
       type: "rest";
       value: {
         bodyVariable: string | null;
@@ -79,6 +84,8 @@ function annotationToJson(ann: Annotation): AnnotationJson {
     };
   } else if (ann instanceof HiddenAnnotation) {
     return { type: "hidden", value: null };
+  } else if (ann instanceof StatusCodeAnnotation) {
+    return { type: "statusCode", value: ann.statusCode };
   }
 
   throw new Error(`BUG: annotationToJson with ${ann.constructor.name}`);
@@ -98,6 +105,8 @@ function annotationFromJson(json: AnnotationJson | DeepReadonly<AnnotationJson>)
 
     case "hidden":
       return new HiddenAnnotation();
+    case "statusCode":
+      return new StatusCodeAnnotation(json.value);
 
     default:
       throw new Error(`BUG: annotationFromJson with ${(json as { type: string }).type}`);
@@ -203,6 +212,15 @@ export function astToJson(ast: AstRoot): AstJson {
     error.dataType instanceof VoidPrimitiveType ? error.name : ([error.name, error.dataType.name] as [string, string]),
   );
 
+  for (const error of ast.errors) {
+    for (const ann of error.annotations) {
+      const target = `error.${error.name}`;
+
+      annotations[target] ??= [];
+      annotations[target].push(annotationToJson(ann));
+    }
+  }
+
   return {
     annotations,
     errors,
@@ -302,13 +320,23 @@ export function jsonToAst(json: DeepReadonly<AstJson>): AstRoot {
   }
 
   const errors = json.errors.map(error => {
+    let errorNode;
+
     if (Array.isArray(error)) {
       const [name, type] = error as [string, string];
 
-      return new ErrorNode(name, processType(type));
+      errorNode = new ErrorNode(name, processType(type));
+    } else {
+      errorNode = new ErrorNode(error as string, new VoidPrimitiveType());
     }
 
-    return new ErrorNode(error as string, new VoidPrimitiveType());
+    const target = `error.${errorNode.name}`;
+
+    for (const annotationJson of json.annotations[target] ?? []) {
+      errorNode.annotations.push(annotationFromJson(annotationJson));
+    }
+
+    return errorNode;
   });
 
   const ast = new AstRoot(typeDefinition, operations, errors);

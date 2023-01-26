@@ -1,6 +1,6 @@
+import { SemanticError, Visitor } from "./visitor";
 import type { AstNode } from "../ast";
 import { TypeReference, FunctionOperation, Field } from "../ast";
-import { SemanticError, Visitor } from "./visitor";
 
 export class CheckDontReturnSecretVisitor extends Visitor {
   isInReturn = false;

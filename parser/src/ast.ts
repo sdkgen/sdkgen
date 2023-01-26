@@ -30,6 +30,8 @@ export abstract class Type extends AstNode {
 }
 
 export class ErrorNode extends AstNode {
+  annotations: Annotation[] = [];
+
   constructor(public name: string, public dataType: Type) {
     super();
   }
@@ -68,6 +70,12 @@ export class RestAnnotation extends Annotation {
 }
 
 export class HiddenAnnotation extends Annotation {}
+
+export class StatusCodeAnnotation extends Annotation {
+  constructor(public statusCode: number) {
+    super();
+  }
+}
 
 export abstract class PrimitiveType extends Type {
   toJSON() {

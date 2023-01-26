@@ -66,7 +66,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        flutter-version: [3.0.x]
+        flutter-version: [3.3.x]
         flutter-channel: [stable]
     steps:
       - uses: actions/checkout@v3

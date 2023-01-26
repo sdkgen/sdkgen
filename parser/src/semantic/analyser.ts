@@ -1,5 +1,3 @@
-import type { AstRoot } from "../ast";
-import { ErrorNode, VoidPrimitiveType } from "../ast";
 import { CheckMultipleDeclarationVisitor } from "./01_check_multiple_declaration";
 import { GiveStructAndEnumNamesTransformer } from "./02_give_struct_and_enum_names";
 import { MatchTypeDefinitionsVisitor } from "./03_match_type_definitions";
@@ -9,6 +7,9 @@ import { CheckEmptyStructOrEnumVisitor } from "./06_check_empty_struct_or_enum";
 import { ValidateRecursiveTypes } from "./07_validate_recursive_types";
 import { CollectStructAndEnumTypesVisitor } from "./08_collect_struct_and_enum_types";
 import { ValidateAnnotationsVisitor } from "./09_validate_annotations";
+import { CheckDuplicatedMembersOnEnumVisitor } from "./10_check_duplicate_members_on_enum";
+import type { AstRoot } from "../ast";
+import { ErrorNode, VoidPrimitiveType } from "../ast";
 
 export function analyse(root: AstRoot): void {
   if (!root.errors.some(error => error.name === "Fatal")) {
@@ -24,4 +25,5 @@ export function analyse(root: AstRoot): void {
   new ValidateRecursiveTypes(root).process();
   new CollectStructAndEnumTypesVisitor(root).process();
   new ValidateAnnotationsVisitor(root).process();
+  new CheckDuplicatedMembersOnEnumVisitor(root).process();
 }
