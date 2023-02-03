@@ -16,7 +16,7 @@ type JsonType = number | string | boolean | null | JsonType[] | { [Key in string
 
 type AnyDecodedType = number | string | boolean | null | bigint | Decimal | Buffer | Date | AnyDecodedType[] | { [Key in string]: AnyDecodedType };
 
-type DecodedType<Type, Table extends object> = TypeDescription extends Type
+export type DecodedType<Type, Table extends object = {}> = TypeDescription extends Type
   ? AnyDecodedType
   : Type extends "string" | "email" | "html" | "xml" | "url" | "hex" | "uuid" | "base64" | "cpf" | "cnpj"
   ? string
@@ -68,7 +68,7 @@ type DecodeTaggedEnumValueType<
   ? ExpandRecursively<{ tag: Tag } & DecodedType<Struct, Table>>
   : never;
 
-type EncodedType<Type, Table extends object> = TypeDescription extends Type
+export type EncodedType<Type, Table extends object = {}> = TypeDescription extends Type
   ? JsonType
   : Type extends "string" | "email" | "html" | "xml" | "url" | "hex" | "uuid" | "base64" | "cpf" | "cnpj"
   ? string
