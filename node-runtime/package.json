@@ -37,7 +37,8 @@
     "spec.ts": "^1.1.3",
     "ts-jest": "^29.0.0",
     "type-fest": "^2.0.0",
-    "typescript": "^4.3.5"
+    "typescript": "^4.3.5",
+    "yaml": "^1.10.2"
   },
   "jest": {
     "transform": {

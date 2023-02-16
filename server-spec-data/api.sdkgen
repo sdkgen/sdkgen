@@ -1,0 +1,10 @@
+@rest POST /add?{first}&{second}
+fn add(first: int, second: int): int
+
+@rest GET /concat1/{first}/{second}
+@rest GET /concat2?{first}&{second}
+@rest GET /concat3?{first} [header x-second: {second}]
+@rest POST /concat4 [body {first}] [header x-second: {second}]
+@rest POST /concat5 [body {second}] [header x-first: {first}]
+@rest POST /concat6?{first}&{second}
+fn concat(first: int, second: string): string
