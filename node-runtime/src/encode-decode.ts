@@ -302,7 +302,7 @@ export function encode<Table extends DeepReadonly<TypeTable>, Type extends DeepR
 
     const dateValue = value instanceof Date ? value : new Date(value);
 
-    return `${dateValue.getFullYear().toString().padStart(4, "0")}-${dateValue.getMonth().toString().padStart(2, "0")}-${dateValue
+    return `${dateValue.getFullYear().toString().padStart(4, "0")}-${(dateValue.getMonth() + 1).toString().padStart(2, "0")}-${dateValue
       .getDate()
       .toString()
       .padStart(2, "0")}` as EncodedType<Type, Table>;
