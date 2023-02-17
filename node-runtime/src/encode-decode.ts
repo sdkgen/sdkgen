@@ -300,7 +300,12 @@ export function encode<Table extends DeepReadonly<TypeTable>, Type extends DeepR
       throw new ParseError(path, type, value);
     }
 
-    return (typeof value === "string" ? new Date(value).toISOString().split("T")[0] : value.toISOString().split("T")[0]) as EncodedType<Type, Table>;
+    const dateValue = value instanceof Date ? value : new Date(value);
+
+    return `${dateValue.getFullYear().toString().padStart(4, "0")}-${(dateValue.getMonth() + 1).toString().padStart(2, "0")}-${dateValue
+      .getDate()
+      .toString()
+      .padStart(2, "0")}` as EncodedType<Type, Table>;
   } else if (type === "datetime") {
     if (
       !(value instanceof Date && !isNaN(value.getTime())) &&
