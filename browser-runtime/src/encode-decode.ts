@@ -190,7 +190,12 @@ export function encode(typeTable: DeepReadonly<TypeTable>, path: string, type: D
       throw new ParseError(path, type, value);
     }
 
-    return typeof value === "string" ? new Date(value).toISOString().split("T")[0] : value.toISOString().split("T")[0];
+    const dateValue = value instanceof Date ? value : new Date(value);
+
+    return `${dateValue.getFullYear().toString().padStart(4, "0")}-${(dateValue.getMonth() + 1).toString().padStart(2, "0")}-${dateValue
+      .getDate()
+      .toString()
+      .padStart(2, "0")}`;
   } else if (type === "datetime") {
     if (
       !(value instanceof Date && !isNaN(value.getTime())) &&

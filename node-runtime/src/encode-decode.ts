@@ -16,7 +16,7 @@ type JsonType = number | string | boolean | null | JsonType[] | { [Key in string
 
 type AnyDecodedType = number | string | boolean | null | bigint | Decimal | Buffer | Date | AnyDecodedType[] | { [Key in string]: AnyDecodedType };
 
-type DecodedType<Type, Table extends object> = TypeDescription extends Type
+export type DecodedType<Type, Table extends object = {}> = TypeDescription extends Type
   ? AnyDecodedType
   : Type extends "string" | "email" | "html" | "xml" | "url" | "hex" | "uuid" | "base64" | "cpf" | "cnpj"
   ? string
@@ -68,7 +68,7 @@ type DecodeTaggedEnumValueType<
   ? ExpandRecursively<{ tag: Tag } & DecodedType<Struct, Table>>
   : never;
 
-type EncodedType<Type, Table extends object> = TypeDescription extends Type
+export type EncodedType<Type, Table extends object = {}> = TypeDescription extends Type
   ? JsonType
   : Type extends "string" | "email" | "html" | "xml" | "url" | "hex" | "uuid" | "base64" | "cpf" | "cnpj"
   ? string
@@ -300,7 +300,12 @@ export function encode<Table extends DeepReadonly<TypeTable>, Type extends DeepR
       throw new ParseError(path, type, value);
     }
 
-    return (typeof value === "string" ? new Date(value).toISOString().split("T")[0] : value.toISOString().split("T")[0]) as EncodedType<Type, Table>;
+    const dateValue = value instanceof Date ? value : new Date(value);
+
+    return `${dateValue.getFullYear().toString().padStart(4, "0")}-${(dateValue.getMonth() + 1).toString().padStart(2, "0")}-${dateValue
+      .getDate()
+      .toString()
+      .padStart(2, "0")}` as EncodedType<Type, Table>;
   } else if (type === "datetime") {
     if (
       !(value instanceof Date && !isNaN(value.getTime())) &&

@@ -36,13 +36,16 @@
     "json-schema-typed": "^8.0.0",
     "spec.ts": "^1.1.3",
     "ts-jest": "^29.0.0",
-    "type-fest": "^2.0.0",
+    "type-fest": "^3.0.0",
     "typescript": "^4.3.5"
   },
   "jest": {
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
+    "transformIgnorePatterns": [
+      "<rootDir>/node_modules/(?!@sdkgen)"
+    ],
     "testRegex": "spec/.*\\.spec\\.ts$",
     "moduleFileExtensions": [
       "ts",

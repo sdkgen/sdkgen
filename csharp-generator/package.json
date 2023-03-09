@@ -34,6 +34,9 @@
     "transform": {
       "^.+\\.tsx?$": "ts-jest"
     },
+    "transformIgnorePatterns": [
+      "<rootDir>/node_modules/(?!@sdkgen)"
+    ],
     "testRegex": "spec/.*\\.spec\\.ts$",
     "moduleFileExtensions": [
       "ts",
