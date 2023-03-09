@@ -30,7 +30,7 @@ open class SdkgenHttpClient(
     private val baseUrl: String,
     private val applicationContext: Context,
     private val defaultTimeoutMillis: Long = 10000L,
-    private val fingerprint: String? = null,
+    var fingerprint: String? = null,
     private val httpInterceptor: Interceptor? = null,
     private val httpNetworkInterceptor: Interceptor? = null
 ) {
