@@ -7,7 +7,6 @@ export function generateDartClientSource(ast: AstRoot): string {
   let code = "";
 
   code += `// ignore_for_file: constant_identifier_names
-import 'dart:ui';
 `;
 
   if (hasType(ast, BytesPrimitiveType)) {
