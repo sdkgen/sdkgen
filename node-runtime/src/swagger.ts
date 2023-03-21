@@ -159,14 +159,14 @@ function typeToSchema(definitions: Record<string, JSONSchema | undefined>, type:
       definitions[type.name] = typeToSchema(definitions, type.type);
     }
 
-    return { $ref: `#/definitions/${type.name}` };
+    return { $ref: `#/components/schemas/${type.name}` };
   }
 
   throw new Error(`Unhandled type ${type.constructor.name}`);
 }
 
 function getSwaggerJson<ExtraContextT>(apiConfig: BaseApiConfig<ExtraContextT>) {
-  const definitions: Record<string, JSONSchema | undefined> = {};
+  const schemas: Record<string, JSONSchema | undefined> = {};
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const paths: Record<string, any> = {};
 
@@ -213,7 +213,7 @@ function getSwaggerJson<ExtraContextT>(apiConfig: BaseApiConfig<ExtraContextT>) 
                     ...(error.dataType instanceof VoidPrimitiveType
                       ? {}
                       : {
-                          data: typeToSchema(definitions, error.dataType),
+                          data: typeToSchema(schemas, error.dataType),
                         }),
                   },
                   required: ["type", "message", ...(error.dataType instanceof VoidPrimitiveType ? [] : ["data"])],
@@ -264,7 +264,7 @@ function getSwaggerJson<ExtraContextT>(apiConfig: BaseApiConfig<ExtraContextT>) 
             in: location,
             name,
             required: !(arg.type instanceof OptionalType),
-            schema: typeToSchema(definitions, arg.type),
+            schema: typeToSchema(schemas, arg.type),
           })),
           requestBody: ann.bodyVariable
             ? {
@@ -290,14 +290,14 @@ function getSwaggerJson<ExtraContextT>(apiConfig: BaseApiConfig<ExtraContextT>) 
                       bodyType instanceof Base64PrimitiveType
                       ? {
                           [bodyType instanceof HtmlPrimitiveType ? "text/html" : "text/plain"]: {
-                            schema: typeToSchema(definitions, bodyType),
+                            schema: typeToSchema(schemas, bodyType),
                           },
                         }
                       : {};
                   })(),
                   "application/json": {
                     // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-                    schema: typeToSchema(definitions, op.args.find(arg => arg.name === ann.bodyVariable)!.type),
+                    schema: typeToSchema(schemas, op.args.find(arg => arg.name === ann.bodyVariable)!.type),
                   },
                 },
                 // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
@@ -332,13 +332,13 @@ function getSwaggerJson<ExtraContextT>(apiConfig: BaseApiConfig<ExtraContextT>) 
                           op.returnType instanceof Base64PrimitiveType
                           ? {
                               "text/plain": {
-                                schema: typeToSchema(definitions, op.returnType),
+                                schema: typeToSchema(schemas, op.returnType),
                               },
                             }
                           : {};
                       })(),
                       "application/json": {
-                        schema: typeToSchema(definitions, op.returnType),
+                        schema: typeToSchema(schemas, op.returnType),
                       },
                     },
                   },
@@ -356,6 +356,19 @@ function getSwaggerJson<ExtraContextT>(apiConfig: BaseApiConfig<ExtraContextT>) 
     }
   }
 
+  const securitySchemes = {
+    bearerAuth: {
+      type: "http",
+      scheme: "bearer",
+    },
+  };
+
+  const security = [
+    {
+      bearerAuth: [],
+    },
+  ];
+
   return {
     openapi: "3.0.0",
     info: {
@@ -363,7 +376,11 @@ function getSwaggerJson<ExtraContextT>(apiConfig: BaseApiConfig<ExtraContextT>) 
       version: "",
     },
     paths,
-    definitions,
+    components: {
+      schemas,
+      securitySchemes,
+    },
+    security,
   };
 }
 
