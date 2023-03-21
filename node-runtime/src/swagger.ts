@@ -359,14 +359,14 @@ function getSwaggerJson<ExtraContextT>(apiConfig: BaseApiConfig<ExtraContextT>) 
   const securitySchemes = {
     bearerAuth: {
       type: "http",
-      scheme: "bearer"
-    }
+      scheme: "bearer",
+    },
   };
 
   const security = [
     {
-      bearerAuth: []
-    }
+      bearerAuth: [],
+    },
   ];
 
   return {
@@ -378,9 +378,9 @@ function getSwaggerJson<ExtraContextT>(apiConfig: BaseApiConfig<ExtraContextT>) 
     paths,
     components: {
       schemas,
-      securitySchemes
+      securitySchemes,
     },
-    security
+    security,
   };
 }
 
