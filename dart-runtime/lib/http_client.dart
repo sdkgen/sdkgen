@@ -14,12 +14,18 @@ import 'deviceinfo_generic.dart'
 class SdkgenError implements Exception {
   String message;
   SdkgenError(this.message);
+
+  @override
+  String toString() => '$runtimeType: $message';
 }
 
 class SdkgenErrorWithData<T> implements Exception {
   String message;
   T data;
   SdkgenErrorWithData(this.message, this.data);
+
+  @override
+  String toString() => '$runtimeType: $message';
 }
 
 class SdkgenInterceptors {
