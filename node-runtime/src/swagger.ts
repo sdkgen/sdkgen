@@ -350,7 +350,7 @@ function getSwaggerJson<ExtraContextT>(apiConfig: BaseApiConfig<ExtraContextT>) 
               .filter(x => x instanceof DescriptionAnnotation)
               .map(x => (x as DescriptionAnnotation).text)
               .join(" ") || undefined,
-          tags: ["REST Endpoints"],
+          tags: [ann.path.split("/")[1]],
         };
       }
     }
@@ -418,7 +418,7 @@ export function setupSwagger<ExtraContextT>(server: SdkgenHttpServer<ExtraContex
                         background: #fafafa;
                     }
 
-                    .swagger-ui .scheme-container, .swagger-ui .topbar {
+                    .topbar {
                         display: none !important;
                     }
                 </style>
