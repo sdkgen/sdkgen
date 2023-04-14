@@ -227,10 +227,6 @@ function getSwaggerJson<ExtraContextT>(apiConfig: BaseApiConfig<ExtraContextT>) 
       ]),
     );
 
-    const tags = Array.from(
-      new Set(op.annotations.filter((ann): ann is RestAnnotation => ann instanceof RestAnnotation).map(ann => ann.path.split("/")[1])),
-    );
-
     for (const ann of op.annotations) {
       if (ann instanceof RestAnnotation) {
         if (!paths[ann.path]) {
@@ -354,7 +350,7 @@ function getSwaggerJson<ExtraContextT>(apiConfig: BaseApiConfig<ExtraContextT>) 
               .filter(x => x instanceof DescriptionAnnotation)
               .map(x => (x as DescriptionAnnotation).text)
               .join(" ") || undefined,
-          tags: [tags.find(tag => ann.path.startsWith(`/${tag}`))],
+          tags: [ann.path.split("/")[1]],
         };
       }
     }
