@@ -24,6 +24,10 @@ type AnnotationJson =
       value: null;
     }
   | {
+      type: "statusCode";
+      value: number;
+    }
+  | {
       type: "rest";
       value: {
         bodyVariable: string | null;
