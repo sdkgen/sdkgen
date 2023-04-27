@@ -26,9 +26,8 @@ export class SimpleCallComponent implements OnInit, OnDestroy {
 
   client?: SdkgenHttpClient;
   code = "";
-  extras = `{
-  "key": "value"
-}`;
+  initialExtras = `{\n  "key": "value"\n}\n`;
+  extras = this.initialExtras;
   response?: any;
 
   selected = new FormControl(0);
