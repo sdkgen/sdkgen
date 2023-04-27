@@ -11,20 +11,17 @@
             <ngx-monaco-editor [options]="editorOptions" [(ngModel)]="code"></ngx-monaco-editor>
           </mat-tab>
 
+          <mat-tab label="Extras">
+            <ngx-monaco-editor [options]="editorOptions" [(ngModel)]="extras"></ngx-monaco-editor>
+          </mat-tab>
+
           <mat-tab label="Resposta" [disabled]="!response">
             <ngx-json-viewer [json]="response"></ngx-json-viewer>
           </mat-tab>
         </mat-tab-group>
       </as-split-area>
-      <as-split-area>
-        <mat-tab-group animationDuration="0ms" [selectedIndex]="selected.value"
-          (selectedIndexChange)="selected.setValue($event)">
-          <mat-tab label="Extras">
-            <ngx-monaco-editor [options]="editorOptions" [(ngModel)]="extras"></ngx-monaco-editor>
-          </mat-tab>
-        </mat-tab-group>
 
-      </as-split-area>
+
     </as-split>
   </as-split-area>
 
