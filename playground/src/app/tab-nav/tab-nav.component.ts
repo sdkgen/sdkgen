@@ -48,7 +48,7 @@ export class TabNavComponent implements OnInit {
 
       console.debug("astUrl", astUrl);
 
-      const result = await fetch(astUrl).then(resp => (resp.ok ? resp.json() : resp));
+      const result = await fetch(astUrl).then(async resp => (resp.ok ? resp.json() : resp));
 
       if (result instanceof Response) {
         if (result instanceof Error) {
