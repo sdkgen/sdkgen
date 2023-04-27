@@ -26,6 +26,8 @@ export class SimpleCallComponent implements OnInit, OnDestroy {
 
   client?: SdkgenHttpClient;
   code = "";
+  initialExtras = `{\n  "key": "value"\n}\n`;
+  extras = this.initialExtras;
   response?: any;
 
   selected = new FormControl(0);
@@ -61,6 +63,15 @@ export class SimpleCallComponent implements OnInit, OnDestroy {
     );
 
     try {
+      if (this.extras && this.extras !== this.initialExtras) {
+        const extrasJson = JSON.parse(this.extras);
+        const extraKeys = Object.keys(extrasJson);
+
+        for (const key of extraKeys) {
+          this.client?.extra.set(key, extrasJson[key]);
+        }
+      }
+
       this.response = { result: await exec };
     } catch (e: any) {
       this.consoleItems.push({ type: ConsoleItemType.ERROR, message: e.toString() });
