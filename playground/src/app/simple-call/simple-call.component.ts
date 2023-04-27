@@ -58,10 +58,6 @@ export class SimpleCallComponent implements OnInit, OnDestroy {
       eval(wrapper);
     }
 
-    const exec = (this.client as unknown as Record<string, (data: any) => Promise<any>>)[this.fn](
-      JSON.parse(this.code),
-    );
-
     try {
       if (this.extras && this.extras !== this.initialExtras) {
         const extrasJson = JSON.parse(this.extras);
@@ -72,6 +68,10 @@ export class SimpleCallComponent implements OnInit, OnDestroy {
         }
       }
 
+      const exec = (this.client as unknown as Record<string, (data: any) => Promise<any>>)[this.fn](
+        JSON.parse(this.code),
+      );
+  
       this.response = { result: await exec };
     } catch (e: any) {
       this.consoleItems.push({ type: ConsoleItemType.ERROR, message: e.toString() });
@@ -85,7 +85,7 @@ export class SimpleCallComponent implements OnInit, OnDestroy {
       };
     } finally {
       eval(unwrap);
-      this.selected.setValue(1);
+      this.selected.setValue(2);
     }
   }
 
