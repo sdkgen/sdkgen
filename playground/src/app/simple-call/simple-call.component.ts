@@ -63,13 +63,7 @@ export class SimpleCallComponent implements OnInit, OnDestroy {
     );
 
     try {
-      if (
-        this.extras !==
-          `{
-        "key": "value"
-      }` &&
-        this.extras
-      ) {
+      if (this.extras && this.extras !== this.initialExtras) {
         const extrasJson = JSON.parse(this.extras);
         const extraKeys = Object.keys(extrasJson);
 
