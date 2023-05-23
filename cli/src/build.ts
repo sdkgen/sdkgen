@@ -26,7 +26,7 @@ const optionDefinitions = [
   { alias: "r", description: "Clones from a git repository", name: "repository" },
 ];
 
-function buildOutput(filePath: string[], options: any) {
+function buildOutput(filePath: string[], options: { target: string; output: string }) {
   const ast = new Parser(filePath).parse();
 
   for (const warning of ast.warnings) {
@@ -155,25 +155,29 @@ export function buildCmd(argv: string[]): void {
     process.exit(1);
   }
 
+  const buildOutputOptions = { output: options.output, target: options.target };
+
   if (!options.repository) {
-    buildOutput(options.sources, options);
+    buildOutput(options.sources, buildOutputOptions);
     process.exit(0);
   }
 
+  async function extractFile(file: string) {
+    return extract(file, path.join(__dirname, ".ignore"))
+      .then(extractedPath => {
+        const sources = options.sources!.map(source => path.join(extractedPath, source));
+
+        buildOutput(sources, buildOutputOptions);
+
+        process.exit(0);
+      })
+      .catch(error => {
+        console.error("failed to extract files", error);
+      });
+  }
+
   fetch(options.repository)
-    .then(file => {
-      extract(file, path.join(__dirname, ".ignore"))
-        .then(extractedPath => {
-          const sources = options.sources!.map(source => path.join(extractedPath, source));
-
-          buildOutput(sources, options);
-
-          process.exit(0);
-        })
-        .catch(error => {
-          console.error("failed to extract files", error);
-        });
-    })
+    .then(extractFile)
     .catch(error => {
       console.error("Failed to download repository", error);
       process.exit(1);
