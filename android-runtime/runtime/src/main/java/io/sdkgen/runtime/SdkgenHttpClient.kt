@@ -88,7 +88,8 @@ open class SdkgenHttpClient(
 
     class DateAdapter: TypeAdapter<Calendar>() {
         companion object {
-            val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US).apply {
+            private const val dateFormat = "yyyy-MM-dd"
+            val sdf = SimpleDateFormat("$dateFormat'T'HH:mm:ss.SSS", Locale.US).apply {
                 this.timeZone = TimeZone.getTimeZone("UTC")
             }
         }
@@ -100,14 +101,14 @@ open class SdkgenHttpClient(
                     return
                 }
 
-                val dateTimeString = sdf.format(value.time)
+                val dateTimeString = sdf.format(value.time).substring(0, dateFormat.length)
                 it.value(dateTimeString)
             }
         }
 
         override fun read(reader: JsonReader?): Calendar? {
             reader?.let {
-                val dateTimeString = it.nextString()
+                val dateTimeString = it.nextString().substring(0, dateFormat.length) + "T12:00:00.000z"
 
                 try {
                     return Calendar.getInstance().apply { time = sdf.parse(dateTimeString)!! }
