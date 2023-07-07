@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|  
   spec.name                    = 'SdkgenRuntime'
-  spec.version                 = '0.0.0'
+  spec.version                 = '0.4.0'
   spec.summary                 = 'sdkgen is a tool to help design, implement and maintain good APIs with minimal effor.'
 
   spec.author                  = 'Cubos'

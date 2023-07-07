@@ -4,6 +4,7 @@ import Alamofire
 open class SdkgenHttpClient {
     
     public var baseUrl: String
+    public var extraJson: [String : Any] = [:]
        
     public init(baseUrl: String) {
         self.baseUrl = baseUrl
@@ -17,6 +18,7 @@ open class SdkgenHttpClient {
             "deviceInfo": SdkgenDevice.device(),
             "name": name,
             "args": args,
+            "extra": extraJson
         ]
         
         let url = baseUrl.last != "/" ? baseUrl.appending("/\(name)") : baseUrl.appending(name)

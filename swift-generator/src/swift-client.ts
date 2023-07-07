@@ -29,7 +29,7 @@ export function generateSwiftClientSource(ast: AstRoot, withRxExtension: boolean
 
   code += `class API: SdkgenResponse {
 
-    static var calls: APICallsProtocol = Calls(baseUrl: "")
+    static var calls = Calls(baseUrl: "")
     static var baseUrl: String? {
         didSet {
             self.calls = Calls(baseUrl: baseUrl ?? "")
