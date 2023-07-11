@@ -21,7 +21,7 @@ internal class SdkgenDevice {
         var platform = [String: Any]()
         platform["version"] = UIDevice.current.systemVersion
         platform["brand"] = "Apple"
-        platform["model"] = Device.current.name
+        platform["model"] = Device.current.realDevice
         return platform
     }
     
@@ -37,7 +37,7 @@ internal class SdkgenDevice {
             return localId
         }
         
-        let id = SdkgenHelper.randomBytesHex(len: 8)
+        let id = SdkgenHelper.randomBytesHex(len: 16)
         UserDefaults.standard.set(id, forKey: "device-id")
         UserDefaults.standard.synchronize()
         return id
