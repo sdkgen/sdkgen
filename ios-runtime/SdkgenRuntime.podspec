@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|  
   spec.name                    = 'SdkgenRuntime'
-  spec.version                 = '0.4.0'
+  spec.version                 = '0.5.0-iospreview'
   spec.summary                 = 'sdkgen is a tool to help design, implement and maintain good APIs with minimal effor.'
 
   spec.author                  = 'Cubos'
@@ -16,8 +16,8 @@ Pod::Spec.new do |spec|
   spec.ios.deployment_target   = '12.1'
   spec.swift_version           = ['5.1', '5.2', '5.3']
 
-  spec.dependency 'Alamofire', '~> 5.4'
+  spec.dependency 'Alamofire', '~> 5.4.3'
   spec.dependency 'KeychainSwift'
-  spec.dependency 'DeviceKit', '~> 4.0'
+  spec.dependency 'DeviceKit', '~> 4.9.0'
 
 end 

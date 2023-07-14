@@ -21,7 +21,7 @@ internal class SdkgenDevice {
         var platform = [String: Any]()
         platform["version"] = UIDevice.current.systemVersion
         platform["brand"] = "Apple"
-        platform["model"] = Device.current.realDevice
+        platform["model"] = "\(Device.current.realDevice)"
         return platform
     }
     
