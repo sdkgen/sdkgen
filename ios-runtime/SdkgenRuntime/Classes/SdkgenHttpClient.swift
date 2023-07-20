@@ -10,7 +10,7 @@ open class SdkgenHttpClient {
         self.baseUrl = baseUrl
     }
     
-    public func request<T: Codable>(_ name: String, _ args: [String: Any], _ timeoutSeconds: Double? = nil, completion: @escaping (T) -> Void, onError: @escaping (SdkgenResponse.SdkgenError) -> Void) {
+    public func makeRequest<T: Codable>(_ name: String, _ args: [String: Any], _ timeoutSeconds: Double? = nil, completion: @escaping (T) -> Void, onError: @escaping (SdkgenResponse.SdkgenError) -> Void) {
 
         let body: [String : Any] = [
             "version": 3,
