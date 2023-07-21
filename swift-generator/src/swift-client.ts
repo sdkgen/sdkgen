@@ -93,7 +93,7 @@ export function generateSwiftClientSource(ast: AstRoot, withRxExtension: boolean
       }
 
       impl += `\n\n`;
-      impl += `            request("${op.name}", jsonArgs, timeoutSeconds, completion: { (value: ${
+      impl += `            makeRequest("${op.name}", jsonArgs, timeoutSeconds, completion: { (value: ${
         op.returnType instanceof VoidPrimitiveType ? "API.NoReply" : generateSwiftTypeName(op.returnType)
       }) in\n`;
       impl += `                callback?(API.Result.success(value))\n`;
