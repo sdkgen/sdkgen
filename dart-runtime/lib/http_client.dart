@@ -35,40 +35,57 @@ class SdkgenInterceptors {
 }
 
 class SdkgenHttpClient {
-  Uri baseUrl;
-  Map<String, dynamic> extra = <String, dynamic>{};
-  Map<String, String> headers = <String, String>{
+  final Uri baseUrl;
+  final http.Client _client;
+
+  final Map<String, dynamic> extra = <String, dynamic>{};
+  final Map<String, String> headers = <String, String>{
     'Content-Type': 'application/sdkgen',
   };
-  Map<String, Object> typeTable;
-  Map<String, FunctionDescription> fnTable;
-  Map<String, SdkgenErrorDescription> errTable;
-  String? deviceId;
-  Random random = Random.secure();
+  final Map<String, Object> typeTable;
+  final Map<String, FunctionDescription> fnTable;
+  final Map<String, SdkgenErrorDescription> errTable;
+  final Random random = Random.secure();
   final SdkgenInterceptors interceptors = SdkgenInterceptors();
 
-  SdkgenHttpClient(baseUrl, this.typeTable, this.fnTable, this.errTable)
-      : baseUrl = Uri.parse(baseUrl);
+  String? deviceId;
 
-  String _randomBytesHex(int bytes) {
-    return hex.encode(List<int>.generate(bytes, (i) => random.nextInt(256)));
-  }
+  SdkgenHttpClient(
+    String baseUrl,
+    http.Client? client,
+    this.typeTable,
+    this.fnTable,
+    this.errTable,
+  )   : baseUrl = Uri.parse(baseUrl),
+        _client = client ?? http.Client();
+
+  String _randomBytesHex(int bytes) => hex.encode(List<int>.generate(
+        bytes,
+        (i) => random.nextInt(256),
+        growable: false,
+      ));
 
   dynamic _createError(String type, String message, dynamic data) {
-    var description = errTable[type] ?? errTable['Fatal']!;
-    var decodedData =
-        decode(typeTable, '$type.data', description.dataType, data);
+    final description = errTable[type] ?? errTable['Fatal']!;
+    final decodedData = decode(
+      typeTable,
+      '$type.data',
+      description.dataType,
+      data,
+    );
     return Function.apply(description.create, [message, decodedData]);
   }
 
   Future<String> _deviceId() async {
     if (deviceId == null) {
-      var prefs = await SharedPreferences.getInstance();
+      final prefs = await SharedPreferences.getInstance();
       if (prefs.containsKey('sdkgen_deviceId')) {
         deviceId = prefs.getString('sdkgen_deviceId');
       } else {
         await prefs.setString(
-            'sdkgen_deviceId', deviceId = _randomBytesHex(16));
+          'sdkgen_deviceId',
+          deviceId = _randomBytesHex(16),
+        );
       }
     }
     return deviceId!;
@@ -79,14 +96,20 @@ class SdkgenHttpClient {
     Map<String, Object?> args,
   ) async {
     try {
-      var func = fnTable[functionName]!;
-      var encodedArgs = {};
-      args.forEach((argName, argValue) {
-        encodedArgs[argName] = encode(typeTable, '$functionName.args.$argName',
-            func.args[argName]!, argValue);
-      });
+      final func = fnTable[functionName]!;
+      final encodedArgs = args.map(
+        (argName, argValue) => MapEntry(
+          argName,
+          encode(
+            typeTable,
+            '$functionName.args.$argName',
+            func.args[argName]!,
+            argValue,
+          ),
+        ),
+      );
 
-      var body = {
+      final body = <String, dynamic>{
         'version': 3,
         'requestId': _randomBytesHex(16),
         'name': functionName,
@@ -97,13 +120,13 @@ class SdkgenHttpClient {
 
       await interceptors.onRequest?.call(body);
 
-      var response = await http.post(
+      final response = await _client.post(
         baseUrl,
         headers: headers,
         body: jsonEncode(body),
       );
 
-      var responseBody = jsonDecode(utf8.decode(response.bodyBytes));
+      final responseBody = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (responseBody['error'] != null) {
         throw _createError(responseBody['error']['type'],
