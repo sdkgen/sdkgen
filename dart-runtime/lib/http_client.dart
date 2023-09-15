@@ -12,17 +12,17 @@ import 'deviceinfo_generic.dart'
     if (dart.library.html) 'deviceinfo_web.dart';
 
 class SdkgenError implements Exception {
-  String message;
-  SdkgenError(this.message);
+  final String message;
+  final Json request;
+  const SdkgenError(this.message, [this.request = const {}]);
 
   @override
   String toString() => '$runtimeType: $message';
 }
 
-class SdkgenErrorWithData<T> implements Exception {
-  String message;
-  T data;
-  SdkgenErrorWithData(this.message, this.data);
+class SdkgenErrorWithData<T> extends SdkgenError {
+  final T data;
+  const SdkgenErrorWithData(super.message, super.request, this.data);
 
   @override
   String toString() => '$runtimeType: $message';
@@ -65,7 +65,12 @@ class SdkgenHttpClient {
         growable: false,
       ));
 
-  dynamic _createError(String type, String message, dynamic data) {
+  SdkgenError _createError(
+    String type,
+    String message,
+    dynamic data,
+    Json request,
+  ) {
     final description = errTable[type] ?? errTable['Fatal']!;
     final decodedData = decode(
       typeTable,
@@ -73,7 +78,10 @@ class SdkgenHttpClient {
       description.dataType,
       data,
     );
-    return Function.apply(description.create, [message, decodedData]);
+    return Function.apply(
+      description.create,
+      [message, request, decodedData],
+    );
   }
 
   Future<String> _deviceId() async {
@@ -95,6 +103,11 @@ class SdkgenHttpClient {
     String functionName,
     Map<String, Object?> args,
   ) async {
+    final Json requestInfo = {
+      'requestId': _randomBytesHex(16),
+      'name': functionName,
+    };
+
     try {
       final func = fnTable[functionName]!;
       final encodedArgs = args.map(
@@ -109,11 +122,11 @@ class SdkgenHttpClient {
         ),
       );
 
-      final body = <String, dynamic>{
+      requestInfo['args'] = encodedArgs;
+
+      final Json body = {
+        ...requestInfo,
         'version': 3,
-        'requestId': _randomBytesHex(16),
-        'name': functionName,
-        'args': encodedArgs,
         'extra': extra,
         'deviceInfo': await getDeviceInfo(await _deviceId())
       };
@@ -129,8 +142,12 @@ class SdkgenHttpClient {
       final responseBody = jsonDecode(utf8.decode(response.bodyBytes));
 
       if (responseBody['error'] != null) {
-        throw _createError(responseBody['error']['type'],
-            responseBody['error']['message'], responseBody['error']['data']);
+        throw _createError(
+          responseBody['error']['type'],
+          responseBody['error']['message'],
+          responseBody['error']['data'],
+          requestInfo,
+        );
       } else {
         final response = decode(
             typeTable, '$functionName.ret', func.ret, responseBody['result']);
@@ -140,11 +157,11 @@ class SdkgenHttpClient {
         return response;
       }
     } catch (e) {
-      if (e is SdkgenError || e is SdkgenErrorWithData) {
+      if (e is SdkgenError) {
         await interceptors.onError?.call(e);
         rethrow;
       } else {
-        final error = _createError('Fatal', e.toString(), null);
+        final error = _createError('Fatal', e.toString(), null, requestInfo);
         await interceptors.onError?.call(error);
 
         throw error;

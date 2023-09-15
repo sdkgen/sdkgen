@@ -109,7 +109,9 @@ ${ast.operations
   for (const error of ast.errors) {
     const hasData = !(error.dataType instanceof VoidPrimitiveType);
 
-    code += `  '${error.name}': SdkgenErrorDescription('${error.dataType.name}', (msg, data) => ${error.name}(msg${hasData ? ", data" : ""})),\n`;
+    const dataArg = hasData ? ", data" : "";
+
+    code += `  '${error.name}': SdkgenErrorDescription('${error.dataType.name}', (msg, req, data) => ${error.name}(msg, req${dataArg})),\n`;
   }
 
   code += `};\n`;

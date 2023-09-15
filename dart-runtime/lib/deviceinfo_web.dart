@@ -4,7 +4,7 @@ import 'dart:js' as js;
 
 Future<Map<String, Object?>> getDeviceInfo(String deviceId) async {
   // Intl.DateTimeFormat().resolvedOptions().timeZone
-  var timeZoneName = js.context['Intl'] == null
+  final timeZoneName = js.context['Intl'] == null
       ? DateTime.now().timeZoneName
       : (((js.context['Intl'] as js.JsObject).callMethod('DateTimeFormat')
               as js.JsObject)
