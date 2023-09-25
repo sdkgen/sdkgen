@@ -16,7 +16,7 @@ class ParseError extends Error {
       str = String(value);
     }
 
-    super(`Invalid type at '${path}', expected ${type}, got ${str}`);
+    super(`Invalid type at '${path}', expected ${String(type)}, got ${str}`);
   }
 }
 
@@ -172,6 +172,7 @@ export function encode(typeTable: DeepReadonly<TypeTable>, path: string, type: D
       throw new ParseError(path, type, value);
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-base-to-string
     return value.toString();
   } else if (type === "cpf") {
     if (typeof value !== "string") {

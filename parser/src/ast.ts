@@ -32,7 +32,10 @@ export abstract class Type extends AstNode {
 export class ErrorNode extends AstNode {
   annotations: Annotation[] = [];
 
-  constructor(public name: string, public dataType: Type) {
+  constructor(
+    public name: string,
+    public dataType: Type,
+  ) {
     super();
   }
 }
@@ -51,7 +54,10 @@ export class ThrowsAnnotation extends Annotation {
 }
 
 export class ArgDescriptionAnnotation extends Annotation {
-  constructor(public argName: string, public text: string) {
+  constructor(
+    public argName: string,
+    public text: string,
+  ) {
     super();
   }
 }
@@ -194,7 +200,11 @@ export class EnumType extends Type {
 export class Field extends AstNode {
   annotations: Annotation[] = [];
 
-  constructor(public name: string, public type: Type, public secret = false) {
+  constructor(
+    public name: string,
+    public type: Type,
+    public secret = false,
+  ) {
     super();
   }
 }
@@ -226,7 +236,10 @@ export class StructType extends Type {
 export class TypeDefinition extends AstNode {
   annotations: Annotation[] = [];
 
-  constructor(public name: string, public type: Type) {
+  constructor(
+    public name: string,
+    public type: Type,
+  ) {
     super();
   }
 }
@@ -236,7 +249,11 @@ export class FunctionOperation extends AstNode {
 
   args: Field[] = [];
 
-  constructor(public name: string, public fieldsAndSpreads: Array<Field | Spread>, public returnType: Type) {
+  constructor(
+    public name: string,
+    public fieldsAndSpreads: Array<Field | Spread>,
+    public returnType: Type,
+  ) {
     super();
   }
 }
@@ -248,5 +265,9 @@ export class AstRoot {
 
   warnings: string[] = [];
 
-  constructor(public typeDefinitions: TypeDefinition[] = [], public operations: FunctionOperation[] = [], public errors: ErrorNode[] = []) {}
+  constructor(
+    public typeDefinitions: TypeDefinition[] = [],
+    public operations: FunctionOperation[] = [],
+    public errors: ErrorNode[] = [],
+  ) {}
 }

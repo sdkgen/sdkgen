@@ -41,7 +41,7 @@ import type { SdkgenHttpServer } from "./http-server";
 const swaggerUiAssetPath = getSwaggerUiAssetPath();
 
 function objectFromEntries<T>(entries: Array<[string, T]>) {
-  return Object.assign({}, ...Array.from(entries, ([k, v]) => ({ [k]: v }))) as { [key: string]: T };
+  return Object.assign({}, ...Array.from(entries, ([k, v]) => ({ [k]: v }))) as Record<string, T>;
 }
 
 function typeToSchema(definitions: Record<string, JSONSchema | undefined>, type: Type): JSONSchema & object {

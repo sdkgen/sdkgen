@@ -11,7 +11,10 @@ export abstract class SdkgenError extends Error {
   }
 }
 export abstract class SdkgenErrorWithData<DataType> extends SdkgenError {
-  constructor(message: string, public data: DataType) {
+  constructor(
+    message: string,
+    public data: DataType,
+  ) {
     super(message);
   }
 

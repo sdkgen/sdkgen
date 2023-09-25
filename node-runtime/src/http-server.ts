@@ -80,7 +80,10 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
 
   private extraContext: ExtraContextT;
 
-  constructor(public apiConfig: BaseApiConfig<ExtraContextT>, ...maybeExtraContext: {} extends ExtraContextT ? [{}?] : [ExtraContextT]) {
+  constructor(
+    public apiConfig: BaseApiConfig<ExtraContextT>,
+    ...maybeExtraContext: {} extends ExtraContextT ? [{}?] : [ExtraContextT]
+  ) {
     this.extraContext = (maybeExtraContext[0] ?? {}) as ExtraContextT;
     this.httpServer = createServer(this.handleRequest.bind(this));
     this.enableCors();

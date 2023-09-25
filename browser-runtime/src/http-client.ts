@@ -4,9 +4,7 @@ import { decode, encode } from "./encode-decode";
 import type { SdkgenError, SdkgenErrorWithData } from "./error";
 import type { DeepReadonly } from "./utils";
 
-interface ErrClasses {
-  [className: string]: (new (message: string, data: any) => SdkgenErrorWithData<any>) | (new (message: string) => SdkgenError) | undefined;
-}
+type ErrClasses = Record<string, (new (message: string, data: any) => SdkgenErrorWithData<any>) | (new (message: string) => SdkgenError) | undefined>;
 
 function randomBytesHex(len: number) {
   let hex = "";
@@ -46,7 +44,11 @@ export class SdkgenHttpClient {
 
   errorHook: (result: any, name: string, args: any) => void = () => undefined;
 
-  constructor(private baseUrl: string, private astJson: DeepReadonly<AstJson>, private errClasses: ErrClasses) {}
+  constructor(
+    private baseUrl: string,
+    private astJson: DeepReadonly<AstJson>,
+    private errClasses: ErrClasses,
+  ) {}
 
   async makeRequest(functionName: string, args: unknown): Promise<any> {
     const func = this.astJson.functionTable[functionName];

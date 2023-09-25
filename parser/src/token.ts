@@ -13,7 +13,7 @@ export class TokenLocation {
 export class Token {
   public location = new TokenLocation();
 
-  constructor(public value: string = "") {
+  constructor(public value = "") {
     Object.defineProperty(this, "location", { enumerable: false });
   }
 

@@ -16,16 +16,18 @@ import type { SdkgenError, SdkgenErrorWithData } from "./error";
 import type { DeepReadonly } from "./utils";
 import { has } from "./utils";
 
-interface ErrClasses {
-  [className: string]: (new (message: string, data: any) => SdkgenErrorWithData<any>) | (new (message: string) => SdkgenError) | undefined;
-}
+type ErrClasses = Record<string, (new (message: string, data: any) => SdkgenErrorWithData<any>) | (new (message: string) => SdkgenError) | undefined>;
 
 export class SdkgenHttpClient {
   private baseUrl: URL;
 
   extra = new Map<string, unknown>();
 
-  constructor(baseUrl: string, private astJson: DeepReadonly<AstJson>, private errClasses: ErrClasses) {
+  constructor(
+    baseUrl: string,
+    private astJson: DeepReadonly<AstJson>,
+    private errClasses: ErrClasses,
+  ) {
     this.baseUrl = new URL(baseUrl);
   }
 

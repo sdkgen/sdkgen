@@ -5,8 +5,8 @@
   "main": "src/index.ts",
   "scripts": {
     "test": "TZ=UTC jest --passWithNoTests",
-    "eslint:fix": "eslint --fix '**/*.ts'",
-    "eslint:check": "eslint '**/*.ts'",
+    "eslint:fix": "eslint --fix '{src,spec}/**/*.ts'",
+    "eslint:check": "eslint '{src,spec}/**/*.ts'",
     "build": "tsc"
   },
   "repository": {

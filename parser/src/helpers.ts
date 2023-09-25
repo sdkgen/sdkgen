@@ -4,7 +4,10 @@ import { Visitor } from "./semantic/visitor";
 class HasTypeVisitor extends Visitor {
   found = false;
 
-  constructor(root: AstRoot, private type: typeof Type) {
+  constructor(
+    root: AstRoot,
+    private type: typeof Type,
+  ) {
     super(root);
   }
 

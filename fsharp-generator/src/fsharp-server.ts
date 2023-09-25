@@ -79,15 +79,15 @@ type Api() =`;
       code += `
 
             do! (__.${capitalize(op.name)} context_ ${op.args.length > 0 ? "{|" : ""} ${op.args
-        .map(arg => `${arg.name} = ${ident(arg.name)}`)
-        .join("; ")} ${op.args.length > 0 ? "|}" : ""})
+              .map(arg => `${arg.name} = ${ident(arg.name)}`)
+              .join("; ")} ${op.args.length > 0 ? "|}" : ""})
       `;
     } else {
       code += `
 
             let! result_ = (__.${capitalize(op.name)} context_ ${op.args.length > 0 ? "{|" : ""} ${op.args
-        .map(arg => `${arg.name} = ${ident(arg.name)}`)
-        .join("; ")} ${op.args.length > 0 ? "|}" : ""})
+              .map(arg => `${arg.name} = ${ident(arg.name)}`)
+              .join("; ")} ${op.args.length > 0 ? "|}" : ""})
             ${encodeType(op.returnType, `result_`, `"${op.name}().ret"`, 1, false).replace(/\n/gu, "\n            ")}`;
     }
   }
