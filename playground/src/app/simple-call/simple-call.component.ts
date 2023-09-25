@@ -29,6 +29,7 @@ export class SimpleCallComponent implements OnInit, OnDestroy {
   initialExtras = `{\n  "key": "value"\n}\n`;
   extras = this.initialExtras;
   response?: any;
+  busy = false;
 
   selected = new FormControl(0);
   consoleItems: ConsoleItem[] = [];
@@ -51,14 +52,16 @@ export class SimpleCallComponent implements OnInit, OnDestroy {
   }
 
   async run() {
-    {
-      // eslint-disable-next-line
-      const events = this.consoleItems;
-
-      eval(wrapper);
-    }
-
     try {
+      this.busy = true;
+
+      {
+        // eslint-disable-next-line
+        const events = this.consoleItems;
+
+        eval(wrapper);
+      }
+
       if (this.extras && this.extras !== this.initialExtras) {
         const extrasJson = JSON.parse(this.extras);
         const extraKeys = Object.keys(extrasJson);
@@ -86,6 +89,7 @@ export class SimpleCallComponent implements OnInit, OnDestroy {
     } finally {
       eval(unwrap);
       this.selected.setValue(2);
+      this.busy = false;
     }
   }
 

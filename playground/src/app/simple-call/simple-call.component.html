@@ -7,7 +7,7 @@
       mat-stretch-tabs="false"
     >
       <mat-tab label="Requisição">
-        <button mat-fab class="run-fab" (click)="run()">
+        <button mat-fab class="run-fab" (click)="run()" [disabled]="busy">
           <mat-icon>play_arrow</mat-icon>
         </button>
 

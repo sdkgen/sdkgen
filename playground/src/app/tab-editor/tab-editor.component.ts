@@ -17,6 +17,7 @@ export class TabEditorComponent implements OnInit, OnDestroy {
   client?: SdkgenHttpClient;
 
   code = "";
+  busy = false;
 
   editorOptions: monaco.editor.IStandaloneEditorConstructionOptions = {
     theme: "vs-dark",
@@ -90,6 +91,8 @@ export class TabEditorComponent implements OnInit, OnDestroy {
 
   async run() {
     try {
+      this.busy = true;
+
       await eval(`
         (async (client, events) => {
           ${wrapper}
@@ -99,5 +102,7 @@ export class TabEditorComponent implements OnInit, OnDestroy {
     } catch (e: any) {
       this.consoleItems.push({ type: ConsoleItemType.ERROR, message: e.toString() });
     }
+
+    this.busy = false;
   }
 }
