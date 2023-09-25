@@ -57,6 +57,7 @@ nav {
       padding: 15px 10px;
       border-bottom: 1px solid lighten($color-primary, 15%);
       cursor: pointer;
+      user-select: none;
 
       &.active {
         background-color: rgba(0, 0, 0, 0.2);
@@ -122,23 +123,23 @@ article {
       }
 
       .k-fn {
-        color: #C586C0;
+        color: #c586c0;
       }
 
       .k-name {
-        color: #DCDCAA;
+        color: #dcdcaa;
       }
 
       .k-arg-name {
-        color: #9CDCFE;
+        color: #9cdcfe;
       }
 
       .k-sym {
-        color: #D4D4D4;
+        color: #d4d4d4;
       }
 
       .k-type {
-        color: #569CD6;
+        color: #569cd6;
       }
 
       button {
@@ -165,7 +166,7 @@ article {
         i {
           display: block;
           width: 1.3px;
-          background: #FFF;
+          background: #fff;
           margin: 0 7.5px;
           border-radius: 5px;
           height: calc(100% + 14px);

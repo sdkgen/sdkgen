@@ -254,12 +254,14 @@ export class SdkgenService {
   }
 
   public getSdkgenClient(url: string, ast: DeepReadonly<AstJson>) {
-    const errorFns = ast.errors.reduce<{
-      [className: string]:
+    const errorFns = ast.errors.reduce<
+      Record<
+        string,
         | (new (message: string, data: any) => SdkgenErrorWithData<any>)
         | (new (message: string) => SdkgenError)
-        | undefined;
-    }>((acc, cur) => {
+        | undefined
+      >
+    >((acc, cur) => {
       function errorClass(type: string, base: typeof SdkgenError | typeof SdkgenErrorWithData) {
         return eval(`(
           (sup) => class ${type} extends sup {

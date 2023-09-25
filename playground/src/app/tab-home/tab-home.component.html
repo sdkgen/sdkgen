@@ -11,6 +11,7 @@
             *ngFor="let fn of fnTable | appFilter: searchText"
             (click)="this.selectedFunction = fn"
             [ngClass]="{ active: this.selectedFunction?.name === fn.name }"
+            mat-ripple
           >
             <span class="fn-call">{{ fn.name }}</span>
             <span class="fn-description" *ngIf="fn.description">{{ fn.description }}</span>
@@ -37,12 +38,12 @@
       </header>
 
       <section class="container" id="labels" *ngIf="this.selectedFunction.labels.length > 0">
-        <mat-chip-list [selectable]="false">
+        <mat-chip-set role="list">
           <mat-chip *ngFor="let label of this.selectedFunction.labels" [disableRipple]="true" color="primary">
             <span class="mono">{{ label.name }}</span><i></i>
             <span class="mono">{{ label.type }} <u *ngIf="label.dataType && label.dataType.name !== 'void'" [matTooltip]="getTooltip(label.dataType)" (click)="showDocumentation(label.dataType)">({{ label.dataType.name }})</u></span>
           </mat-chip>
-        </mat-chip-list>
+        </mat-chip-set>
       </section>
 
       <section class="container">

@@ -1,7 +1,6 @@
 header {
   display: flex;
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-  padding-bottom: 5px;
 
   h1,
   button,
@@ -13,6 +12,7 @@ header {
   h1 {
     display: flex;
     margin: 0 10px 0 0;
+    padding: 0;
   }
 
   button {

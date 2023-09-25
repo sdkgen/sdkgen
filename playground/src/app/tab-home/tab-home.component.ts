@@ -51,7 +51,11 @@ export class TabHomeComponent implements OnInit, OnDestroy, AfterViewInit {
     language: "javascript",
   };
 
-  constructor(public sdkgen: SdkgenService, public dialog: MatDialog, public responsive: ResponsiveService) {}
+  constructor(
+    public sdkgen: SdkgenService,
+    public dialog: MatDialog,
+    public responsive: ResponsiveService,
+  ) {}
 
   ngOnInit() {
     this.state$ = this.sdkgen.state$.subscribe(state => {
@@ -76,7 +80,7 @@ export class TabHomeComponent implements OnInit, OnDestroy, AfterViewInit {
             description: annotations?.find(ann => ann.type === "description")?.value as string,
             args: operation.args.map(({ name, type }) => {
               const argAnns = [
-                ...(state.astJson.annotations[`type.${type}.${name}`] ?? []),
+                ...(state.astJson.annotations[`type.${type.name}.${name}`] ?? []),
                 ...(state.astJson.annotations[`fn.${operation.name}.${name}`] ?? []),
               ];
 

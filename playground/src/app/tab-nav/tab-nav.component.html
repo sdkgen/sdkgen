@@ -1,4 +1,4 @@
-<img src="assets/polvinho.png">
+<img src="assets/polvinho.png" />
 
 <form (submit)="loadUrl($event)">
   <input [formControl]="url" [readonly]="loading" placeholder="Digite uma URL aqui para conectar" />
@@ -9,4 +9,4 @@
   </button>
 </form>
 
-<button mat-icon-button (click)="openAbout()"><mat-icon>info</mat-icon></button>
+<button class="about-button" mat-ripple (click)="openAbout()"><mat-icon>info</mat-icon></button>

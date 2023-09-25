@@ -1,7 +1,11 @@
 <as-split direction="vertical">
   <as-split-area>
-    <mat-tab-group animationDuration="0ms" [selectedIndex]="selected.value"
-      (selectedIndexChange)="selected.setValue($event)">
+    <mat-tab-group
+      animationDuration="0ms"
+      [selectedIndex]="selected.value"
+      (selectedIndexChange)="selected.setValue($event)"
+      mat-stretch-tabs="false"
+    >
       <mat-tab label="Requisição">
         <button mat-fab class="run-fab" (click)="run()">
           <mat-icon>play_arrow</mat-icon>

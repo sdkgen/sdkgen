@@ -9,23 +9,18 @@ $my-theme: mat.define-dark-theme(
       primary: $my-primary,
       accent: $my-accent,
     ),
+    typography: mat.define-typography-config(),
   )
 );
 
-@include mat.core-theme($my-theme);
-@include mat.button-theme($my-theme);
-@include mat.chips-theme($my-theme);
-@include mat.dialog-theme($my-theme);
-@include mat.menu-theme($my-theme);
-@include mat.table-theme($my-theme);
-@include mat.tabs-theme($my-theme);
-@include mat.tooltip-theme($my-theme);
+@include mat.all-component-themes($my-theme);
 
-@import "~ngx-toastr/toastr";
+@import "ngx-toastr/toastr";
 @import "variables.scss";
 
 * {
   box-sizing: border-box;
+  letter-spacing: normal !important;
 }
 
 html,
@@ -63,20 +58,16 @@ body {
   right: min(13vw, 140px); // Monaco minimap (hack)
 }
 
-.mat-tab-label {
-  user-select: none;
+.dialog-no-border-radius .mat-mdc-dialog-container .mdc-dialog__surface {
+  --mdc-dialog-container-shape: 0;
 }
 
-.dialog-no-border-radius .mat-dialog-container {
-  border-radius: 0 !important;
+.mat-mdc-dialog-surface {
+  padding: 24px;
 }
 
-.mat-tab-group {
+.mat-mdc-tab-group {
   height: calc(100% - #{$navbar-height});
-}
-
-.mat-tab-body-wrapper {
-  height: 100%;
 }
 
 @media (max-width: 767px) {
@@ -147,17 +138,4 @@ body {
 
 s {
   flex-grow: 1;
-}
-
-.mat-chip {
-  &::after {
-    display: none;
-  }
-
-  &:hover,
-  &:active,
-  &:focus {
-    box-shadow: none !important;
-    transition: none;
-  }
 }

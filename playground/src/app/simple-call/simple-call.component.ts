@@ -71,7 +71,7 @@ export class SimpleCallComponent implements OnInit, OnDestroy {
       const exec = (this.client as unknown as Record<string, (data: any) => Promise<any>>)[this.fn](
         JSON.parse(this.code),
       );
-  
+
       this.response = { result: await exec };
     } catch (e: any) {
       this.consoleItems.push({ type: ConsoleItemType.ERROR, message: e.toString() });

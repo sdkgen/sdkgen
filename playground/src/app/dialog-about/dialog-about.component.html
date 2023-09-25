@@ -1,8 +1,9 @@
 <header>
   <h1 mat-dialog-title>sdkgen Playground</h1>
-  <mat-chip-list [selectable]="false">
+
+  <mat-chip-set role="list">
     <mat-chip [disableRipple]="true">{{ version }}</mat-chip>
-  </mat-chip-list>
+  </mat-chip-set>
 
   <s></s>
 
@@ -14,4 +15,6 @@
 
 <a href="https://sdkgen.github.io/" rel="external noreferer" target="_blank" mat-stroked-button>Documentação</a>
 <a href="https://github.com/sdkgen/sdkgen" rel="external noreferer" target="_blank" mat-stroked-button>Código-fonte</a>
-<a href="https://github.com/sdkgen/sdkgen/issues/new" rel="external noreferer" target="_blank" mat-stroked-button>Reportar um problema</a>
+<a href="https://github.com/sdkgen/sdkgen/issues/new" rel="external noreferer" target="_blank" mat-stroked-button>
+  Reportar um problema
+</a>

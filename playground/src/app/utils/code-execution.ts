@@ -33,25 +33,20 @@ export const wrapper = `
     return ___originalXmlHttpRequestOpen.apply(this, arguments);
   };
 
-  window.___originalConsoleLog = console.log;
-  console.log = function() {
-    const event = { type: "info", message: Array.prototype.map.call(arguments, x => typeof x === "object" ? JSON.stringify(x) : x.toString()).join(" ") };
-    events.push(event);
-    return ___originalConsoleLog.apply(this, arguments);
-  }
+  window.__originalConsole = [console.log, console.error, console.warn, console.debug, console.info];
 
-  window.___originalConsoleError = console.error;
-  console.error = function() {
-    //if (typeof arguments[0] === "string") {
-      const event = { type: "error", message: Array.prototype.map.call(arguments, x => typeof x === "object" ? JSON.stringify(x) : x.toString()).join(" ") };
+  for (const method of window.__originalConsole) {
+    console[method.name] = function() {
+      const event = { type: method.name === "log" ? "info" : method.name, message: Array.prototype.map.call(arguments, x => typeof x === "object" ? JSON.stringify(x) : x.toString()).join(" ") };
       events.push(event);
-    //}
-    return ___originalConsoleError.apply(this, arguments);
+      return method.apply(this, arguments);
+    }
   }
 `;
 
 export const unwrap = `
   XMLHttpRequest.prototype.open = window.___originalXmlHttpRequestOpen;
-  console.log = window.___originalConsoleLog;
-  console.error = window.___originalConsoleError;
+  for (const method of window.__originalConsole) {
+    console[method.name] = method;
+  }
 `;

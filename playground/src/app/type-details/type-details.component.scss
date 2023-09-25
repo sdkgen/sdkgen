@@ -2,8 +2,9 @@ h1 {
   font-weight: 200;
   word-break: break-all;
   word-wrap: break-word;
+  color: #fff;
 
-  mat-chip-list {
+  mat-chip-set {
     display: inline-block;
     margin-left: 10px;
     user-select: none;
@@ -17,7 +18,7 @@ h1 {
     }
   }
 
-  &> * {
+  & > * {
     vertical-align: middle;
   }
 
@@ -53,11 +54,11 @@ ul {
 }
 
 code {
-  padding: .2rem .4rem;
-  font-size: .875em;
+  padding: 0.2rem 0.4rem;
+  font-size: 0.875em;
   color: #fff;
   background-color: #212529;
-  border-radius: .2rem;
+  border-radius: 0.2rem;
   white-space: pre-wrap;
   word-break: break-all;
   word-wrap: break-word;

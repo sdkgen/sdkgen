@@ -34,7 +34,7 @@ form {
     border: 0 none;
 
     text-align: center;
-    color: #CCC;
+    color: #ccc;
 
     &:focus {
       outline: none;
@@ -43,7 +43,7 @@ form {
 
   button {
     background: transparent;
-    color: #BFBFBF;
+    color: #bfbfbf;
     border: 0 none;
     cursor: pointer;
 
@@ -51,6 +51,20 @@ form {
       animation: spin 2s linear infinite;
     }
   }
+}
+
+button.about-button {
+  $size: $navbar-height;
+  width: $size;
+  height: $size;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+  color: inherit;
+  line-height: 0;
+  text-align: center;
 }
 
 @keyframes spin {

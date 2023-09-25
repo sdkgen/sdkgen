@@ -9,6 +9,7 @@
   [selectedIndex]="selected.value"
   (selectedIndexChange)="selected.setValue($event)"
   animationDuration="150ms"
+  mat-stretch-tabs="false"
 >
   <mat-tab label="Documentação">
     <app-tab-home (runFunction)="addSimpleTab($event)"></app-tab-home>
@@ -37,7 +38,7 @@
     </ng-container>
   </mat-tab>
 
-  <mat-tab disabled>
+  <mat-tab disabled labelClass="action-button">
     <ng-template mat-tab-label>
       <button mat-icon-button matTooltip="Nova aba de editor avançado" (click)="addAdvancedTab()">
         <mat-icon>add_circle</mat-icon>
@@ -45,7 +46,7 @@
     </ng-template>
   </mat-tab>
 
-  <mat-tab disabled>
+  <mat-tab disabled labelClass="right action-button">
     <ng-template mat-tab-label>
       <button mat-icon-button [matMenuTriggerFor]="downloadMenu">
         <mat-icon>download</mat-icon>

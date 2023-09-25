@@ -5,9 +5,9 @@
 
   <span class="mono">{{ data.type.name }}</span>
 
-  <mat-chip-list [selectable]="false">
+  <mat-chip-set role="list">
     <mat-chip *ngFor="let label of labels" [disableRipple]="true" color="primary">{{ label }}</mat-chip>
-  </mat-chip-list>
+  </mat-chip-set>
 
   <button *ngIf="!data.subdialog" class="close-button" mat-icon-button mat-dialog-close tabindex="-1">
     <mat-icon>close</mat-icon>
@@ -28,7 +28,9 @@
         <th mat-header-cell *matHeaderCellDef>Tipo</th>
         <td class="mono" mat-cell *matCellDef="let arg" [ngSwitch]="arg.type">
           <span *ngSwitchCase="null">-</span>
-          <u *ngSwitchDefault [matTooltip]="getTooltip(arg.type)" (click)="showDocumentation(arg.type)">{{ arg.type.name }}</u>
+          <u *ngSwitchDefault [matTooltip]="getTooltip(arg.type)" (click)="showDocumentation(arg.type)">{{
+            arg.type.name
+          }}</u>
         </td>
       </ng-container>
 

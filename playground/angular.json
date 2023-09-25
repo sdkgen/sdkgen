@@ -129,6 +129,5 @@
         }
       }
     }
-  },
-  "defaultProject": "sdkgen-playground"
+  }
 }

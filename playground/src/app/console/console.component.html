@@ -10,6 +10,8 @@
       <ng-container *ngSwitchCase="itemTypes.INFO">info_outline</ng-container>
       <ng-container *ngSwitchCase="itemTypes.ERROR">error</ng-container>
       <ng-container *ngSwitchCase="itemTypes.NETWORK">public</ng-container>
+      <ng-container *ngSwitchCase="itemTypes.WARN">warning</ng-container>
+      <ng-container *ngSwitchCase="itemTypes.DEBUG">bug_report</ng-container>
     </mat-icon>
 
     <span>{{ item.message }}</span>
