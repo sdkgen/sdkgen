@@ -25,7 +25,7 @@
   },
   "homepage": "https://github.com/sdkgen/sdkgen#readme",
   "devDependencies": {
-    "@cubos/eslint-config": "^2.0.0",
+    "@cubos/eslint-config": "~2.0.0",
     "@types/command-line-args": "^5.2.0",
     "@types/command-line-usage": "^5.0.2",
     "@types/jest": "^29.0.0",
