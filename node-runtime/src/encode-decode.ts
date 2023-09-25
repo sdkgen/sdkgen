@@ -116,7 +116,7 @@ class ParseError extends Error {
       str = String(value);
     }
 
-    super(`Invalid type at '${path}', expected ${type}, got ${str}`);
+    super(`Invalid type at '${path}', expected ${String(type)}, got ${str}`);
   }
 }
 
@@ -332,7 +332,7 @@ export function encode<Table extends DeepReadonly<TypeTable>, Type extends DeepR
       return encode(typeTable, path, resolved, value) as EncodedType<Type, Table>;
     }
 
-    throw new Error(`Unknown type '${type}' at '${path}'`);
+    throw new Error(`Unknown type '${String(type)}' at '${path}'`);
   }
 }
 
@@ -402,13 +402,13 @@ export function decode<Table extends DeepReadonly<TypeTable>, Type extends DeepR
     return simpleEncodeDecode(path, type, value) as DecodedType<Type, Table>;
   } else if (type === "bytes") {
     if (typeof value !== "string") {
-      throw new ParseError(path, `${type} (base 64)`, value);
+      throw new ParseError(path, `${String(type)} (base 64)`, value);
     }
 
     const buffer = Buffer.from(value, "base64");
 
     if (buffer.toString("base64") !== value) {
-      throw new ParseError(path, `${type} (base 64)`, value);
+      throw new ParseError(path, `${String(type)} (base 64)`, value);
     }
 
     return buffer as DecodedType<Type, Table>;
@@ -466,6 +466,6 @@ export function decode<Table extends DeepReadonly<TypeTable>, Type extends DeepR
       return decode(typeTable, path, resolved, value) as unknown as DecodedType<Type, Table>;
     }
 
-    throw new Error(`Unknown type '${type}' at '${path}'`);
+    throw new Error(`Unknown type '${String(type)}' at '${path}'`);
   }
 }

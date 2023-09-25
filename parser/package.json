@@ -5,8 +5,8 @@
   "main": "src/index.ts",
   "scripts": {
     "test": "jest --passWithNoTests",
-    "eslint:fix": "eslint --fix '**/*.ts'",
-    "eslint:check": "eslint '**/*.ts'",
+    "eslint:fix": "eslint --fix '{src,spec}/**/*.ts'",
+    "eslint:check": "eslint '{src,spec}/**/*.ts'",
     "build": "tsc"
   },
   "repository": {
@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/sdkgen/sdkgen#readme",
   "devDependencies": {
-    "@cubos/eslint-config": "~2.0.0",
+    "@cubos/eslint-config": "^2.2.0",
     "@types/jest": "^29.0.0",
     "jest": "^29.0.0",
     "ts-jest": "^29.0.0",

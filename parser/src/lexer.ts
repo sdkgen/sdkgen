@@ -66,7 +66,10 @@ export class Lexer {
 
   private column = 1;
 
-  constructor(private readonly source: string, public readonly filename: string = "-") {}
+  constructor(
+    private readonly source: string,
+    public readonly filename = "-",
+  ) {}
 
   private currentChar() {
     return this.source[this.pos] || "\0";
@@ -233,7 +236,7 @@ export class Lexer {
         let body = "\\";
         let pos = this.startPos + 1;
 
-        while (body[body.length - 1] === "\\") {
+        while (body.endsWith("\\")) {
           body = body.slice(0, body.length - 1).trim();
           while (!["\0", "\n"].includes(this.nextChar())) {
             //

@@ -24,9 +24,9 @@ namespace SdkgenGenerated
 
     code += `
         public virtual Task${returnTypeAngle} ${capitalize(op.name)}(${[
-      "Context ctx",
-      ...op.args.map(arg => `${generateTypeName(arg.type)} ${ident(arg.name)}`),
-    ].join(", ")})
+          "Context ctx",
+          ...op.args.map(arg => `${generateTypeName(arg.type)} ${ident(arg.name)}`),
+        ].join(", ")})
         {
             return Task.FromException${returnTypeAngle}(new FatalException("Function '${op.name}' not implemented."));
         }

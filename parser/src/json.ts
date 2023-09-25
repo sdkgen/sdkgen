@@ -149,6 +149,7 @@ export function astToJson(ast: AstRoot): AstJson {
         if (ann instanceof DescriptionAnnotation) {
           const target = `type.${name}.${field.name}`;
 
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           annotations[target] ??= [];
           annotations[target].push(annotationToJson(ann));
         }
@@ -189,6 +190,7 @@ export function astToJson(ast: AstRoot): AstJson {
         if (ann instanceof DescriptionAnnotation) {
           const target = `fn.${op.name}.${arg.name}`;
 
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           annotations[target] ??= [];
           annotations[target].push(annotationToJson(ann));
         }
@@ -203,6 +205,7 @@ export function astToJson(ast: AstRoot): AstJson {
     for (const ann of op.annotations) {
       const target = `fn.${op.name}`;
 
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       annotations[target] ??= [];
       annotations[target].push(annotationToJson(ann));
     }
@@ -216,6 +219,7 @@ export function astToJson(ast: AstRoot): AstJson {
     for (const ann of error.annotations) {
       const target = `error.${error.name}`;
 
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       annotations[target] ??= [];
       annotations[target].push(annotationToJson(ann));
     }
