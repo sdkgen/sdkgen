@@ -6,7 +6,7 @@ on:
       - feat/lerna
   pull_request: {}
 jobs:
-  publish:
+  test:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout 🛎️
