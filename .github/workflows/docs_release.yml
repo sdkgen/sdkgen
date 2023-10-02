@@ -16,7 +16,7 @@ jobs:
           registry-url: https://registry.npmjs.org
       - run: pip install mkdocs-material
       - run: mkdocs build
-      - run: git clone --depth 1 -b master https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/sdkgen/sdkgen.github.io.git
+      - run: git clone --depth 1 -b main https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/sdkgen/sdkgen.github.io.git
       - run: mkdir -p sdkgen.github.io/pr
       - run: cd sdkgen.github.io && rm -rf $(ls | grep -vE "^(pr|dev)$")
       - run: mv site/* sdkgen.github.io/

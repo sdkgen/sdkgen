@@ -33,7 +33,7 @@ ext {
     PUBLISH_VERSION = '0.0.0'
     PUBLISH_ARTIFACT_ID = 'android-runtime'
     PUBLISH_DESCRIPTION = 'Sdkgen Android Runtime'
-    PUBLISH_URL = 'https://https://github.com/sdkgen/sdkgen'
+    PUBLISH_URL = 'https://github.com/sdkgen/sdkgen'
     PUBLISH_LICENSE_NAME = 'MIT License'
     PUBLISH_LICENSE_URL =
             'http://www.opensource.org/licenses/mit-license.php'
@@ -43,9 +43,9 @@ ext {
     PUBLISH_SCM_CONNECTION =
             'scm:git:https://github.com/sdkgen/sdkgen.git'
     PUBLISH_SCM_DEVELOPER_CONNECTION =
-            'scm:git:ssh://https://github.com/sdkgen/sdkgen.git'
+            'scm:git:ssh://github.com/sdkgen/sdkgen.git'
     PUBLISH_SCM_URL =
-            'https://https://github.com/sdkgen/sdkgen/tree/master'
+            'https://github.com/sdkgen/sdkgen/tree/main'
 }
 
 apply from: "${rootProject.projectDir}/scripts/publish-module.gradle"
