@@ -31,13 +31,21 @@
   "homepage": "https://github.com/sdkgen/sdkgen#readme",
   "devDependencies": {
     "@cubos/eslint-config": "^2.2.0",
-    "@types/jest": "^29.0.0",
-    "jest": "^29.0.0",
-    "ts-jest": "^29.0.0",
+    "@types/jest": "^29.5.5",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
     "typescript": "^5.2.2"
   },
   "jest": {
     "transform": {
+      "^.+\\.js$": [
+        "babel-jest",
+        {
+          "plugins": [
+            "@babel/plugin-transform-modules-commonjs"
+          ]
+        }
+      ],
       "^.+\\.tsx?$": "ts-jest"
     },
     "transformIgnorePatterns": [

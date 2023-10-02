@@ -21,7 +21,6 @@
     "analyze": "webpack-bundle-analyzer dist/stats.json",
     "watch": "ng build --watch --configuration development"
   },
-  "dependencies": {},
   "devDependencies": {
     "@angular-devkit/build-angular": "~16.2.3",
     "@angular/animations": "~16.2.6",
