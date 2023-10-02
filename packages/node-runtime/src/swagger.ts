@@ -31,6 +31,7 @@ import {
   UuidPrimitiveType,
   VoidPrimitiveType,
 } from "@sdkgen/parser";
+// @ts-ignore
 import type { JSONSchema } from "json-schema-typed";
 import staticFilesHandler from "serve-handler";
 import { getAbsoluteFSPath as getSwaggerUiAssetPath } from "swagger-ui-dist";

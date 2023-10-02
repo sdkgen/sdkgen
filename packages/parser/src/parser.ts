@@ -450,7 +450,7 @@ export class Parser {
 
           this.nextToken();
           const fieldNames = new Set<string>();
-          const fields = [];
+          const fields: Field[] = [];
 
           // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           while (this.token && this.token.maybeAsIdentifier() instanceof IdentifierToken) {

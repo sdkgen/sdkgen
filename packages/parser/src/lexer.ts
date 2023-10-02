@@ -251,7 +251,7 @@ export class Lexer {
       }
 
       case '"': {
-        const chars = [];
+        const chars: string[] = [];
 
         // eslint-disable-next-line no-labels
         outerLoop: for (;;) {

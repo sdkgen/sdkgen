@@ -1,6 +1,6 @@
 import { Component } from "@angular/core";
 
-import { version } from "../../../package.json";
+import packageJson from "../../../package.json";
 
 @Component({
   selector: "app-dialog-about",
@@ -8,5 +8,5 @@ import { version } from "../../../package.json";
   styleUrls: ["./dialog-about.component.scss"],
 })
 export class DialogAboutComponent {
-  version = version;
+  version = packageJson.version;
 }

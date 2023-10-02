@@ -4,6 +4,7 @@
   "description": "sdkgen language support",
   "version": "0.0.0",
   "publisher": "cubos",
+  "private": true,
   "engines": {
     "vscode": "^1.10.0"
   },

@@ -2,7 +2,14 @@
   "name": "@sdkgen/csharp-generator",
   "version": "0.0.0",
   "description": "",
-  "main": "src/index.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "directories": {
+    "lib": "dist"
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "test": "jest --passWithNoTests",
     "eslint:fix": "eslint --fix '{src,spec}/**/*.ts'",

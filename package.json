@@ -9,7 +9,7 @@
     "build": "lerna run build --parallel",
     "test": "lerna run test --parallel",
     "lint": "lerna run eslint:check --parallel",
-    "playground": "lerna run start --stream --scope @sdkgen/playground"
+    "playground": "lerna run start --scope @sdkgen/playground"
   },
   "devDependencies": {
     "lerna": "^7.3.0"

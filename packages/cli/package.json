@@ -3,8 +3,14 @@
   "version": "0.0.0",
   "description": "",
   "bin": {
-    "sdkgen": "dist/src/index.js"
+    "sdkgen": "dist/index.js"
   },
+  "directories": {
+    "lib": "dist"
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "test": "jest --passWithNoTests",
     "eslint:fix": "eslint --fix '{src,spec}/**/*.ts'",

@@ -1,14 +1,9 @@
 /* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
-  "extends": "./tsconfig.json",
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/app",
-    "types": ["node"],
-    "strict": false,
-    "preserveSymlinks": true,
-    "skipLibCheck": true,
-    "module": "CommonJS",
-    "esModuleInterop": true
+    "types": []
   },
   "files": [
     "src/main.ts",
