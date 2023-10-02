@@ -27,7 +27,8 @@
     "url": "https://github.com/sdkgen/sdkgen/issues"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "provenance": true
   },
   "homepage": "https://github.com/sdkgen/sdkgen#readme",
   "dependencies": {

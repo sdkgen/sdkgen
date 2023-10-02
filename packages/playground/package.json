@@ -9,7 +9,8 @@
     "url": "git+https://github.com/sdkgen/sdkgen.git"
   },
   "publishConfig": {
-    "access": "public"
+    "access": "public",
+    "provenance": true
   },
   "scripts": {
     "eslint:fix": "eslint --fix 'src/**/*.{t,j}s'",
