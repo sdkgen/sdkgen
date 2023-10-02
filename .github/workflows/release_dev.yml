@@ -4,6 +4,8 @@ on:
     branches:
       - main
       - feat/lerna
+permissions:
+  id-token: write
 jobs:
   publish:
     runs-on: ubuntu-latest
