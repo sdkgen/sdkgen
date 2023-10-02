@@ -1,5 +1,5 @@
 {
-  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "$schema": "../../node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "cli": {
     "packageManager": "npm",
@@ -62,7 +62,7 @@
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              { "glob": "**/*", "input": "node_modules/monaco-editor/min/vs", "output": "assets/vs" },
+              { "glob": "**/*", "input": "../../node_modules/monaco-editor/min/vs", "output": "assets/vs" },
               "src/favicon.ico",
               "src/assets"
             ],

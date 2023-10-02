@@ -68,6 +68,7 @@ export class TabNavComponent implements OnInit {
 
       // Aguardar até o Monaco ser carregado
       while (typeof monaco === "undefined") {
+        console.log("monaco");
         await new Promise(resolve => setTimeout(resolve, 250));
       }
 

@@ -1,5 +1,5 @@
 {
-  "name": "@sdkgen/kotlin-generator",
+  "name": "@sdkgen/fsharp-generator",
   "version": "0.0.0",
   "description": "",
   "main": "src/index.ts",
@@ -22,6 +22,9 @@
     "access": "public"
   },
   "homepage": "https://github.com/sdkgen/sdkgen#readme",
+  "dependencies": {
+    "@sdkgen/parser": "*"
+  },
   "devDependencies": {
     "@cubos/eslint-config": "^2.2.0",
     "@types/jest": "^29.0.0",
@@ -47,8 +50,5 @@
     "coveragePathIgnorePatterns": [
       "/node_modules/"
     ]
-  },
-  "dependencies": {
-    "@sdkgen/parser": "file:../parser"
   }
 }

@@ -1,5 +1,5 @@
 {
-  "name": "@sdkgen/swift-generator",
+  "name": "@sdkgen/typescript-generator",
   "version": "0.0.0",
   "description": "",
   "main": "src/index.ts",
@@ -22,12 +22,16 @@
     "access": "public"
   },
   "homepage": "https://github.com/sdkgen/sdkgen#readme",
+  "dependencies": {
+    "@sdkgen/parser": "*"
+  },
   "devDependencies": {
     "@cubos/eslint-config": "^2.2.0",
     "@types/jest": "^29.0.0",
     "@types/node": "^16.7.0",
     "jest": "^29.0.0",
     "ts-jest": "^29.0.0",
+    "type-fest": "^3.0.0",
     "typescript": "^4.3.5"
   },
   "jest": {
@@ -47,8 +51,5 @@
     "coveragePathIgnorePatterns": [
       "/node_modules/"
     ]
-  },
-  "dependencies": {
-    "@sdkgen/parser": "file:../parser"
   }
 }
