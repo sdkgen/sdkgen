@@ -7,36 +7,44 @@ jobs:
   docs:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v4
+      - name: Checkout 🛎️
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 📦
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+          registry-url: https://registry.npmjs.org
+
+      - name: Setup Python 🐍
+        uses: actions/setup-python@v4
         with:
           python-version: "3.x"
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 20.x
-          registry-url: https://registry.npmjs.org
-      - run: pip install mkdocs-material
-      - run: sed -i -e "s/sdkgen.github.io/sdkgen.github.io\/dev/g" mkdocs.yml
-      - run: mkdocs build
-      - run: git clone --depth 1 -b main https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/sdkgen/sdkgen.github.io.git
-      - run: rm -rf sdkgen.github.io/dev
-      - run: mv site sdkgen.github.io/dev
-      - run: |
-          cd playground
-          npm install
-          npm install -g json
-          bash .ci.sh
-          json -I -f package.json -e '
-            this.version = "0.0.0-dev";
-            delete this.dependencies.tslib;
-            for (const pkg in this.dependencies)
-              if (this.dependencies[pkg].startsWith("file:../"))
-                this.dependencies[pkg] = this.version;
-          '
+
+      - name: Install dependencies 🔧
+        run: |
+          npm ci --include=dev
+
+      - name: Build docs 🚚
+        run: |
+          pip install mkdocs-material
+          sed -i -e "s/sdkgen.github.io/sdkgen.github.io\/dev/g" mkdocs.yml
+          mkdocs build
+
+      - name: Build playground 🌎
+        run: |
           npm run build
-          sed -i -E 's_(<base href=")/(">)_\1/dev/playground/\2_' dist/index.html
-          mv dist/ ../sdkgen.github.io/dev/playground/
-      - run: |
+          sed -i -E 's_(<base href=")/(">)_\1/dev/playground/\2_' packages/playground/dist/index.html
+
+      - name: Prepare deploy 📦
+        run: |
+          git clone --depth 1 -b main https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/sdkgen/sdkgen.github.io.git
+          rm -rf sdkgen.github.io/dev
+          mv site sdkgen.github.io/dev
+          mv packages/playground/dist/ sdkgen.github.io/dev/playground/
+
+      - name: Deploy 🚀
+        run: |
           cd sdkgen.github.io
           git config --global user.name "$GITHUB_ACTOR"
           git config --global user.email "$GITHUB_ACTOR@users.noreply.github.com"
