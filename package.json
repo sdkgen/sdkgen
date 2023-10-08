@@ -8,10 +8,11 @@
   "scripts": {
     "build": "lerna run build",
     "test": "lerna run test --parallel",
-    "lint": "lerna run eslint:check --parallel",
+    "lint": "sherif && lerna run eslint:check --parallel",
     "playground": "lerna run start --scope @sdkgen/playground"
   },
   "devDependencies": {
-    "lerna": "^7.3.0"
+    "lerna": "^7.3.0",
+    "sherif": "^0.3.1"
   }
 }
