@@ -51,9 +51,9 @@ ${ast.operations
       : `{${op.args
           .map(arg => `${arg.type instanceof OptionalType ? "" : "required "}${generateTypeName(arg.type)} ${mangle(arg.name)}`)
           .join(", ")}}`
-    }) async { ${op.returnType instanceof VoidPrimitiveType ? "" : "final result = "}${
-      `await makeRequest('${op.name}', {${op.args.map(arg => `'${arg.name}': ${mangle(arg.name)}`).join(", ")}})`
-    };${op.returnType instanceof VoidPrimitiveType ? "" : ` return ${cast("result", op.returnType};`}}`,
+  }) async { ${op.returnType instanceof VoidPrimitiveType ? "" : "final result = "}${`await makeRequest('${op.name}', {${op.args
+    .map(arg => `'${arg.name}': ${mangle(arg.name)}`)
+    .join(", ")}})`};${op.returnType instanceof VoidPrimitiveType ? "" : ` return ${cast("result", op.returnType)};`}}`,
   )
   .join("")}
 }\n\n`;
