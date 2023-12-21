@@ -171,7 +171,10 @@ export function generateErrorClass(error: ErrorNode): string {
 
 export function cast(value: string, type: Type): string {
   if (type instanceof OptionalType) {
-    return `${value} == null ? null : ${cast(value, type.base)}`;
+    return `switch(${value} as ${generateTypeName(type.base)}?) {
+      final result? => result,
+      _ => null,
+    }`;
   } else if (type instanceof ArrayType) {
     return `(${value} as List).map((e) => ${cast("e", type.base)}).toList()`;
   } else if (type instanceof VoidPrimitiveType) {
