@@ -13,12 +13,20 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
 
+      - name: Set version 📄
+        run: echo -n 0.0.0-dev.$(date -u +'%Y%m%d%H%M%S') | tee version.txt
+
       - name: Setup Node.js 📦
         uses: actions/setup-node@v3
         with:
           node-version: 20
           scope: "@sdkgen"
           registry-url: https://registry.npmjs.org
+
+      - name: Setup .NET 📦
+        uses: actions/setup-dotnet@v2
+        with:
+          dotnet-version: 5.0.x
 
       - name: Install dependencies 🔧
         run: |
@@ -28,9 +36,19 @@ jobs:
         run: |
           npm run build
 
-      - name: Publish 🚀
+      - name: Publish NPM packages 🚀
         run: |
           cp -r LICENSE packages/*
-          npx lerna publish 0.0.0-dev.$(date -u +'%Y%m%d%H%M%S') --no-git-tag-version --no-push --yes
+          npx lerna publish $(cat version.txt) --no-git-tag-version --no-push --yes
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+
+      - name: Pack .NET package 🚚
+        run: dotnet pack -c:Release -p:PackageVersion=$(cat ../../version.txt)
+        working-directory: ./dotnet-runtime/runtime
+
+      - name: Publish .NET package 🚀
+        run: dotnet nuget push bin/**/*.nupkg -k $NUGET_TOKEN -s https://api.nuget.org/v3/index.json
+        working-directory: ./dotnet-runtime/runtime
+        env:
+          NUGET_TOKEN: ${{ secrets.NUGET_TOKEN }}
