@@ -31,8 +31,14 @@ jobs:
       - name: Setup Java ☕
         uses: actions/setup-java@v4
         with:
-          distribution: adopt
-          java-version: "11"
+          distribution: zulu
+          java-version: "17"
+
+      - name: Setup Flutter 🦋
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.10.x
+          channel: stable
 
       - name: Install dependencies 🔧
         run: |
@@ -77,5 +83,24 @@ jobs:
         uses: gradle/wrapper-validation-action@v1
 
       - name: Publish Android package 🚀
-        run: ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
+        run: |
+          ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
         working-directory: ./packages/android-runtime
+
+      - name: Download pub dependencies 📦
+        run: flutter pub get
+        working-directory: ./packages/dart-runtime
+
+      - name: Prepare Dart package 🧪
+        run: |
+          sed 's/version: 0.0.0/version: '$(cat ../../version.txt)'/' -i pubspec.yaml
+          mkdir -p $XDG_CONFIG_HOME/dart && \
+          echo "$PUB_CREDENTIALS" > $XDG_CONFIG_HOME/dart/pub-credentials.json
+        working-directory: ./packages/dart-runtime
+        env:
+          PUB_CREDENTIALS: ${{ secrets.PUB_CREDENTIALS }}
+
+      - name: Publish Dart package 🚀
+        run: |
+          flutter pub pub publish -v -f
+        working-directory: ./packages/dart-runtime
