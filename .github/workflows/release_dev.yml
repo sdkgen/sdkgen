@@ -17,16 +17,22 @@ jobs:
         run: echo -n 0.0.0-dev.$(date -u +'%Y%m%d%H%M%S') | tee version.txt
 
       - name: Setup Node.js 📦
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 20
           scope: "@sdkgen"
           registry-url: https://registry.npmjs.org
 
-      - name: Setup .NET 📦
-        uses: actions/setup-dotnet@v2
+      - name: Setup .NET 🎯
+        uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: 5.0.x
+          dotnet-version: 8.0.x
+
+      - name: Setup Java ☕
+        uses: actions/setup-java@v4
+        with:
+          distribution: adopt
+          java-version: "11"
 
       - name: Install dependencies 🔧
         run: |
@@ -52,3 +58,24 @@ jobs:
         working-directory: ./packages/dotnet-runtime/runtime
         env:
           NUGET_TOKEN: ${{ secrets.NUGET_TOKEN }}
+
+      - name: Prepare Android package 🧪
+        run: |
+          sed -i -e "s/versionName \"1.0\"/versionName \"$(cat ../../../version.txt)\"/g" build.gradle
+          sed -i -e "s/versionCode 1/versionCode $(date +%s)/g" build.gradle
+          sed -i -e "s/PUBLISH_VERSION = \'0.0.0\'/PUBLISH_VERSION = \'$(cat ../../../version.txt)\'/g" build.gradle
+          sed -i -e "s/version = \"0.0.0\"/version = \"$(cat ../../../version.txt)\"/g" build.gradle
+          echo "SONATYPE_NEXUS_USERNAME=${{ secrets.NEXUS_MAVEN_USER }}" >> local.properties
+          echo "SONATYPE_NEXUS_PASSWORD=${{ secrets.NEXUS_MAVEN_PASSWORD }}" >> local.properties
+          echo "signing.keyId=${{ secrets.MAVEN_GPG_KEY_ID }}" >> local.properties
+          echo "signing.password=${{ secrets.MAVEN_GPG_KEY_PASSWORD }}" >> local.properties
+          echo "signing.secretKeyRingFile=${{ secrets.MAVEN_GPG_KEY_FILE_PATH }}" >> local.properties
+          echo "${{ secrets.MAVEN_GPG_FILE_CONTENT }}" | base64 -d > "${{ secrets.MAVEN_GPG_KEY_FILE_PATH }}"
+        working-directory: ./packages/android-runtime/runtime
+
+      - name: Check Gradle Wrapper ✅
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: Publish Android package 🚀
+        run: ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
+        working-directory: ./packages/android-runtime/runtime
