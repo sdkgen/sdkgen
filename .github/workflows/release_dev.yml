@@ -78,4 +78,4 @@ jobs:
 
       - name: Publish Android package 🚀
         run: ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
-        working-directory: ./packages/android-runtime/runtime
+        working-directory: ./packages/android-runtime
