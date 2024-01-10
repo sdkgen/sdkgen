@@ -51,7 +51,7 @@
     "angular-split": "^16.2.1",
     "file-saver": "^2.0.5",
     "json": "^11.0.0",
-    "monaco-editor": "^0.43.0",
+    "monaco-editor": "^0.45.0",
     "ngx-json-viewer": "^3.2.1",
     "ngx-toastr": "^17.0.2",
     "rxjs": "~7.8.1",
