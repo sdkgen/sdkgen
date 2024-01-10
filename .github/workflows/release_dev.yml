@@ -45,10 +45,10 @@ jobs:
 
       - name: Pack .NET package 🚚
         run: dotnet pack -c:Release -p:PackageVersion=$(cat ../../version.txt)
-        working-directory: ./dotnet-runtime/runtime
+        working-directory: ./packages/dotnet-runtime/runtime
 
       - name: Publish .NET package 🚀
         run: dotnet nuget push bin/**/*.nupkg -k $NUGET_TOKEN -s https://api.nuget.org/v3/index.json
-        working-directory: ./dotnet-runtime/runtime
+        working-directory: ./packages/dotnet-runtime/runtime
         env:
           NUGET_TOKEN: ${{ secrets.NUGET_TOKEN }}
