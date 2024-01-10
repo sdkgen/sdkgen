@@ -19,38 +19,38 @@ type AnyDecodedType = number | string | boolean | null | bigint | Decimal | Buff
 export type DecodedType<Type, Table extends object = {}> = TypeDescription extends Type
   ? AnyDecodedType
   : Type extends "string" | "email" | "html" | "xml" | "url" | "hex" | "uuid" | "base64" | "cpf" | "cnpj"
-  ? string
-  : Type extends "json"
-  ? JsonType
-  : Type extends "bool"
-  ? boolean
-  : Type extends "void"
-  ? null
-  : Type extends "int" | "uint" | "float" | "money"
-  ? number
-  : Type extends "bigint"
-  ? bigint
-  : Type extends "bytes"
-  ? Buffer
-  : Type extends "decimal"
-  ? Decimal
-  : Type extends "date" | "datetime"
-  ? Date
-  : Type extends `${infer X}?`
-  ? DecodedType<X, Table> | null
-  : Type extends `${infer X}[]`
-  ? Array<DecodedType<X, Table>>
-  : Type extends Array<string | [string, string]>
-  ? DecodedEnumType<Type, Table>
-  : Type extends ReadonlyArray<string | readonly [string, string]>
-  ? DecodedEnumType<Type, Table>
-  : Type extends object
-  ? { -readonly [Key in keyof Type]: DecodedType<Type[Key], Table> }
-  : object extends Table
-  ? never
-  : Type extends keyof Table
-  ? DecodedType<Table[Type], Table>
-  : never;
+    ? string
+    : Type extends "json"
+      ? JsonType
+      : Type extends "bool"
+        ? boolean
+        : Type extends "void"
+          ? null
+          : Type extends "int" | "uint" | "float" | "money"
+            ? number
+            : Type extends "bigint"
+              ? bigint
+              : Type extends "bytes"
+                ? Buffer
+                : Type extends "decimal"
+                  ? Decimal
+                  : Type extends "date" | "datetime"
+                    ? Date
+                    : Type extends `${infer X}?`
+                      ? DecodedType<X, Table> | null
+                      : Type extends `${infer X}[]`
+                        ? Array<DecodedType<X, Table>>
+                        : Type extends Array<string | [string, string]>
+                          ? DecodedEnumType<Type, Table>
+                          : Type extends ReadonlyArray<string | readonly [string, string]>
+                            ? DecodedEnumType<Type, Table>
+                            : Type extends object
+                              ? { -readonly [Key in keyof Type]: DecodedType<Type[Key], Table> }
+                              : object extends Table
+                                ? never
+                                : Type extends keyof Table
+                                  ? DecodedType<Table[Type], Table>
+                                  : never;
 
 type DecodedEnumType<
   Type extends Array<string | [string, string]> | ReadonlyArray<string | readonly [string, string]>,
@@ -63,48 +63,48 @@ type DecodeTaggedEnumValueType<
 > = ValueType extends string
   ? { tag: ValueType }
   : ValueType extends [infer Tag, infer Struct]
-  ? ExpandRecursively<{ tag: Tag } & DecodedType<Struct, Table>>
-  : ValueType extends readonly [infer Tag, infer Struct]
-  ? ExpandRecursively<{ tag: Tag } & DecodedType<Struct, Table>>
-  : never;
+    ? ExpandRecursively<{ tag: Tag } & DecodedType<Struct, Table>>
+    : ValueType extends readonly [infer Tag, infer Struct]
+      ? ExpandRecursively<{ tag: Tag } & DecodedType<Struct, Table>>
+      : never;
 
 export type EncodedType<Type, Table extends object = {}> = TypeDescription extends Type
   ? JsonType
   : Type extends "string" | "email" | "html" | "xml" | "url" | "hex" | "uuid" | "base64" | "cpf" | "cnpj"
-  ? string
-  : Type extends "json"
-  ? JsonType
-  : Type extends "bool"
-  ? boolean
-  : Type extends "void"
-  ? null
-  : Type extends "int" | "uint" | "float" | "money"
-  ? number
-  : Type extends "bigint" | "bytes" | "date" | "datetime" | "decimal"
-  ? string
-  : Type extends `${infer X}?`
-  ? EncodedType<X, Table> | null
-  : Type extends `${infer X}[]`
-  ? Array<EncodedType<X, Table>>
-  : Type extends Array<string | [string, string]>
-  ? EnumEncodedValueType<Type[number], Table>
-  : Type extends ReadonlyArray<string | readonly [string, string]>
-  ? EnumEncodedValueType<Type[number], Table>
-  : Type extends object
-  ? { -readonly [Key in keyof Type]: EncodedType<Type[Key], Table> }
-  : object extends Table
-  ? never
-  : Type extends keyof Table
-  ? EncodedType<Table[Type], Table>
-  : never;
+    ? string
+    : Type extends "json"
+      ? JsonType
+      : Type extends "bool"
+        ? boolean
+        : Type extends "void"
+          ? null
+          : Type extends "int" | "uint" | "float" | "money"
+            ? number
+            : Type extends "bigint" | "bytes" | "date" | "datetime" | "decimal"
+              ? string
+              : Type extends `${infer X}?`
+                ? EncodedType<X, Table> | null
+                : Type extends `${infer X}[]`
+                  ? Array<EncodedType<X, Table>>
+                  : Type extends Array<string | [string, string]>
+                    ? EnumEncodedValueType<Type[number], Table>
+                    : Type extends ReadonlyArray<string | readonly [string, string]>
+                      ? EnumEncodedValueType<Type[number], Table>
+                      : Type extends object
+                        ? { -readonly [Key in keyof Type]: EncodedType<Type[Key], Table> }
+                        : object extends Table
+                          ? never
+                          : Type extends keyof Table
+                            ? EncodedType<Table[Type], Table>
+                            : never;
 
 type EnumEncodedValueType<ValueType extends string | [string, string] | readonly [string, string], Table extends object> = ValueType extends string
   ? ValueType
   : ValueType extends [infer Tag, infer Struct]
-  ? [Tag, EncodedType<Struct, Table>]
-  : ValueType extends readonly [infer Tag, infer Struct]
-  ? [Tag, EncodedType<Struct, Table>]
-  : never;
+    ? [Tag, EncodedType<Struct, Table>]
+    : ValueType extends readonly [infer Tag, infer Struct]
+      ? [Tag, EncodedType<Struct, Table>]
+      : never;
 
 class ParseError extends Error {
   constructor(path: string, type: DeepReadonly<TypeDescription>, value: unknown) {

@@ -2,6 +2,7 @@
   "name": "sdkgen",
   "version": "0.0.0",
   "private": true,
+  "packageManager": "npm@10.2.0+",
   "workspaces": [
     "packages/*"
   ],
@@ -9,10 +10,20 @@
     "build": "lerna run build",
     "test": "lerna run test --parallel",
     "lint": "sherif && lerna run eslint:check --parallel",
+    "lint:fix": "lerna run eslint:fix --parallel",
     "playground": "lerna run start --scope @sdkgen/playground"
   },
   "devDependencies": {
-    "lerna": "^7.3.0",
-    "sherif": "^0.3.1"
+    "lerna": "^8.0.2",
+    "sherif": "^0.7.0"
+  },
+  "overrides": {
+    "@angular-devkit/build-angular": {
+      "browser-sync": {
+        "localtunnel": {
+          "axios": "^1.6.0"
+        }
+      }
+    }
   }
 }

@@ -20,8 +20,5 @@
 
     // NGCC broke with unicode regex
     "require-unicode-regexp": "off"
-  },
-  "parserOptions": {
-    "project": "../../tsconfig.spec.json"
   }
 }

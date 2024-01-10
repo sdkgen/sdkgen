@@ -41,7 +41,7 @@ import { PLAYGROUND_PUBLIC_PATH } from "@sdkgen/playground";
 import { generateSwiftClientSource } from "@sdkgen/swift-generator";
 import { generateBrowserClientSource, generateNodeClientSource, generateNodeServerSource } from "@sdkgen/typescript-generator";
 import Busboy from "busboy";
-import FileType from "file-type";
+import { fileTypeFromBuffer } from "file-type";
 import { getClientIp } from "request-ip";
 import staticFilesHandler from "serve-handler";
 
@@ -602,7 +602,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
                     const buffer = Buffer.from(reply.result as string, "base64");
 
                     // eslint-disable-next-line @typescript-eslint/no-floating-promises
-                    FileType.fromBuffer(buffer)
+                    fileTypeFromBuffer(buffer)
                       .then(fileType => {
                         res.setHeader("content-type", fileType?.mime ?? "application/octet-stream");
                       })

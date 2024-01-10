@@ -113,10 +113,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "sdkgen-playground:build:production"
+              "buildTarget": "sdkgen-playground:build:production"
             },
             "development": {
-              "browserTarget": "sdkgen-playground:build:development"
+              "buildTarget": "sdkgen-playground:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -124,7 +124,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "sdkgen-playground:build"
+            "buildTarget": "sdkgen-playground:build"
           }
         }
       }
