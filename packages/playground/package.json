@@ -1,0 +1,63 @@
+{
+  "name": "@sdkgen/playground",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sdkgen/sdkgen.git"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "scripts": {
+    "eslint:fix": "eslint --fix 'src/**/*.{t,j}s'",
+    "eslint:check": "eslint 'src/**/*.{t,j}s'",
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "build:stats": "ng build --stats-json",
+    "analyze": "webpack-bundle-analyzer dist/stats.json",
+    "watch": "ng build --watch --configuration development"
+  },
+  "devDependencies": {
+    "@angular-devkit/build-angular": "~16.2.3",
+    "@angular/animations": "~16.2.6",
+    "@angular/cdk": "~16.2.5",
+    "@angular/cli": "~16.2.3",
+    "@angular/common": "~16.2.6",
+    "@angular/compiler": "~16.2.6",
+    "@angular/compiler-cli": "~16.2.6",
+    "@angular/core": "~16.2.6",
+    "@angular/forms": "~16.2.6",
+    "@angular/material": "~16.2.5",
+    "@angular/platform-browser": "~16.2.6",
+    "@angular/platform-browser-dynamic": "~16.2.6",
+    "@angular/router": "~16.2.6",
+    "@cubos/eslint-config": "^2.2.0",
+    "@materia-ui/ngx-monaco-editor": "^6.0.0",
+    "@sdkgen/browser-runtime": "*",
+    "@sdkgen/csharp-generator": "*",
+    "@sdkgen/dart-generator": "*",
+    "@sdkgen/fsharp-generator": "*",
+    "@sdkgen/kotlin-generator": "*",
+    "@sdkgen/parser": "*",
+    "@sdkgen/swift-generator": "*",
+    "@sdkgen/typescript-generator": "*",
+    "@types/file-saver": "^2.0.5",
+    "@types/node": "^20.6.5",
+    "angular-split": "^16.2.1",
+    "file-saver": "^2.0.5",
+    "json": "^11.0.0",
+    "monaco-editor": "^0.43.0",
+    "ngx-json-viewer": "^3.2.1",
+    "ngx-toastr": "^17.0.2",
+    "rxjs": "~7.8.1",
+    "tslib": "^2.6.2",
+    "typescript": "~5.1.3",
+    "webpack-bundle-analyzer": "^4.9.1",
+    "zone.js": "~0.13.3"
+  }
+}

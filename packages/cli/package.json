@@ -1,0 +1,81 @@
+{
+  "name": "@sdkgen/cli",
+  "version": "0.0.0",
+  "description": "",
+  "bin": {
+    "sdkgen": "dist/index.js"
+  },
+  "directories": {
+    "lib": "dist"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "jest --passWithNoTests",
+    "eslint:fix": "eslint --fix '{src,spec}/**/*.ts'",
+    "eslint:check": "eslint '{src,spec}/**/*.ts'",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sdkgen/sdkgen.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sdkgen/sdkgen/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "homepage": "https://github.com/sdkgen/sdkgen#readme",
+  "dependencies": {
+    "@sdkgen/csharp-generator": "*",
+    "@sdkgen/dart-generator": "*",
+    "@sdkgen/fsharp-generator": "*",
+    "@sdkgen/kotlin-generator": "*",
+    "@sdkgen/parser": "*",
+    "@sdkgen/swift-generator": "*",
+    "@sdkgen/typescript-generator": "*",
+    "command-line-args": "^5.2.0",
+    "command-line-usage": "^6.1.1"
+  },
+  "devDependencies": {
+    "@cubos/eslint-config": "^2.2.0",
+    "@types/command-line-args": "^5.2.0",
+    "@types/command-line-usage": "^5.0.2",
+    "@types/jest": "^29.5.5",
+    "@types/node": "^16.7.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "typescript": "^5.2.2"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.js$": [
+        "babel-jest",
+        {
+          "plugins": [
+            "@babel/plugin-transform-modules-commonjs"
+          ]
+        }
+      ],
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "transformIgnorePatterns": [
+      "<rootDir>/node_modules/(?!@sdkgen)"
+    ],
+    "testRegex": "spec/.*\\.spec\\.ts$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "collectCoverage": true,
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
+  }
+}

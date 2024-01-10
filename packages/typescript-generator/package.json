@@ -1,0 +1,71 @@
+{
+  "name": "@sdkgen/typescript-generator",
+  "version": "0.0.0",
+  "description": "",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "directories": {
+    "lib": "dist"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "test": "jest --passWithNoTests",
+    "eslint:fix": "eslint --fix '{src,spec}/**/*.ts'",
+    "eslint:check": "eslint '{src,spec}/**/*.ts'",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sdkgen/sdkgen.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sdkgen/sdkgen/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "homepage": "https://github.com/sdkgen/sdkgen#readme",
+  "dependencies": {
+    "@sdkgen/parser": "*"
+  },
+  "devDependencies": {
+    "@cubos/eslint-config": "^2.2.0",
+    "@types/jest": "^29.5.5",
+    "@types/node": "^16.7.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.1.1",
+    "type-fest": "^3.0.0",
+    "typescript": "^5.2.2"
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.js$": [
+        "babel-jest",
+        {
+          "plugins": [
+            "@babel/plugin-transform-modules-commonjs"
+          ]
+        }
+      ],
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "transformIgnorePatterns": [
+      "<rootDir>/node_modules/(?!@sdkgen)"
+    ],
+    "testRegex": "spec/.*\\.spec\\.ts$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js"
+    ],
+    "collectCoverage": true,
+    "coveragePathIgnorePatterns": [
+      "/node_modules/"
+    ]
+  }
+}

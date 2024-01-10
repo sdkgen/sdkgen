@@ -1,0 +1,6 @@
+{
+  "extends": ["@cubos"],
+  "parserOptions": {
+    "project": "../../tsconfig.spec.json"
+  }
+}
