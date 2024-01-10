@@ -43,7 +43,7 @@
     "@sdkgen/typescript-generator": "*",
     "busboy": "1.5.0",
     "decimal.js": "^10.4.3",
-    "file-type": "^16.5.4",
+    "file-type": "^19.0.0",
     "request-ip": "^3.3.0",
     "serve-handler": "^6.1.5",
     "swagger-ui-dist": "^5.11.0"
