@@ -52,7 +52,7 @@
     "@cubos/eslint-config": "^2.2.0",
     "@types/busboy": "^1.0.0",
     "@types/jest": "^29.5.5",
-    "@types/node": "^16.7.0",
+    "@types/node": "^20.0.0",
     "@types/request-ip": "0.0.37",
     "@types/serve-handler": "^6.1.1",
     "@types/swagger-ui-dist": "^3.30.1",
