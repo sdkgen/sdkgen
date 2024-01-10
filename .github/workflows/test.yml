@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - main
-      - feat/lerna
   pull_request: {}
 jobs:
   test:

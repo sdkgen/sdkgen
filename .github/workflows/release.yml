@@ -1,5 +1,8 @@
 name: release
 on:
+  push:
+    branches:
+      - main
   release:
     types: [published]
 permissions:
@@ -11,12 +14,37 @@ jobs:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
 
+      - name: Set version 📄
+        run: |
+          if [ "${github.ref_type}" == "tag" ]; then
+            echo -n "${github.ref_name}" | tee version.txt
+          else
+            echo -n 0.0.0-dev.$(date -u +'%Y%m%d%H%M%S') | tee version.txt
+          fi
+
       - name: Setup Node.js 📦
         uses: actions/setup-node@v4
         with:
           node-version: 20
           scope: "@sdkgen"
           registry-url: https://registry.npmjs.org
+
+      - name: Setup .NET 🎯
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Setup Java ☕
+        uses: actions/setup-java@v4
+        with:
+          distribution: zulu
+          java-version: "17"
+
+      - name: Setup Flutter 🦋
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: 3.10.x
+          channel: stable
 
       - name: Install dependencies 🔧
         run: |
@@ -26,9 +54,59 @@ jobs:
         run: |
           npm run build
 
-      - name: Publish 🚀
+      - name: Publish NPM packages 🚀
         run: |
           cp -r LICENSE packages/*
-          npx lerna publish --no-git-tag-version --no-push --yes
+          npx lerna publish $(cat version.txt) --no-git-tag-version --no-push --yes
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
+
+      - name: Pack .NET package 🚚
+        run: dotnet pack -c:Release -p:PackageVersion=$(cat ../../../version.txt)
+        working-directory: ./packages/dotnet-runtime/runtime
+
+      - name: Publish .NET package 🚀
+        run: dotnet nuget push bin/**/*.nupkg -k $NUGET_TOKEN -s https://api.nuget.org/v3/index.json
+        working-directory: ./packages/dotnet-runtime/runtime
+        env:
+          NUGET_TOKEN: ${{ secrets.NUGET_TOKEN }}
+
+      - name: Prepare Android package 🧪
+        run: |
+          sed -i -e "s/versionName \"1.0\"/versionName \"$(cat ../../version.txt)\"/g" runtime/build.gradle
+          sed -i -e "s/versionCode 1/versionCode $(date +%s)/g" runtime/build.gradle
+          sed -i -e "s/PUBLISH_VERSION = '0.0.0'/PUBLISH_VERSION = '$(cat ../../version.txt)'/g" runtime/build.gradle
+          sed -i -e "s/version = \"0.0.0\"/version = \"$(cat ../../version.txt)\"/g" build.gradle
+          echo "SONATYPE_NEXUS_USERNAME=${{ secrets.NEXUS_MAVEN_USER }}" >> local.properties
+          echo "SONATYPE_NEXUS_PASSWORD=${{ secrets.NEXUS_MAVEN_PASSWORD }}" >> local.properties
+          echo "signing.keyId=${{ secrets.MAVEN_GPG_KEY_ID }}" >> local.properties
+          echo "signing.password=${{ secrets.MAVEN_GPG_KEY_PASSWORD }}" >> local.properties
+          echo "signing.secretKeyRingFile=${{ secrets.MAVEN_GPG_KEY_FILE_PATH }}" >> local.properties
+          echo "${{ secrets.MAVEN_GPG_FILE_CONTENT }}" | base64 -d > runtime/"${{ secrets.MAVEN_GPG_KEY_FILE_PATH }}"
+        working-directory: ./packages/android-runtime
+
+      - name: Check Gradle Wrapper 👀
+        uses: gradle/wrapper-validation-action@v1
+
+      - name: Publish Android package 🚀
+        run: |
+          ./gradlew publishToSonatype closeAndReleaseSonatypeStagingRepository
+        working-directory: ./packages/android-runtime
+
+      - name: Download pub dependencies 📦
+        run: flutter pub get
+        working-directory: ./packages/dart-runtime
+
+      - name: Prepare Dart package 🧪
+        run: |
+          sed 's/version: 0.0.0/version: '$(cat ../../version.txt)'/' -i pubspec.yaml
+          mkdir -p $XDG_CONFIG_HOME/dart && \
+          echo "$PUB_CREDENTIALS" > $XDG_CONFIG_HOME/dart/pub-credentials.json
+        working-directory: ./packages/dart-runtime
+        env:
+          PUB_CREDENTIALS: ${{ secrets.PUB_CREDENTIALS }}
+
+      - name: Publish Dart package 🚀
+        run: |
+          flutter pub pub publish -v -f
+        working-directory: ./packages/dart-runtime
