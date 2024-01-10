@@ -16,8 +16,8 @@ jobs:
 
       - name: Set version 📄
         run: |
-          if [ "${github.ref_type}" == "tag" ]; then
-            echo -n "${github.ref_name}" | tee version.txt
+          if [ "${{ github.ref_type }}" == "tag" ]; then
+            echo -n "${{ github.ref_name }}" | tee version.txt
           else
             echo -n 0.0.0-dev.$(date -u +'%Y%m%d%H%M%S') | tee version.txt
           fi
