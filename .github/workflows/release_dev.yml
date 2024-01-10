@@ -44,7 +44,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
       - name: Pack .NET package 🚚
-        run: dotnet pack -c:Release -p:PackageVersion=$(cat ../../version.txt)
+        run: dotnet pack -c:Release -p:PackageVersion=$(cat ../../../version.txt)
         working-directory: ./packages/dotnet-runtime/runtime
 
       - name: Publish .NET package 🚀
