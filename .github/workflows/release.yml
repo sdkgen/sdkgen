@@ -18,8 +18,10 @@ jobs:
         run: |
           if [ "${{ github.ref_type }}" == "tag" ]; then
             echo -n "${{ github.ref_name }}" | tee version.txt
+            echo -n latest > dist-tag.txt
           else
             echo -n 0.0.0-dev.$(date -u +'%Y%m%d%H%M%S') | tee version.txt
+            echo -n dev > dist-tag.txt
           fi
 
       - name: Setup Node.js 📦
@@ -57,7 +59,7 @@ jobs:
       - name: Publish NPM packages 🚀
         run: |
           cp -r LICENSE packages/*
-          npx lerna publish $(cat version.txt) --no-git-tag-version --no-push --yes
+          npx lerna publish $(cat version.txt) --no-git-tag-version --no-push --yes --dist-tag=$(cat dist-tag.txt)
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
