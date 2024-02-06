@@ -55,7 +55,6 @@ open class SdkgenHttpClient(
     class DateTimeAdapter: TypeAdapter<Calendar>() {
         companion object {
             val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US).apply {
-                this.timeZone = TimeZone.getTimeZone("UTC")
             }
         }
 
@@ -89,7 +88,6 @@ open class SdkgenHttpClient(
     class DateAdapter: TypeAdapter<Calendar>() {
         companion object {
             val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US).apply {
-                this.timeZone = TimeZone.getTimeZone("UTC")
             }
         }
 
