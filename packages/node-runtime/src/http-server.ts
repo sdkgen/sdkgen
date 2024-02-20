@@ -70,7 +70,13 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
 
   public introspection = true;
 
+  private enableLogs = true;
+
   public log = (message: string) => {
+    if (!this.enableLogs) {
+      return;
+    }
+
     console.log(`${new Date().toISOString()} ${message}`);
   };
 
