@@ -3,7 +3,7 @@
   "editor.tabSize": 4,
   "files.insertFinalNewline": true,
   "editor.codeActionsOnSave": {
-    "source.organizeImports": "explicit"
+    "source.organizeImports": true
   },
   "eslint.validate": [
     "javascript",
