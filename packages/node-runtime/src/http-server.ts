@@ -70,7 +70,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
 
   public introspection = true;
 
-  private enableLogs = true;
+  public enableLogs = true;
 
   public log = (message: string) => {
     if (!this.enableLogs) {
