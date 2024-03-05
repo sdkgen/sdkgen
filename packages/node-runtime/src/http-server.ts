@@ -74,6 +74,8 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
     console.log(`${new Date().toISOString()} ${message}`);
   };
 
+  public logError: (...error: unknown[]) => void = console.error;
+
   private hasSwagger = false;
 
   private ignoredUrlPrefix = "";
@@ -114,7 +116,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
           res.setHeader("Content-Type", "application/octet-stream");
           res.write(generateFn(this.apiConfig.ast));
         } catch (e) {
-          console.error(e);
+          this.logError(e);
           res.statusCode = 500;
           res.write(`${e}`);
         }
@@ -152,7 +154,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
         etag: true,
         public: PLAYGROUND_PUBLIC_PATH,
       }).catch(e => {
-        console.error(e);
+        this.logError(e);
         res.statusCode = 500;
         res.write(`${e}`);
         res.end();
@@ -607,7 +609,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
                         res.setHeader("content-type", fileType?.mime ?? "application/octet-stream");
                       })
                       .catch(err => {
-                        console.error(err);
+                        this.logError(err);
                         res.setHeader("content-type", "application/octet-stream");
                       })
                       .then(() => {
@@ -622,7 +624,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
                   }
                 }
               } catch (error) {
-                console.error(error);
+                this.logError(error);
                 if (!res.headersSent) {
                   res.statusCode = 500;
                 }
@@ -631,7 +633,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
               }
             });
           } catch (error) {
-            console.error(error);
+            this.logError(error);
             if (!res.headersSent) {
               res.statusCode = 500;
             }
@@ -647,12 +649,12 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
     const hrStart = process.hrtime();
 
     req.on("error", err => {
-      console.error(err);
+      this.logError(err);
       res.end();
     });
 
     res.on("error", err => {
-      console.error(err);
+      this.logError(err);
       res.end();
     });
 
@@ -1051,7 +1053,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
     const duration = deltaTime[0] + deltaTime[1] * 1e-9;
 
     if (reply.error) {
-      console.error(reply.error);
+      this.logError(reply.error);
     }
 
     this.log(`${ctx.request.id} [${duration.toFixed(6)}s] ${ctx.request.name}() -> ${reply.error ? this.makeResponseError(reply.error).type : "OK"}`);
