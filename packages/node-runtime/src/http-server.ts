@@ -74,7 +74,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
     console.log(`${new Date().toISOString()} ${message}`);
   };
 
-  public logError = console.error;
+  public logError: (...error: unknown[]) => void = console.error;
 
   private hasSwagger = false;
 
