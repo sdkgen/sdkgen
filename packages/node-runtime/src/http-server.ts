@@ -520,6 +520,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
               headers: req.headers,
               id: randomBytes(16).toString("hex"),
               ip,
+              query,
               name: op.name,
               version: 3,
             };
@@ -769,7 +770,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
       return;
     }
 
-    const request = this.parseRequest(req, body.toString(), clientIp);
+    const request = this.parseRequest(req, body.toString(), clientIp, query);
 
     if (!request) {
       this.writeReply(
@@ -798,14 +799,14 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
     writeReply(ctx, await executeRequest(ctx, this.apiConfig));
   }
 
-  private parseRequest(req: IncomingMessage, body: string, ip: string): ContextRequest | null {
+  private parseRequest(req: IncomingMessage, body: string, ip: string, query: string | null): ContextRequest | null {
     switch (this.identifyRequestVersion(req, body)) {
       case 1:
-        return this.parseRequestV1(req, body, ip);
+        return this.parseRequestV1(req, body, ip, query);
       case 2:
-        return this.parseRequestV2(req, body, ip);
+        return this.parseRequestV2(req, body, ip, query);
       case 3:
-        return this.parseRequestV3(req, body, ip);
+        return this.parseRequestV3(req, body, ip, query);
       default:
         throw new Error("Failed to understand request");
     }
@@ -826,7 +827,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
   }
 
   // Old Sdkgen format
-  private parseRequestV1(req: IncomingMessage, body: string, ip: string): ContextRequest {
+  private parseRequestV1(req: IncomingMessage, body: string, ip: string, query: string | null): ContextRequest {
     const parsed = decode(
       {
         Request: {
@@ -871,6 +872,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
       files: [],
       headers: req.headers,
       id: `${deviceId}-${parsed.id}`,
+      query,
       ip,
       name: parsed.name,
       version: 1,
@@ -878,7 +880,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
   }
 
   // Maxima sdkgen format
-  private parseRequestV2(req: IncomingMessage, body: string, ip: string): ContextRequest {
+  private parseRequestV2(req: IncomingMessage, body: string, ip: string, query: string | null): ContextRequest {
     const parsed = decode(
       {
         Request: {
@@ -926,6 +928,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
       files: [],
       headers: req.headers,
       id: `${parsed.deviceId}-${parsed.requestId ?? randomBytes(16).toString("hex")}`,
+      query,
       ip,
       name: parsed.name,
       version: 2,
@@ -933,7 +936,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
   }
 
   // New sdkgen format
-  private parseRequestV3(req: IncomingMessage, body: string, ip: string): ContextRequest {
+  private parseRequestV3(req: IncomingMessage, body: string, ip: string, query: string | null): ContextRequest {
     const parsed = decode(
       {
         DeviceInfo: {
@@ -989,6 +992,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
       headers: req.headers,
       id: `${deviceId}-${parsed.requestId ?? randomBytes(16).toString("hex")}`,
       ip,
+      query,
       name: parsed.name,
       version: 3,
     };
