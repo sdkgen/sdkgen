@@ -39,6 +39,7 @@ export function apiTestWrapper<ExtraContextT, ApiT extends BaseApiConfig<ExtraCo
           ip: partialCtx.request?.ip ?? "0.0.0.0",
           name: functionName,
           version: 3,
+          query: null,
         },
         response: {
           headers: new Map(),

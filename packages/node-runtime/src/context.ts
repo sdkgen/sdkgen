@@ -14,6 +14,7 @@ export interface ContextRequest {
   };
   extra: Record<string, unknown>;
   headers: IncomingHttpHeaders;
+  query: string | null;
   id: string;
   ip: string;
   name: string;
