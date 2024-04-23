@@ -20,6 +20,7 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.parcelize.RawValue
 import java.util.*
 import okhttp3.Interceptor
+import java.math.BigInteger
 
 inline fun <reified T> Gson.fromJson(json: String) =
     fromJson<T>(json, object : TypeToken<T>() {}.type)

@@ -39,7 +39,7 @@ export function generateKotlinTypeName(type: Type): string {
       return "Double";
 
     case BigIntPrimitiveType:
-      return "BigInt";
+      return "BigInteger";
 
     case DatePrimitiveType:
     case DateTimePrimitiveType:
