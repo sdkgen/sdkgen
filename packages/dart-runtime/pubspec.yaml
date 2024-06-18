@@ -4,7 +4,7 @@ homepage: https://sdkgen.github.io/
 description: Dart API client for sdkgen server. It must be used with a generated file, see docs.
 
 environment:
-  sdk: ">=3.0.0 <4.0.0"
+  sdk: '>=3.0.0 <4.0.0'
   flutter: ">=3.10.0"
 
 dependencies:
