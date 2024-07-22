@@ -213,9 +213,7 @@ open class SdkgenHttpClient(
         return if (prefs.contains("deviceId")) {
             prefs.getString("deviceId", "") ?: ""
         } else {
-            val bytes = ByteArray(16)
-            random.nextBytes(bytes)
-            val deviceId = bytesToHex(bytes)
+            val deviceId = UUID.randomUUID().toString()
             prefs.edit().putString("deviceId", deviceId).apply()
             deviceId
         }
