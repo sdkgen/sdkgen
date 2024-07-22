@@ -32,7 +32,8 @@ open class SdkgenHttpClient(
     private val defaultTimeoutMillis: Long = 10000L,
     var fingerprint: String? = null,
     private val httpInterceptor: Interceptor? = null,
-    private val httpNetworkInterceptor: Interceptor? = null
+    private val httpNetworkInterceptor: Interceptor? = null,
+    private val deviceIdDelegate: (() -> String)? = null
 ) {
 
     val extra = mutableMapOf<String, Any>()
@@ -213,12 +214,16 @@ open class SdkgenHttpClient(
         return if (prefs.contains("deviceId")) {
             prefs.getString("deviceId", "") ?: ""
         } else {
-            val bytes = ByteArray(16)
-            random.nextBytes(bytes)
-            val deviceId = bytesToHex(bytes)
+            val deviceId = deviceIdDelegate?.invoke() ?: generateDeviceId()
             prefs.edit().putString("deviceId", deviceId).apply()
             deviceId
         }
+    }
+
+    private fun generateDeviceId(): String {
+        val bytes = ByteArray(16)
+        random.nextBytes(bytes)
+        return bytesToHex(bytes)
     }
 
     @SuppressLint("HardwareIds")
