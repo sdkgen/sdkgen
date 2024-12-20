@@ -162,11 +162,12 @@ export function encode(typeTable: DeepReadonly<TypeTable>, path: string, type: D
   } else if (simpleTypes.indexOf(type) >= 0) {
     return simpleEncodeDecode(path, type, value);
   } else if (type === "bytes") {
-    if (!(value instanceof ArrayBuffer)) {
+    if (!(value instanceof ArrayBuffer) && !Buffer.isBuffer(value)) {
       throw new ParseError(path, type, value);
     }
 
-    return btoa(String.fromCharCode(...(new Uint8Array(value) as unknown as number[])));
+    const uint8Array = Buffer.isBuffer(value) ? new Uint8Array(value) : new Uint8Array(value);
+    return btoa(String.fromCharCode(...uint8Array));
   } else if (type === "bigint") {
     if (!(typeof value === "bigint")) {
       throw new ParseError(path, type, value);
