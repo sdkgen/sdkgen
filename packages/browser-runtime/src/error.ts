@@ -1,6 +1,10 @@
 export abstract class SdkgenError extends Error {
-  get type(): string {
-    return this.constructor.name;
+  type: string;
+
+  constructor(message: string, type: string) {
+    super(message);
+    this.message = message;
+    this.type = type;
   }
 
   public toJSON(): { message: string; type: string } {
@@ -13,9 +17,10 @@ export abstract class SdkgenError extends Error {
 export abstract class SdkgenErrorWithData<DataType> extends SdkgenError {
   constructor(
     message: string,
+    type: string,
     public data: DataType,
   ) {
-    super(message);
+    super(message, type);
   }
 
   public toJSON(): { data: DataType; message: string; type: string } {
