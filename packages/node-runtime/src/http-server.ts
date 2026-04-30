@@ -678,23 +678,23 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
       return;
     }
 
-    const handleBody = (body: Buffer) => {
-      this.handleRequestWithBody(req, res, body, hrStart).catch((e: unknown) => this.writeReply(res, null, { error: e }, hrStart));
-    };
+    new Promise<Buffer>(resolve => {
+      // Google Cloud Functions add a rawBody property to the request object
+      if (has(req, "rawBody") && req.rawBody instanceof Buffer) {
+        resolve(req.rawBody);
+      } else {
+        const body: Uint8Array[] = [];
 
-    // Google Cloud Functions add a rawBody property to the request object
-    if (has(req, "rawBody") && req.rawBody instanceof Buffer) {
-      handleBody(req.rawBody);
-    } else {
-      const body: Buffer[] = [];
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+        req.on("data", chunk => body.push(chunk));
 
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      req.on("data", chunk => body.push(chunk));
-
-      req.on("end", () => {
-        handleBody(Buffer.concat(body));
-      });
-    }
+        req.on("end", () => {
+          resolve(Buffer.concat(body));
+        });
+      }
+    })
+      .then(async body => this.handleRequestWithBody(req, res, body, hrStart))
+      .catch((e: unknown) => this.writeReply(res, null, { error: e }, hrStart));
   };
 
   private async handleRequestWithBody(req: IncomingMessage, res: ServerResponse, body: Buffer, hrStart: [number, number]) {
