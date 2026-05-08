@@ -5,6 +5,11 @@ import type { DeepReadonly } from "./utils";
 
 const simpleStringTypes = ["string", "email", "phone", "html", "xml"];
 const simpleTypes = ["json", "bool", "url", "int", "uint", "float", "money", "hex", "uuid", "base64", "void", ...simpleStringTypes];
+const bytesEncodeChunkSize = 0x8000;
+
+type Uint8ArrayWithBase64 = Uint8Array & {
+  toBase64?(): string;
+};
 
 class ParseError extends Error {
   constructor(path: string, type: DeepReadonly<TypeDescription>, value: unknown) {
@@ -112,6 +117,28 @@ function simpleEncodeDecode(path: string, type: string, value: unknown) {
   throw new Error(`Unknown type '${type}' at '${path}'`);
 }
 
+function isBuffer(value: unknown): value is Buffer {
+  return typeof Buffer !== "undefined" && value instanceof Buffer;
+}
+
+function encodeBytes(value: ArrayBuffer | Uint8Array): string {
+  const bytes = value instanceof Uint8Array ? value : new Uint8Array(value);
+  const base64Bytes = bytes as Uint8ArrayWithBase64;
+  const { toBase64 } = base64Bytes;
+
+  if (typeof toBase64 === "function") {
+    return toBase64.call(bytes);
+  }
+
+  const chunks: string[] = [];
+
+  for (let index = 0; index < bytes.length; index += bytesEncodeChunkSize) {
+    chunks.push(String.fromCharCode(...Array.from(bytes.subarray(index, index + bytesEncodeChunkSize))));
+  }
+
+  return btoa(chunks.join(""));
+}
+
 export function encode(typeTable: DeepReadonly<TypeTable>, path: string, type: DeepReadonly<TypeDescription>, value: unknown): unknown {
   if (typeof type === "string" && !type.endsWith("?") && type !== "void" && (value === null || value === undefined)) {
     throw new Error(`Invalid type at '${path}', cannot be null`);
@@ -162,18 +189,15 @@ export function encode(typeTable: DeepReadonly<TypeTable>, path: string, type: D
   } else if (simpleTypes.indexOf(type) >= 0) {
     return simpleEncodeDecode(path, type, value);
   } else if (type === "bytes") {
-    if (!(value instanceof ArrayBuffer) && !(value instanceof Uint8Array) && !(value instanceof Buffer)) {
+    if (!(value instanceof ArrayBuffer) && !(value instanceof Uint8Array) && !isBuffer(value)) {
       throw new ParseError(path, type, value);
     }
 
-    if (value instanceof Buffer) {
+    if (isBuffer(value)) {
       return value.toString("base64");
     }
 
-    const uint8Array = new Uint8Array(value) as unknown as number[];
-    const charArray = uint8Array.map(byte => String.fromCharCode(byte));
-
-    return btoa(charArray.join(""));
+    return encodeBytes(value);
   } else if (type === "bigint") {
     if (!(typeof value === "bigint")) {
       throw new ParseError(path, type, value);
