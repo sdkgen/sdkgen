@@ -114,6 +114,7 @@ article {
       display: flex;
       margin: 0 auto;
       font-weight: 300;
+      font-size: 1.75rem;
       line-height: 36px; // to match button
       white-space: pre;
 
@@ -157,19 +158,32 @@ article {
       padding: 20px 20px 0 20px;
 
       mat-chip {
+        display: flex;
         overflow: hidden;
 
         &:focus {
           outline: none;
         }
 
+        ::ng-deep .mat-mdc-chip-action-label {
+          display: flex;
+        }
+
         i {
-          display: block;
-          width: 1.3px;
+          display: inline-block;
+          width: 0.5px;
           background: #fff;
           margin: 0 7.5px;
           border-radius: 5px;
-          height: calc(100% + 14px);
+        }
+
+        .selectable {
+          -webkit-user-select: text;
+          user-select: text;
+        }
+
+        .bold {
+          font-weight: 700;
         }
       }
     }

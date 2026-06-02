@@ -56,6 +56,7 @@ jobs:
       - name: Build code 🚚
         run: |
           npm run build
+          sed -i -E 's_(<base href=")/(">)_\1/playground/\2_' packages/playground/dist/index.html
 
       - name: Publish NPM packages 🚀
         run: |

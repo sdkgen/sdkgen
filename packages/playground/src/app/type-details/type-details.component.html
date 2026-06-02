@@ -14,7 +14,7 @@
   </button>
 </h1>
 
-<p>{{ typeDoc?.longDescription }}</p>
+<p *ngIf="typeDoc?.longDescription">{{ typeDoc?.longDescription }}</p>
 
 <section *ngIf="typeDoc?.isStruct && typeDoc?.structFields">
   <div class="table-responsive mat-elevation-z8">
