@@ -3,8 +3,6 @@ on:
   push:
     branches:
       - main
-permissions:
-  contents: write
 jobs:
   docs:
     runs-on: ubuntu-latest
@@ -38,9 +36,16 @@ jobs:
           npm run build
           sed -i -E 's_(<base href=")/(">)_\1/dev/playground/\2_' packages/playground/dist/index.html
 
+      - name: Setup SSH deploy key 🔑
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SDKGEN_DOCS_DEPLOY_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          echo "GIT_SSH_COMMAND=ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new" >> "$GITHUB_ENV"
+
       - name: Prepare deploy 📦
         run: |
-          git clone --depth 1 -b main https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/sdkgen/sdkgen.github.io.git
+          git clone --depth 1 -b main git@github.com:sdkgen/sdkgen.github.io.git
           rm -rf sdkgen.github.io/dev
           mv site sdkgen.github.io/dev
           mv packages/playground/dist/ sdkgen.github.io/dev/playground/
