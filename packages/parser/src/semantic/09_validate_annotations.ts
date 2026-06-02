@@ -24,6 +24,7 @@ import {
   OptionalType,
   RestAnnotation,
   StringPrimitiveType,
+  TagAnnotation,
   ThrowsAnnotation,
   TypeDefinition,
   TypeReference,
@@ -134,6 +135,8 @@ export class ValidateAnnotationsVisitor extends Visitor {
             throw new SemanticError(`A GET rest endpoint must return something at ${annotation.location}`);
           }
         } else if (annotation instanceof HiddenAnnotation) {
+          // Ok
+        } else if (annotation instanceof TagAnnotation) {
           // Ok
         } else {
           throw new SemanticError(`Cannot have @${annotation.constructor.name.replace("Annotation", "").toLowerCase()} at ${annotation.location}`);

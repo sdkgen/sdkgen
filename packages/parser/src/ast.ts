@@ -53,6 +53,12 @@ export class ThrowsAnnotation extends Annotation {
   }
 }
 
+export class TagAnnotation extends Annotation {
+  constructor(public tag: string) {
+    super();
+  }
+}
+
 export class ArgDescriptionAnnotation extends Annotation {
   constructor(
     public argName: string,

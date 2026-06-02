@@ -8,34 +8,27 @@
 }
 
 aside {
-  display: block;
+  display: flex;
+  flex-direction: column;
   background: lighten($color-primary, 5%);
   height: 100%;
-  overflow-y: auto;
-  overflow-x: hidden;
-  scrollbar-width: thin;
-}
+  overflow: hidden;
 
-nav {
-  display: block;
-  width: 100%;
-
+  // Search bar lives outside the scroll region so it stays fixed at the top
+  // and the group titles can stick to top: 0 of the list without a magic offset.
   form {
-    display: block;
+    flex: 0 0 auto;
+    display: flex;
+    align-items: center;
+    gap: 8px;
     width: 100%;
     padding: 10px;
 
     background: lighten($color-primary, 5%);
     border-bottom: 1px solid lighten($color-primary, 15%);
 
-    position: -webkit-sticky;
-    position: sticky;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 2;
-
     input {
+      flex: 1 1 auto;
       display: block;
       background: lighten($color-primary, 15%);
 
@@ -45,6 +38,131 @@ nav {
       width: 100%;
       padding: 5px;
     }
+
+    .collapse-toggle {
+      flex: 0 0 auto;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+
+      width: 32px;
+      height: 32px;
+      padding: 0;
+
+      background: lighten($color-primary, 15%);
+      border: 0 none;
+      border-radius: 4px;
+      color: #bbb;
+      cursor: pointer;
+
+      transition:
+        background-color 0.15s ease,
+        color 0.15s ease;
+
+      &:hover {
+        background: lighten($color-primary, 20%);
+        color: #fff;
+      }
+
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+        line-height: 20px;
+      }
+    }
+  }
+}
+
+nav {
+  display: block;
+  width: 100%;
+
+  // Scroll container for the function list.
+  flex: 1 1 auto;
+  overflow-y: auto;
+  overflow-x: hidden;
+  scrollbar-width: thin;
+
+  // Prevent the scroll-anchoring algorithm from picking a sticky category
+  // header as its anchor, which makes the list jump when toggling a group.
+  overflow-anchor: none;
+
+  $color-category-accent: #569cd6;
+
+  summary.fn-group-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    margin: 0;
+    padding: 10px 10px 10px 12px;
+    background: lighten($color-primary, 13%);
+    border-bottom: 1px solid lighten($color-primary, 20%);
+    border-left: 3px solid $color-category-accent;
+
+    color: #ddd;
+    font-weight: 600;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+
+    cursor: pointer;
+    user-select: none;
+    list-style: none; // hide default disclosure marker (Firefox)
+
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0; // the search bar is outside this scroll container, so no offset needed
+    z-index: 1;
+
+    transition: background-color 0.15s ease;
+
+    &:hover {
+      background: lighten($color-primary, 17%);
+    }
+
+    &::-webkit-details-marker {
+      display: none; // hide default disclosure marker (Chrome/Safari)
+    }
+
+    &::before {
+      content: "";
+      flex: 0 0 auto;
+      width: 0;
+      height: 0;
+      border-left: 4px solid currentColor;
+      border-top: 4px solid transparent;
+      border-bottom: 4px solid transparent;
+      transition: transform 0.15s ease;
+    }
+
+    .fn-group-name {
+      flex: 1 1 auto;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .fn-group-count {
+      flex: 0 0 auto;
+
+      padding: 1px 7px;
+      border-radius: 10px;
+      background: rgba($color-category-accent, 0.15);
+
+      color: $color-category-accent;
+      font-size: 0.7rem;
+      font-weight: 600;
+    }
+  }
+
+  details[open] > summary.fn-group-title::before {
+    transform: rotate(90deg);
+  }
+
+  // Indent functions that live under a category so the hierarchy reads clearly.
+  details > ul li {
+    padding-left: 32px;
   }
 
   ul {
