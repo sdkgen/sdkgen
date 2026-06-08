@@ -92,7 +92,7 @@ jobs:
         working-directory: ./packages/android-runtime
 
       - name: Check Gradle Wrapper 👀
-        uses: gradle/wrapper-validation-action@v1
+        uses: gradle/actions/wrapper-validation@v6
 
       - name: Publish Android package 🚀
         run: |
