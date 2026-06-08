@@ -76,5 +76,5 @@ ext["signing.password"] = properties.getProperty("signing.password") ?: ""
 ext["signing.secretKeyRingFile"] = properties.getProperty("signing.secretKeyRingFile") ?: ""
 
 signing {
-    sign publishing.publications
+    sign publishing.publications["release"]
 }
