@@ -106,13 +106,19 @@ jobs:
       - name: Prepare Dart package 🧪
         run: |
           sed 's/version: 0.0.0/version: '$(cat ../../version.txt)'/' -i pubspec.yaml
-          mkdir -p $XDG_CONFIG_HOME/dart && \
-          echo "$PUB_CREDENTIALS" > $XDG_CONFIG_HOME/dart/pub-credentials.json
         working-directory: ./packages/dart-runtime
-        env:
-          PUB_CREDENTIALS: ${{ secrets.PUB_CREDENTIALS }}
+
+      - name: Authenticate with GCP ☁️
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ secrets.DART_PUB_GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.DART_PUB_GCP_SERVICE_ACCOUNT_EMAIL }}
 
       - name: Publish Dart package 🚀
         run: |
+          gcloud auth print-identity-token \
+            --audiences=https://pub.dev \
+            --include-email \
+            | flutter pub token add https://pub.dev
           flutter pub pub publish -v -f
         working-directory: ./packages/dart-runtime
