@@ -31,6 +31,7 @@ jobs:
 
       - name: Build playground 🌎
         run: |
+          jq '.version = "${{ github.event.release.tag_name }}"' packages/playground/package.json > tmp.json && mv tmp.json packages/playground/package.json
           npm run build
           sed -i -E 's_(<base href=")/(">)_\1/playground/\2_' packages/playground/dist/index.html
 
