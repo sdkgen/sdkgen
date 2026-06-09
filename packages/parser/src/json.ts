@@ -14,6 +14,7 @@ import {
   OptionalType,
   RestAnnotation,
   StructType,
+  TagAnnotation,
   ThrowsAnnotation,
   TypeDefinition,
   TypeReference,
@@ -46,6 +47,10 @@ type AnnotationJson =
       value: string;
     }
   | {
+      type: "tag";
+      value: string;
+    }
+  | {
       type: "hidden";
       value: null;
     }
@@ -70,6 +75,8 @@ function annotationToJson(ann: Annotation): AnnotationJson {
     return { type: "description", value: ann.text };
   } else if (ann instanceof ThrowsAnnotation) {
     return { type: "throws", value: ann.error };
+  } else if (ann instanceof TagAnnotation) {
+    return { type: "tag", value: ann.tag };
   } else if (ann instanceof RestAnnotation) {
     return {
       type: "rest",
@@ -97,6 +104,8 @@ function annotationFromJson(json: AnnotationJson | DeepReadonly<AnnotationJson>)
       return new DescriptionAnnotation(json.value);
     case "throws":
       return new ThrowsAnnotation(json.value);
+    case "tag":
+      return new TagAnnotation(json.value);
     case "rest": {
       const { method, path, pathVariables, queryVariables, headers, bodyVariable } = json.value;
 

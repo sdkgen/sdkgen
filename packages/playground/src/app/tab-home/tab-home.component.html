@@ -1,14 +1,22 @@
 <as-split [direction]="isBelowMd ? 'vertical' : 'horizontal'" unit="pixel">
   <as-split-area [size]="isBelowMd ? 130 : 350">
     <aside>
-      <nav>
-        <form>
-          <input type="search" placeholder="Buscar&#8230;" [(ngModel)]="searchText" [ngModelOptions]="{ standalone: true }" />
-        </form>
+      <form>
+        <input type="search" placeholder="Buscar&#8230;" [(ngModel)]="searchText" [ngModelOptions]="{ standalone: true }" />
+        <button
+          *ngIf="hasTags"
+          type="button"
+          class="collapse-toggle"
+          [matTooltip]="allGroupsCollapsed ? 'Expandir todas' : 'Recolher todas'"
+          (click)="toggleAllGroups()"
+        >
+          <mat-icon>{{ allGroupsCollapsed ? "unfold_more" : "unfold_less" }}</mat-icon>
+        </button>
+      </form>
 
-        <ul>
+      <nav>
+        <ng-template #fnItem let-fn>
           <li
-            *ngFor="let fn of fnTable | appFilter: searchText"
             (click)="this.selectedFunction = fn"
             [ngClass]="{ active: this.selectedFunction?.name === fn.name }"
             mat-ripple
@@ -16,7 +24,33 @@
             <span class="fn-call">{{ fn.name }}</span>
             <span class="fn-description" *ngIf="fn.description">{{ fn.description }}</span>
           </li>
+        </ng-template>
+
+        <ul *ngIf="!hasTags">
+          <ng-container *ngFor="let fn of fnTable | appFilter: searchText">
+            <ng-container *ngTemplateOutlet="fnItem; context: { $implicit: fn }"></ng-container>
+          </ng-container>
         </ul>
+
+        <ng-container *ngIf="hasTags">
+          <details
+            class="fn-group"
+            *ngFor="let group of fnGroups"
+            [open]="isGroupOpen(group)"
+            [hidden]="(group.functions | appFilter: searchText).length === 0"
+            (toggle)="onGroupToggle(group, $event)"
+          >
+            <summary class="fn-group-title">
+              <span class="fn-group-name">{{ group.name }}</span>
+              <span class="fn-group-count">{{ (group.functions | appFilter: searchText).length }}</span>
+            </summary>
+            <ul>
+              <ng-container *ngFor="let fn of group.functions | appFilter: searchText">
+                <ng-container *ngTemplateOutlet="fnItem; context: { $implicit: fn }"></ng-container>
+              </ng-container>
+            </ul>
+          </details>
+        </ng-container>
       </nav>
     </aside>
   </as-split-area>

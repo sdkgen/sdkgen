@@ -1,6 +1,7 @@
 import type { ErrorNode, Type } from "@sdkgen/parser";
 import {
   StatusCodeAnnotation,
+  TagAnnotation,
   ThrowsAnnotation,
   DecimalPrimitiveType,
   JsonPrimitiveType,
@@ -172,6 +173,7 @@ function getSwaggerJson<ExtraContextT>(apiConfig: BaseApiConfig<ExtraContextT>) 
   const paths: Record<string, any> = {};
 
   for (const op of apiConfig.ast.operations) {
+    const tagAnnotations = op.annotations.filter(ann => ann instanceof TagAnnotation) as TagAnnotation[];
     const throwAnnotations = op.annotations.filter(ann => ann instanceof ThrowsAnnotation) as ThrowsAnnotation[];
     let possibleErrors = throwAnnotations.map(ann => apiConfig.ast.errors.find(err => err.name === ann.error)).filter(x => x) as ErrorNode[];
 
@@ -351,7 +353,7 @@ function getSwaggerJson<ExtraContextT>(apiConfig: BaseApiConfig<ExtraContextT>) 
               .filter(x => x instanceof DescriptionAnnotation)
               .map(x => (x as DescriptionAnnotation).text)
               .join(" ") || undefined,
-          tags: [ann.path.split("/")[1]],
+          tags: tagAnnotations.length > 0 ? tagAnnotations.map(tag => tag.tag) : [ann.path.split("/")[1]],
         };
       }
     }

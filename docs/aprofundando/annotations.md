@@ -62,6 +62,25 @@ fn getUser(id: uuid)
 
 Neste exemplo a função `getUser` pode lançar o erro `NotFound` ou o erro `Forbidden`. Note que além desses dois, todas as funções podem lançar o erro `Fatal`, quando o comportamento sai do esperado. Erros do tipo `Fatal` devem sempre ser considerados como bugs do backend. Caso a função tente lançar algum dos erros não mapeados, este será convertido em `Fatal` para o cliente.
 
+## `@tag`
+
+A anotação `@tag` pode aparecer antes de funções e serve para agrupá-las em categorias. Ela é puramente informativa: não altera o comportamento da função, mas é utilizada pelo playground para organizar as funções em seções e também aparece como `tags` no Swagger/OpenAPI gerado. O valor é um texto livre, usado diretamente como o nome da categoria.
+
+Assim como o `@throws`, a anotação pode ser incluída múltiplas vezes para que uma mesma função apareça em mais de uma categoria. Funções sem `@tag` são agrupadas em uma categoria padrão ("(Sem tags)") no playground.
+
+```
+@tag Usuários
+@tag Administração
+@description Promove um usuário a administrador.
+fn promoteToAdmin(id: uuid)
+
+@tag Usuários
+@description Obtém o usuário atual.
+fn getUser(): User?
+```
+
+Neste exemplo a função `promoteToAdmin` aparecerá tanto na categoria "Usuários" quanto na "Administração", enquanto `getUser` aparecerá apenas em "Usuários".
+
 ## `@hidden`
 
 Por padrão todas as funções podem ser chamadas no playground e são parte dos targets de clientes gerados. Caso uma função precise existir, mas não deva ser chamada normalmente, a anotação `@hidden` pode ser aplicada. As funções ocultas não existirão no playground ou nos target gerados, sendo útil para depreciar funções antigas ou para marcar funções para serem utilizadas exclusivamente como [REST](./rest.md). Repare que funções marcadas como `@hidden` ainda existem e ainda podem ser chamadas, especialmente por targets antigos. Não use para efeitos de segurança. Exemplo:
