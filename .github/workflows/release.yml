@@ -136,17 +136,17 @@ jobs:
         working-directory: ./packages/dart-runtime
 
       - name: Authenticate with GCP ☁️
+        id: auth
         uses: google-github-actions/auth@v3
         with:
           workload_identity_provider: ${{ secrets.DART_PUB_GCP_WORKLOAD_IDENTITY_PROVIDER }}
           service_account: ${{ secrets.DART_PUB_GCP_SERVICE_ACCOUNT_EMAIL }}
+          token_format: id_token
+          id_token_audience: https://pub.dev
+          id_token_include_email: true
 
       - name: Publish Dart package 🚀
         run: |
-          gcloud auth print-identity-token \
-            --impersonate-service-account=${{ secrets.DART_PUB_GCP_SERVICE_ACCOUNT_EMAIL }} \
-            --audiences=https://pub.dev \
-            --include-email \
-            | flutter pub token add https://pub.dev
+          echo "${{ steps.auth.outputs.id_token }}" | flutter pub token add https://pub.dev
           flutter pub pub publish -v -f
         working-directory: ./packages/dart-runtime
