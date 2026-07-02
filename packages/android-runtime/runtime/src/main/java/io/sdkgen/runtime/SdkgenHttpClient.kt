@@ -55,9 +55,17 @@ open class SdkgenHttpClient(
 
     class DateTimeAdapter: TypeAdapter<Calendar>() {
         companion object {
-            val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US).apply {
-                this.timeZone = TimeZone.getTimeZone("UTC")
+            private val threadLocalSdf = ThreadLocal<SimpleDateFormat>()
+
+            fun getFormatter(): SimpleDateFormat {
+                return threadLocalSdf.get() ?: SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US).apply {
+                    timeZone = TimeZone.getTimeZone("UTC")
+                    threadLocalSdf.set(this)
+                }
             }
+
+            @JvmStatic
+            val sdf: SimpleDateFormat get() = getFormatter()
         }
 
         override fun write(out: JsonWriter?, value: Calendar?) {
@@ -67,7 +75,7 @@ open class SdkgenHttpClient(
                     return
                 }
 
-                val dateTimeString = sdf.format(value.time)
+                val dateTimeString = getFormatter().format(value.time)
                 it.value(dateTimeString)
             }
         }
@@ -77,7 +85,7 @@ open class SdkgenHttpClient(
                 val dateTimeString = it.nextString()
 
                 try {
-                    return Calendar.getInstance().apply { time = sdf.parse(dateTimeString)!! }
+                    return Calendar.getInstance().apply { time = getFormatter().parse(dateTimeString)!! }
                 } catch (e: Exception) {
                     throw JsonIOException(e.message)
                 }
@@ -89,9 +97,17 @@ open class SdkgenHttpClient(
 
     class DateAdapter: TypeAdapter<Calendar>() {
         companion object {
-            val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US).apply {
-                this.timeZone = TimeZone.getTimeZone("UTC")
+            private val threadLocalSdf = ThreadLocal<SimpleDateFormat>()
+
+            fun getFormatter(): SimpleDateFormat {
+                return threadLocalSdf.get() ?: SimpleDateFormat("yyyy-MM-dd", Locale.US).apply {
+                    timeZone = TimeZone.getTimeZone("UTC")
+                    threadLocalSdf.set(this)
+                }
             }
+
+            @JvmStatic
+            val sdf: SimpleDateFormat get() = getFormatter()
         }
 
         override fun write(out: JsonWriter?, value: Calendar?) {
@@ -101,7 +117,7 @@ open class SdkgenHttpClient(
                     return
                 }
 
-                val dateTimeString = sdf.format(value.time)
+                val dateTimeString = getFormatter().format(value.time)
                 it.value(dateTimeString)
             }
         }
@@ -111,7 +127,7 @@ open class SdkgenHttpClient(
                 val dateTimeString = it.nextString()
 
                 try {
-                    return Calendar.getInstance().apply { time = sdf.parse(dateTimeString)!! }
+                    return Calendar.getInstance().apply { time = getFormatter().parse(dateTimeString)!! }
                 } catch (e: Exception) {
                     throw JsonIOException(e.message)
                 }
@@ -361,7 +377,7 @@ open class SdkgenHttpClient(
                         addProperty("message", applicationContext.getString(R.string.sdkgen_error_unknown))
                     },
                     null,
-                     null
+                    null
                 )
             )
         }
