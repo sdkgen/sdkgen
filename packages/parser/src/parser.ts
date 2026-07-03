@@ -17,6 +17,7 @@ import {
   OptionalType,
   Spread,
   StructType,
+  TagAnnotation,
   ThrowsAnnotation,
   TypeDefinition,
   TypeReference,
@@ -210,6 +211,13 @@ export class Parser {
           break;
         case "throws":
           this.annotations.push(new ThrowsAnnotation(body).at(this.token));
+          break;
+        case "tag":
+          if (body === "") {
+            throw new ParserError(`@tag annotation needs a value at ${this.token.location}`);
+          }
+
+          this.annotations.push(new TagAnnotation(body).at(this.token));
           break;
         case "rest":
           try {

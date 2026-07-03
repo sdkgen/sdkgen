@@ -12,7 +12,7 @@ jobs:
       - name: Setup Node.js 📦
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
           registry-url: https://registry.npmjs.org
 
       - name: Setup Python 🐍
@@ -31,12 +31,20 @@ jobs:
 
       - name: Build playground 🌎
         run: |
+          jq '.version = "${{ github.event.release.tag_name }}"' packages/playground/package.json > tmp.json && mv tmp.json packages/playground/package.json
           npm run build
           sed -i -E 's_(<base href=")/(">)_\1/playground/\2_' packages/playground/dist/index.html
 
+      - name: Setup SSH deploy key 🔑
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SDKGEN_DOCS_DEPLOY_KEY }}" > ~/.ssh/deploy_key
+          chmod 600 ~/.ssh/deploy_key
+          echo "GIT_SSH_COMMAND=ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=accept-new" >> "$GITHUB_ENV"
+
       - name: Prepare deploy 📦
         run: |
-          git clone --depth 1 -b main https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/sdkgen/sdkgen.github.io.git
+          git clone --depth 1 -b main git@github.com:sdkgen/sdkgen.github.io.git
           mkdir -p sdkgen.github.io/pr
           cd sdkgen.github.io && rm -rf $(ls | grep -vE "^(pr|dev)$") && cd ..
           mv site/* sdkgen.github.io/

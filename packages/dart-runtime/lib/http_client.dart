@@ -5,6 +5,7 @@ import 'package:convert/convert.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'interceptors.dart';
 import 'types.dart';
 
 import 'deviceinfo_generic.dart'
@@ -28,12 +29,6 @@ class SdkgenErrorWithData<T> extends SdkgenError {
   String toString() => '$runtimeType: $message';
 }
 
-class SdkgenInterceptors {
-  Future Function(Map<String, dynamic> body)? onRequest;
-  Future Function(dynamic error)? onError;
-  Future Function(dynamic response)? onResponse;
-}
-
 class SdkgenHttpClient {
   final Uri baseUrl;
   final http.Client _client;
@@ -46,7 +41,7 @@ class SdkgenHttpClient {
   final Map<String, FunctionDescription> fnTable;
   final Map<String, SdkgenErrorDescription> errTable;
   final Random random = Random.secure();
-  final SdkgenInterceptors interceptors = SdkgenInterceptors();
+  final List<SdkgenInterceptors> interceptors = <SdkgenInterceptors>[];
 
   String? deviceId;
 
@@ -99,6 +94,11 @@ class SdkgenHttpClient {
     return deviceId!;
   }
 
+  SdkgenHttpClient addInterceptor(SdkgenInterceptors interceptor) {
+    interceptors.add(interceptor);
+    return this;
+  }
+
   Future<Object?> makeRequest(
     String functionName,
     Map<String, Object?> args,
@@ -131,7 +131,7 @@ class SdkgenHttpClient {
         'deviceInfo': await getDeviceInfo(await _deviceId())
       };
 
-      await interceptors.onRequest?.call(body);
+      await interceptors.onRequest(body);
 
       final response = await _client.post(
         baseUrl,
@@ -152,17 +152,17 @@ class SdkgenHttpClient {
         final response = decode(
             typeTable, '$functionName.ret', func.ret, responseBody['result']);
 
-        await interceptors.onResponse?.call(response);
+        await interceptors.onResponse.call(response);
 
         return response;
       }
     } catch (e) {
       if (e is SdkgenError) {
-        await interceptors.onError?.call(e);
+        await interceptors.onError.call(e);
         rethrow;
       } else {
         final error = _createError('Fatal', e.toString(), null, requestInfo);
-        await interceptors.onError?.call(error);
+        await interceptors.onError.call(error);
 
         throw error;
       }

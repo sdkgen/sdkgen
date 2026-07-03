@@ -194,6 +194,30 @@
 					}
 				},
 				{
+					"name": "meta.annotation.tag",
+					"match": "(@tag) (.*)\\n",
+					"captures": {
+						"1": {
+							"name": "constant.numeric"
+						},
+						"2": {
+							"name": "entity.name.type"
+						}
+					}
+				},
+				{
+					"name": "meta.annotation.statusCode",
+					"match": "(@statusCode) (\\d+)\n",
+					"captures": {
+						"1": {
+							"name": "constant.numeric"
+						},
+						"2": {
+							"name": "constant.numeric"
+						}
+					}
+				},
+				{
 					"name": "meta.annotations.rest",
 					"begin": "(@rest) (\\w+)",
 					"beginCaptures": {

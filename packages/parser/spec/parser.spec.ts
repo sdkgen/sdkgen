@@ -982,6 +982,63 @@ describe(Parser, () => {
     );
   });
 
+  test("handles functions with @tag", () => {
+    expectParses(
+      `
+        @tag Users
+        @tag Admin
+        @description Promotes a user to admin.
+        fn promoteToAdmin(id: uuid)
+        fn other(): int
+      `,
+      {
+        annotations: {
+          "fn.promoteToAdmin": [
+            { type: "tag", value: "Users" },
+            { type: "tag", value: "Admin" },
+            { type: "description", value: "Promotes a user to admin." },
+          ],
+        },
+        errors: ["Fatal"],
+        functionTable: {
+          promoteToAdmin: {
+            args: {
+              id: "uuid",
+            },
+            ret: "void",
+          },
+          other: {
+            args: {},
+            ret: "int",
+          },
+        },
+        typeTable: {},
+      },
+    );
+  });
+
+  test("doesn't allow @tag without a value", () => {
+    expectDoesntParse(
+      `
+        @tag
+        fn doIt(): string
+      `,
+      "@tag annotation needs a value",
+    );
+  });
+
+  test("doesn't allow @tag outside of functions", () => {
+    expectDoesntParse(
+      `
+        @tag Users
+        type User {
+          id: uuid
+        }
+      `,
+      "Cannot have @tag",
+    );
+  });
+
   test("handles recursive types", () => {
     expectParses(
       `

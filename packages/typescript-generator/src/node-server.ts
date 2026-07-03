@@ -10,7 +10,7 @@ export function generateNodeServerSource(ast: AstRoot): string {
   const hasErrorWithoutData = ast.errors.filter(err => err.name !== "Fatal").some(err => err.dataType instanceof VoidPrimitiveType);
 
   code += `/* eslint-disable */
-import { BaseApiConfig, Context, Fatal${hasErrorWithoutData ? ", SdkgenError" : ""}${
+import { BaseApiConfig, type Context${hasErrorWithoutData ? ", SdkgenError" : ""}${
     hasErrorWithData ? ", SdkgenErrorWithData" : ""
   } } from "@sdkgen/node-runtime";
 export { Fatal } from "@sdkgen/node-runtime";

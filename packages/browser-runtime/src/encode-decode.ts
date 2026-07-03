@@ -5,6 +5,11 @@ import type { DeepReadonly } from "./utils";
 
 const simpleStringTypes = ["string", "email", "phone", "html", "xml"];
 const simpleTypes = ["json", "bool", "url", "int", "uint", "float", "money", "hex", "uuid", "base64", "void", ...simpleStringTypes];
+const bytesEncodeChunkSize = 0x8000;
+
+type Uint8ArrayWithBase64 = Uint8Array & {
+  toBase64?(): string;
+};
 
 class ParseError extends Error {
   constructor(path: string, type: DeepReadonly<TypeDescription>, value: unknown) {
@@ -60,7 +65,7 @@ function simpleEncodeDecode(path: string, type: string, value: unknown) {
       isValidBase64 = false;
     }
 
-    if (typeof value !== "string" || !isValidBase64) {
+    if (typeof value !== "string" || !isValidBase64 || Buffer.from(value, "base64").toString("base64") !== value) {
       throw new ParseError(path, type, value);
     }
 
@@ -110,6 +115,28 @@ function simpleEncodeDecode(path: string, type: string, value: unknown) {
   }
 
   throw new Error(`Unknown type '${type}' at '${path}'`);
+}
+
+function isBuffer(value: unknown): value is Buffer {
+  return typeof Buffer !== "undefined" && value instanceof Buffer;
+}
+
+function encodeBytes(value: ArrayBuffer | Uint8Array): string {
+  const bytes = value instanceof Uint8Array ? value : new Uint8Array(value);
+  const base64Bytes = bytes as Uint8ArrayWithBase64;
+  const { toBase64 } = base64Bytes;
+
+  if (typeof toBase64 === "function") {
+    return toBase64.call(bytes);
+  }
+
+  const chunks: string[] = [];
+
+  for (let index = 0; index < bytes.length; index += bytesEncodeChunkSize) {
+    chunks.push(String.fromCharCode(...Array.from(bytes.subarray(index, index + bytesEncodeChunkSize))));
+  }
+
+  return btoa(chunks.join(""));
 }
 
 export function encode(typeTable: DeepReadonly<TypeTable>, path: string, type: DeepReadonly<TypeDescription>, value: unknown): unknown {
@@ -162,11 +189,15 @@ export function encode(typeTable: DeepReadonly<TypeTable>, path: string, type: D
   } else if (simpleTypes.indexOf(type) >= 0) {
     return simpleEncodeDecode(path, type, value);
   } else if (type === "bytes") {
-    if (!(value instanceof ArrayBuffer)) {
+    if (!(value instanceof ArrayBuffer) && !(value instanceof Uint8Array) && !isBuffer(value)) {
       throw new ParseError(path, type, value);
     }
 
-    return btoa(String.fromCharCode(...(new Uint8Array(value) as unknown as number[])));
+    if (isBuffer(value)) {
+      return value.toString("base64");
+    }
+
+    return encodeBytes(value);
   } else if (type === "bigint") {
     if (!(typeof value === "bigint")) {
       throw new ParseError(path, type, value);
@@ -283,7 +314,13 @@ export function decode(typeTable: DeepReadonly<TypeTable>, path: string, type: D
     try {
       return Uint8Array.from(atob(value), c => c.charCodeAt(0));
     } catch {
-      throw new ParseError(path, `${type} (base 64)`, value);
+      const buffer = Buffer.from(value, "base64");
+
+      if (buffer.toString("base64") !== value) {
+        throw new ParseError(path, `${type} (base 64)`, value);
+      }
+
+      return buffer;
     }
   } else if (type === "bigint") {
     if (typeof value !== "number" && (typeof value !== "string" || !/^-?[0-9]+$/u.test(value))) {

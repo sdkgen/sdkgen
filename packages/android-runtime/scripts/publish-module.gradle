@@ -66,6 +66,10 @@ afterEvaluate {
             }
         }
     }
+
+    signing {
+        sign publishing.publications["release"]
+    }
 }
 
 Properties properties = new Properties()
@@ -74,7 +78,3 @@ properties.load(project.rootProject.file('local.properties').newDataInputStream(
 ext["signing.keyId"] = properties.getProperty("signing.keyId") ?: ""
 ext["signing.password"] = properties.getProperty("signing.password") ?: ""
 ext["signing.secretKeyRingFile"] = properties.getProperty("signing.secretKeyRingFile") ?: ""
-
-signing {
-    sign publishing.publications
-}
