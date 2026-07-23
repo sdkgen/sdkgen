@@ -69,7 +69,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
   private rawHandlers: Array<{
     method: string;
     matcher: string | RegExp;
-    handler(req: IncomingMessage, res: ServerResponse): void;
+    handler(req: IncomingMessage, res: ServerResponse): void | Promise<void>;
   }> = [];
 
   public dynamicCorsOrigin = true;
@@ -246,8 +246,11 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
    * The handler owns the request/response lifecycle: it is responsible for reading the body and
    * for calling `res.end()`. Raw handlers take precedence over `addHttpHandler` handlers for the
    * same route and are matched with the same string-vs-regex precedence rules.
+   *
+   * The handler may be async; a synchronous throw or an async rejection is caught and turned into a
+   * 500 (unless the handler has already started the response), so it never crashes the process.
    */
-  addRawHttpHandler(method: string, matcher: string | RegExp, handler: (req: IncomingMessage, res: ServerResponse) => void): void {
+  addRawHttpHandler(method: string, matcher: string | RegExp, handler: (req: IncomingMessage, res: ServerResponse) => void | Promise<void>): void {
     this.rawHandlers.push({ handler, matcher, method });
   }
 
@@ -711,7 +714,20 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
 
       if (rawHandler) {
         this.log(`HTTP ${req.method} ${path}${query ? `?${query}` : ""} (raw)`);
-        rawHandler.handler(req, res);
+
+        void (async () => {
+          try {
+            await rawHandler.handler(req, res);
+          } catch (e) {
+            this.logError(e);
+            if (res.headersSent) {
+              res.end();
+            } else {
+              this.writeReply(res, null, { error: e }, hrStart);
+            }
+          }
+        })();
+
         return;
       }
     }

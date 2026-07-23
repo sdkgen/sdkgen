@@ -79,6 +79,16 @@ server.addRawHttpHandler("GET", /^\/raw-item\/[^/]+$/u, (req, res) => {
   res.end(`matched:${req.url}`);
 });
 
+// A raw handler runs outside the buffered promise chain; a throw must not crash the process.
+server.addRawHttpHandler("POST", "/raw-throw-sync", () => {
+  throw new Error("sync boom");
+});
+
+server.addRawHttpHandler("POST", "/raw-throw-async", async () => {
+  await Promise.resolve();
+  throw new Error("async boom");
+});
+
 describe("Raw HTTP handler", () => {
   beforeAll(async () => {
     await server.listen(32599);
@@ -130,6 +140,32 @@ describe("Raw HTTP handler", () => {
 
     expect(response.status).toEqual(200);
     expect(response.data).toEqual("matched:/raw-item/abc");
+  });
+
+  test("turns a synchronous throw into a 500 without crashing the process", async () => {
+    const response = await axios.request({
+      data: "x",
+      method: "POST",
+      transformResponse: [x => x],
+      url: "http://localhost:32599/raw-throw-sync",
+      validateStatus: () => true,
+    });
+
+    expect(response.status).toEqual(500);
+  });
+
+  test("turns an async rejection into a 500 without crashing the process", async () => {
+    const response = await axios.request({
+      data: "x",
+      method: "POST",
+      transformResponse: [x => x],
+      url: "http://localhost:32599/raw-throw-async",
+      validateStatus: () => true,
+    });
+
+    expect(response.status).toEqual(500);
+    // The server is still alive and serving after the rejection.
+    expect(await nodeClient.sum(null, { a: 1, b: 1 })).toBe(2);
   });
 
   test("does not intercept sdkgen RPC traffic", async () => {
