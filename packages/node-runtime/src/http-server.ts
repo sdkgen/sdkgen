@@ -66,6 +66,12 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
     handler(req: IncomingMessage, res: ServerResponse, body: Buffer): void;
   }> = [];
 
+  private rawHandlers: Array<{
+    method: string;
+    matcher: string | RegExp;
+    handler(req: IncomingMessage, res: ServerResponse): void | Promise<void>;
+  }> = [];
+
   public dynamicCorsOrigin = true;
 
   public introspection = true;
@@ -232,8 +238,24 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
     this.handlers.push({ handler, matcher, method });
   }
 
-  private findBestHandler(path: string, req: IncomingMessage) {
-    const matchingHandlers = this.handlers
+  /**
+   * Registers a handler that receives the request BEFORE the body is buffered, giving it full
+   * control over the `req` stream. Use this when you need to consume the body as a stream (e.g.
+   * large uploads, proxying) instead of receiving it as an in-memory Buffer.
+   *
+   * The handler owns the request/response lifecycle: it is responsible for reading the body and
+   * for calling `res.end()`. Raw handlers take precedence over `addHttpHandler` handlers for the
+   * same route and are matched with the same string-vs-regex precedence rules.
+   *
+   * The handler may be async; a synchronous throw or an async rejection is caught and turned into a
+   * 500 (unless the handler has already started the response), so it never crashes the process.
+   */
+  addRawHttpHandler(method: string, matcher: string | RegExp, handler: (req: IncomingMessage, res: ServerResponse) => void | Promise<void>): void {
+    this.rawHandlers.push({ handler, matcher, method });
+  }
+
+  private findBestHandler<T extends { method: string; matcher: string | RegExp }>(handlers: T[], path: string, req: IncomingMessage): T | null {
+    const matchingHandlers = handlers
       .filter(({ method }) => method === req.method)
       .filter(({ matcher }) => {
         if (typeof matcher === "string") {
@@ -678,6 +700,38 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
       return;
     }
 
+    // Raw handlers are dispatched before the body is buffered, so they can consume `req` as a
+    // stream. They take precedence over regular (buffered) handlers for the same route.
+    if (this.rawHandlers.length > 0 && !req.headers["content-type"]?.match(/application\/sdkgen/iu)) {
+      const { pathname, query } = parseUrl(req.url ?? "");
+      let path = pathname ?? "";
+
+      if (path.startsWith(this.ignoredUrlPrefix)) {
+        path = path.slice(this.ignoredUrlPrefix.length);
+      }
+
+      const rawHandler = this.findBestHandler(this.rawHandlers, path, req);
+
+      if (rawHandler) {
+        this.log(`HTTP ${req.method} ${path}${query ? `?${query}` : ""} (raw)`);
+
+        void (async () => {
+          try {
+            await rawHandler.handler(req, res);
+          } catch (e) {
+            this.logError(e);
+            if (res.headersSent) {
+              res.end();
+            } else {
+              this.writeReply(res, null, { error: e }, hrStart);
+            }
+          }
+        })();
+
+        return;
+      }
+    }
+
     new Promise<Buffer>(resolve => {
       // Google Cloud Functions add a rawBody property to the request object
       if (has(req, "rawBody") && req.rawBody instanceof Buffer) {
@@ -706,7 +760,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
     }
 
     if (!req.headers["content-type"]?.match(/application\/sdkgen/iu)) {
-      const externalHandler = this.findBestHandler(path, req);
+      const externalHandler = this.findBestHandler(this.handlers, path, req);
 
       if (externalHandler) {
         this.log(`HTTP ${req.method} ${path}${query ? `?${query}` : ""}`);
