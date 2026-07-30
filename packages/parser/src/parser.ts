@@ -300,6 +300,12 @@ export class Parser {
 
     this.nextToken();
 
+    // Take the pending annotations before parsing the type: parseType() rejects any that are still
+    // pending, so leaving them would make `@statusCode 404 error Foo { ... }` fail to parse.
+    const { annotations } = this;
+
+    this.annotations = [];
+
     let type: Type = new VoidPrimitiveType();
 
     if (
@@ -313,8 +319,8 @@ export class Parser {
 
     const node = new ErrorNode(name, type).at(errorToken);
 
-    node.annotations = this.annotations;
-    this.annotations = [];
+    node.annotations = annotations;
+
     return node;
   }
 

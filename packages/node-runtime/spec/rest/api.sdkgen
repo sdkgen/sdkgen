@@ -1,5 +1,10 @@
 error TestError
 
+@statusCode 429
+error ThrottledError {
+    retryAfter: uint
+}
+
 @rest GET /add1/{first}/{second}
 @rest GET /add2?{first}&{second}
 @rest GET /add3?{first} [header x-second: {second}]

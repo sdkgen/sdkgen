@@ -139,6 +139,35 @@ describe(Parser, () => {
     );
   });
 
+  test("handles annotations on errors that carry data", () => {
+    expectParses(
+      `
+        @statusCode 404
+        error Foo
+        @statusCode 429
+        error Bar {
+          foo: string
+        }
+        @statusCode 400
+        error FooBar int
+      `,
+      {
+        annotations: {
+          "error.Foo": [{ type: "statusCode", value: 404 }],
+          "error.Bar": [{ type: "statusCode", value: 429 }],
+          "error.FooBar": [{ type: "statusCode", value: 400 }],
+        },
+        errors: ["Foo", ["Bar", "BarData"], ["FooBar", "int"], "Fatal"],
+        functionTable: {},
+        typeTable: {
+          BarData: {
+            foo: "string",
+          },
+        },
+      },
+    );
+  });
+
   test("handles combinations of all part", () => {
     expectParses(
       `
