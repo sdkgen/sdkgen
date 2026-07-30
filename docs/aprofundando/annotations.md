@@ -99,6 +99,11 @@ Pode ser adicionado na declaração de erros para designar o código de status q
 ```
 @statusCode 404
 error NotFound
+
+@statusCode 429
+error RateLimited {
+  retryAfter: uint
+}
 ```
 
 ## `@rest`

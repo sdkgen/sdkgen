@@ -20,7 +20,7 @@ import { SdkgenHttpServer } from "../../src";
 const ast = new Parser(`${__dirname}/api.sdkgen`).parse();
 
 writeFileSync(`${__dirname}/api.ts`, generateNodeServerSource(ast).replace(/@sdkgen\/node-runtime/gu, "../../src"));
-const { api, TestError } = require(`${__dirname}/api.ts`);
+const { api, TestError, ThrottledError } = require(`${__dirname}/api.ts`);
 
 unlinkSync(`${__dirname}/api.ts`);
 
@@ -43,6 +43,10 @@ api.fn.obj = async (_ctx: Context, { obj }: { obj: { val: number } }) => {
 
   if (obj.val === -100) {
     throw new TestError("Value is -100 ~ TestError");
+  }
+
+  if (obj.val === -429) {
+    throw new ThrottledError("Value is -429 ~ ThrottledError", { retryAfter: 30 });
   }
 
   return obj;
@@ -292,6 +296,16 @@ describe("Rest API", () => {
         "content-type": "application/json",
       },
       statusCode: 400,
+    },
+    {
+      data: `{"val":-429}`,
+      method: "POST",
+      path: "/obj",
+      result: `{"data":{"retryAfter":30},"message":"Value is -429 ~ ThrottledError","type":"ThrottledError"}`,
+      resultHeaders: {
+        "content-type": "application/json",
+      },
+      statusCode: 429,
     },
     {
       method: "POST",
