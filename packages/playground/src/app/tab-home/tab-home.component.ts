@@ -3,6 +3,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { Field, Type } from "@sdkgen/parser";
 import { Subscription } from "rxjs";
 
+import { normalizeSearchText, SearchableItem } from "../filter.pipe";
 import { ResponsiveService } from "../responsive.service";
 import { getTypeDoc } from "../sdkgen.docs";
 import { SdkgenService } from "../sdkgen.service";
@@ -15,7 +16,7 @@ interface EasyFunctionTableItemType {
   rawType: Type;
 }
 
-interface EasyFunctionTableItem {
+interface EasyFunctionTableItem extends SearchableItem {
   name: string;
   description?: string;
   labels: Array<{ name: string; type: string; dataType?: Type }>;
@@ -33,6 +34,23 @@ interface FunctionGroup {
 }
 
 const untaggedGroupName = "(Sem tags)";
+
+/**
+ * Indexes a function by what the list actually shows — its name and description — plus the tag it
+ * is grouped under and its REST route. Serializing the whole item instead would both blow up on
+ * recursive types and match on noise such as the example code.
+ */
+function buildSearchIndex(fn: Omit<EasyFunctionTableItem, "searchIndex">): string {
+  return normalizeSearchText(
+    [
+      fn.name,
+      fn.description ?? "",
+      ...fn.tags,
+      // A @rest route is worth searching by ("what handles /users?"); the other labels are not.
+      ...fn.labels.filter(label => label.name === "REST").map(label => label.type),
+    ].join(" "),
+  );
+}
 
 @Component({
   selector: "app-tab-home",
@@ -77,7 +95,7 @@ export class TabHomeComponent implements OnInit, OnDestroy, AfterViewInit {
       this.selectedFunction = undefined;
       this.collapsedGroups.clear();
 
-      this.fnTable = state.astRoot.operations
+      const operations = state.astRoot.operations
         .sort((a, b) => a.name.localeCompare(b.name))
         .map(operation => {
           const annotations = state.astJson.annotations[`fn.${operation.name}`];
@@ -134,7 +152,7 @@ export class TabHomeComponent implements OnInit, OnDestroy, AfterViewInit {
                   return {
                     name: "?",
                     type: "?",
-                  }; // shoudn't happen
+                  }; // shouldn't happen
                 }) ?? [],
             tags: annotations?.filter(ann => ann.type === "tag").map(ann => ann.value as string) ?? [],
             throws: annotations?.find(ann => ann.type === "throws")?.value as string,
@@ -146,7 +164,9 @@ export class TabHomeComponent implements OnInit, OnDestroy, AfterViewInit {
             },
           };
         })
-        .filter(x => Boolean(x)) as EasyFunctionTableItem[];
+        .filter(x => Boolean(x)) as Array<Omit<EasyFunctionTableItem, "searchIndex">>;
+
+      this.fnTable = operations.map(fn => ({ ...fn, searchIndex: buildSearchIndex(fn) }));
 
       this.hasTags = this.fnTable.some(fn => fn.tags.length > 0);
       this.fnGroups = this.buildGroups(this.fnTable);
