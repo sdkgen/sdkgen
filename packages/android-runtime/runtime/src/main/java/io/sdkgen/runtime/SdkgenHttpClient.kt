@@ -55,9 +55,15 @@ open class SdkgenHttpClient(
 
     class DateTimeAdapter: TypeAdapter<Calendar>() {
         companion object {
-            val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US).apply {
-                this.timeZone = TimeZone.getTimeZone("UTC")
-            }
+            private val threadLocalSdf: ThreadLocal<SimpleDateFormat> =
+                object : ThreadLocal<SimpleDateFormat>() {
+                    override fun initialValue() =
+                        SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.US).apply {
+                            timeZone = TimeZone.getTimeZone("UTC")
+                        }
+                }
+
+            val sdf: SimpleDateFormat get() = threadLocalSdf.get()
         }
 
         override fun write(out: JsonWriter?, value: Calendar?) {
@@ -89,9 +95,15 @@ open class SdkgenHttpClient(
 
     class DateAdapter: TypeAdapter<Calendar>() {
         companion object {
-            val sdf = SimpleDateFormat("yyyy-MM-dd", Locale.US).apply {
-                this.timeZone = TimeZone.getTimeZone("UTC")
-            }
+            private val threadLocalSdf: ThreadLocal<SimpleDateFormat> =
+                object : ThreadLocal<SimpleDateFormat>() {
+                    override fun initialValue() =
+                        SimpleDateFormat("yyyy-MM-dd", Locale.US).apply {
+                            timeZone = TimeZone.getTimeZone("UTC")
+                        }
+                }
+
+            val sdf: SimpleDateFormat get() = threadLocalSdf.get()
         }
 
         override fun write(out: JsonWriter?, value: Calendar?) {
@@ -361,7 +373,7 @@ open class SdkgenHttpClient(
                         addProperty("message", applicationContext.getString(R.string.sdkgen_error_unknown))
                     },
                     null,
-                     null
+                    null
                 )
             )
         }
