@@ -12,6 +12,19 @@ import 'deviceinfo_generic.dart'
     if (dart.library.io) 'deviceinfo_io.dart'
     if (dart.library.html) 'deviceinfo_web.dart';
 
+/// Builds the request [Uri] for a given [functionName] by appending it to the
+/// [baseUrl], ensuring exactly one slash between the base path and the function
+/// name. This mirrors the behavior of the other sdkgen client runtimes (e.g.
+/// Kotlin/Android and browser), so the called endpoint is visible in the URL
+/// instead of every request hitting the bare base URL.
+Uri buildRequestUrl(Uri baseUrl, String functionName) {
+  return baseUrl.replace(
+    path: baseUrl.path.endsWith('/')
+        ? '${baseUrl.path}$functionName'
+        : '${baseUrl.path}/$functionName',
+  );
+}
+
 class SdkgenError implements Exception {
   final String message;
   final Json request;
@@ -134,7 +147,7 @@ class SdkgenHttpClient {
       await interceptors.onRequest(body);
 
       final response = await _client.post(
-        baseUrl,
+        buildRequestUrl(baseUrl, functionName),
         headers: headers,
         body: jsonEncode(body),
       );
