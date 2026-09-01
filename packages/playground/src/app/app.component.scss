@@ -37,6 +37,10 @@
         padding-right: 16px;
       }
 
+      button.active {
+        color: #ffa726;
+      }
+
       &.action-button {
         padding: 0;
         padding-right: 0 !important;

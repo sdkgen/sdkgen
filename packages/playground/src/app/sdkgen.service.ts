@@ -35,6 +35,7 @@ import {
 } from "@sdkgen/parser";
 import { BehaviorSubject } from "rxjs";
 
+import { GlobalExtrasService } from "./global-extras.service";
 import { DeepReadonly } from "../../../parser/src/utils";
 
 export interface SdkgenState {
@@ -47,8 +48,10 @@ export interface SdkgenState {
 export class SdkgenService {
   public state$ = new BehaviorSubject<SdkgenState | null>(null);
 
-  public buildJsonObject(args: Field[], visited = new Set<string>()) {
-    const getTypeValue = (type: Type): any => {
+  constructor(private globalExtras: GlobalExtrasService) {}
+
+  public static buildJsonObject(args: Field[], visited = new Set<string>()) {
+    function getTypeValue(type: Type): any {
       switch (type.constructor) {
         case StringPrimitiveType:
           return ``;
@@ -112,7 +115,7 @@ export class SdkgenService {
         case StructType:
           return visited.has(type.name)
             ? {}
-            : this.buildJsonObject((type as StructType).fields, new Set([...visited, type.name]));
+            : SdkgenService.buildJsonObject((type as StructType).fields, new Set([...visited, type.name]));
 
         case OptionalType:
           return null;
@@ -133,7 +136,7 @@ export class SdkgenService {
         default:
           return null;
       }
-    };
+    }
 
     return args.reduce<any>((cur, arg) => {
       cur[arg.name] = getTypeValue(arg.type);
@@ -290,13 +293,36 @@ export class SdkgenService {
 
     const clientInstance = new SdkgenHttpClient(url, ast, errorFns);
 
+    // This client's own extras, set per request. The global ones are merged in only at
+    // call time, so they are always up to date and these take precedence over them.
+    const ownExtra = clientInstance.extra;
+    const { globalExtras } = this;
+
+    async function makeRequest(functionName: string, args: unknown) {
+      clientInstance.extra = new Map([...Object.entries(globalExtras.extras), ...ownExtra]);
+
+      try {
+        return await clientInstance.makeRequest(functionName, args);
+      } finally {
+        clientInstance.extra = ownExtra;
+      }
+    }
+
     return new Proxy(clientInstance, {
       get: (target, name) => {
-        if (["baseUrl", "extra", "successHook", "errorHook", "makeRequest"].includes(name.toString())) {
+        if (name.toString() === "extra") {
+          return ownExtra;
+        }
+
+        if (name.toString() === "makeRequest") {
+          return makeRequest;
+        }
+
+        if (["baseUrl", "successHook", "errorHook"].includes(name.toString())) {
           return clientInstance[name.toString() as keyof SdkgenHttpClient];
         }
 
-        return async (args: any) => clientInstance.makeRequest(name.toString(), args);
+        return async (args: any) => makeRequest(name.toString(), args);
       },
     });
   }

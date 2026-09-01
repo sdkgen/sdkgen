@@ -291,7 +291,7 @@ export function getTypeDoc(type: Type): TypeDoc {
       const values = enu.values.slice(0, 3);
       const examples = values.map(v => {
         if (v.struct) {
-          return `${v.value}: ${JSON.stringify(new SdkgenService().buildJsonObject(v.struct.fields), null, 2)}`;
+          return `${v.value}: ${JSON.stringify(SdkgenService.buildJsonObject(v.struct.fields), null, 2)}`;
         }
 
         return v.value;
@@ -332,7 +332,7 @@ export function getTypeDoc(type: Type): TypeDoc {
           type: field.type,
           secret: field.secret,
         })),
-        examples: [JSON.stringify(new SdkgenService().buildJsonObject((type as StructType).fields), null, 2)],
+        examples: [JSON.stringify(SdkgenService.buildJsonObject((type as StructType).fields), null, 2)],
       };
 
     default:

@@ -1,5 +1,6 @@
 import { OnDestroy, OnInit, Component } from "@angular/core";
 import { FormControl } from "@angular/forms";
+import { MatDialog } from "@angular/material/dialog";
 import { MatIconRegistry } from "@angular/material/icon";
 import { DomSanitizer } from "@angular/platform-browser";
 import { generateCSharpServerSource } from "@sdkgen/csharp-generator";
@@ -16,6 +17,8 @@ import {
 import { saveAs } from "file-saver";
 import { Subscription } from "rxjs";
 
+import { DialogGlobalExtrasComponent } from "./dialog-global-extras/dialog-global-extras.component";
+import { GlobalExtrasService } from "./global-extras.service";
 import { SdkgenService, SdkgenState } from "./sdkgen.service";
 
 interface Tab {
@@ -52,6 +55,8 @@ export class AppComponent implements OnInit, OnDestroy {
 
   constructor(
     public sdkgen: SdkgenService,
+    private dialog: MatDialog,
+    private globalExtras: GlobalExtrasService,
     private domSanitizer: DomSanitizer,
     private matIconRegistry: MatIconRegistry,
   ) {
@@ -68,6 +73,20 @@ export class AppComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.state$?.unsubscribe();
+  }
+
+  get extrasCount() {
+    return this.globalExtras.count;
+  }
+
+  get extrasTooltip() {
+    return this.extrasCount > 0 ? `Extras globais (${this.extrasCount})` : "Extras globais";
+  }
+
+  openGlobalExtras() {
+    this.dialog.open(DialogGlobalExtrasComponent, {
+      panelClass: ["dialog-responsive"],
+    });
   }
 
   addSimpleTab(fn: string) {

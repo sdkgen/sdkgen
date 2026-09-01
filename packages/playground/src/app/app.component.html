@@ -48,7 +48,20 @@
 
   <mat-tab disabled labelClass="right action-button">
     <ng-template mat-tab-label>
-      <button mat-icon-button [matMenuTriggerFor]="downloadMenu">
+      <button
+        mat-icon-button
+        [class.active]="extrasCount > 0"
+        [matTooltip]="extrasTooltip"
+        (click)="openGlobalExtras()"
+      >
+        <mat-icon>extension</mat-icon>
+      </button>
+    </ng-template>
+  </mat-tab>
+
+  <mat-tab disabled labelClass="action-button">
+    <ng-template mat-tab-label>
+      <button mat-icon-button matTooltip="Baixar cliente ou servidor" [matMenuTriggerFor]="downloadMenu">
         <mat-icon>download</mat-icon>
       </button>
     </ng-template>

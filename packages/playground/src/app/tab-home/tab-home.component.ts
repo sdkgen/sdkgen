@@ -99,7 +99,7 @@ export class TabHomeComponent implements OnInit, OnDestroy, AfterViewInit {
         .sort((a, b) => a.name.localeCompare(b.name))
         .map(operation => {
           const annotations = state.astJson.annotations[`fn.${operation.name}`];
-          const argsExampleObject = this.sdkgen.buildJsonObject(operation.args);
+          const argsExampleObject = SdkgenService.buildJsonObject(operation.args);
 
           if (annotations?.find(a => a.type === "hidden")) {
             return null;

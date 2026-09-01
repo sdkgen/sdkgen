@@ -62,7 +62,7 @@ export class TabEditorComponent implements OnInit, OnDestroy {
 
       this.code = this.sdkgen.getTypeScriptCode(
         initialOperation.name,
-        this.sdkgen.buildJsonObject(initialOperation.args),
+        SdkgenService.buildJsonObject(initialOperation.args),
       );
     });
   }
