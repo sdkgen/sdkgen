@@ -20,6 +20,7 @@ import { ToastrModule } from "ngx-toastr";
 import { AppComponent } from "./app.component";
 import { ConsoleComponent } from "./console/console.component";
 import { DialogAboutComponent } from "./dialog-about/dialog-about.component";
+import { DialogGlobalExtrasComponent } from "./dialog-global-extras/dialog-global-extras.component";
 import { FilterPipe } from "./filter.pipe";
 import { SimpleCallComponent } from "./simple-call/simple-call.component";
 import { TabEditorComponent } from "./tab-editor/tab-editor.component";
@@ -38,6 +39,7 @@ import { TypeDetailsComponent } from "./type-details/type-details.component";
     ConsoleComponent,
     TypeDetailsComponent,
     DialogAboutComponent,
+    DialogGlobalExtrasComponent,
   ],
   imports: [
     BrowserModule,

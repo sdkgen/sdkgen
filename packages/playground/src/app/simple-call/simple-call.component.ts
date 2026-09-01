@@ -97,7 +97,7 @@ export class SimpleCallComponent implements OnInit, OnDestroy {
     const args = astRoot.operations.find(op => op.name === value)?.args;
 
     if (args) {
-      this.code = JSON.stringify(this.sdkgen.buildJsonObject(args), null, 2);
+      this.code = JSON.stringify(SdkgenService.buildJsonObject(args), null, 2);
     }
   }
 }

@@ -1,0 +1,24 @@
+<header>
+  <h1 mat-dialog-title>Extras globais</h1>
+
+  <s></s>
+
+  <button mat-icon-button mat-dialog-close tabindex="-1"><mat-icon>close</mat-icon></button>
+</header>
+
+<p>
+  Enviados em todas as requisições, de todas as abas. Os extras de uma chamada específica têm precedência sobre estes.
+</p>
+
+<ngx-monaco-editor class="editor" [options]="editorOptions" [(ngModel)]="text"></ngx-monaco-editor>
+
+<p class="error" *ngIf="error">{{ error }}</p>
+
+<footer>
+  <span class="hint">Guardados apenas neste navegador.</span>
+
+  <s></s>
+
+  <button mat-stroked-button (click)="clear()">Limpar</button>
+  <button mat-flat-button color="primary" (click)="save()">Salvar</button>
+</footer>

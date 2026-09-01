@@ -1,0 +1,44 @@
+header {
+  display: flex;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+
+  h1,
+  button {
+    align-self: center;
+  }
+
+  h1 {
+    display: flex;
+    margin: 0 10px 0 0;
+    padding: 0;
+  }
+
+  button {
+    margin-left: 20px;
+  }
+}
+
+ngx-monaco-editor.editor {
+  display: block;
+  height: 220px;
+}
+
+p.error {
+  margin-bottom: 0;
+  color: #f28b82;
+}
+
+footer {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
+
+  .hint {
+    font-size: 12px;
+    opacity: 0.6;
+  }
+
+  button:not(:last-child) {
+    margin-right: 12px;
+  }
+}
