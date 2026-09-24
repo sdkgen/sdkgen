@@ -18,6 +18,13 @@ import { has } from "./utils";
 
 type ErrClasses = Record<string, (new (message: string, data: any) => SdkgenErrorWithData<any>) | (new (message: string) => SdkgenError) | undefined>;
 
+// Carries the underlying error of a client-side failure to the thrown Fatal. A symbol, so no server response can set it.
+const causeKey = Symbol("cause");
+
+function clientFatal(message: string, cause?: unknown) {
+  return { [causeKey]: cause, message, type: "Fatal" };
+}
+
 export class SdkgenHttpClient {
   private baseUrl: URL;
 
@@ -83,19 +90,19 @@ export class SdkgenHttpClient {
               resolve(has(response, "result") ? response.result : null);
             }
           } catch (error) {
-            reject({ message: `${error}`, type: "Fatal" });
+            reject(clientFatal(`${error}`, error));
           }
         });
         res.on("error", error => {
-          reject({ message: `${error}`, type: "Fatal" });
+          reject(clientFatal(`${error}`, error));
         });
         res.on("aborted", () => {
-          reject({ message: "Request aborted", type: "Fatal" });
+          reject(clientFatal("Request aborted"));
         });
       });
 
       req.on("error", error => {
-        reject({ message: `${error}`, type: "Fatal" });
+        reject(clientFatal(`${error}`, error));
       });
 
       req.write(requestBody);
@@ -118,6 +125,11 @@ export class SdkgenHttpClient {
 
         if (!newError.type) {
           (newError as unknown as { type: string }).type = errType;
+        }
+
+        // The message is only the stringified error, which loses the details: an AggregateError, for one, stringifies to just "AggregateError".
+        if (has(error, causeKey) && error[causeKey] !== undefined) {
+          Object.defineProperty(newError, "cause", { configurable: true, value: error[causeKey], writable: true });
         }
 
         throw newError;
