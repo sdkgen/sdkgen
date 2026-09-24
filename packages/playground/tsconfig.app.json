@@ -3,6 +3,7 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/app",
+    "importHelpers": true,
     "module": "ES2022",
     "types": []
   },
