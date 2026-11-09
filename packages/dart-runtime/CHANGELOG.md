@@ -1,3 +1,7 @@
+## 1.0.11
+
+- fix: append function name to the request URL so the called endpoint is visible in the URL (matches the Kotlin/Android and browser runtimes)
+
 ## 1.0.10
 
 - fix: revert decode json with numbers always as double
