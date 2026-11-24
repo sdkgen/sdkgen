@@ -94,6 +94,13 @@ class SdkgenHttpClient {
     return deviceId!;
   }
 
+  /// Posts each call to `<baseUrl>/<functionName>`, like the other sdkgen
+  /// clients, so the path names the function being called.
+  Uri _functionUrl(String functionName) => baseUrl.replace(pathSegments: [
+        ...baseUrl.pathSegments.where((segment) => segment.isNotEmpty),
+        functionName,
+      ]);
+
   SdkgenHttpClient addInterceptor(SdkgenInterceptors interceptor) {
     interceptors.add(interceptor);
     return this;
@@ -134,7 +141,7 @@ class SdkgenHttpClient {
       await interceptors.onRequest(body);
 
       final response = await _client.post(
-        baseUrl,
+        _functionUrl(functionName),
         headers: headers,
         body: jsonEncode(body),
       );
