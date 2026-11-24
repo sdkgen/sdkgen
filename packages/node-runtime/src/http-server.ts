@@ -858,11 +858,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
 
     const pathFunctionName = path.slice(pathStart, pathEnd);
 
-    if (
-      this.strictPathRouting &&
-      pathFunctionName !== "" &&
-      (pathFunctionName.includes("/") || pathFunctionName !== request.name)
-    ) {
+    if (this.strictPathRouting && pathFunctionName !== "" && (pathFunctionName.includes("/") || pathFunctionName !== request.name)) {
       this.writeReply(
         res,
         { ...this.extraContext, request, response: { headers: new Map(), statusCode: 400 } },

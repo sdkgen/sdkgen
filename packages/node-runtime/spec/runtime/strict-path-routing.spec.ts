@@ -126,6 +126,20 @@ describe("strictPathRouting", () => {
     expect(calls).toEqual([]);
   });
 
+  test("rejects a path with extra segments even when the body names the same path", async () => {
+    const response = await call(32611, "/whatever/sum", { ...sumV3, name: "whatever/sum" });
+
+    expect(response.status).toBe(400);
+    expect(calls).toEqual([]);
+  });
+
+  test("handles a path made of many slashes", async () => {
+    const response = await call(32611, `/${"/".repeat(10000)}`, sumV3);
+
+    expect(response.status).toBe(200);
+    expect(response.data.result).toBe(5);
+  });
+
   test("compares the path case-sensitively", async () => {
     const response = await call(32611, "/SUM", sumV3);
 
