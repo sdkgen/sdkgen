@@ -66,7 +66,7 @@ export class SdkgenHttpClient {
     const options: RequestOptions = {
       hostname: this.baseUrl.hostname,
       method: "POST",
-      path: this.baseUrl.pathname,
+      path: `${this.baseUrl.pathname}${this.baseUrl.pathname.endsWith("/") ? "" : "/"}${functionName}`,
       port: this.baseUrl.port,
       headers: {
         "content-type": "application/sdkgen",
