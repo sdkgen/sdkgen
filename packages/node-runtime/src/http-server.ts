@@ -77,9 +77,9 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
   public introspection = true;
 
   /**
-   * When enabled, a call made to `/<functionName>` can only run that function: if the name in the body differs, the
-   * call is rejected before running. Calls made to the root path keep taking the function name from the body. This
-   * lets anything that filters requests by path (a reverse proxy, a WAF) trust the path as the function that runs.
+   * When enabled, a call only runs when it is made to `/<functionName>` and the body names that same function. Calls
+   * made to the root path, or whose body names another function, are rejected before running. This lets anything
+   * that filters requests by path (a reverse proxy, a WAF) trust the path as the function that runs.
    */
   public strictPathRouting = false;
 
@@ -858,7 +858,7 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
 
     const pathFunctionName = path.slice(pathStart, pathEnd);
 
-    if (this.strictPathRouting && pathFunctionName !== "" && (pathFunctionName.includes("/") || pathFunctionName !== request.name)) {
+    if (this.strictPathRouting && (pathFunctionName === "" || pathFunctionName.includes("/") || pathFunctionName !== request.name)) {
       this.writeReply(
         res,
         { ...this.extraContext, request, response: { headers: new Map(), statusCode: 400 } },

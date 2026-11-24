@@ -88,11 +88,9 @@ describe("strictPathRouting", () => {
   test("is disabled by default, keeping the function name from the body", async () => {
     expect(defaultServer.strictPathRouting).toBe(false);
 
-    const response = await call(32613, "/identity", sumV3);
-
-    expect(response.status).toBe(200);
-    expect(response.data.result).toBe(5);
-    expect(calls).toEqual(["sum"]);
+    expect((await call(32613, "/identity", sumV3)).data.result).toBe(5);
+    expect((await call(32613, "/", sumV3)).data.result).toBe(5);
+    expect(calls).toEqual(["sum", "sum"]);
   });
 
   test("runs the function when the path matches the name in the body", async () => {
@@ -133,11 +131,11 @@ describe("strictPathRouting", () => {
     expect(calls).toEqual([]);
   });
 
-  test("handles a path made of many slashes", async () => {
+  test("handles a path made of many slashes as the root path", async () => {
     const response = await call(32611, `/${"/".repeat(10000)}`, sumV3);
 
-    expect(response.status).toBe(200);
-    expect(response.data.result).toBe(5);
+    expect(response.status).toBe(400);
+    expect(calls).toEqual([]);
   });
 
   test("compares the path case-sensitively", async () => {
@@ -147,12 +145,12 @@ describe("strictPathRouting", () => {
     expect(calls).toEqual([]);
   });
 
-  test("keeps taking the function name from the body on the root path", async () => {
+  test("rejects calls to the root path, without running the function named in the body", async () => {
     const response = await call(32611, "/", sumV3);
 
-    expect(response.status).toBe(200);
-    expect(response.data.result).toBe(5);
-    expect(calls).toEqual(["sum"]);
+    expect(response.status).toBe(400);
+    expect(response.data.error?.type).toBe("Fatal");
+    expect(calls).toEqual([]);
   });
 
   test("applies to every request version", async () => {
@@ -168,9 +166,9 @@ describe("strictPathRouting", () => {
 
   test("matches the path after removing the ignored URL prefix", async () => {
     expect((await call(32612, "/api/sum", sumV3)).status).toBe(200);
-    expect((await call(32612, "/api", sumV3)).status).toBe(200);
+    expect((await call(32612, "/api", sumV3)).status).toBe(400);
     expect((await call(32612, "/api/identity", sumV3)).status).toBe(400);
-    expect(calls).toEqual(["sum", "sum"]);
+    expect(calls).toEqual(["sum"]);
   });
 
   test("keeps the health check working", async () => {
@@ -180,9 +178,10 @@ describe("strictPathRouting", () => {
     expect(response.data).toEqual({ ok: true });
   });
 
-  test("keeps serving clients that call the root path", async () => {
-    const nodeClient = new NodeApiClient("http://localhost:32611");
-
-    expect(await nodeClient.sum(null, { a: 2, b: 3 })).toBe(5);
+  test("serves the Node client, which calls the function path", async () => {
+    expect(await new NodeApiClient("http://localhost:32611").sum(null, { a: 2, b: 3 })).toBe(5);
+    expect(await new NodeApiClient("http://localhost:32611/").sum(null, { a: 2, b: 3 })).toBe(5);
+    expect(await new NodeApiClient("http://localhost:32612/api").sum(null, { a: 2, b: 3 })).toBe(5);
+    expect(calls).toEqual(["sum", "sum", "sum"]);
   });
 });
