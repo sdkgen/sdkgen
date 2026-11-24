@@ -845,7 +845,18 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
       return;
     }
 
-    const pathFunctionName = path.replace(/^\/+|\/+$/gu, "");
+    let pathStart = 0;
+    let pathEnd = path.length;
+
+    while (pathStart < pathEnd && path[pathStart] === "/") {
+      pathStart += 1;
+    }
+
+    while (pathEnd > pathStart && path[pathEnd - 1] === "/") {
+      pathEnd -= 1;
+    }
+
+    const pathFunctionName = path.slice(pathStart, pathEnd);
 
     if (this.strictPathRouting && pathFunctionName !== "" && pathFunctionName !== request.name) {
       this.writeReply(
