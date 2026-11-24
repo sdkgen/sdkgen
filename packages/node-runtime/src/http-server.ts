@@ -76,6 +76,13 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
 
   public introspection = true;
 
+  /**
+   * When enabled, a call made to `/<functionName>` can only run that function: if the name in the body differs, the
+   * call is rejected before running. Calls made to the root path keep taking the function name from the body. This
+   * lets anything that filters requests by path (a reverse proxy, a WAF) trust the path as the function that runs.
+   */
+  public strictPathRouting = false;
+
   public log = (message: string) => {
     console.log(`${new Date().toISOString()} ${message}`);
   };
@@ -833,6 +840,18 @@ export class SdkgenHttpServer<ExtraContextT = unknown> {
         {
           error: new Fatal("Couldn't parse request"),
         },
+        hrStart,
+      );
+      return;
+    }
+
+    const pathFunctionName = path.replace(/^\/+|\/+$/gu, "");
+
+    if (this.strictPathRouting && pathFunctionName !== "" && pathFunctionName !== request.name) {
+      this.writeReply(
+        res,
+        { ...this.extraContext, request, response: { headers: new Map(), statusCode: 400 } },
+        { error: new Fatal(`Function '${request.name}' does not match the request path '${path}'`) },
         hrStart,
       );
       return;
